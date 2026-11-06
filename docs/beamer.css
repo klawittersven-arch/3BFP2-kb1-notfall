@@ -433,3 +433,13 @@ b, strong { font-weight: 800; }
 .loesung-rechts { display: grid; gap: 14px; align-content: start; }
 .loesung-rechts .punkte li { font-size: 20px; padding-left: 34px; }
 .loesung-rechts .punkte li::before { top: 9px; width: 13px; height: 13px; }
+
+/* „Wer darf was?“: Stimmen je Ecke */
+.folie-aufstellung .massnahme { padding: 24px 36px; }
+.folie-aufstellung .ecken { margin: 22px 0 14px; }
+.ecke-balken { height: 14px; border-radius: 7px; background: var(--hell); margin: 12px 0 6px; overflow: hidden; }
+.ecke-fuell { height: 100%; background: var(--petrol); border-radius: 7px; transition: width .4s; }
+.ecke.richtig .ecke-fuell { background: var(--gruen); }
+.ecke-zahl { font-size: 22px; color: var(--leise); }
+.abgestimmt { text-align: center; font-size: 26px; font-weight: 800; color: var(--leise); margin: 6px 0 0; }
+.abgestimmt.ergebnis { color: var(--gruen); font-size: 34px; }

@@ -44,14 +44,13 @@ geben ihren Vornamen ein – und ihr Handy zeigt ab dann automatisch, was zur ak
 | 22 | Lagerungsparcours (AA3) | Fortschritt | Lagerungskarten, Bilder der vier Lagerungen als Hilfe |
 | 23 | Merksatz AA3 prüfen | Lücken aufdecken | „Überprüfen Sie am Beamer …“ |
 | 24–26 | AA3 b) und c) | Aufgabenfolie (Entscheidungsweg, 3.1/3.2) → „Jetzt bearbeiten“ → zwei Musterlösungen | „Auf Papier“ |
-| 27 | Pause | Uhr 10 min | „Pause“ |
-| 28 | Wer darf was? (AA4a) | jeder Klick: nächste Maßnahme (6), dann Lösung (Ecke) | dieselbe Maßnahme, dann Lösung |
-| 29–31 | Wer hat recht? (AA4b) | Aufgabenfolie mit Dialog und 4.1 → Think/Pair-Uhr → Musterlösung → **Merksatz AA4** (erst ergänzen, dann aufdecken) | „Auf Papier“ |
-| 32–33 | Klausurtraining (AA5) | Transferfall wie im AB → Countdown 6 min → Peer-Korrektur (4 min) mit Musterlösung zum Aufdecken | „Handy umgedreht“, dann Bewertungsraster |
-| 34 | Frau Maler (AA6) | Kausalkette Schritt für Schritt, dann Antwort auf die Leitfrage | „Ergänzen Sie die Kausalkette …“ |
-| 35–36 | Hätten Sie richtig gehandelt? | Zähler, dann vorher – nachher mit Lösung | dieselben 6 Notfälle, danach Auflösung |
-| 37 | Ich-kann-Liste | Ich-kann-Liste, Hausaufgabe, Nachlesen | „Auf Papier“ |
-| 38 | Ende | Ausblick – **gibt die Nachlese-Seite frei** | „Die Stunde ist beendet“ |
+| 27 | Wer darf was? (AA4a) | jeder Klick: nächste Maßnahme (6) mit **Stimmen je Kategorie**, dann Lösung und „Das hatten X von Y richtig!“ | 🟢 / 🟡 / 🔴 antippen, nach der Lösung: richtig oder falsch |
+| 28–30 | Wer hat recht? (AA4b) | Aufgabenfolie mit Dialog und 4.1 → Think/Pair-Uhr → Musterlösung → **Merksatz AA4** (erst ergänzen, dann aufdecken) | „Auf Papier“ |
+| 31–32 | Klausurtraining (AA5) | Transferfall wie im AB → Countdown 6 min → Peer-Korrektur (4 min) mit Musterlösung zum Aufdecken | „Handy umgedreht“, dann Bewertungsraster |
+| 33 | Frau Maler (AA6) | Kausalkette Schritt für Schritt, dann Antwort auf die Leitfrage | „Ergänzen Sie die Kausalkette …“ |
+| 34–35 | Hätten Sie richtig gehandelt? | Zähler, dann vorher – nachher mit Lösung | dieselben 6 Notfälle, danach Auflösung |
+| 36 | Ich-kann-Liste | Ich-kann-Liste, Hausaufgabe, Nachlesen | „Auf Papier“ |
+| 37 | Ende | Ausblick – **gibt die Nachlese-Seite frei** | „Die Stunde ist beendet“ |
 
 **Sicherungsfolien:** Nach jedem Merksatz kommt eine Folie zum Aufdecken der Lücken, nach jeder Papieraufgabe
 eine Aufgabenfolie (erst erklären, dann „✍️ Jetzt bearbeiten“ – das startet die Uhr) und eine Musterlösung zum
@@ -59,7 +58,7 @@ Aufdecken. Aufgedeckte Zellen, Lücken und Lösungszeilen bleiben aufgedeckt, au
 Lange Folien werden automatisch etwas kleiner gesetzt, damit alles auf die Bühne passt.
 
 **Zeitplan:** 0–8 Einstieg · 8–60 Gruppenpuzzle · 60–83 Lagerung · (Pause) · 83–97 AA4 · 97–108 AA5 ·
-108–113 AA6 · **113–125 Puffer** · 125–135 Abschluss. Die Notfall-Simulation ist gestrichen.
+108–113 AA6 · **113–125 Puffer** · 125–135 Abschluss. Die Notfall-Simulation ist gestrichen; eine Pausenfolie gibt es nicht.
 
 Aufgedeckte Zellen und Lösungszeilen bleiben aufgedeckt, auch wenn der Beamer neu geladen wird.
 
@@ -71,12 +70,12 @@ stimmen ab, bearbeiten die Übungen, melden „fertig“ – je nachdem, welche 
 Handy** den QR-Code am Beamer scannen und als Schülerin oder Schüler mitmachen: Das Handy wird wie alle anderen
 einer Stammgruppe und einem Expertenteam mit erfundenen Namen zugeteilt. Oben steht „Probestunde“ und
 „1 Handy + 20 erfundene“. Der Wechsel zum Merksatz AA1 (danach Stammgruppen) kommt, sobald auch das eigene Handy „fertig“ meldet.
-Hinweis: Wie eine echte Stunde sperrt auch die Probestunde die Nachlese-Seite, bis Folie 38 erreicht ist.
+Hinweis: Wie eine echte Stunde sperrt auch die Probestunde die Nachlese-Seite, bis Folie 37 erreicht ist.
 
 ### Bedienung
 
 - **Weiter / Zurück** unten (auch → / ← / Bild↓ / Bild↑ / Leertaste – also mit Presenter). Folien mit
-  Schritten (Aufgabenfolien, 28 „Wer darf was?“, 34 „Kausalkette“) decken mit jedem „Weiter“ den nächsten Schritt auf.
+  Schritten (Aufgabenfolien, 27 „Wer darf was?“, 33 „Kausalkette“) decken mit jedem „Weiter“ den nächsten Schritt auf.
 - **Menü ⚙** (unten links): zu jeder Folie springen, Vollbild, Namen verbergen, Angemeldete verwalten
   (entfernen, Person ohne Handy hinzufügen), **neuer Raum** für die Parallelklasse.
 - **Gruppen (Folie 7):** Stammgruppen zu 3 (A, B, C), bei Rest Vierergruppen mit doppeltem B; Expertenteams
@@ -88,7 +87,7 @@ Hinweis: Wie eine echte Stunde sperrt auch die Probestunde die Nachlese-Seite, b
   Ton beim Wechsel. Die Handys zeigen die Restzeit mit.
 - **Beamer neu laden** oder Laptop kurz zu: Der Raum bleibt (6 Stunden) und die Folie auch.
 - **Nachlesen** (letzte AB-Seite): alle Inhalte und Lösungen der Stunde (ohne Hausaufgabe). Die Seite ist
-  **gesperrt, solange irgendwo eine Beamer-Stunde läuft** – bis Folie 38 erreicht ist oder 10 Minuten nach dem
+  **gesperrt, solange irgendwo eine Beamer-Stunde läuft** – bis Folie 37 erreicht ist oder 10 Minuten nach dem
   Schließen des Beamers. Hinweis: Die Lösungen stehen technisch auch in den Programmdateien der App; die Sperre
   verhindert den einfachen Weg, nicht jeden.
 
@@ -107,7 +106,7 @@ alles von selbst online:
 ```
 arbeitsblatt/
   KB1_W2_Schockformen_SV.docx        Schülerversion (3 QR-Codes: Stunden-App, Hausaufgabe, Nachlesen)
-  KB1_W2_Schockformen_Anlagen.docx   Expertenblätter A/B/C (Papierfassung, freiwillig), Schilder für „Wer darf was?“
+  KB1_W2_Schockformen_Anlagen.docx   Expertenblätter A/B/C (Papierfassung, freiwillig)
   KB1_W2_Schockformen_LV_LSG.docx    Lehrerversion: Verlaufsplan mit Foliennummern, Hinweise, Lösungen
   (+ PDF-Fassungen)
 docs/                ← alles, was GitHub Pages veröffentlicht
@@ -133,7 +132,7 @@ tests/               ← automatische Tests; tests/seiten/ = Testgerüst der Üb
 ## Datenschutz
 
 - Anmeldung: Raumcode, Zufalls-Geräte-ID, **Vorname**. Übungen melden nur „x von y gelöst“ und den Status.
-- Abstimmung: Raumcode, Geräte-ID, Runde, Antwortbuchstaben, sicher/unsicher – der Beamer erhält nur Summen,
+- Abstimmungen (Einstieg, Check-out, „Wer darf was?“): Raumcode, Geräte-ID, Runde, Antwortbuchstaben, sicher/unsicher – der Beamer erhält nur Summen,
   **ohne Namen**.
 - Gruppenpuzzle: Ein Handy erhält nur die **Vornamen der eigenen Stammgruppe und des eigenen Expertenteams**;
   alle Namen sieht nur der Laptop, der den Raum gestartet hat (geheimer Schlüssel). „Namen verbergen“ im Menü.

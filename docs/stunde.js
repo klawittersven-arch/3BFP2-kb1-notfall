@@ -666,23 +666,62 @@
   }
 
   /* ---------- Aufstellung (AA5a) ---------- */
+  // AA4a „Wer darf was?“: Jede Person stimmt am Handy ab (ohne Namen, wie beim Einstieg).
+  // Nach „Lösung zeigen“ am Beamer sieht sie, ob sie richtig lag.
+  var SCHL_AUFSTELLUNG = 'kb1nf_aufstellung';
+  function aufstellungWahl() {
+    var a = anmeldung();
+    var w = K.Speicher.sitzung.lesen(SCHL_AUFSTELLUNG);
+    return w && a && w.raum === a.raum && w.antworten ? w : { raum: a ? a.raum : '', antworten: {} };
+  }
+  function aufstellungWaehlen(f, frage, buchstabe) {
+    var a = anmeldung();
+    var w = aufstellungWahl();
+    w.antworten[frage] = buchstabe;
+    K.Speicher.sitzung.schreiben(SCHL_AUFSTELLUNG, w);
+    if (a) KB1Verbindung.senden(BASIS, '/api/stimme', { raum: a.raum, geraeteId: a.geraeteId, runde: f.runde, antworten: w.antworten, sicher: {} }).catch(function () {});
+  }
   function zeigeAufstellung(f, h) {
     kopf(f.kurz);
     var s = stand.schritt || 0;
     var nr = Math.ceil(s / 2);
-    if (!nr) { bildschirm('🚶', h.titel, h.start); return; }
+    if (!nr) { bildschirm('🗳️', h.titel, h.start); return; }
     var m = f.massnahmen[nr - 1];
-    var box = bildschirm('🚶', '', '');
-    box.appendChild(el('p', null, 'Maßnahme ' + nr + ' von ' + f.massnahmen.length));
+    var frage = 'M' + nr;
+    var richtig = 'ABC'.charAt(m.ecke);
+    var loesung = s % 2 === 0;
+    var meine = aufstellungWahl().antworten[frage];
+    var box = bildschirm('', '', '');
+    box.appendChild(el('p', 'klein-grau', K.ersetzen(H.aufstellungNr, { n: nr, y: f.massnahmen.length })));
     box.appendChild(el('p', 'massnahme-handy', m.text));
-    if (s % 2 === 0) {
-      var e = f.ecken[m.ecke];
-      box.appendChild(el('div', 'ecke-gross', K.ersetzen(H.aufstellungLoesung, { ecke: e.emoji + ' ' + e.text })));
-      box.appendChild(el('p', null, m.warum));
-    } else {
-      box.appendChild(fmt('p', null, f.text));
+    var knoepfe = el('div', 'antworten ecken-handy');
+    f.ecken.forEach(function (e, i) {
+      var b = 'ABC'.charAt(i);
+      var k = K.knopf('', 'antwort' + (meine === b ? ' gewaehlt' : '') + (loesung && b === richtig ? ' richtig' : '') + (loesung && meine === b && b !== richtig ? ' falsch' : ''), function () {
+        aufstellungWaehlen(f, frage, b);
+        letzterInhalt = '';
+        zeigen();
+      });
+      k.setAttribute('data-ecke', b);
+      k.appendChild(el('span', 'symbol', e.emoji));
+      k.appendChild(document.createTextNode(' ' + e.text));
+      k.disabled = loesung;
+      knoepfe.appendChild(k);
+    });
+    box.appendChild(knoepfe);
+    if (!loesung) {
+      box.appendChild(el('p', 'aufstellung-hinweis', meine ? H.aufstellungGewaehlt : H.aufstellungFrage));
+      return;
     }
+    var e = f.ecken[m.ecke];
+    var ecke = e.emoji + ' ' + e.text;
+    var rm = el('div', 'rueckmeldung ' + (meine === richtig ? 'ist-richtig' : 'ist-falsch'));
+    rm.appendChild(el('p', 'rueck-titel', meine === richtig ? H.aufstellungRichtig : K.ersetzen(meine ? H.aufstellungFalsch : H.aufstellungKeine, { ecke: ecke })));
+    rm.appendChild(el('p', null, m.warum));
+    box.appendChild(rm);
+    box.appendChild(el('p', 'aufstellung-hinweis', H.aufstellungEintragen));
   }
+
 
   /* ---------- Start ---------- */
   if (!BASIS) { anmeldenZeigen(S.beamer.nichtEingerichtet); return; }

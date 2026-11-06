@@ -12,7 +12,7 @@
  *   POST /api/anmelden { raum, geraeteId, name }
  *   POST /api/aktion   { raum, geraeteId, typ: 'fertig', schritt: 'team'|'stamm', wert }
  *   POST /api/melden   { raum, geraeteId, name, seite, geloest, gesamt, status }   Fortschritt einer Übung
- *   POST /api/stimme   { raum, geraeteId, runde, antworten, sicher }               Abstimmung ohne Namen
+ *   POST /api/stimme   { raum, geraeteId, runde, antworten, sicher }               Abstimmung ohne Namen (Runde 3: „Wer darf was?“)
  *   GET  /api/nachlesen                    { frei }: gesperrt, solange irgendwo eine Beamer-Stunde läuft
  *
  * Datensparsamkeit: Zufalls-Geräte-ID, Vorname, je Übung „x von y“, Gruppeneinteilung.
@@ -34,7 +34,7 @@ const PERSON_MUSTER = /^[a-z0-9]{8,40}$/;
 const SEITE_MUSTER = /^[a-z0-9-]{1,30}$/;
 const SCHLUESSEL_MUSTER = /^[A-Za-z0-9]{20,64}$/;
 const NAME_MUSTER = /^[A-Za-z0-9ÄÖÜäöüßÀ-ÖØ-öø-ÿ _.-]+$/;
-const FRAGE_MUSTER = /^E[1-9]$/;
+const FRAGE_MUSTER = /^[EM][1-9]$/;          // E1–E9: Einstieg/Check-out · M1–M9: „Wer darf was?“
 const ANTWORT_MUSTER = /^[A-D]$/;
 const ONLINE_ABFRAGE_MS = 12000;      // so lange gilt ein Handy im Abfrage-Modus als verbunden
 const PULS_ABSTAND_MS = 60000;        // Beamer meldet sich höchstens einmal pro Minute bei der Zentrale
@@ -108,7 +108,7 @@ export function stimmePruefen(d) {
   if (!d || typeof d !== 'object') return null;
   const raum = String(d.raum ?? '');
   const geraeteId = String(d.geraeteId ?? '');
-  const runde = ganzzahl(d.runde, 1, 2);
+  const runde = ganzzahl(d.runde, 1, 3);       // 1 Einstieg, 2 Check-out, 3 „Wer darf was?“ (AA4a)
   if (!RAUM_MUSTER.test(raum) || !ID_MUSTER.test(geraeteId) || runde === null) return null;
   if (!d.antworten || typeof d.antworten !== 'object') return null;
   const antworten = {};
@@ -117,7 +117,7 @@ export function stimmePruefen(d) {
   if (!fragen.length || fragen.length > 9) return null;
   for (const f of fragen) {
     const a = String(d.antworten[f]);
-    if (!FRAGE_MUSTER.test(f) || !ANTWORT_MUSTER.test(a)) return null;
+    if (!FRAGE_MUSTER.test(f) || !ANTWORT_MUSTER.test(a) || (f.charAt(0) === 'M') !== (runde === 3)) return null;
     antworten[f] = a;
     sicher[f] = d.sicher && (d.sicher[f] === 1 || d.sicher[f] === true) ? 1 : 0;
   }
@@ -501,7 +501,7 @@ export class Raum extends DurableObject {
   // Zählt die Stimmen je Runde: { 1: { n, fragen: { E1: { A: { sicher, unsicher }, … } } }, 2: … }
   async auszaehlen() {
     const aus = {};
-    for (const runde of [1, 2]) {
+    for (const runde of [1, 2, 3]) {
       const fragen = {};
       const eintraege = await this.ctx.storage.list({ prefix: 's' + runde + ':' });
       for (const [, v] of eintraege) {

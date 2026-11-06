@@ -89,7 +89,10 @@ details.info p { margin: 0 0 12px; }
 .textknopf-leise { background: none; border: 0; color: var(--petrol); text-decoration: underline; font: inherit; font-size: 16px; cursor: pointer; padding: 4px 0; }
 
 /* Aufstellung */
-.ecke-gross { margin: 12px auto 0; padding: 14px; border-radius: 14px; background: var(--gruen-hell); border: 3px solid var(--gruen); font-size: 22px; font-weight: 800; max-width: 420px; }
+.ecken-handy { margin: 14px 0 6px; text-align: left; }
+.ecken-handy .antwort { font-size: 19px; font-weight: 700; }
+.ecken-handy .antwort .symbol { font-size: 22px; }
+.aufstellung-hinweis { font-size: 16px; margin: 10px 0 0; }
 .massnahme-handy { font-size: 26px; font-weight: 900; color: var(--dunkelpetrol); line-height: 1.25; margin: 8px 0 6px; }
 
 /* Expertenrunde: Schritte als Karten */

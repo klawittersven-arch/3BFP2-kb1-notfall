@@ -110,6 +110,18 @@ const warte = (ms) => new Promise((r) => setTimeout(r, ms));
     const wieder = await post('/api/anmelden', { raum: raum.raum, geraeteId: ids[6], name: 'Person 7' });
     H.pruefe(wieder.status === 410, 'entferntes Handy kann sich mit derselben ID nicht wieder anmelden');
 
+    console.log('\n== Abstimmung „Wer darf was?“ (Runde 3, ohne Namen)');
+    const st1 = await post('/api/stimme', { raum: raum.raum, geraeteId: ids[0], runde: 3, antworten: { M1: 'A', M2: 'B' }, sicher: {} });
+    const st2 = await post('/api/stimme', { raum: raum.raum, geraeteId: ids[1], runde: 3, antworten: { M1: 'B' }, sicher: {} });
+    H.pruefe(st1.status === 200 && st2.status === 200, 'Stimmen zu den Maßnahmen werden angenommen');
+    H.pruefe((await post('/api/stimme', { raum: raum.raum, geraeteId: ids[2], runde: 3, antworten: { E1: 'A' }, sicher: {} })).status === 400, 'Runde 3 nimmt nur Maßnahmen (M1 …) an');
+    H.pruefe((await post('/api/stimme', { raum: raum.raum, geraeteId: ids[2], runde: 1, antworten: { M1: 'A' }, sicher: {} })).status === 400, 'Runden 1 und 2 nehmen keine Maßnahmen an');
+    await post('/api/stimme', { raum: raum.raum, geraeteId: ids[0], runde: 3, antworten: { M1: 'C', M2: 'B' }, sicher: {} });
+    const sb = await get(`/api/stand?raum=${raum.raum}&schluessel=${raum.schluessel}`);
+    const m1 = sb.d.stimmen[3].fragen.M1;
+    H.pruefe(sb.d.stimmen[3].n === 2 && m1.C && m1.B && !m1.A, 'Beamer zählt je Maßnahme; geänderte Wahl ersetzt die alte', JSON.stringify(sb.d.stimmen[3]));
+    H.pruefe(!JSON.stringify(sb.d.stimmen).includes(ids[0]), 'Stimmen ohne Geräte-ID beim Beamer');
+
     console.log('\n== Reserve ohne Live-Verbindung');
     const z = await get(`/api/zustand?raum=${raum.raum}&geraeteId=${ids[1]}`);
     H.pruefe(z.status === 200 && z.d.folie === 'aa1-merksatz' && z.d.puzzle, 'Abfrage liefert denselben Handy-Stand');

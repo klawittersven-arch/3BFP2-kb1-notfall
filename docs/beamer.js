@@ -722,26 +722,46 @@
     w.appendChild(box);
   }
 
+  // AA4a „Wer darf was?“: die SuS stimmen am Handy ab (Runde 3, ohne Namen); der Beamer zählt je Ecke mit.
+  // Schritt ungerade = Maßnahme zeigen und abstimmen, gerade = Lösung und „Das hatten X von Y richtig!“
   function folieAufstellung(f, w) {
     w.appendChild(titel(f));
     var s = schritt();
-    var nr = Math.ceil(s / 2);              // 1 … n
+    var nr = Math.ceil(s / 2);
     var loesung = s > 0 && s % 2 === 0;
     var m = nr ? f.massnahmen[nr - 1] : null;
+    var runde = (stand.stimmen && stand.stimmen[f.runde]) || { n: 0, fragen: {} };
+    var v = m ? (runde.fragen['M' + nr] || {}) : {};
+    function anzahl(b) { var x = v[b]; return x ? x.sicher + x.unsicher : 0; }
+    var summe = anzahl('A') + anzahl('B') + anzahl('C');
+    if (!m) w.appendChild(fmt('p', 'f-text', f.text));
+    else {
+      var box = el('div', 'massnahme');
+      box.appendChild(el('div', 'massnahme-nr', 'Maßnahme ' + nr + ' von ' + f.massnahmen.length));
+      box.appendChild(el('div', 'massnahme-text', m.text));
+      if (loesung) box.appendChild(el('div', 'massnahme-warum', f.ecken[m.ecke].emoji + ' ' + m.warum));
+      w.appendChild(box);
+    }
     var ecken = el('div', 'ecken');
     f.ecken.forEach(function (e, i) {
       var k = el('div', 'ecke' + (loesung ? (i === m.ecke ? ' richtig' : ' blass') : ''));
       k.appendChild(el('span', 'emoji', e.emoji));
       k.appendChild(document.createTextNode(e.text));
+      if (m) {
+        var n = anzahl('ABC'.charAt(i));
+        var balken = el('div', 'ecke-balken');
+        var fuell = el('div', 'ecke-fuell');
+        fuell.style.width = (summe ? Math.round(100 * n / summe) : 0) + '%';
+        balken.appendChild(fuell);
+        k.appendChild(balken);
+        k.appendChild(el('div', 'ecke-zahl', n === 1 ? T.stimmeEins : K.ersetzen(T.stimmenZahl, { n: n })));
+      }
       ecken.appendChild(k);
     });
     w.appendChild(ecken);
-    if (!m) { w.appendChild(fmt('p', 'f-text', f.text)); return; }
-    var box = el('div', 'massnahme');
-    box.appendChild(el('div', 'massnahme-nr', 'Maßnahme ' + nr + ' von ' + f.massnahmen.length));
-    box.appendChild(el('div', 'massnahme-text', m.text));
-    if (loesung) box.appendChild(el('div', 'massnahme-warum', f.ecken[m.ecke].emoji + ' ' + m.warum));
-    w.appendChild(box);
+    if (!m) return;
+    if (loesung) w.appendChild(el('p', 'abgestimmt ergebnis', summe ? K.ersetzen(T.richtigGelegen, { x: anzahl('ABC'.charAt(m.ecke)), y: summe }) : T.keineStimmen));
+    else w.appendChild(el('p', 'abgestimmt', K.ersetzen(T.abgestimmt, { x: summe, y: stand.online || 0 })));
   }
 
   function folieDialog(f, w) {
@@ -1230,6 +1250,18 @@
           stimmen[r].fragen[f.nr] = v;
         });
       });
+      FOLIEN.filter(function (f) { return f.typ === 'aufstellung'; }).forEach(function (f) {
+        stimmen[f.runde] = { n: 20, fragen: {} };
+        f.massnahmen.forEach(function (m, i) {
+          var v = {};
+          for (var k = 0; k < 20; k++) {
+            var wahl = Math.random() < 0.7 ? 'ABC'.charAt(m.ecke) : 'ABC'.charAt(Math.floor(Math.random() * 3));
+            v[wahl] = v[wahl] || { sicher: 0, unsicher: 0 };
+            v[wahl].unsicher++;
+          }
+          stimmen[f.runde].fragen['M' + (i + 1)] = v;
+        });
+      });
       stand = { typ: 'beamer', raum: '0000', geraete: g, ohne: [], online: 22, stimmen: stimmen, puzzle: null,
         stunde: { folie: 'start', schritt: 0, uhr: null, frage: null } };
       setInterval(Demo.schritt, 1500);
@@ -1346,6 +1378,16 @@
         speichern();
         return;
       }
+      if (f.typ === 'aufstellung' && schritt() % 2 === 1) {
+        var frage = 'M' + Math.ceil(schritt() / 2);
+        var mass = f.massnahmen[Math.ceil(schritt() / 2) - 1];
+        z.s3 = z.s3 || {};
+        auswahl(z.leute.filter(function (p) { return !(z.s3[p.id] && z.s3[p.id][frage]); }), 5).forEach(function (p) {
+          var a = z.s3[p.id] = z.s3[p.id] || {};
+          a[frage] = Math.random() < 0.75 ? 'ABC'.charAt(mass.ecke) : 'ABC'.charAt(Math.floor(Math.random() * 3));
+          post('/api/stimme', { geraeteId: p.id, runde: f.runde, antworten: a, sicher: {} });
+        });
+      }
       if (f.typ === 'abstimmung') {
         var schon = f.runde === 2 ? z.s2 : z.s1;
         auswahl(z.leute.filter(function (p) { return !schon[p.id]; }), 3).forEach(function (p) { schon[p.id] = true; abstimmen(p, f.runde); });
@@ -1378,7 +1420,7 @@
     return {
       starten: function (neu) {
         if (neu) {
-          z = { raum: raum.raum, leute: T.probeNamen.map(function (n) { return { id: 'probe' + K.zufallsId(12), name: n }; }), an: {}, s1: {}, s2: {}, prog: {}, ft: {}, fs: {}, folie: null, seit: 0, eingeteilt: null };
+          z = { raum: raum.raum, leute: T.probeNamen.map(function (n) { return { id: 'probe' + K.zufallsId(12), name: n }; }), an: {}, s1: {}, s2: {}, s3: {}, prog: {}, ft: {}, fs: {}, folie: null, seit: 0, eingeteilt: null };
           speichern();
         } else {
           var g = K.Speicher.dauer.lesen(SCHL);

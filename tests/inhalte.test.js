@@ -106,6 +106,8 @@ pruefe(S.gruppen.length >= 10 && new Set(S.gruppen.map((g) => g.name)).size === 
 });
 const aa4 = S.folien.find((f) => f.id === 'aa4a');
 pruefe(aa4.massnahmen.length === 6 && aa4.massnahmen.every((m) => m.ecke >= 0 && m.ecke < aa4.ecken.length), 'AA4a: 6 Maßnahmen mit gültiger Ecke');
+pruefe(aa4.runde === 3 && aa4.ecken.length === 3 && aa4.massnahmen.length <= 9, 'AA4a: Abstimmung am Handy (Runde 3, höchstens 9 Maßnahmen)');
+pruefe(!ids.includes('pause'), 'keine Pausenfolie');
 pruefe(S.folien.indexOf(S.folien.find((f) => f.id === 'aa1-merksatz')) === S.folien.indexOf(S.folien.find((f) => f.id === 'aa1')) + 1, 'nach der Expertenrunde folgt der Merksatz AA1 (automatischer Wechsel)');
 pruefe(!S.folien.some((f) => (f.handy || {}).modul === 'simulation') && !fs.existsSync(path.join(DOCS, 'simulation.js')), 'keine Notfall-Simulation mehr');
 ['aa1', 'aa2', 'aa3', 'aa4'].forEach((k) => {

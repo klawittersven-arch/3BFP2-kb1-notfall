@@ -247,9 +247,24 @@ const textDa = (h, text) => bis(h, (t) => document.body.innerText.includes(t), t
     H.pruefe(await bis(lap, () => !!document.querySelector('.massnahme-text')), 'Weiter deckt die erste Maßnahme auf');
     const aa4 = S.folien.find((f) => f.id === 'aa4a');
     H.pruefe(await textDa(handys[3], aa4.massnahmen[0].text), 'Handy zeigt dieselbe Maßnahme');
+    const richtigB = 'ABC'.charAt(aa4.massnahmen[0].ecke);
+    const falschB = 'ABC'.charAt((aa4.massnahmen[0].ecke + 1) % 3);
+    for (const h of handys.slice(0, 3)) await bis(h, () => document.querySelectorAll('.ecken-handy .antwort').length === 3);
+    H.pruefe((await handys[0].$$('.ecken-handy .antwort')).length === 3, 'Handy: drei Knöpfe 🟢 / 🟡 / 🔴 statt Aufstehen');
+    await handys[0].click('.ecken-handy .antwort[data-ecke="' + richtigB + '"]');
+    await handys[1].click('.ecken-handy .antwort[data-ecke="' + richtigB + '"]');
+    await handys[1].click('.ecken-handy .antwort[data-ecke="' + falschB + '"]');   // Wahl ändern
+    await handys[2].click('.ecken-handy .antwort[data-ecke="' + richtigB + '"]');
+    H.pruefe(await bis(handys[1], (b) => !!document.querySelector('.ecken-handy .antwort.gewaehlt[data-ecke="' + b + '"]'), falschB), 'Handy: gewählte Kategorie markiert, Wahl änderbar');
+    H.pruefe(await bis(lap, () => /^3 von \d+ haben abgestimmt/.test((document.querySelector('.abgestimmt') || {}).textContent || '')), 'Beamer: „3 von … haben abgestimmt“');
+    H.pruefe(await bis(lap, () => [...document.querySelectorAll('.ecke-zahl')].map((e) => e.textContent).join('|').includes('2 Stimmen')), 'Beamer zeigt die Stimmen je Kategorie');
     await weiter();
-    H.pruefe(await bis(lap, () => !!document.querySelector('.ecke.richtig')), 'nächster Klick zeigt die richtige Ecke');
-    H.pruefe(await textDa(handys[3], 'Lösung:'), 'Handy zeigt die Lösung');
+    H.pruefe(await bis(lap, () => !!document.querySelector('.ecke.richtig')), 'nächster Klick zeigt die richtige Kategorie');
+    H.pruefe(await bis(lap, () => ((document.querySelector('.abgestimmt.ergebnis') || {}).textContent || '').includes('2 von 3 richtig')), 'Beamer: „Das hatten 2 von 3 richtig!“');
+    H.pruefe(await textDa(handys[0], S.handy.aufstellungRichtig), 'Handy: Rückmeldung „richtig“');
+    H.pruefe(await textDa(handys[1], 'Nicht ganz'), 'Handy: Rückmeldung „nicht ganz“ mit der richtigen Kategorie');
+    H.pruefe(await textDa(handys[3], 'nicht abgestimmt'), 'Handy ohne Stimme: Hinweis und Lösung');
+    await handys[1].screenshot({ path: path.join(ORDNER, 'handy_27_wer_darf_was.png') });
     await lap.screenshot({ path: path.join(ORDNER, 'stunde_16_aufstellung.png') });
 
     console.log('\n== Beamer neu laden');

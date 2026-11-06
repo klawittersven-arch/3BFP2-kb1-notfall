@@ -88,6 +88,16 @@ const folieIst = (lap, id, ms) => bis(lap, (x) => { const f = document.querySele
     H.pruefe(await folieIst(lap, 'aa2b'), 'nach dem Neuladen dieselbe Folie');
     H.pruefe(await bis(lap, () => document.getElementById('kopf-raum').textContent.includes('Probestunde')), 'weiterhin als Probestunde gekennzeichnet');
 
+    console.log('\n== „Wer darf was?“: erfundene Klasse stimmt am Handy ab');
+    await lap.click('#menue-knopf');
+    await lap.click('.menue-folie:has-text("Wer darf was?")');
+    H.pruefe(await folieIst(lap, 'aa4a'), 'Folie „Wer darf was?“');
+    await lap.click('#weiter');
+    H.pruefe(await bis(lap, () => /^(1[0-9]|20) von/.test((document.querySelector('.abgestimmt') || {}).textContent || '')), 'erfundene Stimmen zur ersten Maßnahme laufen ein');
+    await lap.click('#weiter');
+    H.pruefe(await bis(lap, () => /Das hatten \d+ von \d+ richtig/.test((document.querySelector('.abgestimmt.ergebnis') || {}).textContent || '')), 'Lösung: „Das hatten X von Y richtig!“');
+    await lap.screenshot({ path: path.join(ORDNER, 'probe_wer_darf_was.png') });
+
     H.pruefe(protokoll.konsole.length === 0, 'keine Fehler in der Konsole', protokoll.konsole);
     H.pruefe(protokoll.extern.length === 0, 'keine Anfragen an fremde Adressen', protokoll.extern);
     ok = H.ergebnis();

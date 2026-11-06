@@ -290,16 +290,9 @@ var STUNDE = {
       handy: { typ: 'papier', titel: 'Musterlösung vorne', text: 'Vergleichen Sie Ihre Antworten mit der Musterlösung am Beamer. Verbessern oder ergänzen Sie auf dem Arbeitsblatt – am besten in einer anderen Farbe.' }
     },
     {
-      id: 'pause', abschnitt: 'Pause', kurz: 'Pause', typ: 'impuls',
-      titel: 'Pause',
-      text: 'Bis gleich!',
-      uhr: [{ label: 'Pause', sek: 600 }],
-      handy: { typ: 'vorne', titel: 'Pause', text: 'Bis gleich!' }
-    },
-    {
-      id: 'aa4a', abschnitt: 'Verantwortung', kurz: 'Wer darf was? (AA4a)', typ: 'aufstellung',
+      id: 'aa4a', abschnitt: 'Verantwortung', kurz: 'Wer darf was? (AA4a)', typ: 'aufstellung', runde: 3,
       titel: 'AA4a · Wer darf was?',
-      text: 'Gehen Sie in die passende **Ecke** – und begründen Sie Ihre Wahl. Nach jeder Lösung: Maßnahme in die **Tabelle** (AB) eintragen.',
+      text: 'Stimmen Sie **am Handy** ab: Wer darf die Maßnahme durchführen? Nach jeder Lösung: Maßnahme in die **Tabelle** (AB) eintragen.',
       ecken: [
         { emoji: '🟢', text: 'mache ich selbst' },
         { emoji: '🟡', text: 'nur n. ä. A. oder SOP' },
@@ -315,7 +308,7 @@ var STUNDE = {
       ],
       zeigen: 'Lösung zeigen',
       naechste: 'Nächste Maßnahme',
-      handy: { typ: 'aufstellung', titel: 'Wer darf was?', start: 'Gleich liest Ihre Lehrkraft Maßnahmen vor. Gehen Sie dann in die passende Ecke. Nach jeder Lösung: Maßnahme in die Tabelle auf dem Arbeitsblatt eintragen.' }
+      handy: { typ: 'aufstellung', titel: 'Wer darf was?', start: 'Gleich zeigt Ihre Lehrkraft Maßnahmen am Beamer. Tippen Sie dann hier an, wer sie durchführen darf. Nach jeder Lösung: Maßnahme in die Tabelle auf dem Arbeitsblatt eintragen.' }
     },
     {
       id: 'aa4b', abschnitt: 'Verantwortung', kurz: 'Adrenalin oder Antihistaminikum? (AA4b)', typ: 'aufgabe',
@@ -445,6 +438,10 @@ var STUNDE = {
     gruppenFertig: '{x} von {y} Stammgruppen fertig',
     fertig: 'fertig',
     teamFertig: 'Tabelle fertig!',
+    stimmenZahl: '{n} Stimmen',
+    stimmeEins: '1 Stimme',
+    abgestimmt: '{x} von {y} haben abgestimmt',
+    richtigGelegen: '✓ Das hatten {x} von {y} richtig!',
     losKnopf: 'Jetzt bearbeiten',
     wannTitel: 'Wann?',
     warumTitel: 'Warum?',
@@ -540,7 +537,13 @@ var STUNDE = {
     mitglied: '{name} · {b} {form}',
     du: '(Sie)',
     gruppeFertig: '✓ Ihre ganze Gruppe ist fertig.',
-    aufstellungLoesung: 'Lösung: {ecke}',
+    aufstellungNr: 'Maßnahme {n} von {y}',
+    aufstellungFrage: 'Wer darf diese Maßnahme durchführen? Tippen Sie an.',
+    aufstellungGewaehlt: 'Ihre Wahl ist angekommen. Bis zur Lösung können Sie sie noch ändern.',
+    aufstellungRichtig: '✓ Richtig – das hatten Sie!',
+    aufstellungFalsch: '✗ Nicht ganz. Richtig ist: {ecke}',
+    aufstellungKeine: 'Sie haben nicht abgestimmt. Richtig ist: {ecke}',
+    aufstellungEintragen: '✍️ Tragen Sie die Maßnahme jetzt in die Tabelle auf dem Arbeitsblatt ein.',
     nichtEingeteilt: 'Sie sind noch keiner Gruppe zugeteilt. Bitte melden Sie sich bei Ihrer Lehrkraft.'
   },
 
