@@ -36,7 +36,4 @@
 .pikto p { margin: 0 0 4px; }
 .richtig-antwort { color: var(--gruen); font-weight: 800; }
 .klein-grau { font-size: 15px; color: #51666B; }
-table.ikl { width: 100%; border-collapse: collapse; font-size: 16px; }
-table.ikl td, table.ikl th { border: 1px solid var(--rand); padding: 6px 8px; text-align: left; vertical-align: top; }
-table.ikl th { background: var(--hellblau); }
 .textknopf-leise { background: none; border: 0; color: var(--dunkelpetrol); text-decoration: underline; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer; padding: 2px 0; text-align: left; }

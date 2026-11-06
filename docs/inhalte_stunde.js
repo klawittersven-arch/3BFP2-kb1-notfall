@@ -131,7 +131,7 @@ var STUNDE = {
       id: 'aa1-merksatz', abschnitt: 'Gruppenpuzzle', kurz: 'Merksatz AA1 prüfen', typ: 'merksatz', merksatz: 'aa1',
       titel: 'Merksatz AA1 – richtig notiert?',
       text: 'Was haben Sie in die Lücken geschrieben?',
-      tipp: 'Lücke anklicken = aufdecken',
+      tipp: 'Lücke anklicken = aufdecken · noch einmal = ganzer Merksatz groß',
       handy: { typ: 'vorne', titel: 'Merksatz AA1 prüfen', text: 'Überprüfen Sie am Beamer, ob Sie den **Merksatz AA1** richtig notiert haben. Verbessern Sie, falls nötig – am besten in einer anderen Farbe.' }
     },
     {
@@ -146,7 +146,7 @@ var STUNDE = {
       id: 'aa2a-sichern', abschnitt: 'Gruppenpuzzle', kurz: 'Tabelle sichern', typ: 'tabelle',
       titel: 'Vergleichstabelle sichern',
       text: 'Vergleichen Sie Ihre Tabelle mit der Musterlösung – ergänzen und verbessern Sie Ihre Einträge.',
-      tipp: 'Zelle anklicken = Lösung aufdecken',
+      tipp: 'Zelle anklicken = aufdecken · noch einmal = groß · Spaltenkopf (A, B, C) = ganze Spalte groß',
       handy: { typ: 'papier', titel: 'Tabelle vergleichen', text: 'Vergleichen Sie Ihre Tabelle auf dem Arbeitsblatt mit der Musterlösung vorne am Beamer. Ergänzen und verbessern Sie Ihre Einträge.' }
     },
     {
@@ -156,14 +156,13 @@ var STUNDE = {
       punkte: [
         '**Sechs kurze Fälle** am Handy – jede Person für sich.',
         'Bestimmen Sie die **Schockform** und tippen Sie die **zwei Befunde** an, die sie belegen. Befund = was Sie beobachten oder messen.',
-        'Erst wählen, dann **„Prüfen“**. Raten lohnt sich nicht: Nach zwei falschen Versuchen kommt die Lösung – und der Merksatz erscheint nur, wenn genug Fälle beim ersten Versuch stimmen.',
+        'Erst wählen, dann **„Prüfen“**. Der Merksatz erscheint nur, wenn genug Fälle beim ersten Versuch stimmen.',
         'Zum Schluss: **zwei Patienten im Vergleich** – woran unterscheiden Sie die Schockformen am sichersten?'
       ],
       warumTitel: 'Warum brauche ich das als Pflegefachperson?',
       warum: [
         'Im Notfall sehen Sie zuerst nur Befunde – eine Diagnose gibt es noch nicht. Trotzdem müssen Sie sofort richtig handeln.',
-        'Von der Schockform hängt ab, was Sie zuerst tun: **Allergen stoppen** und an Adrenalin nach SOP denken (anaphylaktisch), **Blutungsquelle suchen** (hypovolämisch), **nicht bewegen** (neurogen).',
-        'In der Klassenarbeit begründen Sie die Schockform **mit Befunden**.'
+        'Von der Schockform hängt ab, was Sie zuerst tun: **Allergen stoppen** und an Adrenalin nach SOP denken (anaphylaktisch), **Blutungsquelle suchen** (hypovolämisch), **nicht bewegen** (neurogen).'
       ],
       handy: { typ: 'vorne', titel: 'Gleich: Schockform-Detektiv', text: 'Schauen Sie nach vorne – gleich geht es am Handy los.' }
     },
@@ -177,7 +176,7 @@ var STUNDE = {
       id: 'aa2b-merksatz', abschnitt: 'Gruppenpuzzle', kurz: 'Merksatz AA2 prüfen', typ: 'merksatz', merksatz: 'aa2',
       titel: 'Merksatz AA2 – richtig notiert?',
       text: 'Was haben Sie in die Lücken geschrieben?',
-      tipp: 'Lücke anklicken = aufdecken',
+      tipp: 'Lücke anklicken = aufdecken · noch einmal = ganzer Merksatz groß',
       handy: { typ: 'vorne', titel: 'Merksatz AA2 prüfen', text: 'Überprüfen Sie am Beamer, ob Sie den **Merksatz AA2** richtig notiert haben. Verbessern Sie, falls nötig – am besten in einer anderen Farbe.' }
     },
     {
@@ -199,7 +198,7 @@ var STUNDE = {
       id: 'aa2c-loesung', abschnitt: 'Gruppenpuzzle', kurz: 'Musterlösung 2.1/2.2', typ: 'loesung',
       titel: 'Klausurtraining 2.1 und 2.2 – Musterlösung',
       aufgaben: ['2.1', '2.2'],
-      tipp: 'Zeile anklicken = aufdecken',
+      tipp: 'Zeile anklicken = aufdecken · noch einmal = groß',
       handy: { typ: 'papier', titel: 'Musterlösung vorne', text: 'Vergleichen Sie Ihre Antworten mit der Musterlösung am Beamer. Verbessern oder ergänzen Sie auf dem Arbeitsblatt – am besten in einer anderen Farbe.' }
     },
     {
@@ -258,7 +257,7 @@ var STUNDE = {
       id: 'aa3-merksatz', abschnitt: 'Lagerung', kurz: 'Merksatz AA3 prüfen', typ: 'merksatz', merksatz: 'aa3',
       titel: 'Merksatz AA3 – richtig notiert?',
       text: 'Was haben Sie in die Lücken geschrieben?',
-      tipp: 'Lücke anklicken = aufdecken',
+      tipp: 'Lücke anklicken = aufdecken · noch einmal = ganzer Merksatz groß',
       handy: { typ: 'vorne', titel: 'Merksatz AA3 prüfen', text: 'Überprüfen Sie am Beamer, ob Sie den **Merksatz AA3** richtig notiert haben. Verbessern Sie, falls nötig – am besten in einer anderen Farbe.' }
     },
     {
@@ -279,14 +278,14 @@ var STUNDE = {
       id: 'aa3b-loesung', abschnitt: 'Lagerung', kurz: 'Musterlösung Entscheidungsweg', typ: 'loesung',
       titel: 'AA3 b) Entscheidungsweg – Musterlösung',
       bloecke: [{ art: 'weg' }],
-      tipp: 'Zeile anklicken = aufdecken',
+      tipp: 'Zeile anklicken = aufdecken · noch einmal = groß',
       handy: { typ: 'papier', titel: 'Musterlösung vorne', text: 'Vergleichen Sie Ihren Entscheidungsweg mit der Musterlösung am Beamer. Verbessern Sie, falls nötig – am besten in einer anderen Farbe.' }
     },
     {
       id: 'aa3c-loesung', abschnitt: 'Lagerung', kurz: 'Musterlösung 3.1/3.2', typ: 'loesung',
       titel: 'Klausurtraining 3.1 und 3.2 – Musterlösung',
       aufgaben: ['3.1', '3.2'],
-      tipp: 'Zeile anklicken = aufdecken',
+      tipp: 'Zeile anklicken = aufdecken · noch einmal = groß',
       handy: { typ: 'papier', titel: 'Musterlösung vorne', text: 'Vergleichen Sie Ihre Antworten mit der Musterlösung am Beamer. Verbessern oder ergänzen Sie auf dem Arbeitsblatt – am besten in einer anderen Farbe.' }
     },
     {
@@ -327,14 +326,14 @@ var STUNDE = {
       id: 'aa4b-loesung', abschnitt: 'Verantwortung', kurz: 'Musterlösung 4.1', typ: 'loesung',
       titel: 'Klausurtraining 4.1 – Musterlösung',
       aufgaben: ['4.1'],
-      tipp: 'Zeile anklicken = aufdecken',
+      tipp: 'Zeile anklicken = aufdecken · noch einmal = groß',
       handy: { typ: 'papier', titel: 'Musterlösung vorne', text: 'Vergleichen Sie Ihre Antwort mit der Musterlösung am Beamer. Verbessern oder ergänzen Sie auf dem Arbeitsblatt – am besten in einer anderen Farbe.' }
     },
     {
       id: 'aa4-merksatz', abschnitt: 'Verantwortung', kurz: 'Merksatz AA4', typ: 'merksatz', merksatz: 'aa4',
       titel: 'Merksatz AA4 – Sofortmaßnahmen bei Anaphylaxie',
       text: 'Ergänzen Sie zuerst allein die Lücken auf dem Arbeitsblatt – dann decken wir gemeinsam auf.',
-      tipp: 'Lücke anklicken = aufdecken',
+      tipp: 'Lücke anklicken = aufdecken · noch einmal = ganzer Merksatz groß',
       handy: { typ: 'papier', titel: 'Merksatz AA4', text: 'Ergänzen Sie den **Merksatz AA4** auf dem Arbeitsblatt. Danach überprüfen Sie am Beamer, ob Sie ihn richtig notiert haben.' }
     },
     {
@@ -352,7 +351,7 @@ var STUNDE = {
       punkte: ['Tauschen Sie mit einer Person aus einer **anderen Stammgruppe**.', 'Haken Sie im **Bewertungsraster am Handy** ab – die App zählt die Punkte.', 'Rückmeldung in **einem Satz**.'],
       aufgaben: [{ nrs: ['5.1', '5.2'], loesung: '5.1 und 5.2' }],
       uhr: [{ label: 'Peer-Korrektur', sek: 240 }],
-      tipp: 'Zeile anklicken = aufdecken',
+      tipp: 'Zeile anklicken = aufdecken · noch einmal = groß',
       handy: { typ: 'modul', modul: 'raster' }
     },
     {
@@ -369,6 +368,7 @@ var STUNDE = {
       antwortTitel: 'Antwort auf die Leitfrage',
       antwort: 'Die Luftnot kam von einer **Lungenembolie**. Um 11 Uhr: **Oberkörper hoch** (Luftnot steht im Vordergrund), **nicht mobilisieren**, nicht allein lassen, **sofort Hilfe holen** und engmaschig überwachen.',
       aufdecken: 'Nächstes Glied',
+      tipp: 'Aufgedecktes Glied anklicken = groß',
       handy: { typ: 'vorne', titel: 'Zurück zu Frau Maler', text: 'Ergänzen Sie die **Kausalkette** auf dem Arbeitsblatt (AA6), während sie vorne Schritt für Schritt aufgedeckt wird.' }
     },
     {
@@ -386,17 +386,11 @@ var STUNDE = {
       handy: { typ: 'entscheidung', runde: 2 }
     },
     {
-      id: 'ikl', abschnitt: 'Abschluss', kurz: 'Ich-kann-Liste', typ: 'papier',
-      titel: 'Was kann ich jetzt?',
-      punkte: ['Füllen Sie die **Ich-kann-Liste** aus: ☺ sicher · 😐 teilweise · ☹ noch nicht.', '**Hausaufgabe:** Klausurtraining (20 Punkte) – Selbstkontrolle über den QR-Code im Arbeitsblatt. Freiwillig: 6.1 und 6.2 zu Frau Maler.', '**Nachlesen:** Alles aus dieser Stunde über den QR-Code auf der letzten Seite – freigeschaltet nach der Stunde.'],
-      handy: { typ: 'papier', titel: 'Ich-kann-Liste', text: 'Füllen Sie die Ich-kann-Liste auf dem Arbeitsblatt aus.' }
-    },
-    {
-      id: 'ende', abschnitt: 'Abschluss', kurz: 'Ende', typ: 'ende',
-      titel: 'Nächste Woche: Blutung stoppen',
-      text: '… damit es gar nicht erst zum hypovolämischen Schock kommt.',
-      frei: '📖 Die Nachlese-Seite ist jetzt freigeschaltet (QR-Code auf der letzten Seite).',
-      handy: { typ: 'ende', titel: 'Die Stunde ist beendet', text: 'Alles aus dieser Stunde können Sie jetzt nachlesen: QR-Code auf der letzten Seite des Arbeitsblatts.' }
+      id: 'ende', abschnitt: 'Abschluss', kurz: 'Hausaufgabe und Nachlesen', typ: 'ende',
+      titel: 'Hausaufgabe und Nachlesen',
+      punkte: ['**Hausaufgabe:** Klausurtraining (20 Punkte) – Selbstkontrolle über den QR-Code im Arbeitsblatt. Freiwillig: 6.1 und 6.2 zu Frau Maler.', '**Nachlesen:** Alles aus dieser Stunde über den QR-Code auf der letzten Seite des Arbeitsblatts.'],
+      frei: '📖 Die Nachlese-Seite ist jetzt freigeschaltet.',
+      handy: { typ: 'ende', titel: 'Die Stunde ist beendet', text: '**Hausaufgabe:** Klausurtraining – Selbstkontrolle über den QR-Code im Arbeitsblatt. Alles aus dieser Stunde können Sie jetzt nachlesen: QR-Code auf der letzten Seite des Arbeitsblatts.' }
     }
   ],
 
@@ -443,6 +437,9 @@ var STUNDE = {
     abgestimmt: '{x} von {y} haben abgestimmt',
     richtigGelegen: '✓ Das hatten {x} von {y} richtig!',
     losKnopf: 'Jetzt bearbeiten',
+    spalteGross: 'Ganze Spalte groß zeigen',
+    loesungZu: 'Musterlösung {nr}',
+    gliedNr: 'Glied {n} von {y}',
     wannTitel: 'Wann?',
     warumTitel: 'Warum?',
     soTitel: 'So geht’s',

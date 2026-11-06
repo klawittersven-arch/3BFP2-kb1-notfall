@@ -181,6 +181,18 @@ const textDa = (h, text) => bis(h, (t) => document.body.innerText.includes(t), t
     H.pruefe((await lap.$$('.vergleich .aufdeck')).length === 19 && (await lap.$$('.vergleich .aufdeck.offen')).length === 0, 'Vergleichstabelle wie im AB, alle Zellen verdeckt');
     await lap.click('.vergleich .aufdeck >> nth=0');
     H.pruefe(await bis(lap, () => document.querySelectorAll('.vergleich .aufdeck.offen').length === 1), 'Zelle anklicken deckt die Lösung auf');
+    await lap.click('.vergleich .aufdeck.offen');
+    H.pruefe(await bis(lap, () => !document.getElementById('ebene').hidden && !!document.querySelector('.gross-ansicht .gross-text')), 'noch einmal anklicken: Lösung groß zum Abschreiben');
+    await lap.screenshot({ path: path.join(ORDNER, 'stunde_10_zelle_gross.png') });
+    await lap.keyboard.press('Escape');
+    H.pruefe(await bis(lap, () => document.getElementById('ebene').hidden), 'Esc schließt die Großansicht');
+    await lap.click('button.v-kopf.B');
+    H.pruefe(await bis(lap, () => document.querySelectorAll('.gross-spalte .aufdeck').length === 6), 'Spaltenkopf anklicken: ganze Spalte groß');
+    await lap.click('.gross-spalte .aufdeck >> nth=0');
+    H.pruefe(await bis(lap, () => document.querySelectorAll('.gross-spalte .aufdeck.offen').length === 1 && document.querySelectorAll('.vergleich .aufdeck.offen').length === 2), 'in der großen Spalte aufdecken – auch in der Tabelle aufgedeckt');
+    await lap.screenshot({ path: path.join(ORDNER, 'stunde_10_spalte_gross.png') });
+    await lap.click('.gross-zu');
+    H.pruefe(await bis(lap, () => document.getElementById('ebene').hidden), '✕ schließt die Großansicht');
     H.pruefe(await textDa(handys[0], 'Musterlösung vorne'), 'Handy: Tabelle mit der Musterlösung am Beamer vergleichen');
     await lap.screenshot({ path: path.join(ORDNER, 'stunde_10_tabelle.png') });
     await weiter();
@@ -294,7 +306,6 @@ const textDa = (h, text) => bis(h, (t) => document.body.innerText.includes(t), t
     await lap.screenshot({ path: path.join(ORDNER, 'stunde_23_vorher_nachher.png') });
 
     console.log('\n== Ende gibt die Nachlese frei');
-    await weiter();
     await weiter();
     H.pruefe(await folieIst(lap, 'ende'), 'letzte Folie: Ende');
     H.pruefe(await lap.$eval('#weiter', (b) => b.disabled), 'auf der letzten Folie gibt es kein Weiter');

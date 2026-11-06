@@ -28,7 +28,9 @@ const F = k.STUNDE.folien;
       await p.click(`.menue-folie >> nth=${i}`);
       await p.waitForFunction((id) => { const x = document.querySelector('.folie'); return x && x.dataset.folie === id; }, f.id);
       // bis zum letzten Unterschritt und alles aufdecken – das ist der längste Zustand der Folie
-      for (let s = 0; s < 20 && !(await p.$eval('#weiter', (b) => !b.textContent.startsWith('Weiter') || b.disabled)); s++) await p.click('#weiter');
+      // (der Weiter-Knopf heißt bei Unterschritten anders, z. B. „Nächste Maßnahme“; „Weiter: …“ führt zur nächsten Folie)
+      for (let s = 0; s < 20 && (await p.$eval('#weiter', (b) => !b.textContent.startsWith('Weiter') && !b.disabled)); s++) await p.click('#weiter');
+      H.pruefe(await p.evaluate((id) => document.querySelector('.folie').dataset.folie === id, f.id), `Folie ${i + 1} „${f.kurz}“: alle Unterschritte`);
       if (await p.$('button:has-text("Alle aufdecken")')) await p.click('button:has-text("Alle aufdecken")');
       await p.waitForTimeout(80);
       const m = await p.evaluate(() => {
@@ -40,6 +42,20 @@ const F = k.STUNDE.folien;
         return { passt: unten <= grenze, ueber: Math.round(unten - grenze), bilder: bilder.every((b) => b.complete && b.naturalWidth > 0) };
       });
       H.pruefe(m.passt, `Folie ${i + 1} „${f.kurz}“ passt auf die Bühne`, m.passt ? '' : m.ueber + ' px zu hoch');
+      // aufgedeckte Lösung noch einmal anklicken → groß; die Großansicht passt auf die Bühne
+      const offen = await p.$('.folie .aufdeck.offen, .folie button.glied');
+      if (offen) {
+        await offen.click();
+        const g = await p.evaluate(() => {
+          const e = document.getElementById('ebene');
+          const k = document.querySelector('.gross-ansicht');
+          if (e.hidden || !k) return null;
+          const r = k.getBoundingClientRect(), b = document.getElementById('buehne').getBoundingClientRect();
+          return r.top >= b.top - 1 && r.bottom <= b.bottom + 1;
+        });
+        H.pruefe(g === true, `Folie ${i + 1}: aufgedeckte Lösung groß (passt auf die Bühne)`);
+        await p.keyboard.press('Escape');
+      }
       if (f.typ === 'lagerung') {
         H.pruefe(m.bilder, `Folie ${i + 1}: Bild geladen`);
         if (f.nr === 3) await p.screenshot({ path: path.join(ORDNER, 'folie_seitenlage.png') });

@@ -173,20 +173,8 @@
     w.appendChild(loesung('5.1 und 5.2'));
   });
 
-  abschnitt('Ich-kann-Liste', function (w) {
-    var t = el('table', 'ikl');
-    var kopf = el('tr');
-    kopf.appendChild(el('th', null, 'Ich kann …'));
-    kopf.appendChild(el('th', null, 'Nachlesen in …'));
-    t.appendChild(kopf);
-    N.ikl.forEach(function (z) {
-      var tr = el('tr');
-      tr.appendChild(el('td', null, z[0]));
-      tr.appendChild(el('td', null, z[1]));
-      t.appendChild(tr);
-    });
-    w.appendChild(t);
-    w.appendChild(el('p', 'klein-grau', 'Quellen: S2k-Leitlinie Akuttherapie und Management der Anaphylaxie (AWMF 061-025, 2021); MSD Manual Profi-Ausgabe: Schock; Ich-kann-Liste KB I; sprachlich vereinfacht.'));
+  abschnitt('Quellen', function (w) {
+    w.appendChild(el('p', 'klein-grau', 'S2k-Leitlinie Akuttherapie und Management der Anaphylaxie (AWMF 061-025, 2021); MSD Manual Profi-Ausgabe: Schock; sprachlich vereinfacht.'));
   });
 
   /* ---------- Anzeige ---------- */

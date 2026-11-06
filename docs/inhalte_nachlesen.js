@@ -178,28 +178,6 @@ var NACHLESEN = {
   "Sie sind in der Tagespflege „Sonnenhof“ eingesetzt. Herr Klaus Martens (74) hat einen Diabetes mellitus Typ 2 und eine Herzinsuffizienz. Gegen 14:15 Uhr sitzt er mit anderen Gästen auf der Terrasse beim Kaffee. Plötzlich schreit er auf: Eine Wespe hat ihn in die Oberlippe gestochen.",
   "Nach etwa fünf Minuten ist seine Oberlippe stark geschwollen, am Hals bilden sich Quaddeln. Mit kloßiger Stimme sagt er: „Mir ist so eng im Hals.“ Beim Einatmen hören Sie ein pfeifendes Geräusch. Sie messen: Atemfrequenz 28/min, Puls 124/min, Blutdruck 92/60 mmHg (am Morgen: 150/85 mmHg). In der Tagespflege ist keine Ärztin anwesend. Ein Notfallset hat Herr Martens nicht dabei."
  ],
- "ikl": [
-  [
-   "1. … den hypovolämischen, den anaphylaktischen und den neurogenen Schock vergleichen.",
-   "AA1, AA2"
-  ],
-  [
-   "2. … die Lagerung nach Leitsymptom beschreiben und begründen.",
-   "AA3, Merksatz AA3"
-  ],
-  [
-   "3. … Sofortmaßnahmen bei einem anaphylaktischen Schock ableiten und meine Verantwortung beschreiben.",
-   "AA4, Merksatz AA4, AA5"
-  ],
-  [
-   "4. … falsche Aussagen zum Schock identifizieren und die Korrektur fachlich begründen.",
-   "Einstieg, 3.2, 4.1"
-  ],
-  [
-   "5. … am Fall Frau Maler die Kausalkette bis zum Kreislaufstillstand erklären.",
-   "AA6"
-  ]
- ],
  "aufgaben": {
   "1.1": {
    "nr": "1.1",

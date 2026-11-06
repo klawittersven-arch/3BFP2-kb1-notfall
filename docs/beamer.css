@@ -443,3 +443,24 @@ b, strong { font-weight: 800; }
 .ecke-zahl { font-size: 22px; color: var(--leise); }
 .abgestimmt { text-align: center; font-size: 26px; font-weight: 800; color: var(--leise); margin: 6px 0 0; }
 .abgestimmt.ergebnis { color: var(--gruen); font-size: 34px; }
+
+/* Großansicht: aufgedeckte Lösungen zum Abschreiben (2. Klick), ganze Tabellenspalte, Kettenglied */
+button.v-kopf { font-family: inherit; border: 0; text-align: left; cursor: zoom-in; }
+button.v-kopf:hover { filter: brightness(1.12); }
+.aufdeck.offen { cursor: zoom-in; }
+button.glied { font: inherit; text-align: left; border: 0; cursor: zoom-in; color: inherit; }
+button.glied:hover { box-shadow: 0 0 0 4px var(--petrol-hell); }
+button.antwort-karte { font: inherit; font-size: 27px; text-align: left; border: 0; width: 100%; cursor: zoom-in; color: inherit; display: block; }
+.kette-tipp { margin-top: 10px; }
+.gross-ansicht { position: relative; width: 1480px; max-height: 840px; padding: 44px 60px 48px; }
+.gross-ansicht h2 { font-size: 40px; margin: 0 60px 22px 0; line-height: 1.2; }
+.gross-zu { position: absolute; top: 18px; right: 18px; width: 54px; height: 54px; border-radius: 50%; border: 0; background: var(--hell); font-size: 26px; font-weight: 900; cursor: pointer; color: var(--dunkelpetrol); }
+.gross-text { font-size: 46px; line-height: 1.4; font-weight: 700; color: var(--text); }
+.gross-merksatz { margin: 0; font-weight: 600; line-height: 1.6; }
+.gross-luecke { background: var(--gruen-hell); color: #1E5A36; font-weight: 900; padding: 0 10px; border-radius: 8px; }
+.gross-schritt { margin: 0 0 6px; font-size: 22px; font-weight: 800; color: var(--akzent); text-transform: uppercase; letter-spacing: .06em; }
+.gross-spalte-titel { display: inline-block; color: #fff; padding: 6px 18px; border-radius: 12px; }
+.gross-spalte-titel.A { background: var(--a); } .gross-spalte-titel.B { background: var(--b); } .gross-spalte-titel.C { background: var(--c); }
+.gross-spalte { display: grid; grid-template-columns: 260px 1fr; gap: 10px; }
+.gross-spalte .v-zeilenkopf { font-size: 24px; }
+.g-zelle { font-size: 28px; line-height: 1.3; }

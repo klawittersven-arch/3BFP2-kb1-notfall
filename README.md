@@ -36,7 +36,7 @@ geben ihren Vornamen ein – und ihr Handy zeigt ab dann automatisch, was zur ak
 | 8 | Expertenrunde (AA1) | Expertenteams mit ✓, Uhr 15 min | Namen des Teams, Schritte a–e: Fall markieren (Raten-Schutz), 1.1 (KA-Aufgabe), Infotext, Experten-Check, **eigene Tabellenspalte ausfüllen** → „Unsere Spalte ist fertig“; Beamer: „✓ Tabelle fertig!“ |
 | 9 | Merksatz AA1 prüfen | Merksatz, **Lücke anklicken = aufdecken** (kommt automatisch, wenn alle Teams fertig sind) | „Überprüfen Sie am Beamer …“ |
 | 10 | Stammgruppen (AA2a) | Stammgruppen mit ✓, **Erklär-Uhr** A → B → C | Namen der Stammgruppe, „Jetzt erklärt …“, „Unsere Tabelle ist vollständig“ |
-| 11 | Vergleichstabelle sichern | Tabelle wie im AB, **Zelle anklicken = Lösung aufdecken** | „Vergleichen Sie Ihre Tabelle …“ |
+| 11 | Vergleichstabelle sichern | Tabelle wie im AB, **Zelle anklicken = Lösung aufdecken**, noch einmal = groß; Spaltenkopf = ganze Spalte groß | „Vergleichen Sie Ihre Tabelle …“ |
 | 12–13 | Schockform-Detektiv | Erklärfolie (was und warum), dann Fortschritt je Stammgruppe | Detektiv (Befunde antippen und Form wählen, „Prüfen“; 2 Versuche) |
 | 14 | Merksatz AA2 prüfen | Lücken aufdecken | „Überprüfen Sie am Beamer …“ |
 | 15–16 | Klausurtraining 2.1/2.2 | **Aufgabenfolie** wie im AB → „Jetzt bearbeiten“ (Auftrag + Uhr 5 min) → Musterlösung zum Aufdecken | erst „Schauen Sie nach vorne“, dann die Fälle Mia, Weber, Albrecht zum Nachlesen |
@@ -47,14 +47,15 @@ geben ihren Vornamen ein – und ihr Handy zeigt ab dann automatisch, was zur ak
 | 27 | Wer darf was? (AA4a) | jeder Klick: nächste Maßnahme (6), „x von y haben abgestimmt“, dann Lösung **mit der Verteilung der Stimmen** und „Das hatten X von Y richtig!“ | 🟢 / 🟡 / 🔴 antippen, nach der Lösung: richtig oder falsch |
 | 28–30 | Wer hat recht? (AA4b) | Aufgabenfolie mit Dialog und 4.1 → Think/Pair-Uhr → Musterlösung → **Merksatz AA4** (erst ergänzen, dann aufdecken) | „Auf Papier“ |
 | 31–32 | Klausurtraining (AA5) | Transferfall wie im AB → Countdown 6 min → Peer-Korrektur (4 min) mit Musterlösung zum Aufdecken | „Handy umgedreht“, dann Bewertungsraster |
-| 33 | Frau Maler (AA6) | Kausalkette Schritt für Schritt, dann Antwort auf die Leitfrage | „Ergänzen Sie die Kausalkette …“ |
+| 33 | Frau Maler (AA6) | Kausalkette Schritt für Schritt (aufgedecktes Glied anklicken = groß), dann Antwort auf die Leitfrage | „Ergänzen Sie die Kausalkette …“ |
 | 34–35 | Hätten Sie richtig gehandelt? | Zähler, dann vorher – nachher mit Lösung | dieselben 6 Notfälle, danach Auflösung |
-| 36 | Ich-kann-Liste | Ich-kann-Liste, Hausaufgabe, Nachlesen | „Auf Papier“ |
-| 37 | Ende | Ausblick – **gibt die Nachlese-Seite frei** | „Die Stunde ist beendet“ |
+| 36 | Hausaufgabe und Nachlesen | Hausaufgabe, Nachlesen – **gibt die Nachlese-Seite frei** | „Die Stunde ist beendet“, Hausaufgabe |
 
 **Sicherungsfolien:** Nach jedem Merksatz kommt eine Folie zum Aufdecken der Lücken, nach jeder Papieraufgabe
 eine Aufgabenfolie (erst erklären, dann „✍️ Jetzt bearbeiten“ – das startet die Uhr) und eine Musterlösung zum
-Aufdecken. Aufgedeckte Zellen, Lücken und Lösungszeilen bleiben aufgedeckt, auch wenn der Beamer neu geladen wird.
+Aufdecken. **Noch einmal klicken** auf eine aufgedeckte Zelle, Lösungszeile, Lücke oder ein Kettenglied zeigt sie
+groß über der Folie – zum Abschreiben (Klick daneben, ✕ oder Esc schließt). Aufgedeckte Zellen, Lücken und
+Lösungszeilen bleiben aufgedeckt, auch wenn der Beamer neu geladen wird; „Alle verdecken“ verdeckt wieder.
 Lange Folien werden automatisch etwas kleiner gesetzt, damit alles auf die Bühne passt.
 
 **Zeitplan:** 0–8 Einstieg · 8–60 Gruppenpuzzle · 60–83 Lagerung · (Pause) · 83–97 AA4 · 97–108 AA5 ·
@@ -70,7 +71,7 @@ stimmen ab, bearbeiten die Übungen, melden „fertig“ – je nachdem, welche 
 Handy** den QR-Code am Beamer scannen und als Schülerin oder Schüler mitmachen: Das Handy wird wie alle anderen
 einer Stammgruppe und einem Expertenteam mit erfundenen Namen zugeteilt. Oben steht „Probestunde“ und
 „1 Handy + 20 erfundene“. Der Wechsel zum Merksatz AA1 (danach Stammgruppen) kommt, sobald auch das eigene Handy „fertig“ meldet.
-Hinweis: Wie eine echte Stunde sperrt auch die Probestunde die Nachlese-Seite, bis Folie 37 erreicht ist.
+Hinweis: Wie eine echte Stunde sperrt auch die Probestunde die Nachlese-Seite, bis Folie 36 erreicht ist.
 
 ### Bedienung
 
@@ -87,7 +88,7 @@ Hinweis: Wie eine echte Stunde sperrt auch die Probestunde die Nachlese-Seite, b
   Ton beim Wechsel. Die Handys zeigen die Restzeit mit.
 - **Beamer neu laden** oder Laptop kurz zu: Der Raum bleibt (6 Stunden) und die Folie auch.
 - **Nachlesen** (letzte AB-Seite): alle Inhalte und Lösungen der Stunde (ohne Hausaufgabe). Die Seite ist
-  **gesperrt, solange irgendwo eine Beamer-Stunde läuft** – bis Folie 37 erreicht ist oder 10 Minuten nach dem
+  **gesperrt, solange irgendwo eine Beamer-Stunde läuft** – bis Folie 36 erreicht ist oder 10 Minuten nach dem
   Schließen des Beamers. Hinweis: Die Lösungen stehen technisch auch in den Programmdateien der App; die Sperre
   verhindert den einfachen Weg, nicht jeden.
 
