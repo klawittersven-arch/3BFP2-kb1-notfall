@@ -44,7 +44,7 @@ geben ihren Vornamen ein – und ihr Handy zeigt ab dann automatisch, was zur ak
 | 22 | Lagerungsparcours (AA3) | Fortschritt | Lagerungskarten, Bilder der vier Lagerungen als Hilfe |
 | 23 | Merksatz AA3 prüfen | Lücken aufdecken | „Überprüfen Sie am Beamer …“ |
 | 24–26 | AA3 b) und c) | Aufgabenfolie (Entscheidungsweg, 3.1/3.2) → „Jetzt bearbeiten“ → zwei Musterlösungen | „Auf Papier“ |
-| 27 | Wer darf was? (AA4a) | jeder Klick: nächste Maßnahme (6) mit **Stimmen je Kategorie**, dann Lösung und „Das hatten X von Y richtig!“ | 🟢 / 🟡 / 🔴 antippen, nach der Lösung: richtig oder falsch |
+| 27 | Wer darf was? (AA4a) | jeder Klick: nächste Maßnahme (6), „x von y haben abgestimmt“, dann Lösung **mit der Verteilung der Stimmen** und „Das hatten X von Y richtig!“ | 🟢 / 🟡 / 🔴 antippen, nach der Lösung: richtig oder falsch |
 | 28–30 | Wer hat recht? (AA4b) | Aufgabenfolie mit Dialog und 4.1 → Think/Pair-Uhr → Musterlösung → **Merksatz AA4** (erst ergänzen, dann aufdecken) | „Auf Papier“ |
 | 31–32 | Klausurtraining (AA5) | Transferfall wie im AB → Countdown 6 min → Peer-Korrektur (4 min) mit Musterlösung zum Aufdecken | „Handy umgedreht“, dann Bewertungsraster |
 | 33 | Frau Maler (AA6) | Kausalkette Schritt für Schritt, dann Antwort auf die Leitfrage | „Ergänzen Sie die Kausalkette …“ |

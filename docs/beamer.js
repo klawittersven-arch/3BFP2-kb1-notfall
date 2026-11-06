@@ -722,8 +722,9 @@
     w.appendChild(box);
   }
 
-  // AA4a „Wer darf was?“: die SuS stimmen am Handy ab (Runde 3, ohne Namen); der Beamer zählt je Ecke mit.
-  // Schritt ungerade = Maßnahme zeigen und abstimmen, gerade = Lösung und „Das hatten X von Y richtig!“
+  // AA4a „Wer darf was?“: die SuS stimmen am Handy ab (Runde 3, ohne Namen).
+  // Schritt ungerade = Maßnahme zeigen und abstimmen (nur „x von y haben abgestimmt“ – die Verteilung bleibt
+  // verborgen, damit niemand der Mehrheit folgt), gerade = Lösung mit Verteilung und „Das hatten X von Y richtig!“
   function folieAufstellung(f, w) {
     w.appendChild(titel(f));
     var s = schritt();
@@ -747,7 +748,7 @@
       var k = el('div', 'ecke' + (loesung ? (i === m.ecke ? ' richtig' : ' blass') : ''));
       k.appendChild(el('span', 'emoji', e.emoji));
       k.appendChild(document.createTextNode(e.text));
-      if (m) {
+      if (m && loesung) {
         var n = anzahl('ABC'.charAt(i));
         var balken = el('div', 'ecke-balken');
         var fuell = el('div', 'ecke-fuell');

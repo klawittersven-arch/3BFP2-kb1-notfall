@@ -257,8 +257,9 @@ const textDa = (h, text) => bis(h, (t) => document.body.innerText.includes(t), t
     await handys[2].click('.ecken-handy .antwort[data-ecke="' + richtigB + '"]');
     H.pruefe(await bis(handys[1], (b) => !!document.querySelector('.ecken-handy .antwort.gewaehlt[data-ecke="' + b + '"]'), falschB), 'Handy: gewählte Kategorie markiert, Wahl änderbar');
     H.pruefe(await bis(lap, () => /^3 von \d+ haben abgestimmt/.test((document.querySelector('.abgestimmt') || {}).textContent || '')), 'Beamer: „3 von … haben abgestimmt“');
-    H.pruefe(await bis(lap, () => [...document.querySelectorAll('.ecke-zahl')].map((e) => e.textContent).join('|').includes('2 Stimmen')), 'Beamer zeigt die Stimmen je Kategorie');
+    H.pruefe((await lap.$$('.ecke-zahl, .ecke-balken')).length === 0, 'vor der Lösung: keine Verteilung am Beamer (niemand folgt der Mehrheit)');
     await weiter();
+    H.pruefe(await bis(lap, () => [...document.querySelectorAll('.ecke-zahl')].map((e) => e.textContent).join('|').includes('2 Stimmen')), 'mit der Lösung: Stimmen je Kategorie');
     H.pruefe(await bis(lap, () => !!document.querySelector('.ecke.richtig')), 'nächster Klick zeigt die richtige Kategorie');
     H.pruefe(await bis(lap, () => ((document.querySelector('.abgestimmt.ergebnis') || {}).textContent || '').includes('2 von 3 richtig')), 'Beamer: „Das hatten 2 von 3 richtig!“');
     H.pruefe(await textDa(handys[0], S.handy.aufstellungRichtig), 'Handy: Rückmeldung „richtig“');
