@@ -48,18 +48,11 @@ var INHALTE = {
   /* ------------------------------------------------------------------------
      STARTSEITE (index.html) und Spalten der Beamer-Seite
      ------------------------------------------------------------------------ */
+  // Die Startseite zeigt bewusst KEINE Links: Die SuS kommen nur über die QR-Codes
+  // auf dem Arbeitsblatt zu den Übungen (Adressen der Übungen: siehe README).
   start: {
-    titel: 'Schock ist nicht gleich Schock – Übungen',
-    einleitung: 'Scannen Sie den QR-Code bei der Aufgabe auf Ihrem Arbeitsblatt – oder wählen Sie hier die Übung aus.',
-    links: [
-      { seite: 'w2-entscheidung', text: 'Einstieg & Check-out · Ihre Entscheidung, bitte!' },
-      { seite: 'w2-markieren', text: 'AA1 · Befunde markieren (Expertenblatt A, B oder C)' },
-      { seite: 'w2-detektiv', text: 'AA2 · Schockform-Detektiv' },
-      { seite: 'w2-lagerung', text: 'AA3 · Lagerungsparcours' },
-      { seite: 'w2-simulation', text: 'AA4 · Notfall-Simulation' },
-      { seite: 'w2-raster', text: 'AA6 · Bewertungsraster (Peer-Korrektur)' },
-      { seite: 'w2-transfer', text: 'Hausaufgabe · Selbstkontrolle Transferfall' }
-    ],
+    titel: 'Schock ist nicht gleich Schock',
+    einleitung: 'Bitte scannen Sie den QR-Code bei der Aufgabe auf Ihrem Arbeitsblatt. Jede Übung öffnet sich nur über ihren eigenen QR-Code.',
     // Spalten der Fortschrittsanzeige am Beamer (kurz = Spaltenbeschriftung)
     spalten: [
       { seite: 'w2-markieren', kurz: 'AA1' },
@@ -167,9 +160,10 @@ var INHALTE = {
   entscheidung: {
     titel: 'Ihre Entscheidung, bitte!',
     anweisung: 'Fünf kurze Notfälle: Entscheiden Sie, was Sie tun würden, und geben Sie an, wie sicher Sie sind. Am Beamer erscheint nur, wie die Klasse entschieden hat – ohne Namen.',
-    rundeFrage: 'Welche Runde?',
+    // Die Runde kommt nur aus dem QR-Code: Einstieg → w2-entscheidung.html?runde=1, Check-out → ?runde=2
     runde1: 'Runde 1 – Stundenbeginn',
     runde2: 'Runde 2 – Stundenende',
+    ohneQr: 'Bitte scannen Sie den QR-Code auf Ihrem Arbeitsblatt: beim Einstieg (Runde 1) oder beim Check-out (Runde 2).',
     sicherFrage: 'Wie sicher sind Sie?',
     sicher: 'sicher',
     unsicher: 'unsicher',
@@ -206,9 +200,9 @@ var INHALTE = {
   markieren: {
     titel: 'AA1 · Befunde markieren',
     anweisung: 'Tippen Sie im Fall **alle Stellen** an, die auf einen Schock oder seine Ursache hinweisen. Tippen Sie noch einmal, um eine Markierung zu entfernen. Dann: „Prüfen“.',
-    wahl: 'Welcher Fall steht auf Ihrem Expertenblatt?',
+    // Der Fall kommt nur aus dem QR-Code des Expertenblatts (?fall=a, ?fall=b, ?fall=c)
+    ohneQr: 'Bitte scannen Sie den QR-Code auf Ihrem Expertenblatt (A, B oder C).',
     pruefen: 'Prüfen',
-    andererFall: 'Anderen Fall wählen',
     kategorien: { schock: 'Schockzeichen', begleit: 'Begleitzeichen', ursache: 'Hinweis auf die Ursache', '': 'gehört nicht dazu' },
     legende: 'Grün = richtig markiert · Orange gestrichelt = übersehen · Grau durchgestrichen = gehört nicht dazu',
     // {x} gefunden, {y} gesamt, {f} falsch markiert

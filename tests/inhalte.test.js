@@ -62,9 +62,25 @@ pruefe(fehlend.length === 0, 'alle Seiten, Skripte und Stile stehen in sw.js', f
 console.log('QR-Codes');
 const qr = fs.readdirSync(path.join(WURZEL, 'qr'));
 for (const s of Object.values(AB.SEITEN)) {
-  const name = 'qr_w2_' + s.replace(/\.html.*$/, '').replace(/^w2-/, '') + (s.includes('fall=') ? '_' + s.split('fall=')[1] : '') + '.png';
+  const zusatz = (s.match(/\?[a-z]+=([a-z0-9]+)/) || [])[1];
+  const name = 'qr_w2_' + s.replace(/\.html.*$/, '').replace(/^w2-/, '') + (zusatz ? '_' + zusatz : '') + '.png';
   pruefe(qr.includes(name), `QR-Code vorhanden: ${name}`);
   pruefe(fs.existsSync(path.join(DOCS, s.split('?')[0])), `Zielseite existiert: ${s}`);
+}
+const qrDateien = qr.filter((d) => d.endsWith('.png'));
+const erwartet = Object.values(AB.SEITEN).length;
+pruefe(qrDateien.length === erwartet, `genau ${erwartet} QR-Codes, keine veralteten`, qrDateien);
+
+console.log('Keine Wege zwischen den Übungen');
+const startseite = fs.readFileSync(path.join(DOCS, 'index.html'), 'utf8');
+pruefe(!/w2-[a-z]+\.html/.test(startseite) && !I.start.links, 'Startseite enthält keine Links zu den Übungen');
+for (const d of fs.readdirSync(DOCS).filter((x) => /^w2-.*\.html$/.test(x))) {
+  const html = fs.readFileSync(path.join(DOCS, d), 'utf8');
+  pruefe(!/<a\s/i.test(html), `${d}: keine Links`);
+}
+for (const d of fs.readdirSync(DOCS).filter((x) => /\.js$/.test(x) && !['fortschritt.js', 'sw.js'].includes(x))) {
+  const js = fs.readFileSync(path.join(DOCS, d), 'utf8');
+  pruefe(!/\.href\s*=|location\.(assign|replace)|location\.href\s*=|window\.open\(/.test(js), `${d}: keine Weiterleitung auf andere Seiten`);
 }
 
 process.exit(ergebnis() ? 0 : 1);

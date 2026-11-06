@@ -6,7 +6,8 @@
 const LINK_BASIS = 'klawittersven-arch.github.io/3BFP2-kb1-notfall/';
 
 const SEITEN = {
-  entscheidung: 'w2-entscheidung.html',
+  entscheidung1: 'w2-entscheidung.html?runde=1',
+  entscheidung2: 'w2-entscheidung.html?runde=2',
   markierenA: 'w2-markieren.html?fall=a',
   markierenB: 'w2-markieren.html?fall=b',
   markierenC: 'w2-markieren.html?fall=c',

@@ -13,7 +13,11 @@ const { bausteine, kopf, fuss, bild, F, SEITE_HOCH, SEITE_QUER, STILE, WURZEL, r
 const T = require('./ab_w2_texte');
 
 const AUS = process.argv[2] || path.join(WURZEL, 'arbeitsblatt');
-const QR = (seite) => path.join(WURZEL, 'qr', 'qr_w2_' + seite.replace(/\.html.*$/, '').replace(/^w2-/, '') + (seite.includes('fall=') ? '_' + seite.split('fall=')[1] : '') + '.png');
+// Dateiname des QR-Codes: w2-markieren.html?fall=a → qr_w2_markieren_a.png, w2-entscheidung.html?runde=2 → qr_w2_entscheidung_2.png
+const QR = (seite) => {
+  const zusatz = (seite.match(/\?[a-z]+=([a-z0-9]+)/) || [])[1];
+  return path.join(WURZEL, 'qr', 'qr_w2_' + seite.replace(/\.html.*$/, '').replace(/^w2-/, '') + (zusatz ? '_' + zusatz : '') + '.png');
+};
 const FUSS = 'KB I · Woche 2 · Schock ist nicht gleich Schock';
 const BREITE_HOCH = 11906 - 2 * 1417;   // 9072
 const BREITE_QUER = 16838 - 2 * 1134;   // 14570
@@ -49,7 +53,7 @@ function schuelerTeil(B, { lsg }) {
   push(
     B.aa([IC.handy], 'Einstieg: Ihre Entscheidung, bitte! (Runde 1)', ''),
     B.meta('8 min · Einzelarbeit → Plenum · AFB I · Ich-kann-Liste W2 Nr. 4 · Vorwissen und Fehlvorstellungen sichtbar machen'),
-    handy(T.SEITEN.entscheidung, [
+    handy(T.SEITEN.entscheidung1, [
       B.p('Scannen Sie den QR-Code und tragen Sie oben **Vorname + Raumcode vom Beamer** ein. Entscheiden Sie bei fünf kurzen Notfällen, was Sie tun würden, und geben Sie an, wie sicher Sie sind.'),
       B.p('Am Beamer sehen Sie, wie die Klasse entschieden hat – ohne Namen. **Die Auflösung gibt es erst am Ende der Stunde** (Runde 2).')
     ])
@@ -313,8 +317,11 @@ function schuelerTeil(B, { lsg }) {
   /* ---------- Check-out ---------- */
   push(
     B.umbruch(),
-    B.aa([IC.checkout, IC.handy], 'Check-out:', '**Ihre Entscheidung, bitte! – Runde 2.** Scannen Sie den QR-Code vom Einstieg noch einmal und stimmen Sie erneut ab. Vergleichen Sie am Beamer: Wo hat sich die Klasse verändert?'),
+    B.aa([IC.checkout, IC.handy], 'Check-out:', '**Ihre Entscheidung, bitte! – Runde 2.** Stimmen Sie erneut ab und vergleichen Sie am Beamer: Wo hat sich die Klasse verändert?'),
     B.meta('5 min · Einzelarbeit → Plenum · Lernstandsdiagnose; Verbindung zur Klausurvorbereitung'),
+    handy(T.SEITEN.entscheidung2, [
+      B.p('Scannen Sie diesen QR-Code (Runde 2). Nach dem Abschicken sehen Sie die Auflösung und Ihre Antworten aus Runde 1 und Runde 2 nebeneinander.')
+    ]),
     new Paragraph({ spacing: { before: 80, after: 80 }, children: [B.b('Ich-kann-Liste Woche 2: '), B.t('Schätzen Sie sich ein: '), B.emoji('☺'), B.t(' sicher · '), B.emoji('😐'), B.t(' teilweise · '), B.emoji('☹'), B.t(' noch nicht. Bei 😐 oder ☹ notieren Sie, wo Sie nachlesen.')] })
   );
   const ikl = [

@@ -43,15 +43,15 @@
       });
   }
 
-  /* ---------- Rundenwahl ---------- */
-  function wahl() {
+  /* ---------- Ohne Runde in der Adresse ----------
+     Die Runde kommt NUR aus dem QR-Code (…?runde=1 beim Einstieg, …?runde=2 beim Check-out).
+     Es gibt bewusst keine Auswahl und keinen Wechsel zwischen den Runden in der App. */
+  function ohneQr() {
     platz.textContent = '';
     var box = el('section', 'karte');
-    box.appendChild(el('h2', null, T.rundeFrage));
-    box.appendChild(K.knopf(T.runde1, 'knopf-breit', function () { z.runde = 1; speichern(); fragen(); }));
-    box.appendChild(K.knopf(T.runde2, 'knopf-breit knopf-zweit', function () { z.runde = 2; speichern(); fragen(); }));
+    box.appendChild(el('p', null, T.ohneQr));
     platz.appendChild(box);
-    K.fortschrittSetzen((z.runden[1] ? 1 : 0) + (z.runden[2] ? 1 : 0), 2);
+    K.fortschrittSetzen(0, 1);
   }
 
   /* ---------- Fragen ---------- */
@@ -105,7 +105,6 @@
       speichern();
       danach();
     }));
-    platz.appendChild(K.knopf('← ' + T.rundeFrage, 'knopf-leise', function () { z.bearbeiten = false; speichern(); wahl(); }));
     K.fortschrittSetzen(Object.keys(entwurf.antworten).length, T.fragen.length);
   }
 
@@ -139,7 +138,6 @@
       });
     }
     platz.appendChild(K.knopf(T.neu, 'knopf-leise', function () { z.bearbeiten = true; speichern(); fragen(); }));
-    platz.appendChild(K.knopf('← ' + T.rundeFrage, 'knopf-leise', function () { wahl(); }));
     K.fortschrittSetzen((z.runden[1] ? 1 : 0) + (z.runden[2] ? 1 : 0), 2);
     if (z.runden[1] && z.runden[2]) K.Erledigt.merken('w2-entscheidung');
   }
@@ -161,5 +159,10 @@
   var altDanach = danach;
   danach = function () { altDanach(); rundenStand(); };
 
-  if (!z.runde) wahl(); else fragen();
+  // Runde aus dem QR-Code: w2-entscheidung.html?runde=1 bzw. ?runde=2
+  var rundeAusQr = Number(K.urlParam('runde'));
+  z.runde = rundeAusQr === 1 || rundeAusQr === 2 ? rundeAusQr : null;
+  z.bearbeiten = false;
+  speichern();
+  if (!z.runde) ohneQr(); else fragen();
 })();
