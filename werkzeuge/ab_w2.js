@@ -51,16 +51,18 @@ function schuelerTeil(B, { lsg }) {
 
   /* ---------- Einstieg ---------- */
   push(
-    B.aa([IC.handy], 'Einstieg: Ihre Entscheidung, bitte! (Runde 1)', ''),
-    B.meta('8 min · Einzelarbeit → Plenum · AFB I · Ich-kann-Liste W2 Nr. 4 · Vorwissen und Fehlvorstellungen sichtbar machen'),
+    B.aa([IC.handy], 'Einstieg: Wie hätten Sie gehandelt? – Ihre Vermutungen, bitte!', ''),
+    B.meta('8 min · Einzelarbeit → Murmeln (PA) → Plenum · AFB I · Ich-kann-Liste W2 Nr. 4 · Vorwissen aktivieren, Vermutungen bilden, Fehlvorstellungen sichtbar machen; im Check-out werden die Vermutungen überprüft (vorher/nachher)'),
     handy(T.SEITEN.entscheidung1, [
-      B.p('Scannen Sie den QR-Code und tragen Sie oben **Vorname + Raumcode vom Beamer** ein. Entscheiden Sie bei fünf kurzen Notfällen, was Sie tun würden, und geben Sie an, wie sicher Sie sind.'),
-      B.p('Am Beamer sehen Sie, wie die Klasse entschieden hat – ohne Namen. **Die Auflösung gibt es erst am Ende der Stunde** (Runde 2).')
+      B.p('Scannen Sie den QR-Code und tragen Sie oben **Vorname + Raumcode vom Beamer** ein. Sechs kurze Notfälle – der letzte ist Frau Maler um 11 Uhr: Wie würden Sie handeln? Tippen Sie Ihre Vermutung an und geben Sie an, ob Sie sich sicher sind oder nur vermuten.'),
+      B.p('**Falsch liegen ist jetzt ausdrücklich erlaubt:** Genau diese Entscheidungen lernen Sie heute. Am Ende der Stunde stimmen Sie noch einmal ab und prüfen: Hätte ich richtig gehandelt?'),
+      B.p('**Murmeln (1 Minute):** Am Beamer sehen Sie, wie die Klasse vermutet – ohne Namen. Wo die Klasse am meisten uneinig ist, überzeugen Sie Ihre Nachbarin oder Ihren Nachbarn: Warum würden Sie so handeln? Aufgelöst wird noch nicht.')
     ])
   );
   if (lsg) {
     push(B.tabelle([{ text: 'Nr.', w: 700 }, { text: 'Richtig', w: 1500 }, { text: 'Begründung', w: BREITE_HOCH - 2200 }],
       T.ENTSCHEIDUNG.map((e) => [e.nr, { lsg: e.optionen.find((o) => o.startsWith(e.richtig)) }, { lsg: e.erklaerung }]), { schrift: 19 }));
+    push(B.meta('Ablauf: Abstimmen (ca. 4 min) → am Beamer die Frage mit der größten Uneinigkeit anklicken (groß) und „Murmeln“ einblenden (1 min) → 2–3 Begründungen hören, nicht auflösen. Impuls: „Bei E… sind Sie geteilter Meinung – genau das klären wir heute. Am Ende prüfen Sie Ihre Vermutungen.“ E6 ist die Leitfrage; sie wird in AA7 geklärt.'));
   }
 
   /* ---------- Teil A ---------- */
@@ -317,10 +319,11 @@ function schuelerTeil(B, { lsg }) {
   /* ---------- Check-out ---------- */
   push(
     B.umbruch(),
-    B.aa([IC.checkout, IC.handy], 'Check-out:', '**Ihre Entscheidung, bitte! – Runde 2.** Stimmen Sie erneut ab und vergleichen Sie am Beamer: Wo hat sich die Klasse verändert?'),
-    B.meta('5 min · Einzelarbeit → Plenum · Lernstandsdiagnose; Verbindung zur Klausurvorbereitung'),
+    B.aa([IC.checkout, IC.handy], 'Check-out: Hätten Sie richtig gehandelt? – Prüfen Sie Ihre Vermutungen', ''),
+    B.meta('5 min · Einzelarbeit → Plenum · Vermutungen überprüfen (vorher/nachher), Lernzuwachs sichtbar machen, Lernstandsdiagnose; Verbindung zur Klausurvorbereitung'),
     handy(T.SEITEN.entscheidung2, [
-      B.p('Scannen Sie diesen QR-Code (Runde 2). Nach dem Abschicken sehen Sie die Auflösung und Ihre Antworten aus Runde 1 und Runde 2 nebeneinander.')
+      B.p('Jetzt wissen Sie mehr. Scannen Sie diesen QR-Code und entscheiden Sie **dieselben sechs Notfälle** noch einmal. Danach sehen Sie die Auflösung – und Ihre Vermutungen vom Stundenbeginn daneben.'),
+      B.p('Vergleichen Sie am Beamer: Bei welcher Frage hat sich die Klasse am stärksten verändert?')
     ]),
     new Paragraph({ spacing: { before: 80, after: 80 }, children: [B.b('Ich-kann-Liste Woche 2: '), B.t('Schätzen Sie sich ein: '), B.emoji('☺'), B.t(' sicher · '), B.emoji('😐'), B.t(' teilweise · '), B.emoji('☹'), B.t(' noch nicht. Bei 😐 oder ☹ notieren Sie, wo Sie nachlesen.')] })
   );
@@ -491,8 +494,8 @@ function verlaufsplan(B) {
   const ueber = (text) => [{ colSpan: 7, text, fill: F.GRAU_HELL, o: { italics: true } }];
   const zeilen = [
     z('vor der Stunde', 'Vorbereitung', 'Yogamatten auslegen; 3 Schilder in Raumecken (Anlage); Stammgruppen-Liste am Beamer; fortschritt.html öffnen → „Neuen Raum starten“.', '–', '–', 'Matten, Schilder, Beamer', 'Ablauf ohne Umbaupausen'),
-    z('0–8', 'Problemorientierter Einstieg', 'An den Schlusssatz von Woche 1 anknüpfen; Fallauszug und Leitfrage (Sprechblase) an die Tafel; Vermutungen aus W1 (AA3a) abrufen; Abstimmung Runde 1 freigeben, Ergebnis am Beamer zeigen, nicht auflösen.', 'Vermutung nennen; am Handy entscheiden und Sicherheit angeben.', 'EA → Plenum', 'AB S. 1, Handy, Beamer', 'Vorwissen und Fehlvorstellungen sichtbar machen (IKL Nr. 4); kognitiver Konflikt. AFB I'),
-    ueber('„In Woche 1 haben Sie gesehen, wie der Körper einen Schock ausgleicht. Heute geht es um die Frage: Ist jeder Schock gleich – und muss ich deshalb immer gleich handeln?“'),
+    z('0–8', 'Problemorientierter Einstieg: „Wie hätten Sie gehandelt?“', 'An den Schlusssatz von Woche 1 anknüpfen; Fallauszug und Leitfrage (Sprechblase) an die Tafel; Vermutung aus W1 (AA3a) kurz abrufen; Abstimmung (Einstieg) freigeben: „Falsch liegen ist erlaubt.“ Ergebnis am Beamer zeigen, Frage mit der größten Uneinigkeit groß anzeigen (Karte anklicken), „Murmeln“ einblenden (1 min); 2–3 Begründungen hören, nicht auflösen.', 'Vermutungen am Handy abgeben (sicher / vermute nur), auch zur Leitfrage (E6); die Nachbarin oder den Nachbarn von der eigenen Wahl überzeugen.', 'EA → PA (Murmeln) → Plenum', 'AB S. 1, Handy, Beamer', 'Vorwissen aktivieren, Vermutungen bilden, Fehlvorstellungen sichtbar machen (IKL Nr. 4); kognitiver Konflikt; die Vermutungen werden im Check-out überprüft (vorher/nachher). AFB I'),
+    ueber('„Bei E… sind Sie geteilter Meinung – genau das klären wir heute. In Woche 1 haben Sie gesehen, wie der Körper einen Schock ausgleicht. Heute geht es um die Frage: Ist jeder Schock gleich – und muss ich deshalb immer gleich handeln? Am Ende der Stunde prüfen Sie Ihre Vermutungen.“'),
     z('8–23', 'Erarbeitung I: Expertenrunde (AA1)', 'Stammgruppen und Expertenrollen einteilen (siehe Hinweise), Expertenblätter A/B/C austeilen, Zeit ansagen; Fortschritt am Beamer beobachten.', 'Fall lesen, Befunde in der App markieren, Infotext lesen, Schockform anhand von 4 Symptomen begründen (Wortlaut KA 3.1), Expertenkarte ausfüllen, 60-Sekunden-Erklärprobe.', 'EA → GA (Experten)', 'Expertenblätter, Handy', 'Befunde im Fließtext identifizieren wie in KA 3.1; Expertenwissen aufbauen. AFB I'),
     z('23–43', 'Erarbeitung II: Stammgruppe (AA2)', 'Zeitsignal alle 3 min; Hilfekarten bei Bedarf; Expertinnen und Experten an ihre Prüferrolle erinnern.', 'Reihum erklären, Vergleichstabelle ergänzen, Schockform-Detektiv, Merksatz; 2.1 und 2.2 schreiben, Expertenkorrektur.', 'GA (3–4)', 'AB S. 2–3, Handy', 'Vergleichen (IKL Nr. 1); Pathophysiologie erläutern (KA 3.2), Unterschied neurogen (KA 5.5). AFB II'),
     ueber('„Sie wissen jetzt, wie sich die Schockformen unterscheiden. Aber wie lagern Sie? Aus dem Erste-Hilfe-Kurs kennen Sie: ‚Beine hoch.‘ Prüfen wir, ob das immer stimmt.“'),
@@ -503,7 +506,7 @@ function verlaufsplan(B) {
     ueber('„Jetzt wie in der Klassenarbeit: allein, ohne Unterlagen, mit Punkten.“'),
     z('100–115', 'Sicherung: Klausurtraining (AA6)', 'Zeit stoppen (8 min), Tauschpartner aus anderer Stammgruppe zuweisen, Raster am Handy, Rückmeldesatz einfordern.', 'Transferfall lösen; Lösung der Partnerin/des Partners mit App-Raster bewerten.', 'EA → PA', 'AB S. 5–6, Handy', 'Transfer auf neuen Fall wie in der KA (3.3); Examensformat. AFB III'),
     z('115–130', 'Transfer: Zurück zu Frau Maler (AA7)', 'Placemats austeilen, Zeiten ansagen (3/3/4 min), eine Gruppe stellt vor; Auflösung: obstruktiver Schock, Lagerung um 11 Uhr.', 'Placemat bearbeiten, Kausalkette in der Mitte, Leitfrage beantworten; 7.1/7.2 beginnen.', 'GA (4) → Plenum', 'Placemat A3', 'Kausalkette (IKL Nr. 5); offene Frage aus W1 klären; Brücke zu W4 und W7. AFB III'),
-    z('130–135', 'Abschlusssicherung', 'Abstimmung Runde 2 freigeben, vorher/nachher zeigen, größte Veränderung kurz besprechen; Hausaufgabe erteilen.', 'Erneut abstimmen; Ich-kann-Liste (Ampel); Leitfrage beantworten.', 'EA → Plenum', 'Handy, Beamer, Ich-kann-Liste', 'Lernzuwachs sichtbar machen; Lernstandsdiagnose.'),
+    z('130–135', 'Abschlusssicherung: „Hätten Sie richtig gehandelt?“', 'Abstimmung (Check-out) freigeben; am Beamer Vermutung (Beginn) und Entscheidung (Ende) vergleichen, „Lösung zeigen“, größte Veränderung kurz besprechen (v. a. E6 = Leitfrage); Hausaufgabe erteilen.', 'Dieselben Fragen erneut entscheiden, Auflösung mit der eigenen Vermutung vergleichen; Ich-kann-Liste (Ampel); Leitfrage beantworten.', 'EA → Plenum', 'Handy, Beamer, Ich-kann-Liste', 'Vermutungen überprüfen, Lernzuwachs sichtbar machen (vorher/nachher); Lernstandsdiagnose.'),
     ueber('„Nächste Woche geht es darum, wie man eine starke Blutung stoppt – damit es gar nicht erst zum hypovolämischen Schock kommt.“')
   ];
   push(B.tabelle(sp, zeilen, { kopfFill: F.BLAU_D, kopfFarbe: 'FFFFFF', schrift: 17 }));
@@ -522,10 +525,11 @@ function hinweise(B) {
     punkt('Die Simulation (AA4) läuft in den Stammgruppen; in Vierergruppen übernimmt die vierte Person die Beobachtung (Lagerung, Verantwortung) und gibt nach jeder Runde einen Hinweis.'),
     B.zwischen('Material und Technik'),
     punkt('Kopien: AB (SV) für alle; Expertenblätter A/B/C nach Einteilung; Notfallprotokoll 1 je Stammgruppe; Placemat auf A3 (1 je Vierergruppe); drei Schilder (Anlage) für die Raumecken. Yogamatten, einige Kissen/Decken als Polster.'),
-    punkt('Beamer: **fortschritt.html** öffnen → „Neuen Raum starten“ → Raumcode zeigen. Die Seite zeigt den Fortschritt (AA1a, AA2b, AA3a) und unter **„Abstimmung“** die Runden 1 und 2 der Entscheidungsfragen nebeneinander. Namen lassen sich verbergen; nach 6 Stunden wird alles gelöscht.'),
+    punkt('Beamer: **fortschritt.html** öffnen → „Neuen Raum starten“ → Raumcode zeigen. Die Seite zeigt den Fortschritt (AA1a, AA2b, AA3a) und unter **„Abstimmung“** die Vermutungen (Einstieg) und Entscheidungen (Check-out) ohne Namen nebeneinander. Ein Klick auf eine Karte zeigt die Frage groß – z. B. für das Murmeln. Unten blendet „Murmeln“ die Anweisung groß ein. Namen lassen sich verbergen; nach 6 Stunden wird alles gelöscht.'),
     punkt('Ohne WLAN oder Handys: Abstimmung per Handzeichen/Ampelkarten; Lagerungskarten aus der Liste unten vorlesen; Simulation als Fallkarte – die Lehrkraft spielt „Monitor“ und nennt die Werte nach den Entscheidungen der Gruppe (Drehbuch unten).'),
     punkt('Schutz gegen Durchklicken wie gewohnt: Merksätze erscheinen nur, wenn genug Aufgaben beim ersten Versuch richtig sind.'),
     B.zwischen('Inhaltliche Hinweise'),
+    punkt('**Einstieg und Check-out („Wie hätten Sie gehandelt?“):** Zu Beginn geben die SuS Vermutungen ab – falsch liegen ist ausdrücklich erlaubt, die Sicherheit („sicher“ / „vermute nur“) macht Fehlvorstellungen sichtbar, die mit Überzeugung vertreten werden. Beim Einstieg nichts auflösen, auch nicht beim Murmeln. Im Check-out entscheiden die SuS dieselben sechs Fragen erneut und sehen danach die Auflösung neben ihrer Vermutung. E6 ist die Leitfrage (Frau Maler um 11 Uhr); sie wird in AA7 geklärt.'),
     punkt('Die Lagerungsempfehlungen folgen der S2k-Leitlinie Anaphylaxie (AWMF 061-025, 2021): symptomorientiert; Flachlagerung und Vermeiden abrupter Lageveränderungen (Aufsitzen, Aufstehen) als Grundstrategie; bei führender Atemnot (halb-)sitzend; bei eingeschränktem Bewusstsein und intaktem Kreislauf stabile Seitenlage; zur Kreislaufverbesserung Beine hoch.'),
     punkt('Adrenalin i. m. laut Leitlinie 0,15–0,6 mg in die Außenseite des Oberschenkels, Autoinjektoren 0,15/0,3/0,5 mg, Wiederholung nach ca. 5–10 min. Antihistaminika: langsamerer Wirkungseintritt, Wirkung auf Kreislauf und Bronchokonstriktion nicht belegt, lebensrettende Sofortmaßnahmen dürfen nicht verzögert werden. Glukokortikoide: untergeordnete Rolle in der Akutphase. Die KA-Lösung nennt „Erwachsene 0,5 mg“ – das liegt in diesem Bereich.'),
     punkt('Der Leitfall ist belastend (Christin, Reanimation). AA7 bleibt bewusst fachlich (Kausalkette, verpasste Chancen) und bewertet Christin nicht; Erleben, Hilflosigkeit und Verarbeitung sind Thema in KB II und KB V.'),

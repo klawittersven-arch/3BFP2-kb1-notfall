@@ -52,7 +52,7 @@ async function bis(seite, fn, arg, ms = 15000) {
           await (await boxen[i].$(`.antwort:has-text("${opt}")`)).click();
           await (await boxen[i].$(`.klein-knopf:has-text("${runde === 2 ? E.sicher : E.unsicher}")`)).click();
         }
-        await h.click(`button:has-text("${E.abschicken}")`);
+        await h.click(`button:has-text("${runde === 1 ? E.abschicken1 : E.abschicken2}")`);
         H.pruefe(await bis(h, (t) => document.getElementById('uebung').textContent.includes(t), E.gesendet), `${name}: Runde ${runde} am Beamer angekommen`);
       }
       handys.push(h);
@@ -71,12 +71,17 @@ async function bis(seite, fn, arg, ms = 15000) {
 
     console.log('\n== Beamer: Abstimmung');
     await laptop.click('#ansicht');
-    H.pruefe(await bis(laptop, () => document.querySelectorAll('.abst-frage').length === 5), '5 Fragen in der Abstimmungsansicht');
+    const NF = await laptop.evaluate(() => INHALTE.entscheidung.fragen.length);
+    H.pruefe(NF === 6 && await bis(laptop, (n) => document.querySelectorAll('.abst-frage').length === n, NF), '6 Fragen in der Abstimmungsansicht (E6 = Frau Maler)');
     const zusammen = await laptop.locator('#zusammenfassung').innerText();
-    H.pruefe(zusammen.includes('Runde 1: 2') && zusammen.includes('Runde 2: 2'), 'je 2 Stimmen in Runde 1 und 2', zusammen);
+    H.pruefe(zusammen.includes('Vermutungen (Beginn): 2') && zusammen.includes('Entscheidungen (Ende): 2'), 'je 2 Stimmen beim Einstieg und beim Check-out', zusammen);
+    const koepfe = await laptop.$$eval('.abst-frage:first-child .abst-kopf', (k) => k.map((x) => x.textContent));
+    H.pruefe(koepfe.includes('Vermutung (Beginn)') && koepfe.includes('Entscheidung (Ende)'), 'Spalten „Vermutung (Beginn)“ und „Entscheidung (Ende)“', koepfe);
+    const alleSichtbar = await laptop.$$eval('.abst-frage', (k) => { const box = document.getElementById('abstimmung').getBoundingClientRect(); return k.every((e) => e.getBoundingClientRect().bottom <= box.bottom + 1); });
+    H.pruefe(alleSichtbar, 'alle 6 Karten passen ohne Scrollen auf den Beamer (1600 × 900)');
     H.pruefe((await laptop.$$('.abst-option.richtig')).length === 0, 'Lösung zunächst verborgen');
     await laptop.click('#loesung');
-    H.pruefe((await laptop.$$('.abst-option.richtig')).length === 5, '„Lösung zeigen“ markiert die richtigen Antworten');
+    H.pruefe((await laptop.$$('.abst-option.richtig')).length === NF, '„Lösung zeigen“ markiert die richtigen Antworten');
     const zahlen = await laptop.$$eval('.abst-frage:first-child .abst-zahl', (z) => z.map((x) => x.textContent));
     H.pruefe(zahlen.some((t) => t.startsWith('2')), 'Runde 2: beide richtig (2 Stimmen)', zahlen);
     await laptop.screenshot({ path: path.join(ORDNER, 'beamer_abstimmung.png') });
@@ -89,7 +94,7 @@ async function bis(seite, fn, arg, ms = 15000) {
     await demo.goto(basis + 'fortschritt.html?demo=1');
     await demo.waitForSelector('#tafel:not([hidden])');
     await demo.click('#ansicht');
-    H.pruefe((await demo.$$('.abst-frage')).length === 5, 'Probeansicht: Abstimmung mit erfundenen Daten');
+    H.pruefe((await demo.$$('.abst-frage')).length === NF, 'Probeansicht: Abstimmung mit erfundenen Daten');
 
     console.log('\n== Beamer: eine Frage groß anzeigen');
     await demo.click('.abst-frage >> nth=0');
@@ -114,10 +119,18 @@ async function bis(seite, fn, arg, ms = 15000) {
     await demo.waitForTimeout(3500);
     H.pruefe((await demo.locator('.abst-frage.gross h2').innerText()).startsWith('E3'), 'große Ansicht bleibt bei der nächsten Aktualisierung erhalten');
     await demo.keyboard.press('Escape');
-    H.pruefe((await demo.$$('.abst-frage')).length === 5, 'Esc → zurück zu allen fünf Karten');
-    await demo.click('.abst-frage >> nth=4');
+    H.pruefe((await demo.$$('.abst-frage')).length === NF, 'Esc → zurück zu allen sechs Karten');
+
+    console.log('\n== Beamer: Murmeln – E6 groß mit eingeblendeter Anweisung');
+    await demo.click('.abst-frage >> nth=5');
+    H.pruefe((await demo.locator('.abst-frage.gross h2').innerText()).startsWith('E6'), 'groß gezeigt: E6 (Frau Maler)');
+    await demo.click('.anweisung-knopf:has-text("Murmeln")');
+    H.pruefe((await demo.locator('.anweisung').innerText()).startsWith('Murmeln'), 'Anweisung „Murmeln“ eingeblendet');
+    H.pruefe(await passt(), 'E6 groß passt auch mit eingeblendeter Anweisung ohne Abschneiden');
+    await demo.screenshot({ path: path.join(ORDNER, 'beamer_murmeln.png') });
+    await demo.click('.anweisung-knopf:has-text("Murmeln")');
     await demo.click('.abst-frage.gross');
-    H.pruefe((await demo.$$('.abst-frage')).length === 5, 'Klick auf die große Karte → zurück zu allen Karten');
+    H.pruefe((await demo.$$('.abst-frage')).length === NF, 'Klick auf die große Karte → zurück zu allen Karten');
     void html; void kleinH;
 
     H.pruefe(protokoll.konsole.length === 0, 'keine Fehler in der Konsole', protokoll.konsole);

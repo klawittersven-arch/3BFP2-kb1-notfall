@@ -61,7 +61,8 @@ body {
 }
 @keyframes anweisung-herein { from { opacity: 0; transform: translateY(-1.5vh); } to { opacity: 1; transform: none; } }
 
-.tafel-mitte { position: relative; min-height: 0; overflow: hidden; }
+/* container-type: Größen der Abstimmung richten sich nach der freien Höhe (cqh), nicht nach dem Bildschirm */
+.tafel-mitte { position: relative; min-height: 0; overflow: hidden; container-type: size; }
 #warten { margin: 0; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 4.6vh; color: #CFE1E4; }
 #raster { display: grid; gap: 1vh 1vw; height: 100%; align-content: start; }
 
@@ -87,17 +88,19 @@ body {
 .s-zahl.leer { color: #8A9A9D; }
 @keyframes herein { from { opacity: 0; transform: scale(.9); } to { opacity: 1; transform: none; } }
 
-.tafel-fuss { display: flex; align-items: center; gap: 2.5vw; font-size: 2.2vh; color: #D7E6E8; flex-wrap: wrap; }
+/* Fuß in zwei Zeilen: oben Anweisungen + Verbindungsstatus, darunter (rechts) die Bedienknöpfe */
+.tafel-fuss { display: flex; align-items: center; gap: 1vh 2vw; font-size: 2.2vh; color: #D7E6E8; flex-wrap: wrap; }
 .punkt { display: inline-block; width: 1.6vh; height: 1.6vh; border-radius: 50%; margin-right: .6vw; background: #A8B5B8; vertical-align: -.1vh; }
 .punkt.bereit { background: #5CC27A; }
 .punkt.getrennt { background: #F0A030; }
-.fuss-knoepfe { margin-left: auto; display: flex; gap: 1vw; flex-wrap: wrap; }
+.fuss-knoepfe { margin-left: auto; display: flex; gap: 1vw; flex-wrap: wrap; justify-content: flex-end; }
 .leise {
   font: inherit; font-size: 2.1vh; color: #D7E6E8; background: transparent; border: 1px solid #6F9BA1;
   border-radius: .8vh; padding: .5vh 1vw; cursor: pointer; min-height: 32px;
 }
 .leise:hover { background: var(--petrol); color: #fff; }
-.anweisung-knoepfe { display: flex; gap: 1vw; flex-wrap: wrap; margin-right: 1.5vw; }
+.anweisung-knoepfe { display: flex; gap: 1vw; flex-wrap: wrap; }
+.anweisung-knoepfe:empty { display: none; }
 .anweisung-knopf { font-weight: 700; color: #fff; border-color: var(--gold); }
 .anweisung-knopf[aria-pressed="true"] { background: var(--gold); color: var(--dunkelpetrol); }
 
@@ -114,37 +117,49 @@ body {
   .s-balken { transition: none; }
 }
 
-/* ---------- Abstimmung „Ihre Entscheidung, bitte!“ ---------- */
-#abstimmung { display: grid; grid-template-columns: repeat(auto-fit, minmax(440px, 1fr)); gap: 12px; padding: 6px 4px 14px; overflow: auto; max-height: 100%; align-content: start; }
+/* ---------- Abstimmung „Wie hätten Sie gehandelt?“ (Einstieg = Vermutung, Check-out = Entscheidung) ----------
+   Größen in cqh/cqw = Anteil der freien Fläche über dem Fuß. So passen alle Karten bei jeder Auflösung
+   und auch dann, wenn oben eine Anweisung eingeblendet ist. Die px/rem-Werte davor sind nur Ersatz für
+   sehr alte Browser ohne Container-Einheiten. */
+#abstimmung {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(440px, 1fr)); gap: 12px; padding: 6px 4px 14px;
+  grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.8cqh 1cqw; padding: .6cqh .3cqw 1.2cqh;
+  overflow: auto; max-height: 100%; align-content: start;
+}
 .abst-leer { font-size: 1.4rem; opacity: .8; }
-.abst-frage { background: #fff; color: #16262A; border-radius: 10px; padding: 12px 16px; }
-.abst-frage h2 { margin: 0 0 8px; font-size: 1.05rem; line-height: 1.3; }
-.abst-raster { display: grid; grid-template-columns: minmax(150px, 1.2fr) 1fr 1fr; gap: 6px 12px; align-items: center; }
-.abst-kopf { font-size: .85rem; font-weight: 700; color: #3F6C72; }
-.abst-option { font-size: .95rem; }
+.abst-frage { background: #fff; color: #16262A; border-radius: 10px; padding: 12px 16px; padding: 2cqh 1.1cqw; min-width: 0; }
+.abst-frage h2 { margin: 0 0 8px; font-size: 1.05rem; line-height: 1.3; margin: 0 0 1.3cqh; font-size: 3.2cqh; line-height: 1.24; }
+.abst-raster { display: grid; grid-template-columns: minmax(0, 1.2fr) 1fr 1fr; gap: 6px 12px; gap: 1cqh .8cqw; align-items: center; }
+.abst-kopf { font-size: .85rem; font-size: 2.4cqh; font-weight: 700; color: #3F6C72; line-height: 1.15; }
+.abst-option { font-size: .95rem; font-size: 2.9cqh; line-height: 1.18; }
 .abst-option.richtig { font-weight: 700; color: #1B6E35; }
-.abst-zelle { display: flex; flex-direction: column; gap: 2px; }
-.abst-spur { display: block; height: 18px; background: #EAF2F4; border-radius: 4px; overflow: hidden; }
+.abst-zelle { display: flex; flex-direction: column; gap: 2px; gap: .3cqh; min-width: 0; }
+.abst-spur { display: block; height: 18px; height: 3.2cqh; background: #EAF2F4; border-radius: 4px; overflow: hidden; }
 .abst-balken { display: block; height: 100%; background: #3F6C72; position: relative; transition: width .4s; }
 .abst-balken.richtig { background: #1B6E35; }
 .abst-sicher { position: absolute; left: 0; top: 0; bottom: 0; background: rgba(255,255,255,.35); border-right: 2px solid rgba(255,255,255,.8); }
-.abst-zahl { font-size: .8rem; color: #3F6C72; }
+.abst-zahl { font-size: .8rem; font-size: 2.3cqh; color: #3F6C72; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .abst-erklaerung { margin: 8px 0 0; font-size: .9rem; color: #1B6E35; }
+/* Übersicht: die Erklärung erscheint nur in der großen Ansicht (Karte anklicken) */
+#abstimmung:not(.einzeln) .abst-erklaerung { display: none; }
 
 /* Abstimmung: Karte anklicken → eine Frage groß (Einzelansicht) */
 .abst-frage { cursor: pointer; transition: box-shadow .15s; }
 .abst-frage:hover, .abst-frage:focus-visible { outline: none; box-shadow: 0 0 0 4px var(--gold, #F2B600); }
-#abstimmung.einzeln { display: flex; flex-direction: column; gap: 1.6vh; overflow: hidden; }
-.abst-frage.gross { flex: 1; min-height: 0; overflow: auto; padding: 2.2vh 3vw; border-radius: 1.6vh; display: flex; flex-direction: column; justify-content: center; }
-.abst-frage.gross h2 { font-size: 3.6vh; line-height: 1.22; margin: 0 0 2vh; }
-.abst-frage.gross .abst-raster { grid-template-columns: minmax(0, 1.25fr) 1fr 1fr; gap: 1.4vh 3vw; }
-.abst-frage.gross .abst-kopf { font-size: 2.4vh; }
-.abst-frage.gross .abst-option { font-size: 3.3vh; line-height: 1.15; }
-.abst-frage.gross .abst-zelle { gap: .4vh; }
-.abst-frage.gross .abst-spur { height: 4.2vh; border-radius: .9vh; }
+#abstimmung.einzeln { display: flex; flex-direction: column; gap: 1.6vh; gap: 2.2cqh; overflow: hidden; padding: 0; height: 100%; }
+.abst-frage.gross {
+  flex: 1; min-height: 0; overflow: auto; padding: 2.2vh 3vw; padding: 3.2cqh 3vw; border-radius: 1.6vh;
+  display: flex; flex-direction: column; justify-content: center; justify-content: safe center;
+}
+.abst-frage.gross h2 { font-size: 3.6vh; font-size: 5.9cqh; line-height: 1.22; margin: 0 0 2vh; margin: 0 0 2.8cqh; }
+.abst-frage.gross .abst-raster { grid-template-columns: minmax(0, 1.25fr) 1fr 1fr; gap: 1.4vh 3vw; gap: 2cqh 3vw; }
+.abst-frage.gross .abst-kopf { font-size: 2.4vh; font-size: 3.9cqh; }
+.abst-frage.gross .abst-option { font-size: 3.3vh; font-size: 5.5cqh; line-height: 1.15; }
+.abst-frage.gross .abst-zelle { gap: .4vh; gap: .6cqh; }
+.abst-frage.gross .abst-spur { height: 4.2vh; height: 6.8cqh; border-radius: .9vh; }
 .abst-frage.gross .abst-sicher { border-right-width: 4px; }
-.abst-frage.gross .abst-zahl { font-size: 2.4vh; font-weight: 700; }
-.abst-frage.gross .abst-erklaerung { font-size: 3vh; line-height: 1.25; margin-top: 2vh; font-weight: 700; }
+.abst-frage.gross .abst-zahl { font-size: 2.4vh; font-size: 3.9cqh; font-weight: 700; }
+.abst-frage.gross .abst-erklaerung { font-size: 3vh; font-size: 4.8cqh; line-height: 1.25; margin-top: 2vh; margin-top: 2.6cqh; font-weight: 700; }
 .abst-nav { display: flex; justify-content: center; gap: 1.5vw; flex: none; }
-.abst-nav .leise { font-size: 2.4vh; padding: .8vh 1.6vw; }
+.abst-nav .leise { font-size: 2.4vh; font-size: 3.4cqh; padding: .8vh 1.6vw; padding: 1cqh 1.6vw; min-height: 0; }
 .abst-nav .leise:disabled { opacity: .35; cursor: default; }

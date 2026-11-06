@@ -7,7 +7,7 @@
  *      { raum, geraeteId, name, seite, geloest, gesamt, status }
  *   3. Die Beamer-Seite fragt alle paar Sekunden ab:           GET  /api/stand?raum=…&schluessel=…
  *   4. Moderation (nur mit Schlüssel):                         POST /api/entfernen, POST /api/leeren
- *   5. Abstimmung „Ihre Entscheidung, bitte!“ (ohne Namen):    POST /api/stimme
+ *   5. Abstimmung „Wie hätten Sie gehandelt?“ (ohne Namen):    POST /api/stimme
  *      { raum, geraeteId, runde: 1|2, antworten: { E1: 'B', … }, sicher: { E1: 1, … } }
  *      /api/stand liefert dazu nur die ausgezählten Stimmen (keine Geräte-IDs).
  *

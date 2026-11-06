@@ -10,7 +10,7 @@ Die Arbeitsblätter entstehen im Wechsel (Lohner / Klawitter); dieses Repository
 
 | Min. | Aufgabe | Wo? | Sozialform | Examens-/KA-Bezug |
 |---|---|---|---|---|
-| 0–8 | Einstieg „Ihre Entscheidung, bitte!“ (Runde 1) | 📱 `w2-entscheidung.html?runde=1` | EA → Plenum | Fehlvorstellungen sichtbar machen |
+| 0–8 | Einstieg „Wie hätten Sie gehandelt? – Ihre Vermutungen, bitte!“ (6 Notfälle, E6 = Frau Maler), Murmeln | 📱 `w2-entscheidung.html?runde=1` | EA → PA → Plenum | Vorwissen aktivieren, Fehlvorstellungen sichtbar machen |
 | 8–23 | AA1 Expertenrunde: Befunde markieren, Schockform anhand von 4 Symptomen begründen | 📱 `w2-markieren.html?fall=a/b/c` + Expertenblatt | Gruppenpuzzle (Experten) | KA 3.1 (Wortlaut) |
 | 23–43 | AA2 Stammgruppe: Vergleichstabelle, Schockform-Detektiv, Klausurtraining | 📱 `w2-detektiv.html` + ✍️ | Gruppenpuzzle (Stamm) | KA 3.2, 5.5 |
 | 43–63 | AA3 Lagerungsparcours auf Yogamatten, Entscheidungsweg | 📱 `w2-lagerung.html` + ✍️ | PA → EA | KA 3.3 (Lagerung begründen) |
@@ -18,11 +18,11 @@ Die Arbeitsblätter entstehen im Wechsel (Lohner / Klawitter); dieses Repository
 | 88–100 | AA5 Aufstellung „Wer darf was?“, Stellungnahme Adrenalin | ✍️ + Schilder | Plenum → EA → PA | III.2.b, KA 3.3 |
 | 100–115 | AA6 Klausurtraining Transferfall + Peer-Korrektur | ✍️ + 📱 `w2-raster.html` | EA → PA | Examen Mai 2024 T3 8.2 |
 | 115–130 | AA7 Placemat „Zurück zu Frau Maler“ (Kausalkette) | ✍️ Placemat A3 | GA (4) | IKL W2 Nr. 5 |
-| 130–135 | Check-out: Abstimmung Runde 2, Ich-kann-Liste | 📱 `w2-entscheidung.html?runde=2` | Plenum | – |
+| 130–135 | Check-out „Hätten Sie richtig gehandelt? – Prüfen Sie Ihre Vermutungen“, Ich-kann-Liste | 📱 `w2-entscheidung.html?runde=2` | EA → Plenum | Vermutungen überprüfen (vorher/nachher) |
 | HA | Mini-Examen (20 P., ca. 26 min) mit Selbstkontrolle | ✍️ + 📱 `w2-transfer.html` | EA | Examensformat |
 
 **Nur über QR-Codes:** Jede Übung öffnet sich nur über ihren eigenen QR-Code. Es gibt keine Links zwischen den
-Übungen, keine Startseite mit Übersicht, keine Rundenauswahl (Runde 1 und 2 haben je einen QR-Code) und keine
+Übungen, keine Startseite mit Übersicht, keine Rundenauswahl (Einstieg und Check-out haben je einen QR-Code) und keine
 Fallauswahl in AA1 (jedes Expertenblatt hat seinen QR-Code). Ohne Parameter zeigen die Seiten nur „Bitte QR-Code scannen“.
 
 ## Dateien
@@ -78,12 +78,15 @@ Der Verbindungsdienst läuft als Cloudflare-Worker **`kb1-notfall`** unter
 1. Am Laptop `…/3BFP2-kb1-notfall/fortschritt.html` öffnen → **„Neuen Raum starten“**. Der Raumcode
    steht groß oben rechts; die SuS geben ihn mit ihrem Vornamen ein (das Handy merkt sich beides 3 Stunden).
 2. **Fortschritt** (Spalten AA1–AA4): je Person „x von y gelöst“, ✓ = Merksatz erreicht, ⚠ = zu viel geraten.
-3. **Abstimmung** (Knopf unten): „Ihre Entscheidung, bitte!“ – Runde 1 und Runde 2 nebeneinander,
-   **ohne Namen**; der helle Teil des Balkens = „sicher“. **Lösung zeigen** markiert die richtigen
-   Antworten und blendet die Erklärung ein – erst beim Check-out drücken.
-   **Karte anklicken** (E1–E5) zeigt nur diese Frage groß über den ganzen Bildschirm; „Vorherige/Nächste
-   Frage“ oder die Pfeiltasten blättern, „Alle Fragen“, ein Klick auf die Karte oder Esc führt zurück.
-4. Unten: Anweisungen groß einblenden (Einstieg, AA1–AA2, AA3, AA4, Check-out), **Namen verbergen**,
+3. **Abstimmung** (Knopf unten): „Wie hätten Sie gehandelt?“ – **Vermutung (Beginn)** und **Entscheidung (Ende)**
+   nebeneinander, **ohne Namen**; der helle Teil des Balkens = „sicher“. **Lösung zeigen** markiert die
+   richtigen Antworten – erst beim Check-out drücken.
+   **Karte anklicken** (E1–E6) zeigt nur diese Frage groß über den ganzen Bildschirm, mit „Lösung zeigen“ auch
+   die Erklärung; „Vorherige/Nächste Frage“ oder die Pfeiltasten blättern, „Alle Fragen“, ein Klick auf die
+   Karte oder Esc führt zurück.
+   **Murmeln beim Einstieg:** die Frage mit der größten Uneinigkeit anklicken und unten „Murmeln“ einblenden
+   (1 Minute, Sitznachbarn begründen sich ihre Wahl) – nicht auflösen.
+4. Unten: Anweisungen groß einblenden (Einstieg, Murmeln, AA1–AA2, AA3, AA4, Check-out), **Namen verbergen**,
    **Vollbild**, **Liste leeren** (Abstimmung bleibt), **Neuer Raum** (für die Parallelklasse).
 5. **Probeansicht ohne Internet:** `…/fortschritt.html?demo=1` (erfundene Namen und Stimmen).
 
@@ -101,7 +104,7 @@ Der Verbindungsdienst läuft als Cloudflare-Worker **`kb1-notfall`** unter
 - **Übungen:** `docs/inhalte.js` auf GitHub mit dem Stift bearbeiten → „Commit changes“ → nach 1–2 Minuten online.
   Nur Text **zwischen den Hochkommas** ändern; `**Wort**` = fett, `\n` = neue Zeile.
 - **Simulation:** `docs/inhalte_simulation.js` (Texte, Startwerte, Verlauf, Bewertungen, Checklisten – im Dateikopf erklärt).
-- **Merksätze, Entscheidungsfragen und Lagerungskarten** stehen auch im Arbeitsblatt
+- **Merksätze, Einstiegsfragen (E1–E6) und Lagerungskarten** stehen auch im Arbeitsblatt
   (`werkzeuge/ab_w2_texte.js`). Bei Änderungen beide Stellen anpassen; `tests/inhalte.test.js` meldet Abweichungen.
 - **Schutz gegen Durchklicken:** `mindestensErsterVersuch` bzw. `hoechstensFalschErsterVersuch` in `docs/inhalte.js`.
 - Nach größeren Änderungen in `docs/sw.js` `VERSION` erhöhen (Offline-Speicher).

@@ -110,13 +110,14 @@ const EXPERTEN = {
   }
 };
 
-/* ---------- Einstieg „Ihre Entscheidung, bitte!“ (auch in docs/inhalte.js) ---------- */
+/* ---------- Einstieg und Check-out „Wie hätten Sie gehandelt?“ (auch in docs/inhalte.js) ---------- */
 const ENTSCHEIDUNG = [
   { nr: 'E1', frage: 'Frau K. hat nach einer Infusion Quaddeln, ringt nach Luft und hat einen Blutdruck von 85/50 mmHg. Wie lagern Sie sie?', optionen: ['A flach, Beine hoch', 'B Oberkörper hoch', 'C stabile Seitenlage'], richtig: 'B', erklaerung: 'Atemnot ist das Leitsymptom → Oberkörper hoch. Beine hoch würde die Atmung erschweren.' },
   { nr: 'E2', frage: 'Welches Medikament ist beim anaphylaktischen Schock das Mittel der ersten Wahl?', optionen: ['A Antihistaminikum', 'B Adrenalin i. m.', 'C Kortison i. v.'], richtig: 'B', erklaerung: 'Adrenalin wirkt am schnellsten auf Kreislauf, Schleimhäute und Bronchien. Antihistaminikum und Kortison kommen danach.' },
   { nr: 'E3', frage: 'Herr T. kann nach einem Kopfsprung die Beine nicht bewegen. Puls 54/min, Haut warm und rosig, Blutdruck 85/50 mmHg. Ist er stabil?', optionen: ['A Ja – Puls ruhig, Haut gut durchblutet', 'B Nein – das kann ein Schock sein'], richtig: 'B', erklaerung: 'Neurogener Schock: Der Sympathikus fällt aus – kein Pulsanstieg, keine Zentralisation, aber der Blutdruck ist niedrig.' },
   { nr: 'E4', frage: 'Während einer Kurzinfusion bekommt Herr M. Juckreiz und Atemnot. Was tun Sie mit der Infusion?', optionen: ['A langsamer laufen lassen', 'B stoppen und den Zugang entfernen', 'C stoppen, Zugang liegen lassen'], richtig: 'C', erklaerung: 'Allergen sofort stoppen – den venösen Zugang braucht das Notfallteam für Medikamente und Volumen.' },
-  { nr: 'E5', frage: 'Frau K. ringt nach Luft. Dürfen Sie ihr ohne ärztliche Anordnung oder SOP Sauerstoff geben?', optionen: ['A Ja, im Notfall immer', 'B Nein, nur nach Anordnung oder SOP'], richtig: 'B', erklaerung: 'Sauerstoff ist ein Arzneimittel. Eigenverantwortlich: erkennen, Hilfe holen, lagern, überwachen.' }
+  { nr: 'E5', frage: 'Frau K. ringt nach Luft. Dürfen Sie ihr ohne ärztliche Anordnung oder SOP Sauerstoff geben?', optionen: ['A Ja, im Notfall immer', 'B Nein, nur nach Anordnung oder SOP'], richtig: 'B', erklaerung: 'Sauerstoff ist ein Arzneimittel. Eigenverantwortlich: erkennen, Hilfe holen, lagern, überwachen.' },
+  { nr: 'E6', frage: 'Frau Maler (Leitfall) um 11 Uhr: Sie ist unruhig, atmet schnell und bekommt schlecht Luft, ist blass und kaltschweißig. Puls 118/min, Blutdruck 105/70 mmHg. Wie lagern Sie sie?', optionen: ['A flach, Beine hoch', 'B Oberkörper hoch', 'C aufstehen lassen – ans offene Fenster'], richtig: 'B', erklaerung: 'Die Luftnot steht im Vordergrund → Oberkörper hoch, trotz Schockzeichen keine Schocklage. Nicht aufstehen lassen (Lungenembolie: weitere Gerinnsel können sich lösen), nicht allein lassen, sofort Hilfe holen.' }
 ];
 
 /* ---------- Lagerungskarten (auch in docs/inhalte.js) ---------- */

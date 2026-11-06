@@ -190,7 +190,7 @@
     return { spalten: spalten, h: Math.max(5.5, h) };
   }
 
-  /* ---------- Abstimmung „Ihre Entscheidung, bitte!“ ---------- */
+  /* ---------- Abstimmung „Wie hätten Sie gehandelt?“ (Einstieg = Vermutung, Check-out = Entscheidung) ---------- */
   function abstimmungZeichnen() {
     var box = $('abstimmung');
     box.textContent = '';
@@ -198,10 +198,12 @@
     var r2 = (stimmen && stimmen[2]) || { n: 0, fragen: {} };
     $('zusammenfassung').textContent = K.ersetzen(T.stimmenZahl, { a: r1.n, b: r2.n });
     if (!r1.n && !r2.n) { box.appendChild(el('p', 'abst-leer', T.keineStimmen)); return; }
-    // Einzelansicht: nur eine Frage groß (Klick auf eine Karte); sonst alle fünf Karten
+    // Einzelansicht: nur eine Frage groß (Klick auf eine Karte); sonst alle Karten
     var einzeln = grossIndex !== null && !!FRAGEN[grossIndex];
     box.classList.toggle('einzeln', einzeln);
-    if (!einzeln) $('zusammenfassung').textContent += '   ·   ' + T.vergroessernHinweis;
+    // Hinweis „Karte anklicken“ in der kleinen Zeile unter der Zusammenfassung (statt angehängt)
+    $('legende').textContent = T.vergroessernHinweis;
+    $('legende').hidden = einzeln;
     FRAGEN.forEach(function (f, i) {
       if (einzeln && i !== grossIndex) return;
       var karte = el('section', 'abst-frage' + (einzeln ? ' gross' : ''));
@@ -279,6 +281,7 @@
     $('abstimmung').hidden = ansicht !== 'abstimmung';
     $('raster').hidden = ansicht !== 'fortschritt';
     $('legende').hidden = ansicht !== 'fortschritt';
+    if (ansicht === 'fortschritt') $('legende').textContent = T.legendeFertig + '   ·   ' + T.legendeDurch;
     zeichnen();
   }
 
