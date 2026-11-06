@@ -42,7 +42,7 @@ const folieIst = (lap, id, ms) => bis(lap, (x) => { const f = document.querySele
     await lap.click('#weiter');
     await lap.click('#weiter');
     H.pruefe(await folieIst(lap, 'einstieg'), 'Folie 3: Abstimmung');
-    H.pruefe(await bis(lap, () => /^(1[5-9]|20) von 21/.test(document.querySelector('.zaehl-gross').textContent)), 'erfundene Stimmen laufen ein');
+    H.pruefe(await bis(lap, () => /^(1[5-9]|20) von 21/.test((document.querySelector('.zaehl-gross') || {}).textContent || '')), 'erfundene Stimmen laufen ein');
     await lap.click('#weiter');
     H.pruefe(await bis(lap, () => document.querySelectorAll('.abst-frage.stern').length === 1), 'Ergebnis mit „größter Uneinigkeit“');
 
@@ -71,19 +71,32 @@ const folieIst = (lap, id, ms) => bis(lap, (x) => { const f = document.querySele
     }
     await bis(h, () => { const b = document.getElementById('fertig-team'); return b && !b.disabled; });
     await h.click('#fertig-team');
-    H.pruefe(await folieIst(lap, 'aa2a', 60000), 'alle fertig → automatisch Stammgruppen');
+    H.pruefe(await folieIst(lap, 'aa1-merksatz', 60000), 'alle fertig → automatisch „Merksatz AA1 prüfen“');
+    await lap.click('#weiter');
+    H.pruefe(await folieIst(lap, 'aa2a'), 'Weiter: Stammgruppen');
     H.pruefe(await bis(h, () => !!document.querySelector('.stamm-kopf')), 'Handy der Lehrkraft: Stammgruppe mit erfundenen Namen');
     H.pruefe(await bis(lap, () => document.querySelectorAll('.g-karte .haken').length >= 3, null, 60000), 'erfundene Stammgruppen-Mitglieder melden „fertig“');
 
     console.log('\n== Übungsfortschritt der erfundenen Klasse');
-    await lap.click('#weiter');
-    H.pruefe(await folieIst(lap, 'aa2b'), 'Folie 10: Detektiv');
+    await lap.click('#menue-knopf');
+    await lap.click('.menue-folie:has-text("Schockform-Detektiv (AA2b)")');
+    H.pruefe(await folieIst(lap, 'aa2b'), 'Folie Schockform-Detektiv');
     H.pruefe(await bis(lap, () => [...document.querySelectorAll('.g-zahl')].some((z) => /^[1-9]\//.test(z.textContent) || z.textContent === '✓')), 'Fortschrittsbalken der erfundenen Klasse bewegen sich');
 
     console.log('\n== Beamer neu laden: Probestunde läuft weiter');
     await lap.reload();
     H.pruefe(await folieIst(lap, 'aa2b'), 'nach dem Neuladen dieselbe Folie');
     H.pruefe(await bis(lap, () => document.getElementById('kopf-raum').textContent.includes('Probestunde')), 'weiterhin als Probestunde gekennzeichnet');
+
+    console.log('\n== „Wer darf was?“: erfundene Klasse stimmt am Handy ab');
+    await lap.click('#menue-knopf');
+    await lap.click('.menue-folie:has-text("Wer darf was?")');
+    H.pruefe(await folieIst(lap, 'aa4a'), 'Folie „Wer darf was?“');
+    await lap.click('#weiter');
+    H.pruefe(await bis(lap, () => /^(1[0-9]|20) von/.test((document.querySelector('.abgestimmt') || {}).textContent || '')), 'erfundene Stimmen zur ersten Maßnahme laufen ein');
+    await lap.click('#weiter');
+    H.pruefe(await bis(lap, () => /Das hatten \d+ von \d+ richtig/.test((document.querySelector('.abgestimmt.ergebnis') || {}).textContent || '')), 'Lösung: „Das hatten X von Y richtig!“');
+    await lap.screenshot({ path: path.join(ORDNER, 'probe_wer_darf_was.png') });
 
     H.pruefe(protokoll.konsole.length === 0, 'keine Fehler in der Konsole', protokoll.konsole);
     H.pruefe(protokoll.extern.length === 0, 'keine Anfragen an fremde Adressen', protokoll.extern);

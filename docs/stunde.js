@@ -2,7 +2,7 @@
  *
  * Ein QR-Code für die ganze Stunde. Das Handy meldet sich mit Vornamen im Raum an und zeigt
  * dann immer den Bildschirm, der zur Folie am Beamer passt. Übungen (Abstimmung, Markieren,
- * Detektiv, Lagerung, Simulation, Raster) werden als fertige Module eingebunden: Wechselt die
+ * Detektiv, Lagerung, Raster) werden als fertige Module eingebunden: Wechselt die
  * Folie zu einer anderen Übung, lädt die Seite neu (der letzte Stand liegt im Tab-Speicher).
  * Springen zwischen Übungen ist so nicht möglich – das Handy folgt nur dem Beamer. */
 (function () {
@@ -98,6 +98,8 @@
     if (!m || !m.ich) return { schl: 'anmelden' };
     var f = folieVon(m.folie);
     var h = f.handy || { typ: 'vorne' };
+    // Aufgabenfolie: erst erklärt die Lehrkraft (Handy: nach vorne schauen), nach „Weiter“ wird gearbeitet
+    if (f.typ === 'aufgabe' && !(m.schritt > 0)) return { schl: 'aufgabeVorne' };
     if (h.typ === 'entscheidung') return { schl: 'modul:entscheidung:' + h.runde, modul: 'entscheidung', params: { runde: h.runde } };
     if (h.typ === 'experte') {
       if (!m.puzzle) return { schl: 'warten' };
@@ -304,7 +306,8 @@
     var h = f.handy || {};
     ({
       vorne: zeigeVorne, murmeln: zeigeMurmeln, gruppe: zeigeGruppe, warten: zeigeWarten, stamm: zeigeStamm,
-      papier: zeigePapier, aufstellung: zeigeAufstellung, ende: zeigeEnde
+      papier: zeigePapier, aufstellung: zeigeAufstellung, ende: zeigeEnde, faelle: zeigeFaelle,
+      aufgabeVorne: zeigeAufgabeVorne, bild: zeigeBild
     }[b.schl] || zeigeVorne)(f, h);
     uhrenAktualisieren();
   }
@@ -355,6 +358,24 @@
     box.appendChild(el('span', 'vorne-hinweis', H.vorneStandard));
   }
 
+  function zeigeAufgabeVorne(f) {
+    kopf(f.kurz);
+    var box = bildschirm('📺', f.titel, H.aufgabeVorne);
+    box.appendChild(el('span', 'vorne-hinweis', H.vorneStandard));
+  }
+
+  // Lagerungsfolien: dasselbe Bild wie am Beamer
+  function zeigeBild(f, h) {
+    kopf(f.kurz);
+    var box = bildschirm('', h.titel, '');
+    var img = el('img', 'handy-bild');
+    img.src = h.bild;
+    img.alt = h.titel;
+    box.appendChild(img);
+    if (h.text) box.appendChild(fmt('p', null, h.text));
+    box.appendChild(el('span', 'vorne-hinweis', H.vorneStandard));
+  }
+
   function zeigeWarten(f) {
     kopf(f.kurz);
     bildschirm('⏳', H.nichtEingeteilt, '');
@@ -370,6 +391,30 @@
     var box = bildschirm('✍️', h.titel, h.text);
     box.insertBefore(el('span', 'vorne-hinweis', H.papier), box.children[1]);
     box.appendChild(uhrZeile());
+  }
+
+  // Klausurtraining 2.1/2.2: Aufgaben mit den Fällen zum Nachlesen (alle drei, auch die fremden)
+  function fallText(fall) {
+    return INHALTE.markieren.faelle[fall].teile.map(function (t) { return typeof t === 'string' ? t : t.t; }).join('');
+  }
+  function zeigeFaelle(f, h) {
+    kopf(f.kurz);
+    var box = bildschirm('✍️', h.titel, h.text);
+    box.insertBefore(el('span', 'vorne-hinweis', H.papier), box.children[1]);
+    box.appendChild(uhrZeile());
+    (h.aufgaben || []).forEach(function (a) {
+      var k = el('section', 'schritt-karte');
+      k.appendChild(fmt('p', null, '**' + a.nr + '** ' + a.text));
+      a.faelle.forEach(function (fall) {
+        var d = el('details', 'info');
+        d.open = true;
+        var titelText = INHALTE.markieren.faelle[fall].titel.split('·').pop().trim();
+        d.appendChild(el('summary', null, 'Fall: ' + titelText));
+        fallText(fall).split('\n').forEach(function (x) { if (x.trim()) d.appendChild(el('p', null, x.trim())); });
+        k.appendChild(d);
+      });
+      uebung.appendChild(k);
+    });
   }
 
   function zeigeMurmeln(f, h) {
@@ -451,6 +496,13 @@
       vor.appendChild(uhrZeile());
       vor.appendChild(el('h2', null, K.ersetzen(H.expFall, { person: r.person })));
       var e = S.experten[r.fall];
+      // Reihenfolge wie im Arbeitsblatt: a) Fall + Merksatz AA1 → b) 1.1 → c) Infotext → d) Check → e) Tabellenspalte
+      nach.appendChild(fmt('p', 'weiter-hinweis', K.ersetzen(H.expWeiter, { b: p.rolle, form: r.form })));
+      var k11 = el('section', 'schritt-karte');
+      k11.appendChild(el('h2', null, H.exp11Titel));
+      k11.appendChild(fmt('p', null, K.ersetzen(H.exp11Text, { person: r.personDativ, adjektiv: r.adjektiv })));
+      k11.appendChild(el('p', 'klein-grau', H.exp11Tipp));
+      nach.appendChild(k11);
       var d = el('details', 'info');
       d.open = infoOffen;
       d.addEventListener('toggle', function () { infoOffen = d.open; });
@@ -458,8 +510,13 @@
       e.info.forEach(function (x) { d.appendChild(fmt('p', null, x)); });
       d.appendChild(fmt('p', 'woerter', '**' + H.expWoerter + ':** ' + e.woerter.split(' | ').join(' · ')));
       nach.appendChild(d);
-      nach.appendChild(el('p', 'papier-hinweis', '📄 ' + H.expPapier));
+      nach.appendChild(el('p', 'papier-hinweis', '📄 ' + K.ersetzen(H.expPapier, { b: p.rolle, form: r.form })));
       var c = el('div'); c.id = 'exp-check'; nach.appendChild(c);
+      var tab = el('section', 'schritt-karte tabelle-karte');
+      tab.appendChild(el('h2', null, H.expTabelleTitel));
+      tab.appendChild(fmt('p', null, K.ersetzen(H.expTabelleText, { b: p.rolle, kurz: r.kurz })));
+      tab.appendChild(fmt('p', null, '**' + H.expTabelleFertig + '**'));
+      nach.appendChild(tab);
       var f = el('div'); f.id = 'exp-fertig'; nach.appendChild(f);
     }
     // oben: Team, Tisch, Aufträge (ändert sich, wenn jemand im Team „fertig“ meldet)
@@ -481,7 +538,17 @@
     teilErneuern('exp-check', JSON.stringify(checkStand()[p.rolle] || {}), function () { return checkZeichnen(p.rolle); });
     var bestanden = checkBestanden(p.rolle);
     teilErneuern('exp-fertig', [p.ichTeamFertig, p.teamsFertig, p.teamsGesamt, bestanden].join('|'), function () {
-      return fertigBereich('team', p.ichTeamFertig, bestanden, K.ersetzen(H.teamFertigText, { x: p.teamsFertig, y: p.teamsGesamt }), H.fertigTeam, H.fertigTeamGesperrt);
+      var box = fertigBereich('team', p.ichTeamFertig, bestanden, K.ersetzen(H.teamFertigText, { x: p.teamsFertig, y: p.teamsGesamt }), H.fertigTeam, H.fertigTeamGesperrt);
+      // Während des Wartens: Selbstkontrolle zur Klausuraufgabe 1.1
+      if (p.ichTeamFertig) {
+        var k = el('section', 'schritt-karte');
+        k.appendChild(fmt('p', null, '**' + H.exp11Kontrolle + '**'));
+        var ul = el('ul', 'auftraege');
+        (S.experten[r.fall].nennen || []).forEach(function (x) { ul.appendChild(el('li', null, x)); });
+        k.appendChild(ul);
+        box.insertBefore(k, box.lastChild);
+      }
+      return box;
     });
   }
 
@@ -569,7 +636,6 @@
     uebung.appendChild(k);
     var andere = namenListe(p.gruppe.mitglieder);
     if (andere) uebung.appendChild(fmt('p', 'setzen', K.ersetzen(H.stammSetzen, { namen: andere })));
-    uebung.appendChild(el('p', 'papier-hinweis', K.ersetzen(H.stammTischkarte, { emoji: info.emoji + ' ' + info.name })));
     var dran = el('p', 'dran-band');
     dran.id = 'dran-band';
     uebung.appendChild(dran);
@@ -600,23 +666,62 @@
   }
 
   /* ---------- Aufstellung (AA5a) ---------- */
+  // AA4a „Wer darf was?“: Jede Person stimmt am Handy ab (ohne Namen, wie beim Einstieg).
+  // Nach „Lösung zeigen“ am Beamer sieht sie, ob sie richtig lag.
+  var SCHL_AUFSTELLUNG = 'kb1nf_aufstellung';
+  function aufstellungWahl() {
+    var a = anmeldung();
+    var w = K.Speicher.sitzung.lesen(SCHL_AUFSTELLUNG);
+    return w && a && w.raum === a.raum && w.antworten ? w : { raum: a ? a.raum : '', antworten: {} };
+  }
+  function aufstellungWaehlen(f, frage, buchstabe) {
+    var a = anmeldung();
+    var w = aufstellungWahl();
+    w.antworten[frage] = buchstabe;
+    K.Speicher.sitzung.schreiben(SCHL_AUFSTELLUNG, w);
+    if (a) KB1Verbindung.senden(BASIS, '/api/stimme', { raum: a.raum, geraeteId: a.geraeteId, runde: f.runde, antworten: w.antworten, sicher: {} }).catch(function () {});
+  }
   function zeigeAufstellung(f, h) {
     kopf(f.kurz);
     var s = stand.schritt || 0;
     var nr = Math.ceil(s / 2);
-    if (!nr) { bildschirm('🚶', h.titel, h.start); return; }
+    if (!nr) { bildschirm('🗳️', h.titel, h.start); return; }
     var m = f.massnahmen[nr - 1];
-    var box = bildschirm('🚶', '', '');
-    box.appendChild(el('p', null, 'Maßnahme ' + nr + ' von ' + f.massnahmen.length));
+    var frage = 'M' + nr;
+    var richtig = 'ABC'.charAt(m.ecke);
+    var loesung = s % 2 === 0;
+    var meine = aufstellungWahl().antworten[frage];
+    var box = bildschirm('', '', '');
+    box.appendChild(el('p', 'klein-grau', K.ersetzen(H.aufstellungNr, { n: nr, y: f.massnahmen.length })));
     box.appendChild(el('p', 'massnahme-handy', m.text));
-    if (s % 2 === 0) {
-      var e = f.ecken[m.ecke];
-      box.appendChild(el('div', 'ecke-gross', K.ersetzen(H.aufstellungLoesung, { ecke: e.emoji + ' ' + e.text })));
-      box.appendChild(el('p', null, m.warum));
-    } else {
-      box.appendChild(fmt('p', null, f.text));
+    var knoepfe = el('div', 'antworten ecken-handy');
+    f.ecken.forEach(function (e, i) {
+      var b = 'ABC'.charAt(i);
+      var k = K.knopf('', 'antwort' + (meine === b ? ' gewaehlt' : '') + (loesung && b === richtig ? ' richtig' : '') + (loesung && meine === b && b !== richtig ? ' falsch' : ''), function () {
+        aufstellungWaehlen(f, frage, b);
+        letzterInhalt = '';
+        zeigen();
+      });
+      k.setAttribute('data-ecke', b);
+      k.appendChild(el('span', 'symbol', e.emoji));
+      k.appendChild(document.createTextNode(' ' + e.text));
+      k.disabled = loesung;
+      knoepfe.appendChild(k);
+    });
+    box.appendChild(knoepfe);
+    if (!loesung) {
+      box.appendChild(el('p', 'aufstellung-hinweis', meine ? H.aufstellungGewaehlt : H.aufstellungFrage));
+      return;
     }
+    var e = f.ecken[m.ecke];
+    var ecke = e.emoji + ' ' + e.text;
+    var rm = el('div', 'rueckmeldung ' + (meine === richtig ? 'ist-richtig' : 'ist-falsch'));
+    rm.appendChild(el('p', 'rueck-titel', meine === richtig ? H.aufstellungRichtig : K.ersetzen(meine ? H.aufstellungFalsch : H.aufstellungKeine, { ecke: ecke })));
+    rm.appendChild(el('p', null, m.warum));
+    box.appendChild(rm);
+    box.appendChild(el('p', 'aufstellung-hinweis', H.aufstellungEintragen));
   }
+
 
   /* ---------- Start ---------- */
   if (!BASIS) { anmeldenZeigen(S.beamer.nichtEingerichtet); return; }

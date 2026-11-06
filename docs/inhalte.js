@@ -3,8 +3,7 @@
    „Schock ist nicht gleich Schock – vergleichen und nach Leitsymptom handeln“
    ==========================================================================
 
-   In dieser Datei stehen die Texte der Übungen (die Simulation hat ihre
-   eigene Datei: inhalte_simulation.js). Sie können die Texte hier ändern,
+   In dieser Datei stehen die Texte der Übungen. Sie können die Texte hier ändern,
    ohne etwas vom Programm zu verstehen.
 
    So ändern Sie einen Text sicher:
@@ -140,10 +139,12 @@ var INHALTE = {
     fehltKreislauf: 'Achtung: Sie haben noch kein Zeichen des Kreislaufs markiert (Puls, Blutdruck, Haut, Bewusstsein). Ohne Kreislaufzeichen ist es kein Schock!',
     weiterSuchen: 'Suchen Sie die übersehenen Stellen (orange gestrichelt) und entfernen Sie falsche Markierungen. Dann noch einmal prüfen.',
     geschafft: 'Alle Hinweise gefunden – stark!',
-    // Durchklicken: beim ersten Prüfen höchstens so viele falsche Markierungen
-    hoechstensFalschErsterVersuch: 3,
-    // {x} = falsch markiert beim ersten Prüfen, {z} = erlaubt
-    durchklickenText: 'Beim ersten Prüfen waren {x} Stellen falsch markiert – erlaubt sind höchstens {z}. Lesen Sie den Fall genau und markieren Sie nur, was wirklich auf einen Schock hinweist.',
+    // Schutz gegen Raten: Sind beim Prüfen mehr Sätze falsch markiert als erlaubt, werden alle
+    // Markierungen gelöscht – ohne zu verraten, welche gestimmt hätten – und es geht von vorn los.
+    hoechstensFalsch: 3,
+    ratenTitel: 'Bitte nicht raten!',
+    // {f} = falsch markierte Sätze
+    ratenText: 'Sie haben {f} Sätze markiert, die nichts mit dem Schock oder seiner Ursache zu tun haben. Ihre Markierungen wurden gelöscht. Lesen Sie den Fall in Ruhe noch einmal und markieren Sie nur, was wirklich ein Hinweis ist.',
     faelle: {
       a: {
         titel: 'Expertenblatt A · Herr Albrecht (81)',
@@ -151,51 +152,61 @@ var INHALTE = {
           { t: 'Herr Gerhard Albrecht (81) lebt seit vier Jahren im Pflegeheim „Am Kocherufer“.', k: '', w: 'Alter und Wohnort allein sind kein Hinweis auf einen Schock.' }, ' ',
           { t: 'Wegen eines Vorhofflimmerns nimmt er einen Gerinnungshemmer.', k: 'ursache', w: 'Gerinnungshemmer erhöhen das Blutungsrisiko.' }, ' ',
           { t: 'Er hört schlecht und trägt deshalb zwei Hörgeräte.', k: '', w: 'Hörgeräte haben mit dem Kreislauf nichts zu tun.' }, ' ',
-          { t: 'Am Vormittag hatte er schwarzen, klebrigen Stuhlgang.', k: 'ursache', w: 'Teerstuhl: Hinweis auf eine Blutung im Magen oder Zwölffingerdarm.' }, '\n',
+          { t: 'Am Vormittag hatte er schwarzen, klebrigen Stuhlgang.', k: 'ursache', w: 'Teerstuhl: Hinweis auf eine Blutung im Magen oder Zwölffingerdarm.' }, ' ',
+          { t: 'Danach hat er mit seinem Zimmernachbarn Karten gespielt.', k: '', w: 'Eine Freizeitbeschäftigung – kein Hinweis.' }, '\n',
           'Als Sie ihn um 11:30 Uhr zum Mittagessen an die Bettkante setzen wollen, sagt er: ',
           { t: '„Mir wird ganz schwarz vor Augen.“', k: 'schock', w: 'Schwindel: Das Gehirn wird beim Aufsetzen schlechter durchblutet.' }, ' ',
           { t: 'Er ist blass,', k: 'schock', w: 'Blässe: Zentralisation – die Hautgefäße sind eng.' }, ' ',
           { t: 'seine Stirn ist kalt und feucht.', k: 'schock', w: 'Kalter Schweiß: Der Sympathikus ist aktiviert.' }, ' ',
+          { t: 'Auf seinem Nachttisch steht ein Foto seiner Enkelin.', k: '', w: 'Ein Foto hat mit dem Notfall nichts zu tun.' }, ' ',
           { t: 'Mehrmals bittet er um etwas zu trinken.', k: 'begleit', w: 'Durst: typisch für Volumenmangel (hypovolämischer Schock).' }, ' ',
           { t: 'Er wirkt unruhig und fragt, wo seine Frau sei, obwohl er sonst gut orientiert ist.', k: 'schock', w: 'Unruhe und neue Verwirrtheit: Das Gehirn ist schlechter versorgt.' }, ' Sie messen: ',
           { t: 'Puls 116/min,', k: 'schock', w: 'Tachykardie – der Puls ist von 78 auf 116/min gestiegen.' }, ' ',
           { t: 'Blutdruck 98/72 mmHg,', k: 'schock', w: 'Blutdruck gefallen, kleine Amplitude; Schockindex 116 : 98 ≈ 1,2.' }, ' ',
           { t: 'Atemfrequenz 24/min.', k: 'schock', w: 'Schnelle Atmung – ein Frühzeichen des Schocks.' }, ' ',
-          { t: 'Bei der Morgenrunde lagen die Werte bei Puls 78/min und Blutdruck 145/85 mmHg.', k: 'schock', w: 'Die Vorwerte zeigen den Trend: Erst der Vergleich macht die Veränderung sichtbar.' }
+          { t: 'Bei der Morgenrunde lagen die Werte bei Puls 78/min und Blutdruck 145/85 mmHg.', k: 'schock', w: 'Die Vorwerte zeigen den Trend: Erst der Vergleich macht die Veränderung sichtbar.' }, ' ',
+          { t: 'Seine Tochter hat sich für den Nachmittag zum Besuch angemeldet.', k: '', w: 'Ein geplanter Besuch ist kein Hinweis.' }
         ]
       },
       b: {
         titel: 'Expertenblatt B · Mia (19)',
         teile: [
           { t: 'Mia (19) ist Auszubildende im ersten Ausbildungsdrittel und mit Ihnen auf einer internistischen Station eingesetzt.', k: '', w: 'Beruf und Einsatzort sind kein Hinweis.' }, ' ',
+          { t: 'Es ist ihr dritter Tag auf der Station.', k: '', w: 'Hat mit dem Notfall nichts zu tun.' }, ' ',
           { t: 'In der Pause isst sie ein Stück Geburtstagskuchen, das Haselnüsse enthält.', k: 'ursache', w: 'Möglicher Auslöser: Nahrungsmittelallergie (Haselnuss).' }, ' ',
-          { t: 'Mia erzählt, dass es bei Nüssen „schon mal im Mund gekribbelt“ habe.', k: 'ursache', w: 'Hinweis auf eine bekannte Überempfindlichkeit gegen Nüsse.' }, ' ',
-          { t: 'Es ist ihr dritter Tag auf der Station.', k: '', w: 'Hat mit dem Notfall nichts zu tun.' }, '\n',
+          { t: 'Dabei erzählt sie von ihrem Wochenende im Kletterpark.', k: '', w: 'Freizeit am Wochenende – kein Hinweis.' }, ' ',
+          { t: 'Mia erwähnt, dass es bei Nüssen „schon mal im Mund gekribbelt“ habe.', k: 'ursache', w: 'Hinweis auf eine bekannte Überempfindlichkeit gegen Nüsse.' }, '\n',
           'Zehn Minuten später ',
           { t: 'kratzt sie sich an Hals und Händen, auf Hals und Brust bilden sich Quaddeln.', k: 'begleit', w: 'Hautzeichen der allergischen Reaktion (Histamin).' }, ' ',
           { t: 'Ihre Lippen und Augenlider schwellen an.', k: 'begleit', w: 'Schwellung durch durchlässige Gefäße (Angioödem).' }, ' ',
+          { t: 'Auf dem Stationsflur ist es gerade ruhig.', k: '', w: 'Die Lage auf dem Flur ist kein Hinweis.' }, ' ',
           { t: 'Mit heiserer Stimme', k: 'begleit', w: 'Heiserkeit: Die Kehlkopfschleimhaut schwillt an – Gefahr für die Atemwege!' }, ' sagt sie: ',
           { t: '„Mir ist schlecht, und mir ist so schwindelig.“', k: 'schock', w: 'Schwindel: Der Kreislauf ist beteiligt; Übelkeit ist ein Begleitzeichen.' }, ' ',
           { t: 'Sie hat Bauchkrämpfe.', k: 'begleit', w: 'Magen-Darm-Beteiligung bei Anaphylaxie.' }, ' Ihre Kollegin misst: ',
           { t: 'Puls 128/min,', k: 'schock', w: 'Tachykardie: Das Herz versucht auszugleichen.' }, ' ',
           { t: 'Blutdruck 88/50 mmHg,', k: 'schock', w: 'Blutdruckabfall durch weite Gefäße (relativer Volumenmangel).' }, ' ',
           { t: 'Atemfrequenz 26/min, Sauerstoffsättigung 93 %.', k: 'schock', w: 'Atemnot und Sauerstoffmangel.' }, ' ',
+          { t: 'Sie notiert die Werte auf einem Zettel.', k: '', w: 'Das Notieren ist richtig, aber kein Hinweis auf den Schock.' }, ' ',
           { t: 'Mia sagt, ihr Blutdruck sei sonst „immer so 120 zu 70“.', k: 'schock', w: 'Vorwert: Der Blutdruck ist deutlich gefallen.' }
         ]
       },
       c: {
         titel: 'Expertenblatt C · Herr Weber (24)',
         teile: [
-          'An einem Sonntagnachmittag sind Sie privat mit Freunden am Baggersee. ',
+          { t: 'An einem Sonntagnachmittag sind Sie privat mit Freunden am Baggersee.', k: '', w: 'Ort und Tag sind kein Hinweis.' }, ' ',
           { t: 'Tobias Weber (24) springt kopfüber vom Steg ins Wasser – an einer Stelle, an der das Wasser nur hüfttief ist.', k: 'ursache', w: 'Kopfsprung in flaches Wasser: typischer Unfallhergang für eine Verletzung der Halswirbelsäule.' }, ' ',
-          { t: 'Kurz vorher hatte er sich noch mit Sonnencreme eingecremt.', k: '', w: 'Sonnencreme hat mit dem Notfall nichts zu tun.' }, '\n',
+          'Seine Freunde ziehen ihn sofort ans Ufer. ',
+          { t: 'Kurz vorher hatte er sich noch mit Sonnencreme eingecremt.', k: '', w: 'Sonnencreme hat mit dem Notfall nichts zu tun.' }, ' ',
+          { t: 'Er studiert Sport und spielt in einem Volleyballverein.', k: '', w: 'Studium und Hobby sind kein Hinweis.' }, '\n',
           'Herr Weber ist wach und sagt: ',
           { t: '„Ich spür meine Beine nicht. Und meine Hände kribbeln.“', k: 'begleit', w: 'Gefühlsstörungen: Das Rückenmark ist verletzt.' }, ' ',
           { t: 'Er klagt über starke Nackenschmerzen.', k: 'ursache', w: 'Hinweis auf eine Verletzung der Halswirbelsäule.' }, ' ',
+          { t: 'Am Steg läuft laute Musik.', k: '', w: 'Musik hat mit dem Notfall nichts zu tun.' }, ' ',
           { t: 'Arme und Beine kann er kaum bewegen.', k: 'begleit', w: 'Lähmungen unterhalb der Verletzung.' }, ' ',
           { t: 'Seine Atmung ist flach.', k: 'schock', w: 'Bei hoher Verletzung kann auch die Atmung gestört sein.' }, ' ',
           { t: 'Sie tasten einen langsamen Puls von 52/min.', k: 'schock', w: 'Langsamer Puls trotz Schock: Der Sympathikus fällt aus.' }, ' ',
           { t: 'Die Haut an seinen Beinen ist warm, trocken und rosig.', k: 'schock', w: 'Keine Zentralisation – die Gefäße sind weit. Trügerisch: Er wirkt „gut durchblutet“.' }, ' ',
+          { t: 'Er fragt, ob jemand sein Handy gesehen hat.', k: '', w: 'Eine Alltagsfrage – kein Hinweis.' }, ' ',
           { t: 'Der Rettungsdienst misst später einen Blutdruck von 82/45 mmHg.', k: 'schock', w: 'Niedriger Blutdruck: Das Blut versackt in den weiten Gefäßen.' }
         ]
       }
@@ -210,18 +221,27 @@ var INHALTE = {
      ------------------------------------------------------------------------ */
   detektiv: {
     titel: 'AA2 · Schockform-Detektiv',
-    anweisung: 'Bestimmen Sie bei jedem Fall die **Schockform**. Markieren Sie danach die **zwei Befunde**, die Ihre Entscheidung belegen. Zum Schluss: der Monitorvergleich.',
+    anweisung: 'Lesen Sie jeden Fall genau. Tippen Sie die **zwei Befunde** an, die die Schockform belegen, und wählen Sie die **Schockform** – in beliebiger Reihenfolge. Dann: **„Prüfen“**. Zum Schluss: zwei Patienten im Vergleich.',
     formen: [
       { kuerzel: 'H', text: 'hypovolämisch' },
       { kuerzel: 'A', text: 'anaphylaktisch' },
       { kuerzel: 'N', text: 'neurogen' }
     ],
     formFrage: 'Welche Schockform liegt vor?',
-    belegFrage: 'Tippen Sie die zwei Befunde an, die genau diese Schockform belegen.',
+    belegFrage: 'Tippen Sie im Fall die zwei Befunde an, die genau diese Schockform belegen.',
+    pruefen: 'Prüfen',
+    auswahlFehlt: 'Wählen Sie die Schockform und genau zwei Befunde – dann „Prüfen“.',
+    // Schutz gegen Raten: Prüfen erst nach so vielen Sekunden Lesezeit, höchstens zwei Versuche je Fall
+    mindestLeseSekunden: 6,
+    zuSchnell: 'Das ging zu schnell – lesen Sie den Fall erst in Ruhe ganz durch.',
+    formFalsch: 'Die Schockform stimmt noch nicht.',
+    zweiterVersuch: 'Sie haben noch einen Versuch.',
+    loesungGezeigt: 'Das war der zweite Versuch – hier ist die Lösung:',
     belegRichtig: 'Richtig belegt!',
     belegSchock: 'Das zeigt, dass ein Schock vorliegt – aber nicht, welche Form.',
     belegLeer: 'Das gehört nicht zum Notfall.',
     fallTitel: 'Fall {n} von {y}',
+    vergleichTitel: 'Zum Schluss',
     mindestensErsterVersuch: 4,
     faelle: [
       { form: 'H', tipp: 'Woher kommt der Volumenmangel? Achten Sie auf die Drainage.', teile: [
@@ -270,7 +290,7 @@ var INHALTE = {
       ], erklaerung: 'Nahrungsmittel, Juckreiz, Heiserkeit und Erbrechen → anaphylaktischer Schock. Die Haut kann auch blass sein.' }
     ],
     monitor: {
-      titel: 'Monitorvergleich',
+      titel: 'Zwei Patienten im Vergleich',
       text: 'Beide Patienten sind nach einem Unfall im Schock. **Tippen Sie die zwei Zeilen an**, an denen Sie die beiden Schockformen am sichersten unterscheiden.',
       links: 'Herr P. – Oberschenkelbruch, starker Blutverlust',
       rechts: 'Herr Q. – Sturz von der Leiter, Lähmung beider Beine',
@@ -303,7 +323,7 @@ var INHALTE = {
       { kuerzel: 'BH', text: 'Flach, Beine hoch' },
       { kuerzel: 'SSL', text: 'Stabile Seitenlage' },
       { kuerzel: 'NB', text: 'Nicht bewegen, Kopf halten' },
-      { kuerzel: 'AND', text: 'Etwas anderes' }
+      { kuerzel: 'REA', text: 'Reanimation beginnen' }
     ],
     aufdecken: 'Aufdecken',
     loesung: 'Lösung:',
@@ -313,6 +333,14 @@ var INHALTE = {
     naechste: 'Nächste Karte – Rollen tauschen!',
     karteVon: 'Karte {n} von {y}',
     profi: 'Profi-Karte',
+    bilderTitel: '📄 Hilfe: die vier Lagerungen mit Bildern',
+    bilderHinweis: 'Dieselben Bilder finden Sie auf Ihrem Arbeitsblatt (Seite 4).',
+    bilder: [
+      { bild: 'bilder/lagerung_oberkoerper_hoch.svg', titel: 'Oberkörper hoch (halbsitzend)', wann: 'Atemnot steht im Vordergrund.' },
+      { bild: 'bilder/lagerung_beine_hoch.svg', titel: 'Flach, Beine hoch (Schocklage)', wann: 'Schockzeichen ohne Atemnot.' },
+      { bild: 'bilder/lagerung_seitenlage.svg', titel: 'Stabile Seitenlage', wann: 'Bewusstlos, Atmung normal.' },
+      { bild: 'bilder/lagerung_nicht_bewegen.svg', titel: 'Nicht bewegen, Kopf halten', wann: 'Verdacht auf Wirbelsäulenverletzung.' }
+    ],
     mindestensErsterVersuch: 5,
     karten: [
       { titel: 'Herr Bauer (70)', text: 'Nach einem Bienenstich ist ihm schwindelig. Puls 120/min, Blutdruck 85/50 mmHg. Er atmet ruhig und ist ansprechbar.', richtig: 'BH', loesung: 'flach, Beine hoch', warum: 'Schockzeichen ohne Atemnot: Blut aus den Beinen fließt zum Herzen.' },
@@ -321,20 +349,18 @@ var INHALTE = {
       { titel: 'Frau Engel (63)', text: 'Nach einem Wespenstich reagiert sie nicht mehr auf Ansprache. Sie atmet normal.', richtig: 'SSL', loesung: 'stabile Seitenlage', warum: 'Bewusstlos mit normaler Atmung: Die Atemwege bleiben frei, Erbrochenes kann abfließen.' },
       { titel: 'Herr Fuchs (81)', text: 'Teerstuhl seit dem Morgen. Er ist blass und kaltschweißig, Puls 116/min, Blutdruck 98/72 mmHg, keine Atemnot.', richtig: 'BH', loesung: 'flach, Beine hoch', warum: 'Hypovolämischer Schock ohne Atemnot. Nicht aufsetzen – Kollapsgefahr.' },
       { titel: 'Frau Graf (35)', text: 'Sie hat eine Nussallergie und Quaddeln am Hals: „Ich krieg so schlecht Luft.“ Blutdruck 120/80 mmHg.', richtig: 'OK', loesung: 'Oberkörper hoch', warum: 'Atemnot steht im Vordergrund, der Kreislauf ist noch stabil. Nicht aufstehen lassen.' },
-      { titel: 'Herr Hahn (28)', text: 'Sturz mit dem Fahrrad, offener Unterschenkelbruch. Er ist blass, Puls 120/min. Keine Nacken- oder Rückenschmerzen.', richtig: 'AND', loesung: 'flach, verletztes Bein nicht anheben', warum: 'Keine Schocklage bei Verletzungen an Bein oder Becken: Bein in der vorgefundenen Lage ruhigstellen (Woche 3).', profi: true },
-      { titel: 'Herr Ivo (66)', text: 'Nach einem Wespenstich ist er bewusstlos und atmet nicht normal.', richtig: 'AND', loesung: 'Reanimation beginnen (KB III)', warum: 'Keine normale Atmung = Kreislaufstillstand. Lagerung: Rückenlage auf harter Unterlage.' },
-      { titel: 'Profi-Karte: Frau Jäger (74)', text: 'Plötzlich peitschenartiger Schmerz im linken Bein. Das Bein ist blass und kalt, am Fuß ist kein Puls tastbar.', richtig: 'AND', loesung: 'Bein tief lagern, polstern', warum: 'Verdacht auf akuten Arterienverschluss: Tieflagern verbessert die Durchblutung (Examen Mai 2024). Die Lagerung richtet sich immer nach dem Problem.', profi: true }
+      { titel: 'Herr Ivo (66)', text: 'Nach einem Wespenstich ist er bewusstlos und atmet nicht normal.', richtig: 'REA', loesung: 'Reanimation beginnen (KB III)', warum: 'Keine normale Atmung = Kreislaufstillstand. Lagerung: Rückenlage auf harter Unterlage.' }
     ]
   },
 
   /* ------------------------------------------------------------------------
-     AA6 und Hausaufgabe: BEWERTUNGSRASTER (w2-raster.html, w2-transfer.html)
+     AA5 und Hausaufgabe: BEWERTUNGSRASTER (w2-raster.html, w2-transfer.html)
      punkte: je Kriterium; max: Höchstpunktzahl der Gruppe;
      fehler: ein angehakter Fehler setzt die genannten Kriterien auf 0 (sperrt).
      erstSchreiben: true = die Musterlösung erscheint erst nach Bestätigung.
      ------------------------------------------------------------------------ */
   raster: {
-    titel: 'AA6 · Bewertungsraster',
+    titel: 'AA5 · Bewertungsraster',
     anweisung: 'Lesen Sie die Lösung Ihrer Partnerin oder Ihres Partners. **Haken Sie an, was dort steht.** Die App zählt die Punkte wie im Erwartungshorizont.',
     gesamt: 'Punkte: {x} von {y}',
     rueckmeldung: 'Geben Sie jetzt eine Rückmeldung in einem Satz: Was ist gut gelungen – was fehlt noch?',
@@ -342,7 +368,7 @@ var INHALTE = {
     gesperrt: 'zählt nicht (Fehler angehakt)',
     zuruecksetzen: 'Alles zurücksetzen',
     gruppen: [
-      { titel: '6.1 Sofortmaßnahmen (je 1 P., höchstens 5 P.)', max: 5, kriterien: [
+      { titel: '5.1 Sofortmaßnahmen (je 1 P., höchstens 5 P.)', max: 5, kriterien: [
         { id: 'hilfe', text: 'Hilfe holen: Notruf 112 / Notärztin, Herrn Martens nicht allein lassen', punkte: 1 },
         { id: 'ok', text: 'Oberkörper hoch (halbsitzend) lagern', punkte: 1 },
         { id: 'vital', text: 'Atmung, Puls, Blutdruck, Bewusstsein (SpO₂) engmaschig überwachen', punkte: 1 },
@@ -353,22 +379,11 @@ var INHALTE = {
         { id: 'doku', text: 'Uhrzeit, Werte und Maßnahmen notieren', punkte: 1 },
         { id: 'andere', text: 'andere fachlich richtige Maßnahme (z. B. bei Bewusstlosigkeit stabile Seitenlage)', punkte: 1 }
       ] },
-      { titel: '6.1 Begründung der Positionierung (1 P.)', max: 1, kriterien: [
+      { titel: '5.1 Begründung der Positionierung (1 P.)', max: 1, kriterien: [
         { id: 'begruendung', text: 'Positionierung mit der Atemnot begründet (Atemhilfsmuskulatur, Zwerchfell)', punkte: 1 }
       ] },
-      { titel: '6.2 Kennzeichnung (1 P.)', max: 1, kriterien: [
+      { titel: '5.2 Kennzeichnung (1 P.)', max: 1, kriterien: [
         { id: 'naea', text: 'Alle Medikamenten- und Sauerstoff-Maßnahmen sind mit „n. ä. A.“ gekennzeichnet', punkte: 1 }
-      ] },
-      { titel: '6.3 Dokumentation (je 0,5 P., höchstens 3 P.)', max: 3, kriterien: [
-        { id: 'd1', text: 'Uhrzeit des Stichs und Beginn der Beschwerden', punkte: 0.5 },
-        { id: 'd2', text: 'Auslöser (Wespenstich in die Oberlippe)', punkte: 0.5 },
-        { id: 'd3', text: 'Symptome (Schwellung, Quaddeln, Kloßgefühl, pfeifende Atmung)', punkte: 0.5 },
-        { id: 'd4', text: 'Vitalwerte mit Uhrzeit (und Vorwert)', punkte: 0.5 },
-        { id: 'd5', text: 'Maßnahmen mit Uhrzeit und Namenskürzel', punkte: 0.5 },
-        { id: 'd6', text: 'Übergabe an den Rettungsdienst (Uhrzeit, Zielklinik)', punkte: 0.5 },
-        { id: 'd7', text: 'Information von Angehörigen bzw. Hausärztin', punkte: 0.5 },
-        { id: 'd8', text: 'Insektengiftallergie in der Akte vermerken', punkte: 0.5 },
-        { id: 'd9', text: 'Nachbeobachtung wegen möglicher zweiter Reaktion (zweigipfliger Verlauf) weitergeben', punkte: 0.5 }
       ] }
     ],
     fehler: [

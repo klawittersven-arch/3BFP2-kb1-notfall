@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="Stabile Seitenlage, schräg von vorn gesehen: Person liegt auf der Seite, Kopf überstreckt, Mund nach unten, obere Hand unter der Wange, oberes Bein in Hüfte und Knie angewinkelt, Knie liegt vorn auf der Matte">
+  <rect width="800" height="450" fill="#F4F7FA"/>
+  <!-- Matte in leichter Aufsicht -->
+  <path d="M110 150 L700 150 L770 400 L30 400 Z" fill="#CFE5DF"/>
+  <path d="M30 400 L770 400 L770 412 L30 412 Z" fill="#A9CBC1"/>
+  <!-- Schatten auf der Matte -->
+  <g fill="#B2D2C9">
+    <ellipse cx="330" cy="268" rx="250" ry="26"/>
+    <ellipse cx="560" cy="352" rx="120" ry="20"/>
+  </g>
+  <!-- unteres Bein: gestreckt, liegt hinten auf der Matte -->
+  <path d="M440 236 L590 238 L700 242" stroke="#26364A" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M712 244 L738 236" stroke="#E2B48F" stroke-width="18" stroke-linecap="round"/>
+  <!-- unterer Arm: im rechten Winkel nach vorn, Handfläche nach oben -->
+  <path d="M214 248 L170 318" stroke="#2F6390" stroke-width="26" stroke-linecap="round"/>
+  <path d="M170 318 L86 300" stroke="#E2B48F" stroke-width="19" stroke-linecap="round"/>
+  <ellipse cx="76" cy="298" rx="15" ry="10" fill="#EBC6A6" stroke="#C99A78" stroke-width="2"/>
+  <!-- Rumpf: liegt auf der Seite (Schultern übereinander) -->
+  <path d="M206 168 C250 150 330 168 400 184 C440 192 470 196 470 230 C470 262 452 268 420 268 L230 268 C196 268 182 250 182 216 C182 186 190 174 206 168 Z" fill="#3E7CB1"/>
+  <path d="M236 168 C300 166 370 180 420 192" stroke="#5A93C6" stroke-width="10" fill="none" stroke-linecap="round"/>
+  <path d="M440 196 L440 266" stroke="#2E3F55" stroke-width="6"/>
+  <!-- oberes Bein: Hüfte und Knie im rechten Winkel, Knie liegt vorn auf der Matte -->
+  <path d="M446 212 C470 214 486 236 500 270 L520 334 L660 338" stroke="#3A4E68" stroke-width="46" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M674 340 L700 330" stroke="#F1C9A5" stroke-width="20" stroke-linecap="round"/>
+  <!-- Kopf liegt auf der Hand, überstreckt; Mund zeigt nach unten -->
+  <ellipse cx="128" cy="264" rx="26" ry="15" fill="#F1C9A5" stroke="#C99A78" stroke-width="2"/>
+  <circle cx="140" cy="218" r="40" fill="#F1C9A5"/>
+  <path d="M108 196 C112 176 136 168 156 176 C176 186 180 204 176 214 C162 196 136 188 122 212 C116 222 112 234 104 238 C98 226 100 208 108 196 Z" fill="#5B4636"/>
+  <path d="M128 222 q6 -4 12 0" stroke="#333" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M150 210 q6 -4 12 0" stroke="#333" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M146 228 l2 10 l-6 2" stroke="#C99A78" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <ellipse cx="146" cy="249" rx="7" ry="4" fill="#9A5A4A"/>
+  <!-- obere Hand liegt unter der Wange: Unterarm vom Ellenbogen her -->
+  <path d="M224 178 L246 252" stroke="#4A8BC4" stroke-width="28" stroke-linecap="round"/>
+  <path d="M246 252 L150 268" stroke="#F1C9A5" stroke-width="20" stroke-linecap="round"/>
+  <!-- Markierungen -->
+  <g class="beschriftung" font-family="Arial, sans-serif" font-weight="bold">
+    <g fill="#D9822B"><circle cx="84" cy="188" r="16"/><circle cx="84" cy="262" r="16"/><circle cx="540" cy="388" r="16"/></g>
+    <g fill="#FFFFFF" font-size="20" text-anchor="middle"><text x="84" y="195">1</text><text x="84" y="269">2</text><text x="540" y="395">3</text></g>
+    <g fill="#1F3A5F" font-size="22">
+      <text x="40" y="44">1 Kopf überstreckt, Mund ist tiefster Punkt</text>
+      <text x="40" y="76">2 Hand unter der Wange</text>
+      <text x="40" y="108">3 oberes Bein in Hüfte und Knie angewinkelt</text>
+    </g>
+  </g>
+</svg>

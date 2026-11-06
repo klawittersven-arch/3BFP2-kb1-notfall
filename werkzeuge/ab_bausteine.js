@@ -122,7 +122,7 @@ function bausteine({ lsg = false, breite = 9072 } = {}) {
   B.kasten = (absaetze, { kopf, fill = F.LACHS, kopfFill = F.LACHS_KOPF, rand = F.ORANGE_D, breite: w = breite } = {}) => {
     const r = rahmen(rand, 6);
     const rows = [];
-    if (kopf) rows.push(new TableRow({ cantSplit: true, children: [zelle([new Paragraph({ children: B.runs(kopf, { bold: true }), spacing: { after: 0 } })], w, { borders: r, shading: { type: ShadingType.CLEAR, color: 'auto', fill: kopfFill } })] }));
+    if (kopf) rows.push(new TableRow({ cantSplit: true, children: [zelle([new Paragraph({ children: B.runs(kopf, { bold: true }), spacing: { after: 0 }, keepNext: true })], w, { borders: r, shading: { type: ShadingType.CLEAR, color: 'auto', fill: kopfFill } })] }));
     rows.push(new TableRow({ children: [zelle(absaetze, w, { borders: r, shading: { type: ShadingType.CLEAR, color: 'auto', fill } })] }));
     return new Table({ width: { size: w, type: WidthType.DXA }, columnWidths: [w], layout: TableLayoutType.FIXED, rows });
   };

@@ -1,6 +1,7 @@
 /* AA1 · Befunde markieren (Programmlogik – Texte in inhalte.js → markieren).
-   Ablauf: Fall aus dem QR-Code des Expertenblatts (?fall=a|b|c) → Textstellen antippen → „Prüfen“ →
+   Ablauf: Fall (in der Stunden-App aus der Gruppeneinteilung) → Textstellen antippen → „Prüfen“ →
    Rückmeldung (gefunden / übersehen / falsch) → so lange verbessern, bis alles stimmt → Merksatz AA1.
+   Schutz gegen Raten: Mehr als T.hoechstensFalsch falsche Markierungen → alles gelöscht, nichts verraten.
    Bewusst KEINE Fallauswahl in der App: Die SuS kommen nur über den QR-Code ihres Expertenblatts zum Fall. */
 (function () {
   'use strict';
@@ -62,6 +63,7 @@
       b.setAttribute('aria-pressed', z.gewaehlt[i] ? 'true' : 'false');
       b.addEventListener('click', function () {
         if (z.fertig) return;
+        geraten = 0;
         z.gewaehlt[i] = !z.gewaehlt[i];
         z.geprueft = false;
         speichern(z);
@@ -98,8 +100,21 @@
       return { gefunden: gefunden, falsch: falsch, kreislauf: kreislauf };
     }
 
+    var geraten = 0;   // > 0: gerade wegen Ratens zurückgesetzt (Anzahl falscher Markierungen)
     function pruefen() {
       var e = zaehlen();
+      // Schutz gegen Raten: zu viele falsche Markierungen → alles löschen, nichts verraten, von vorn
+      if (e.falsch > T.hoechstensFalsch) {
+        geraten = e.falsch;
+        z.gewaehlt = z.gewaehlt.map(function () { return false; });
+        z.geprueft = false;
+        speichern(z);
+        darstellen(false);
+        K.melden(SEITE, 0, hinweise, 'arbeitet');
+        K.scrollen(rueck);
+        return;
+      }
+      geraten = 0;
       z.geprueft = true;
       z.versuche++;
       if (z.ersteFalsch === null) z.ersteFalsch = e.falsch;
@@ -130,7 +145,12 @@
       pruefKnopf.hidden = z.fertig;
       K.fortschrittSetzen(e.gefunden, hinweise);
 
-      var durchgeklickt = z.ersteFalsch !== null && z.ersteFalsch > T.hoechstensFalschErsterVersuch;
+      if (geraten) {
+        var r = el('div', 'rueckmeldung falsch');
+        r.appendChild(el('p', 'rueck-titel', '✋ ' + T.ratenTitel));
+        r.appendChild(el('p', null, K.ersetzen(T.ratenText, { f: geraten })));
+        rueck.appendChild(r);
+      }
       if (z.geprueft || z.fertig) {
         rueck.appendChild(el('p', 'rueckmeldung ' + (z.fertig ? 'richtig' : 'falsch'), K.ersetzen(T.ergebnis, { x: e.gefunden, y: hinweise, f: e.falsch })));
         if (!z.fertig && !e.kreislauf) rueck.appendChild(el('p', 'rueckmeldung falsch', T.fehltKreislauf));
@@ -145,17 +165,12 @@
         });
       }
       if (z.fertig) {
-        if (durchgeklickt) {
-          ende.appendChild(K.durchklickenElement(z.ersteFalsch, hinweise, T.hoechstensFalschErsterVersuch, function () { speichern(leer(fall)); fallZeigen(); }, T.durchklickenText));
-          K.melden(SEITE, e.gefunden, hinweise, 'durchklicken');
-        } else {
-          ende.appendChild(el('p', 'rueckmeldung richtig', T.geschafft));
-          var m = K.merksatzElement('aa1', 'Merksatz AA1');
-          ende.appendChild(m);
-          K.Erledigt.merken(SEITE);
-          K.melden(SEITE, hinweise, hinweise, 'fertig');
-          if (nachPruefen) setTimeout(function () { K.scrollen(m); }, 50);
-        }
+        ende.appendChild(el('p', 'rueckmeldung richtig', T.geschafft));
+        var m = K.merksatzElement('aa1', 'Merksatz AA1');
+        ende.appendChild(m);
+        K.Erledigt.merken(SEITE);
+        K.melden(SEITE, hinweise, hinweise, 'fertig');
+        if (nachPruefen) setTimeout(function () { K.scrollen(m); }, 50);
       } else if (nachPruefen) {
         K.melden(SEITE, e.gefunden, hinweise, 'arbeitet');
         K.scrollen(rueck);

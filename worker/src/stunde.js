@@ -19,7 +19,7 @@ export const MAX_GRUPPEN = 10;
 export const FOLIE_MUSTER = /^[a-z0-9-]{1,24}$/;
 // Folien, an denen der Server selbst etwas tut (müssen zu docs/inhalte_stunde.js passen)
 export const FOLIE_EXPERTEN = 'aa1';
-export const FOLIE_STAMM = 'aa2a';
+export const FOLIE_NACH_EXPERTEN = 'aa1-merksatz';   // sind alle Expertenteams fertig, geht es hierhin
 export const FOLIE_ENDE = 'ende';
 
 export function neueStunde() {

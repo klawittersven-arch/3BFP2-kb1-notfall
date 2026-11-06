@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="Flach, Beine hoch: Person liegt flach auf dem Rücken, die Beine liegen erhöht auf Kissen">
+  <rect width="800" height="450" fill="#F4F7FA"/>
+  <!-- Boden und Matte -->
+  <rect x="0" y="384" width="800" height="66" fill="#E3E8EE"/>
+  <rect x="60" y="370" width="680" height="16" rx="6" fill="#7FB3A8"/>
+  <!-- Kissenstapel unter den Unterschenkeln -->
+  <rect x="540" y="318" width="160" height="54" rx="14" fill="#FFFFFF" stroke="#C9D3DD" stroke-width="3"/>
+  <rect x="550" y="270" width="140" height="50" rx="14" fill="#FFFFFF" stroke="#C9D3DD" stroke-width="3"/>
+  <!-- Beine erhöht -->
+  <path d="M370 344 L520 300 L690 252" stroke="#2E3F55" stroke-width="46" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M704 248 L722 220" stroke="#F1C9A5" stroke-width="22" stroke-linecap="round"/>
+  <!-- Oberkörper flach -->
+  <path d="M180 342 L372 342" stroke="#3E7CB1" stroke-width="64" stroke-linecap="round"/>
+  <!-- Arm am Körper -->
+  <path d="M196 336 L300 340" stroke="#356C9C" stroke-width="26" stroke-linecap="round"/>
+  <path d="M300 340 L372 344" stroke="#F1C9A5" stroke-width="19" stroke-linecap="round"/>
+  <!-- Kopf flach, ohne Kissen -->
+  <circle cx="124" cy="334" r="34" fill="#F1C9A5"/>
+  <path d="M92 344 A34 34 0 0 1 104 306 Q112 330 128 340 Z" fill="#5B4636"/>
+  <circle cx="124" cy="314" r="3.5" fill="#333"/>
+  <path d="M136 306 l6 -8 l2 6" stroke="#C99A78" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M146 324 q2 -6 -2 -10" stroke="#9A5A4A" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- Pfeil: Blut fließt zum Körperstamm -->
+  <path d="M640 200 Q520 170 400 250" stroke="#C0392B" stroke-width="7" fill="none" stroke-linecap="round"/>
+  <path d="M392 230 L398 258 L424 248" stroke="#C0392B" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <text class="beschriftung" x="440" y="150" font-family="Arial, sans-serif" font-size="26" font-weight="bold" fill="#C0392B">Blut fließt zum Herzen</text>
+</svg>

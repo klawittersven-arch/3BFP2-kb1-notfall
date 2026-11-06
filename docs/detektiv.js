@@ -1,52 +1,66 @@
 /* AA2 · Schockform-Detektiv (Programmlogik – Texte in inhalte.js → detektiv).
-   Je Fall: Schockform wählen (Tipp bei Fehler) → zwei Belege antippen → weiter.
-   Danach Monitorvergleich: zwei Zeilen wählen, die die Formen unterscheiden → Merksatz AA2. */
+   Je Fall: zwei Befunde antippen und die Schockform wählen (Reihenfolge egal) → „Prüfen“.
+   Schutz gegen Raten: „Prüfen“ zählt erst nach einer Mindest-Lesezeit; höchstens zwei Versuche je Fall,
+   danach wird die Lösung gezeigt. Merksatz AA2 nur, wenn genug Fälle beim ersten Versuch stimmen.
+   Zum Schluss: zwei Patienten im Vergleich – die zwei Zeilen wählen, die die Formen sicher unterscheiden. */
 (function () {
   'use strict';
   var K = window.KB1;
   var el = K.element;
   var T = K.seiteVorbereiten('detektiv');
   var SEITE = 'w2-detektiv';
-  var SCHL = 'kb1nf_detektiv';
+  var SCHL = 'kb1nf_detektiv2';
   var platz = document.getElementById('uebung');
   var N = T.faelle.length;
-  var GESAMT = N + 1; // Fälle + Monitorvergleich
+  var GESAMT = N + 1; // Fälle + Vergleich
+  var MAX_VERSUCHE = 2;
 
   function leer() {
     return {
       fall: 0,
-      faelle: T.faelle.map(function () { return { falscheFormen: [], formOk: false, belege: [], belegOk: false }; }),
-      monitor: { gewaehlt: [], ok: false, falsch: [] }
+      faelle: T.faelle.map(function () { return { form: null, belege: [], versuche: 0, geloest: false, gezeigt: false, meldung: null }; }),
+      vergleich: { gewaehlt: [], versuche: 0, geloest: false, gezeigt: false, meldung: null }
     };
   }
   var z = K.Speicher.sitzung.lesen(SCHL);
-  if (!z || !Array.isArray(z.faelle) || z.faelle.length !== N) z = leer();
+  if (!z || !Array.isArray(z.faelle) || z.faelle.length !== N || !z.vergleich) z = leer();
   function speichern() { K.Speicher.sitzung.schreiben(SCHL, z); }
 
-  function geloest() {
-    var n = z.faelle.filter(function (f) { return f.formOk && f.belegOk; }).length;
-    return n + (z.monitor.ok ? 1 : 0);
+  function erledigt(f) { return f.geloest || f.gezeigt; }
+  function bearbeitet() {
+    return z.faelle.filter(erledigt).length + (erledigt(z.vergleich) ? 1 : 0);
   }
   function ersterVersuch() {
-    return z.faelle.filter(function (f) { return f.formOk && f.falscheFormen.length === 0; }).length;
+    return z.faelle.filter(function (f) { return f.geloest && f.versuche === 1; }).length;
   }
   function stand() {
-    var g = geloest();
+    var g = bearbeitet();
     K.fortschrittSetzen(g, GESAMT);
     var fertig = g === GESAMT;
     var status = fertig ? (ersterVersuch() >= T.mindestensErsterVersuch ? 'fertig' : 'durchklicken') : 'arbeitet';
     K.melden(SEITE, g, GESAMT, status);
   }
   function formText(k) { return T.formen.filter(function (f) { return f.kuerzel === k; })[0].text; }
+  function neuStart() { z = leer(); speichern(); stand(); fallZeigen(); }
+
+  // „Prüfen“ zu früh? (Zeit seit dem Anzeigen der Aufgabe)
+  var angezeigt = Date.now();
+  function zuSchnell() {
+    var w = K.urlParam('lesezeit');   // nur für die automatischen Tests (?lesezeit=0)
+    var sek = w !== null && w !== '' ? Number(w) : Number(T.mindestLeseSekunden) || 0;
+    return Date.now() - angezeigt < sek * 1000;
+  }
 
   /* ---------- Ein Fall ---------- */
   function fallZeigen() {
     platz.textContent = '';
+    angezeigt = Date.now();
     var i = z.fall;
     var fall = T.faelle[i];
     var fz = z.faelle[i];
     var karte = el('section', 'karte');
     karte.appendChild(el('p', 'klein', K.ersetzen(T.fallTitel, { n: i + 1, y: N })));
+    karte.appendChild(el('p', 'klein', T.belegFrage));
     var text = el('p', 'markiertext');
     var knoepfe = [];
     fall.teile.forEach(function (teil, j) {
@@ -69,89 +83,111 @@
       formKnoepfe.appendChild(b);
     });
     formBox.appendChild(formKnoepfe);
-    var formRueck = el('div');
-    formRueck.setAttribute('aria-live', 'polite');
-    formBox.appendChild(formRueck);
     platz.appendChild(formBox);
 
-    var belegBox = el('section', 'karte');
-    belegBox.appendChild(el('h2', null, T.belegFrage));
-    var belegRueck = el('div');
-    belegRueck.setAttribute('aria-live', 'polite');
-    belegBox.appendChild(belegRueck);
-    platz.appendChild(belegBox);
+    var pruefKnopf = K.knopf(T.pruefen, 'knopf-breit', pruefen);
+    platz.appendChild(pruefKnopf);
+    var rueck = el('div');
+    rueck.setAttribute('aria-live', 'polite');
+    platz.appendChild(rueck);
     var weiter = K.knopf(INHALTE.allgemein.weiter + ' →', '', function () {
       z.fall = i + 1;
       speichern();
-      if (z.fall < N) fallZeigen(); else monitorZeigen();
+      if (z.fall < N) fallZeigen(); else vergleichZeigen();
       K.scrollen(document.querySelector('.inhalt'));
     });
     platz.appendChild(weiter);
 
     function formWaehlen(k) {
-      if (fz.formOk) return;
-      if (k === fall.form) fz.formOk = true;
-      else if (fz.falscheFormen.indexOf(k) === -1) fz.falscheFormen.push(k);
+      if (erledigt(fz)) return;
+      fz.form = fz.form === k ? null : k;
+      fz.meldung = null;
       speichern();
       darstellen();
-      stand();
     }
     function belegTippen(j) {
-      if (!fz.formOk || fz.belegOk) return;
+      if (erledigt(fz)) return;
       var pos = fz.belege.indexOf(j);
       if (pos >= 0) fz.belege.splice(pos, 1); else if (fz.belege.length < 2) fz.belege.push(j);
-      fz.letzteFalsch = [];
-      if (fz.belege.length === 2) {
-        var falsche = fz.belege.filter(function (x) { return fall.teile[x].b !== 'beleg'; });
-        if (!falsche.length) fz.belegOk = true;
-        else { fz.letzteFalsch = falsche; fz.belege = fz.belege.filter(function (x) { return falsche.indexOf(x) === -1; }); }
+      fz.meldung = null;
+      speichern();
+      darstellen();
+    }
+    function pruefen() {
+      if (erledigt(fz)) return;
+      if (!fz.form || fz.belege.length !== 2) { fz.meldung = { art: 'fehlt' }; darstellen(); return; }
+      if (zuSchnell()) { fz.meldung = { art: 'schnell' }; darstellen(); return; }
+      fz.versuche++;
+      var formOk = fz.form === fall.form;
+      var falsche = fz.belege.filter(function (x) { return fall.teile[x].b !== 'beleg'; });
+      if (formOk && !falsche.length) fz.geloest = true;
+      else if (fz.versuche >= MAX_VERSUCHE) fz.gezeigt = true;
+      else {
+        fz.meldung = { art: 'falsch', formOk: formOk, falsche: falsche };
+        // Richtiges bleibt stehen, Falsches wird entfernt
+        if (!formOk) fz.form = null;
+        fz.belege = fz.belege.filter(function (x) { return falsche.indexOf(x) === -1; });
       }
       speichern();
       darstellen();
       stand();
+      if (erledigt(fz)) K.scrollen(rueck);
     }
     function darstellen() {
+      var richtigeBelege = [];
+      fall.teile.forEach(function (t, j) { if (typeof t === 'object' && t.b === 'beleg') richtigeBelege.push(j); });
       Array.prototype.forEach.call(formKnoepfe.children, function (b) {
         var k = b.dataset.kuerzel;
         b.className = 'knopf antwort';
-        if (fz.formOk && k === fall.form) b.classList.add('richtig');
-        if (fz.falscheFormen.indexOf(k) >= 0) b.classList.add('falsch');
-        b.disabled = fz.formOk || fz.falscheFormen.indexOf(k) >= 0;
+        if (erledigt(fz)) { if (k === fall.form) b.classList.add('richtig'); }
+        else if (fz.form === k) b.classList.add('gewaehlt');
+        b.setAttribute('aria-pressed', fz.form === k ? 'true' : 'false');
+        b.disabled = erledigt(fz);
       });
-      formRueck.textContent = '';
-      if (fz.formOk) formRueck.appendChild(el('p', 'rueckmeldung richtig', '✓ ' + INHALTE.allgemein.richtigText + ' ' + formText(fall.form) + '.'));
-      else if (fz.falscheFormen.length) {
-        var p = el('p', 'rueckmeldung falsch');
-        p.appendChild(el('strong', null, '✗ ' + INHALTE.allgemein.tippVorwort + ' '));
-        p.appendChild(document.createTextNode(fall.tipp));
-        formRueck.appendChild(p);
-      }
-      belegBox.hidden = !fz.formOk;
       knoepfe.forEach(function (b, j) {
         if (!b) return;
         b.className = 'markierbar';
-        b.disabled = !fz.formOk || fz.belegOk;
-        if (fz.belege.indexOf(j) >= 0) b.classList.add(fz.belegOk ? 'ok' : 'gewaehlt');
-        if ((fz.letzteFalsch || []).indexOf(j) >= 0) b.classList.add('falsch');
+        b.disabled = erledigt(fz);
+        if (erledigt(fz)) { if (richtigeBelege.indexOf(j) >= 0) b.classList.add('ok'); }
+        else if (fz.belege.indexOf(j) >= 0) b.classList.add('gewaehlt');
+        if (!erledigt(fz) && fz.meldung && fz.meldung.falsche && fz.meldung.falsche.indexOf(j) >= 0) b.classList.add('falsch');
       });
-      belegRueck.textContent = '';
-      (fz.letzteFalsch || []).forEach(function (j) {
-        belegRueck.appendChild(el('p', 'rueckmeldung falsch', '„' + fall.teile[j].t + '“ – ' + (fall.teile[j].b === 'schock' ? T.belegSchock : T.belegLeer)));
-      });
-      if (fz.belegOk) {
-        belegRueck.appendChild(el('p', 'rueckmeldung richtig', '✓ ' + T.belegRichtig));
-        belegRueck.appendChild(el('p', null, fall.erklaerung));
+      rueck.textContent = '';
+      var m = fz.meldung;
+      if (m && m.art === 'fehlt') rueck.appendChild(el('p', 'rueckmeldung falsch', T.auswahlFehlt));
+      if (m && m.art === 'schnell') rueck.appendChild(el('p', 'rueckmeldung falsch', '✋ ' + T.zuSchnell));
+      if (m && m.art === 'falsch') {
+        if (!m.formOk) {
+          var p = el('p', 'rueckmeldung falsch');
+          p.appendChild(el('strong', null, '✗ ' + T.formFalsch + ' ' + INHALTE.allgemein.tippVorwort + ' '));
+          p.appendChild(document.createTextNode(fall.tipp));
+          rueck.appendChild(p);
+        }
+        m.falsche.forEach(function (j) {
+          rueck.appendChild(el('p', 'rueckmeldung falsch', '✗ „' + fall.teile[j].t + '“ – ' + (fall.teile[j].b === 'schock' ? T.belegSchock : T.belegLeer)));
+        });
+        rueck.appendChild(el('p', null, T.zweiterVersuch));
       }
-      weiter.hidden = !(fz.formOk && fz.belegOk);
+      if (fz.geloest) {
+        rueck.appendChild(el('p', 'rueckmeldung richtig', '✓ ' + INHALTE.allgemein.richtigText + ' ' + formText(fall.form) + ' – ' + T.belegRichtig));
+        rueck.appendChild(el('p', null, fall.erklaerung));
+      }
+      if (fz.gezeigt) {
+        rueck.appendChild(el('p', 'rueckmeldung falsch', T.loesungGezeigt + ' ' + formText(fall.form) + '.'));
+        rueck.appendChild(el('p', null, fall.erklaerung));
+      }
+      pruefKnopf.hidden = erledigt(fz);
+      weiter.hidden = !erledigt(fz);
     }
     darstellen();
   }
 
-  /* ---------- Monitorvergleich ---------- */
-  function monitorZeigen() {
+  /* ---------- Zwei Patienten im Vergleich ---------- */
+  function vergleichZeigen() {
     platz.textContent = '';
+    angezeigt = Date.now();
     var M = T.monitor;
-    var mz = z.monitor;
+    var vz = z.vergleich;
     var box = el('section', 'karte');
     box.appendChild(el('h2', null, M.titel));
     box.appendChild(K.formatiert('p', null, M.text));
@@ -172,24 +208,33 @@
       return b;
     });
     box.appendChild(tab);
+    var pruefKnopf = K.knopf(T.pruefen, 'knopf-breit', pruefen);
+    box.appendChild(pruefKnopf);
     var rueck = el('div');
     rueck.setAttribute('aria-live', 'polite');
     box.appendChild(rueck);
     platz.appendChild(box);
     var ende = el('div');
     platz.appendChild(ende);
-    platz.appendChild(K.knopf(INHALTE.allgemein.nochEinmal, 'knopf-leise', function () { z = leer(); speichern(); stand(); fallZeigen(); }));
+    platz.appendChild(K.knopf(INHALTE.allgemein.nochEinmal, 'knopf-leise', neuStart));
 
     function tippen(i) {
-      if (mz.ok) return;
-      var pos = mz.gewaehlt.indexOf(i);
-      if (pos >= 0) mz.gewaehlt.splice(pos, 1); else if (mz.gewaehlt.length < 2) mz.gewaehlt.push(i);
-      mz.falsch = [];
-      if (mz.gewaehlt.length === 2) {
-        var falsche = mz.gewaehlt.filter(function (x) { return !M.zeilen[x].richtig; });
-        if (!falsche.length) mz.ok = true;
-        else { mz.falsch = falsche; mz.gewaehlt = mz.gewaehlt.filter(function (x) { return falsche.indexOf(x) === -1; }); }
-      }
+      if (erledigt(vz)) return;
+      var pos = vz.gewaehlt.indexOf(i);
+      if (pos >= 0) vz.gewaehlt.splice(pos, 1); else if (vz.gewaehlt.length < 2) vz.gewaehlt.push(i);
+      vz.meldung = null;
+      speichern();
+      darstellen(false);
+    }
+    function pruefen() {
+      if (erledigt(vz)) return;
+      if (vz.gewaehlt.length !== 2) { vz.meldung = { art: 'fehlt' }; darstellen(false); return; }
+      if (zuSchnell()) { vz.meldung = { art: 'schnell' }; darstellen(false); return; }
+      vz.versuche++;
+      var falsche = vz.gewaehlt.filter(function (x) { return !M.zeilen[x].richtig; });
+      if (!falsche.length) vz.geloest = true;
+      else if (vz.versuche >= MAX_VERSUCHE) vz.gezeigt = true;
+      else { vz.meldung = { art: 'falsch', falsche: falsche }; vz.gewaehlt = vz.gewaehlt.filter(function (x) { return falsche.indexOf(x) === -1; }); }
       speichern();
       darstellen(true);
       stand();
@@ -197,23 +242,31 @@
     function darstellen(gerade) {
       zeilen.forEach(function (b, i) {
         b.className = 'mv-zeile';
-        if (mz.gewaehlt.indexOf(i) >= 0) b.classList.add(mz.ok ? 'ok' : 'gewaehlt');
-        if (mz.falsch.indexOf(i) >= 0) b.classList.add('falsch');
-        b.disabled = mz.ok;
+        if (erledigt(vz)) { if (M.zeilen[i].richtig) b.classList.add('ok'); }
+        else if (vz.gewaehlt.indexOf(i) >= 0) b.classList.add('gewaehlt');
+        if (!erledigt(vz) && vz.meldung && vz.meldung.falsche && vz.meldung.falsche.indexOf(i) >= 0) b.classList.add('falsch');
+        b.disabled = erledigt(vz);
       });
       rueck.textContent = '';
-      mz.falsch.forEach(function (i) { rueck.appendChild(el('p', 'rueckmeldung falsch', M.zeilen[i].name + ': ' + M.zeilen[i].w)); });
+      var m = vz.meldung;
+      if (m && m.art === 'fehlt') rueck.appendChild(el('p', 'rueckmeldung falsch', T.auswahlFehlt.replace('die Schockform und genau zwei Befunde', 'genau zwei Zeilen')));
+      if (m && m.art === 'schnell') rueck.appendChild(el('p', 'rueckmeldung falsch', '✋ ' + T.zuSchnell));
+      if (m && m.art === 'falsch') {
+        m.falsche.forEach(function (i) { rueck.appendChild(el('p', 'rueckmeldung falsch', M.zeilen[i].name + ': ' + M.zeilen[i].w)); });
+        rueck.appendChild(el('p', null, T.zweiterVersuch));
+      }
+      pruefKnopf.hidden = erledigt(vz);
       ende.textContent = '';
-      if (mz.ok) {
-        rueck.appendChild(el('p', 'rueckmeldung richtig', '✓ ' + M.fertig));
+      if (erledigt(vz)) {
+        rueck.appendChild(el('p', vz.geloest ? 'rueckmeldung richtig' : 'rueckmeldung falsch', vz.geloest ? '✓ ' + M.fertig : T.loesungGezeigt));
         M.zeilen.filter(function (x) { return x.richtig; }).forEach(function (x) { rueck.appendChild(el('p', null, x.name + ': ' + x.w)); });
         if (ersterVersuch() >= T.mindestensErsterVersuch) {
-          var m = K.merksatzElement('aa2', 'Merksatz AA2');
-          ende.appendChild(m);
+          var mk = K.merksatzElement('aa2', 'Merksatz AA2');
+          ende.appendChild(mk);
           K.Erledigt.merken(SEITE);
-          if (gerade) setTimeout(function () { K.scrollen(m); }, 50);
+          if (gerade) setTimeout(function () { K.scrollen(mk); }, 50);
         } else {
-          ende.appendChild(K.durchklickenElement(ersterVersuch(), N, T.mindestensErsterVersuch, function () { z = leer(); speichern(); stand(); fallZeigen(); }));
+          ende.appendChild(K.durchklickenElement(ersterVersuch(), N, T.mindestensErsterVersuch, neuStart));
         }
       }
     }
@@ -221,5 +274,5 @@
   }
 
   stand();
-  if (z.fall < N) fallZeigen(); else monitorZeigen();
+  if (z.fall < N) fallZeigen(); else vergleichZeigen();
 })();

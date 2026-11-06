@@ -11,7 +11,7 @@ const DOCS = path.resolve(__dirname, '..', 'docs');
 const SEITEN = path.resolve(__dirname, 'seiten');
 const TYPEN = {
   '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8',
-  '.css': 'text/css; charset=utf-8', '.png': 'image/png', '.txt': 'text/plain; charset=utf-8'
+  '.css': 'text/css; charset=utf-8', '.png': 'image/png', '.svg': 'image/svg+xml', '.txt': 'text/plain; charset=utf-8'
 };
 
 /* Lokaler Webserver für docs/. In config.js wird FORTSCHRITT_URL immer ersetzt:

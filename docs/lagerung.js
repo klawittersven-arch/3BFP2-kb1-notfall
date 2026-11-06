@@ -26,6 +26,30 @@
     K.melden(SEITE, aufgedeckt(), N, fertig ? (richtig() >= T.mindestensErsterVersuch ? 'fertig' : 'durchklicken') : 'arbeitet');
   }
 
+  // Hilfe: die vier Lagerungen mit Bildern (dieselben Bilder wie im Arbeitsblatt, S. 4)
+  var bilderOffen = false;
+  function bilderHilfe() {
+    var d = el('details', 'info lager-bilder');
+    d.open = bilderOffen;
+    d.addEventListener('toggle', function () { bilderOffen = d.open; });
+    d.appendChild(el('summary', null, T.bilderTitel));
+    d.appendChild(el('p', 'klein', T.bilderHinweis));
+    T.bilder.forEach(function (b) {
+      var fig = el('figure', 'lager-bild');
+      var img = el('img');
+      img.src = b.bild;
+      img.alt = b.titel;
+      img.loading = 'lazy';
+      fig.appendChild(img);
+      var cap = el('figcaption');
+      cap.appendChild(el('strong', null, b.titel));
+      cap.appendChild(document.createTextNode(' – ' + b.wann));
+      fig.appendChild(cap);
+      d.appendChild(fig);
+    });
+    return d;
+  }
+
   function karteZeigen() {
     clearInterval(timer);
     platz.textContent = '';
@@ -69,6 +93,7 @@
     });
     wahlBox.appendChild(antworten);
     platz.appendChild(wahlBox);
+    platz.appendChild(bilderHilfe());
     var aufdecken = K.knopf(T.aufdecken, '', function () {
       z.offen[i] = true;
       clearInterval(timer);
@@ -103,7 +128,7 @@
         loesung.appendChild(el('p', 'rueckmeldung ' + (z.wahl[i] === k.richtig ? 'richtig' : 'falsch'), z.wahl[i] === k.richtig ? T.richtigGewaehlt : T.falschGewaehlt));
         var p = el('p');
         p.appendChild(el('strong', null, T.loesung + ' '));
-        p.appendChild(document.createTextNode(k.loesung + (k.richtig === 'AND' ? '' : ' (' + optionText(k.richtig) + ')')));
+        p.appendChild(document.createTextNode(k.loesung + (k.richtig === 'REA' ? '' : ' (' + optionText(k.richtig) + ')')));
         loesung.appendChild(p);
         var w = el('p');
         w.appendChild(el('strong', null, T.warum + ' '));

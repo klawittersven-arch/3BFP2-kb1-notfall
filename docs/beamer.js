@@ -55,6 +55,7 @@
   function maxSchritt(f) {
     if (f.typ === 'aufstellung') return f.massnahmen.length * 2;
     if (f.typ === 'kausalkette') return f.kette.length + 1;
+    if (f.typ === 'aufgabe') return 1;      // 0: Aufgabe erklären · 1: „Bearbeiten Sie jetzt …“ + Uhr
     return 0;
   }
   function gruppenInfo(nr) { return S.gruppen[nr % S.gruppen.length]; }
@@ -126,7 +127,10 @@
   function weiter() {
     var f = folie();
     var s = schritt();
-    if (s < maxSchritt(f)) { folieSetzen(f.id, s + 1); return; }
+    if (s < maxSchritt(f)) {
+      folieSetzen(f.id, s + 1).then(function () { if (f.typ === 'aufgabe' && f.uhr) uhrStarten(f); });
+      return;
+    }
     gehe(index() + 1);
   }
 
@@ -165,12 +169,15 @@
     var bau = {
       start: folieStart, fall: folieFall, abstimmung: folieAbstimmung, ergebnis: folieErgebnis, murmeln: folieMurmeln,
       fahrplan: folieFahrplan, puzzle: foliePuzzle, experten: folieExperten, stamm: folieStamm, fortschritt: folieFortschritt,
-      papier: foliePapier, impuls: folieImpuls, aufstellung: folieAufstellung, dialog: folieDialog, kausalkette: folieKausalkette, ende: folieEnde
+      papier: foliePapier, impuls: folieImpuls, aufstellung: folieAufstellung, dialog: folieDialog, kausalkette: folieKausalkette, ende: folieEnde,
+      tabelle: folieTabelle, loesung: folieLoesung, info: folieInfo,
+      merksatz: folieMerksatz, lagerung: folieLagerung, aufgabe: folieAufgabe
     }[f.typ] || folieImpuls;
     var wurzel = el('section', 'folie folie-' + f.typ);
     wurzel.setAttribute('data-folie', f.id);
     bau(f, wurzel);
     inhalt.appendChild(wurzel);
+    einpassen(wurzel);
 
     // Kopf
     $('kopf-abschnitt').hidden = !f.abschnitt;
@@ -195,6 +202,7 @@
     var s = schritt();
     if (s < maxSchritt(f)) {
       if (f.typ === 'aufstellung') w.textContent = s === 0 ? f.naechste : (s % 2 === 1 ? f.zeigen : f.naechste);
+      else if (f.typ === 'aufgabe') w.textContent = '✍️ ' + (f.losKnopf || T.losKnopf);
       else w.textContent = s === f.kette.length ? f.antwortTitel : f.aufdecken;
     } else if (i < FOLIEN.length - 1) {
       w.textContent = K.ersetzen(T.weiter, { kurz: FOLIEN[i + 1].kurz });
@@ -210,6 +218,21 @@
     $('mini-text').appendChild(document.createTextNode('Später dazu? QR-Code scannen · '));
     $('mini-text').appendChild(el('b', null, raum.raum));
     uhrenAktualisieren();
+  }
+
+  // Textreiche Folien (Aufgabe wie im AB, Musterlösungen): wird es zu lang, wird der Inhalt
+  // unter dem Titel stufenweise kleiner, bis alles auf die Bühne passt (höchstens auf 64 %).
+  function einpassen(wurzel) {
+    var ziel = wurzel.querySelector('.aufgabe-folie, .loesung-mit-uhr, .loesungen');
+    if (!ziel) return;
+    var grenze = $('inhalt').getBoundingClientRect().bottom + 1;
+    function unten() {
+      var m = 0;
+      wurzel.querySelectorAll('*').forEach(function (e) { var b = e.getBoundingClientRect().bottom; if (b > m) m = b; });
+      return m;
+    }
+    var z = 1;
+    while (unten() > grenze && z > 0.65) { z -= 0.04; ziel.style.zoom = String(z); }
   }
 
   /* ---------- QR-Code (Handy-Adresse mit Raumcode) ---------- */
@@ -487,9 +510,10 @@
       if (art === 'stamm') {
         var mitHandy = g.mitglieder.filter(function (m) { return !m.ohneHandy; });
         var fertige = mitHandy.filter(function (m) { return m.fertig; }).length;
-        kopf.appendChild(el('span', 'g-status', g.fertig ? '✓ ' + T.fertig : fertige + '/' + mitHandy.length));
+        kopf.appendChild(el('span', 'g-status', g.fertig ? '✓' : fertige + '/' + mitHandy.length));
       } else kopf.appendChild(el('span', 'g-status', g.mitglieder.length + ' 👤'));
       karte.appendChild(kopf);
+      if (art === 'stamm' && g.fertig) karte.appendChild(el('div', 'fertig-band', '✓ ' + T.gruppeFertig));
       var ul = el('ul', 'g-mitglieder');
       g.mitglieder.slice().sort(function (a, b) { return a.rolle < b.rolle ? -1 : a.rolle > b.rolle ? 1 : 0; }).forEach(function (m) {
         var li = el('li', 'g-mitglied' + (m.online || Probe.ist(m.id) ? '' : ' offline'));
@@ -595,8 +619,9 @@
         kopf.appendChild(buchstabe(t.b));
         kopf.appendChild(el('span', 't-name', t.id));
         var mitHandy = t.mitglieder.filter(function (m) { return !m.ohneHandy; });
-        kopf.appendChild(el('span', 't-status', t.fertig ? '✓ ' + T.fertig : mitHandy.filter(function (m) { return m.fertig; }).length + '/' + mitHandy.length));
+        kopf.appendChild(el('span', 't-status', t.fertig ? '✓' : mitHandy.filter(function (m) { return m.fertig; }).length + '/' + mitHandy.length));
         k.appendChild(kopf);
+        if (t.fertig) k.appendChild(el('div', 'fertig-band', '✓ ' + T.teamFertig));
         var ul = el('ul', 'g-mitglieder');
         t.mitglieder.forEach(function (m) {
           var li = el('li', 'g-mitglied' + (m.online || Probe.ist(m.id) ? '' : ' offline'));
@@ -697,26 +722,47 @@
     w.appendChild(box);
   }
 
+  // AA4a „Wer darf was?“: die SuS stimmen am Handy ab (Runde 3, ohne Namen).
+  // Schritt ungerade = Maßnahme zeigen und abstimmen (nur „x von y haben abgestimmt“ – die Verteilung bleibt
+  // verborgen, damit niemand der Mehrheit folgt), gerade = Lösung mit Verteilung und „Das hatten X von Y richtig!“
   function folieAufstellung(f, w) {
     w.appendChild(titel(f));
     var s = schritt();
-    var nr = Math.ceil(s / 2);              // 1 … n
+    var nr = Math.ceil(s / 2);
     var loesung = s > 0 && s % 2 === 0;
     var m = nr ? f.massnahmen[nr - 1] : null;
+    var runde = (stand.stimmen && stand.stimmen[f.runde]) || { n: 0, fragen: {} };
+    var v = m ? (runde.fragen['M' + nr] || {}) : {};
+    function anzahl(b) { var x = v[b]; return x ? x.sicher + x.unsicher : 0; }
+    var summe = anzahl('A') + anzahl('B') + anzahl('C');
+    if (!m) w.appendChild(fmt('p', 'f-text', f.text));
+    else {
+      var box = el('div', 'massnahme');
+      box.appendChild(el('div', 'massnahme-nr', 'Maßnahme ' + nr + ' von ' + f.massnahmen.length));
+      box.appendChild(el('div', 'massnahme-text', m.text));
+      if (loesung) box.appendChild(el('div', 'massnahme-warum', f.ecken[m.ecke].emoji + ' ' + m.warum));
+      w.appendChild(box);
+    }
     var ecken = el('div', 'ecken');
     f.ecken.forEach(function (e, i) {
       var k = el('div', 'ecke' + (loesung ? (i === m.ecke ? ' richtig' : ' blass') : ''));
       k.appendChild(el('span', 'emoji', e.emoji));
       k.appendChild(document.createTextNode(e.text));
+      if (m && loesung) {
+        var n = anzahl('ABC'.charAt(i));
+        var balken = el('div', 'ecke-balken');
+        var fuell = el('div', 'ecke-fuell');
+        fuell.style.width = (summe ? Math.round(100 * n / summe) : 0) + '%';
+        balken.appendChild(fuell);
+        k.appendChild(balken);
+        k.appendChild(el('div', 'ecke-zahl', n === 1 ? T.stimmeEins : K.ersetzen(T.stimmenZahl, { n: n })));
+      }
       ecken.appendChild(k);
     });
     w.appendChild(ecken);
-    if (!m) { w.appendChild(fmt('p', 'f-text', f.text)); return; }
-    var box = el('div', 'massnahme');
-    box.appendChild(el('div', 'massnahme-nr', 'Maßnahme ' + nr + ' von ' + f.massnahmen.length));
-    box.appendChild(el('div', 'massnahme-text', m.text));
-    if (loesung) box.appendChild(el('div', 'massnahme-warum', f.ecken[m.ecke].emoji + ' ' + m.warum));
-    w.appendChild(box);
+    if (!m) return;
+    if (loesung) w.appendChild(el('p', 'abgestimmt ergebnis', summe ? K.ersetzen(T.richtigGelegen, { x: anzahl('ABC'.charAt(m.ecke)), y: summe }) : T.keineStimmen));
+    else w.appendChild(el('p', 'abgestimmt', K.ersetzen(T.abgestimmt, { x: summe, y: stand.online || 0 })));
   }
 
   function folieDialog(f, w) {
@@ -740,7 +786,7 @@
   }
 
   function folieKausalkette(f, w) {
-    w.appendChild(titel(f));
+    w.appendChild(titel(f, f.text));
     var s = schritt();
     var kette = el('div', 'kette');
     f.kette.forEach(function (g, i) {
@@ -763,6 +809,241 @@
     box.appendChild(fmt('h1', 'f-titel', f.titel));
     box.appendChild(fmt('p', 'f-text', f.text));
     box.appendChild(fmt('p', 'ende-frei', f.frei));
+    w.appendChild(box);
+  }
+
+  /* ---------- Aufdecken (Tabelle sichern, Musterlösungen) ----------
+     Welche Zellen aufgedeckt sind, merkt sich der Laptop je Raum (übersteht Neuladen). */
+  var SCHL_AUFGEDECKT = 'kb1nf_lehrer_aufgedeckt';
+  function aufgedeckt() {
+    var a = K.Speicher.dauer.lesen(SCHL_AUFGEDECKT);
+    return a && raum && a.raum === raum.raum ? a : { raum: raum ? raum.raum : '', zellen: {} };
+  }
+  function aufdeckenSetzen(schluessel, wert) {
+    var a = aufgedeckt();
+    if (Array.isArray(schluessel)) schluessel.forEach(function (x) { a.zellen[x] = wert; }); else a.zellen[schluessel] = wert;
+    K.Speicher.dauer.schreiben(SCHL_AUFGEDECKT, a);
+    zeichnen();
+  }
+  function aufdeckZelle(schluessel, inhalt, klasse) {
+    var offen = !!aufgedeckt().zellen[schluessel];
+    var b = el('button', 'aufdeck ' + (klasse || '') + (offen ? ' offen' : ''));
+    b.type = 'button';
+    b.setAttribute('data-aufdeck', schluessel);
+    if (offen) b.appendChild(fmt('span', null, inhalt)); else b.appendChild(el('span', 'verdeckt', T.verdeckt));
+    b.addEventListener('click', function () { aufdeckenSetzen(schluessel, !offen); });
+    return b;
+  }
+  function aufdeckKnoepfe(f, alle) {
+    var r = el('div', 'knopf-reihe aufdeck-knoepfe');
+    r.appendChild(el('span', 'tipp', f.tipp || ''));
+    r.appendChild(knopf(T.alleAufdecken, 'knopf-klein', function () { aufdeckenSetzen(alle, true); }));
+    r.appendChild(knopf(T.alleVerdecken, 'knopf-klein', function () { aufdeckenSetzen(alle, false); }));
+    return r;
+  }
+
+  // Vergleichstabelle wie auf dem Arbeitsblatt; Zelle anklicken = Lösung aufdecken
+  function folieTabelle(f, w) {
+    var NL = window.NACHLESEN || {};
+    var kopf = el('div', 'ergebnis-kopf');
+    kopf.appendChild(fmt('h1', 'f-titel', f.titel));
+    kopf.appendChild(fmt('p', 'f-unter', f.text));
+    w.appendChild(kopf);
+    var alle = [];
+    var tab = el('div', 'vergleich');
+    ['', 'A hypovolämisch', 'B anaphylaktisch', 'C neurogen'].forEach(function (t, i) {
+      var z = el('div', 'v-kopf' + (i ? ' ' + 'ABC'.charAt(i - 1) : ''), t);
+      tab.appendChild(z);
+    });
+    (NL.vergleich || []).forEach(function (zeile, r) {
+      tab.appendChild(el('div', 'v-zeilenkopf', zeile[0]));
+      for (var c = 1; c <= 3; c++) {
+        var schl = f.id + ':' + r + ':' + c;
+        alle.push(schl);
+        tab.appendChild(aufdeckZelle(schl, zeile[c], 'v-zelle'));
+      }
+    });
+    tab.appendChild(el('div', 'v-zeilenkopf', 'Gemeinsamkeit'));
+    var g = aufdeckZelle(f.id + ':gemeinsam', NL.gemeinsamkeit || '', 'v-zelle v-breit');
+    alle.push(f.id + ':gemeinsam');
+    tab.appendChild(g);
+    w.appendChild(tab);
+    w.appendChild(aufdeckKnoepfe(f, alle));
+  }
+
+  // Entscheidungsweg (AA3 b) wie im Arbeitsblatt; mitLoesung: Antworten per Klick aufdecken
+  function wegTabelle(f, NL, alle) {
+    var g = el('div', 'weg');
+    g.appendChild(el('div', 'weg-kopf', 'Frage'));
+    g.appendChild(el('div', 'weg-kopf', '„Ja“ → so handle bzw. lagere ich'));
+    (NL.weg || []).forEach(function (z, i) {
+      g.appendChild(fmt('div', 'weg-frage', z.frage));
+      if (!alle) { g.appendChild(el('div', 'weg-leer', '')); return; }
+      var schl = f.id + ':weg:' + i;
+      alle.push(schl);
+      g.appendChild(aufdeckZelle(schl, z.antwort, 'weg-antwort'));
+    });
+    return g;
+  }
+  function aufgabeKopf(nr, a, klasse) {
+    var kopf = el('div', klasse || 'loesung-aufgabe');
+    if (a.vorsatz) kopf.appendChild(fmt('p', 'a-vorsatz', a.vorsatz));
+    var p = el('p');
+    p.appendChild(el('strong', null, nr + ' '));
+    p.appendChild(fmt('span', null, a.text || ''));
+    if (a.punkte) p.appendChild(el('span', 'loesung-punkte', ' (' + a.punkte + ' P.)'));
+    kopf.appendChild(p);
+    return kopf;
+  }
+
+  // Musterlösung zu Klausuraufgaben; jede Zeile einzeln aufdecken.
+  // aufgaben: ['2.1', …] oder [{ nrs: ['5.1', '5.2'], loesung: '5.1 und 5.2' }]; bloecke: [{ art: 'weg' }]
+  function folieLoesung(f, w) {
+    var NL = window.NACHLESEN || {};
+    w.appendChild(titel(f));
+    var alle = [];
+    var box = el('div', 'loesungen');
+    (f.bloecke || []).forEach(function (b) { if (b.art === 'weg') box.appendChild(wegTabelle(f, NL, alle)); });
+    (f.aufgaben || []).forEach(function (eintrag) {
+      var nrs = typeof eintrag === 'string' ? [eintrag] : eintrag.nrs;
+      var lsg = typeof eintrag === 'string' ? eintrag : eintrag.loesung;
+      var teil = el('section', 'loesung-teil');
+      nrs.forEach(function (nr) { teil.appendChild(aufgabeKopf(nr, (NL.aufgaben || {})[nr] || {})); });
+      ((NL.loesungen || {})[lsg] || []).forEach(function (zeile, i) {
+        var schl = f.id + ':' + lsg + ':' + i;
+        alle.push(schl);
+        teil.appendChild(aufdeckZelle(schl, zeile, 'l-zeile'));
+      });
+      box.appendChild(teil);
+    });
+    if (f.punkte || f.uhr) {
+      var sp = el('div', 'seite-mit-uhr loesung-mit-uhr');
+      sp.appendChild(box);
+      var rechts = el('div', 'loesung-rechts');
+      if (f.punkte) rechts.appendChild(punkteListe(f.punkte));
+      if (f.uhr) rechts.appendChild(uhrElement(f));
+      sp.appendChild(rechts);
+      w.appendChild(sp);
+    } else w.appendChild(box);
+    w.appendChild(aufdeckKnoepfe(f, alle));
+  }
+
+  // Merksatz prüfen: Lücken einzeln aufdecken (Text aus inhalte.js → merksaetze, wie im AB)
+  function folieMerksatz(f, w) {
+    w.appendChild(titel(f, f.text));
+    var alle = [];
+    var box = el('section', 'merksatz-folie');
+    box.appendChild(el('div', 'merksatz-kopf', 'Merksatz ' + f.merksatz.toUpperCase()));
+    var p = el('p', 'merksatz-satz');
+    ((INHALTE.merksaetze || {})[f.merksatz] || []).forEach(function (t, i) {
+      if (typeof t === 'string') { p.appendChild(document.createTextNode(t)); return; }
+      var schl = f.id + ':' + i;
+      alle.push(schl);
+      p.appendChild(aufdeckZelle(schl, t.l, 'luecke'));
+    });
+    box.appendChild(p);
+    w.appendChild(box);
+    w.appendChild(aufdeckKnoepfe(f, alle));
+  }
+
+  // Lagerung: großes Bild, daneben Wann? / Warum? / So geht’s
+  function folieLagerung(f, w) {
+    var ueber = el('div', 'lagerung-ueber');
+    ueber.appendChild(el('span', null, f.ueber || ''));
+    ueber.appendChild(el('span', 'lagerung-nr', K.ersetzen(T.lagerungNr, { n: f.nr })));
+    w.appendChild(ueber);
+    w.appendChild(fmt('h1', 'f-titel', f.titel));
+    var box = el('div', 'lagerung-folie');
+    var bild = el('img', 'lagerung-bild');
+    bild.src = f.bild;
+    bild.alt = f.titel;
+    box.appendChild(bild);
+    var rechts = el('div', 'lagerung-text');
+    [[T.wannTitel, f.wann, 'wann'], [T.warumTitel, f.warum, 'warum'], [T.soTitel, f.so, 'so']].forEach(function (x) {
+      if (!x[1] || !x[1].length) return;
+      var k = el('section', 'lagerung-karte ' + x[2]);
+      k.appendChild(el('h2', null, x[0]));
+      var ul = el('ul');
+      x[1].forEach(function (t) { ul.appendChild(fmt('li', null, t)); });
+      k.appendChild(ul);
+      rechts.appendChild(k);
+    });
+    box.appendChild(rechts);
+    w.appendChild(box);
+  }
+
+  // Aufgabe wie im Arbeitsblatt. Schritt 1 („Weiter“): „Bearbeiten Sie jetzt …“ und die Uhr
+  function aufgabeBlock(f, b, NL) {
+    if (b.art === 'text') return fmt('p', 'a-text', b.text);
+    if (b.art === 'weg') return wegTabelle(f, NL, null);
+    if (b.art === 'aufgaben') {
+      var t = el('div', 'a-tabelle');
+      ['Nr.', 'Aufgabe', 'Punkte'].forEach(function (x) { t.appendChild(el('div', 'a-kopf', x)); });
+      b.nrs.forEach(function (nr) {
+        var a = (NL.aufgaben || {})[nr] || {};
+        t.appendChild(el('div', 'a-nr', nr));
+        var tx = el('div', 'a-auftrag');
+        if (a.vorsatz) tx.appendChild(fmt('p', 'a-vorsatz', a.vorsatz));
+        tx.appendChild(fmt('p', null, a.text || ''));
+        t.appendChild(tx);
+        t.appendChild(el('div', 'a-punkte', '___ / ' + (a.punkte || '')));
+      });
+      return t;
+    }
+    if (b.art === 'fall') {
+      var fk = el('section', 'a-fall');
+      fk.appendChild(el('h3', null, b.titel || ''));
+      [].concat(NL[b.schluessel] || []).forEach(function (x) { fk.appendChild(fmt('p', null, x)); });
+      return fk;
+    }
+    if (b.art === 'dialog') {
+      var bl = el('div', 'dialog-blasen');
+      (f.sprecher || []).forEach(function (sp) {
+        var d = el('div', 'sprechblase');
+        d.appendChild(el('div', 'wer', '💬 ' + sp.wer));
+        d.appendChild(el('div', 'was', sp.text));
+        bl.appendChild(d);
+      });
+      return bl;
+    }
+    return el('div');
+  }
+  function folieAufgabe(f, w) {
+    var NL = window.NACHLESEN || {};
+    w.appendChild(titel(f));
+    var los = schritt() > 0;
+    var box = el('div', 'aufgabe-folie' + (los ? ' mit-los' : ''));
+    var blatt = el('div', 'aufgabe-blatt');
+    (f.bloecke || []).forEach(function (b) { blatt.appendChild(aufgabeBlock(f, b, NL)); });
+    box.appendChild(blatt);
+    if (los) {
+      var rechts = el('div', 'aufgabe-los');
+      rechts.appendChild(fmt('p', 'los-text', f.los));
+      if (f.losPunkte) rechts.appendChild(punkteListe(f.losPunkte));
+      if (f.uhr) rechts.appendChild(uhrElement(f));
+      box.appendChild(rechts);
+    }
+    w.appendChild(box);
+  }
+
+  // Erklärfolie: was kommt – und warum
+  function folieInfo(f, w) {
+    var box = el('div', 'info-folie');
+    var links = el('div');
+    links.appendChild(titel(f, f.unter));
+    links.appendChild(punkteListe(f.punkte));
+    box.appendChild(links);
+    var rechts = el('div', 'info-rechts');
+    if (f.emoji) rechts.appendChild(el('div', 'info-emoji', f.emoji));
+    if (f.warum) {
+      var wb = el('div', 'warum-box');
+      wb.appendChild(el('h2', null, f.warumTitel || ''));
+      var ul = el('ul');
+      f.warum.forEach(function (x) { ul.appendChild(fmt('li', null, x)); });
+      wb.appendChild(ul);
+      rechts.appendChild(wb);
+    }
+    box.appendChild(rechts);
     w.appendChild(box);
   }
 
@@ -970,6 +1251,18 @@
           stimmen[r].fragen[f.nr] = v;
         });
       });
+      FOLIEN.filter(function (f) { return f.typ === 'aufstellung'; }).forEach(function (f) {
+        stimmen[f.runde] = { n: 20, fragen: {} };
+        f.massnahmen.forEach(function (m, i) {
+          var v = {};
+          for (var k = 0; k < 20; k++) {
+            var wahl = Math.random() < 0.7 ? 'ABC'.charAt(m.ecke) : 'ABC'.charAt(Math.floor(Math.random() * 3));
+            v[wahl] = v[wahl] || { sicher: 0, unsicher: 0 };
+            v[wahl].unsicher++;
+          }
+          stimmen[f.runde].fragen['M' + (i + 1)] = v;
+        });
+      });
       stand = { typ: 'beamer', raum: '0000', geraete: g, ohne: [], online: 22, stimmen: stimmen, puzzle: null,
         stunde: { folie: 'start', schritt: 0, uhr: null, frage: null } };
       setInterval(Demo.schritt, 1500);
@@ -1021,7 +1314,7 @@
       var f = folie();
       if (f.seite || f.typ === 'experten') {
         var seite = f.seite || 'w2-markieren';
-        var gesamt = { 'w2-markieren': 11, 'w2-detektiv': 7, 'w2-lagerung': 9, 'w2-simulation': 3 }[seite] || 5;
+        var gesamt = { 'w2-markieren': 11, 'w2-detektiv': 7, 'w2-lagerung': INHALTE.lagerung.karten.length }[seite] || 5;
         stand.geraete.forEach(function (g) {
           if (Math.random() > 0.3) return;
           var s = g.seiten[seite] || (g.seiten[seite] = { geloest: 0, gesamt: gesamt, status: 'arbeitet' });
@@ -1062,7 +1355,7 @@
         var fall = rolle(id) ? S.rollen[rolle(id)].fall : 'a';
         return INHALTE.markieren.faelle[fall].teile.filter(function (t) { return typeof t === 'object' && t.k; }).length;
       }
-      return { 'w2-detektiv': INHALTE.detektiv.faelle.length + 1, 'w2-lagerung': INHALTE.lagerung.karten.length, 'w2-simulation': 3 }[seite] || 5;
+      return { 'w2-detektiv': INHALTE.detektiv.faelle.length + 1, 'w2-lagerung': INHALTE.lagerung.karten.length }[seite] || 5;
     }
     function abstimmen(p, runde) {
       var antworten = {}, sicher = {};
@@ -1085,6 +1378,16 @@
         auswahl(draussen, 4).forEach(function (p) { z.an[p.id] = true; post('/api/anmelden', { geraeteId: p.id, name: p.name }); });
         speichern();
         return;
+      }
+      if (f.typ === 'aufstellung' && schritt() % 2 === 1) {
+        var frage = 'M' + Math.ceil(schritt() / 2);
+        var mass = f.massnahmen[Math.ceil(schritt() / 2) - 1];
+        z.s3 = z.s3 || {};
+        auswahl(z.leute.filter(function (p) { return !(z.s3[p.id] && z.s3[p.id][frage]); }), 5).forEach(function (p) {
+          var a = z.s3[p.id] = z.s3[p.id] || {};
+          a[frage] = Math.random() < 0.75 ? 'ABC'.charAt(mass.ecke) : 'ABC'.charAt(Math.floor(Math.random() * 3));
+          post('/api/stimme', { geraeteId: p.id, runde: f.runde, antworten: a, sicher: {} });
+        });
       }
       if (f.typ === 'abstimmung') {
         var schon = f.runde === 2 ? z.s2 : z.s1;
@@ -1118,7 +1421,7 @@
     return {
       starten: function (neu) {
         if (neu) {
-          z = { raum: raum.raum, leute: T.probeNamen.map(function (n) { return { id: 'probe' + K.zufallsId(12), name: n }; }), an: {}, s1: {}, s2: {}, prog: {}, ft: {}, fs: {}, folie: null, seit: 0, eingeteilt: null };
+          z = { raum: raum.raum, leute: T.probeNamen.map(function (n) { return { id: 'probe' + K.zufallsId(12), name: n }; }), an: {}, s1: {}, s2: {}, s3: {}, prog: {}, ft: {}, fs: {}, folie: null, seit: 0, eingeteilt: null };
           speichern();
         } else {
           var g = K.Speicher.dauer.lesen(SCHL);
