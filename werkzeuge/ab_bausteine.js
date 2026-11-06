@@ -73,7 +73,7 @@ function bausteine({ lsg = false, breite = 9072 } = {}) {
   // Lücke im Merksatz/Lückentext
   B.luecke = (wort, zeichen = 14) => (lsg ? B.loes(wort, { bold: true }) : B.t('_'.repeat(zeichen)));
 
-  // Zeile „⏱ 10 min · Einzelarbeit · AFB I · Ich-kann-Liste W2 Nr. 1“ (nur LSG)
+  // Zeile „⏱ 10 min · Einzelarbeit · AFB I · KA-Bezug …“ (nur LSG)
   B.meta = (text) => (lsg ? new Paragraph({ children: [B.emoji('⏱ ', { size: 17, color: F.GRAU_T }), B.i(text, { size: 17, color: F.GRAU_T })], spacing: { after: 60 } }) : null);
 
   /* ---------- Titel und Überschriften ---------- */

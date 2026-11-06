@@ -790,24 +790,41 @@
     var s = schritt();
     var kette = el('div', 'kette');
     f.kette.forEach(function (g, i) {
-      var b = el('div', 'glied' + (i < s ? '' : ' verdeckt'));
+      var offen = i < s;
+      var b = el(offen ? 'button' : 'div', 'glied' + (offen ? ' offen' : ' verdeckt'));
+      if (offen) {
+        b.type = 'button';
+        b.addEventListener('click', function () {
+          grossZeigen(function (k) {
+            k.appendChild(el('p', 'gross-schritt', K.ersetzen(T.gliedNr, { n: i + 1, y: f.kette.length })));
+            k.appendChild(el('h2', null, g.titel));
+            k.appendChild(fmt('div', 'gross-text', g.text));
+          });
+        });
+      }
       b.appendChild(el('div', 'glied-titel', g.titel));
       b.appendChild(el('div', 'glied-text', g.text));
       kette.appendChild(b);
     });
     w.appendChild(kette);
     if (s > f.kette.length) {
-      var a = el('div', 'antwort-karte');
+      var a = el('button', 'antwort-karte');
+      a.type = 'button';
+      a.addEventListener('click', function () {
+        grossZeigen(function (k) { k.appendChild(el('h2', null, f.antwortTitel)); k.appendChild(fmt('div', 'gross-text', f.antwort)); });
+      });
       a.appendChild(el('h3', null, f.antwortTitel));
       a.appendChild(fmt('div', null, f.antwort));
       w.appendChild(a);
     }
+    if (s > 0 && f.tipp) w.appendChild(el('p', 'tipp kette-tipp', f.tipp));
   }
 
   function folieEnde(f, w) {
     var box = el('div', 'impuls-gross');
     box.appendChild(fmt('h1', 'f-titel', f.titel));
-    box.appendChild(fmt('p', 'f-text', f.text));
+    if (f.text) box.appendChild(fmt('p', 'f-text', f.text));
+    if (f.punkte) box.appendChild(punkteListe(f.punkte));
     box.appendChild(fmt('p', 'ende-frei', f.frei));
     w.appendChild(box);
   }
@@ -824,16 +841,38 @@
     if (Array.isArray(schluessel)) schluessel.forEach(function (x) { a.zellen[x] = wert; }); else a.zellen[schluessel] = wert;
     K.Speicher.dauer.schreiben(SCHL_AUFGEDECKT, a);
     zeichnen();
+    if (grossNeu) grossNeu();
   }
-  function aufdeckZelle(schluessel, inhalt, klasse) {
+  // 1. Klick: aufdecken · 2. Klick: groß zeigen (zum Abschreiben). gross: Überschrift (Text) oder
+  // eigene Funktion, die die Großansicht füllt. Verdecken geht über „Alle verdecken“.
+  function aufdeckZelle(schluessel, inhalt, klasse, gross) {
     var offen = !!aufgedeckt().zellen[schluessel];
     var b = el('button', 'aufdeck ' + (klasse || '') + (offen ? ' offen' : ''));
     b.type = 'button';
     b.setAttribute('data-aufdeck', schluessel);
     if (offen) b.appendChild(fmt('span', null, inhalt)); else b.appendChild(el('span', 'verdeckt', T.verdeckt));
-    b.addEventListener('click', function () { aufdeckenSetzen(schluessel, !offen); });
+    b.addEventListener('click', function () {
+      if (!offen) { aufdeckenSetzen(schluessel, true); return; }
+      grossZeigen(typeof gross === 'function' ? gross : function (k) {
+        if (gross) k.appendChild(fmt('h2', null, gross));
+        k.appendChild(fmt('div', 'gross-text', inhalt));
+      });
+    });
     return b;
   }
+
+  /* ---------- Großansicht über der Folie (Klick daneben, ✕ oder Esc schließt) ---------- */
+  var grossNeu = null;      // baut die offene Großansicht neu, z. B. nach dem Aufdecken darin
+  function grossZeigen(bauen) {
+    grossNeu = function () {
+      var k = el('div', 'ebene-karte gross-ansicht');
+      k.appendChild(knopf('✕', 'gross-zu', ebeneZu));
+      bauen(k);
+      ebeneZeigen(k);
+    };
+    grossNeu();
+  }
+  function ohneSterne(t) { return String(t || '').replace(/\*\*/g, ''); }
   function aufdeckKnoepfe(f, alle) {
     var r = el('div', 'knopf-reihe aufdeck-knoepfe');
     r.appendChild(el('span', 'tipp', f.tipp || ''));
@@ -851,20 +890,35 @@
     w.appendChild(kopf);
     var alle = [];
     var tab = el('div', 'vergleich');
-    ['', 'A hypovolämisch', 'B anaphylaktisch', 'C neurogen'].forEach(function (t, i) {
-      var z = el('div', 'v-kopf' + (i ? ' ' + 'ABC'.charAt(i - 1) : ''), t);
+    var SPALTEN = ['A hypovolämisch', 'B anaphylaktisch', 'C neurogen'];
+    tab.appendChild(el('div', 'v-kopf', ''));
+    SPALTEN.forEach(function (t, i) {
+      var z = knopf(t, 'v-kopf ' + 'ABC'.charAt(i), function () { spalteGross(i + 1); });
+      z.title = T.spalteGross;
       tab.appendChild(z);
     });
+    // ganze Spalte groß: verdeckte Zellen lassen sich auch dort aufdecken
+    function spalteGross(c) {
+      grossZeigen(function (k) {
+        k.appendChild(el('h2', 'gross-spalte-titel ' + 'ABC'.charAt(c - 1), SPALTEN[c - 1]));
+        var g2 = el('div', 'gross-spalte');
+        (NL.vergleich || []).forEach(function (zeile, r) {
+          g2.appendChild(el('div', 'v-zeilenkopf', zeile[0]));
+          g2.appendChild(aufdeckZelle(f.id + ':' + r + ':' + c, zeile[c], 'g-zelle', zeile[0] + ' · ' + SPALTEN[c - 1]));
+        });
+        k.appendChild(g2);
+      });
+    }
     (NL.vergleich || []).forEach(function (zeile, r) {
       tab.appendChild(el('div', 'v-zeilenkopf', zeile[0]));
       for (var c = 1; c <= 3; c++) {
         var schl = f.id + ':' + r + ':' + c;
         alle.push(schl);
-        tab.appendChild(aufdeckZelle(schl, zeile[c], 'v-zelle'));
+        tab.appendChild(aufdeckZelle(schl, zeile[c], 'v-zelle', zeile[0] + ' · ' + SPALTEN[c - 1]));
       }
     });
     tab.appendChild(el('div', 'v-zeilenkopf', 'Gemeinsamkeit'));
-    var g = aufdeckZelle(f.id + ':gemeinsam', NL.gemeinsamkeit || '', 'v-zelle v-breit');
+    var g = aufdeckZelle(f.id + ':gemeinsam', NL.gemeinsamkeit || '', 'v-zelle v-breit', 'Gemeinsamkeit');
     alle.push(f.id + ':gemeinsam');
     tab.appendChild(g);
     w.appendChild(tab);
@@ -881,7 +935,7 @@
       if (!alle) { g.appendChild(el('div', 'weg-leer', '')); return; }
       var schl = f.id + ':weg:' + i;
       alle.push(schl);
-      g.appendChild(aufdeckZelle(schl, z.antwort, 'weg-antwort'));
+      g.appendChild(aufdeckZelle(schl, z.antwort, 'weg-antwort', ohneSterne(z.frage)));
     });
     return g;
   }
@@ -912,7 +966,7 @@
       ((NL.loesungen || {})[lsg] || []).forEach(function (zeile, i) {
         var schl = f.id + ':' + lsg + ':' + i;
         alle.push(schl);
-        teil.appendChild(aufdeckZelle(schl, zeile, 'l-zeile'));
+        teil.appendChild(aufdeckZelle(schl, zeile, 'l-zeile', K.ersetzen(T.loesungZu, { nr: lsg })));
       });
       box.appendChild(teil);
     });
@@ -932,14 +986,26 @@
   function folieMerksatz(f, w) {
     w.appendChild(titel(f, f.text));
     var alle = [];
+    var name = 'Merksatz ' + f.merksatz.toUpperCase();
+    var teile = (INHALTE.merksaetze || {})[f.merksatz] || [];
     var box = el('section', 'merksatz-folie');
-    box.appendChild(el('div', 'merksatz-kopf', 'Merksatz ' + f.merksatz.toUpperCase()));
+    box.appendChild(el('div', 'merksatz-kopf', name));
     var p = el('p', 'merksatz-satz');
-    ((INHALTE.merksaetze || {})[f.merksatz] || []).forEach(function (t, i) {
+    function merksatzGross(k) {
+      k.appendChild(el('h2', null, name));
+      var q = el('p', 'gross-text gross-merksatz');
+      var offen = aufgedeckt().zellen;
+      teile.forEach(function (t, i) {
+        if (typeof t === 'string') q.appendChild(document.createTextNode(t));
+        else q.appendChild(el('mark', 'gross-luecke', offen[f.id + ':' + i] ? t.l : '______'));
+      });
+      k.appendChild(q);
+    }
+    teile.forEach(function (t, i) {
       if (typeof t === 'string') { p.appendChild(document.createTextNode(t)); return; }
       var schl = f.id + ':' + i;
       alle.push(schl);
-      p.appendChild(aufdeckZelle(schl, t.l, 'luecke'));
+      p.appendChild(aufdeckZelle(schl, t.l, 'luecke', merksatzGross));
     });
     box.appendChild(p);
     w.appendChild(box);
@@ -1054,7 +1120,7 @@
     e.appendChild(karte);
     e.hidden = false;
   }
-  function ebeneZu() { $('ebene').hidden = true; $('ebene').textContent = ''; }
+  function ebeneZu() { grossNeu = null; $('ebene').hidden = true; $('ebene').textContent = ''; }
   $('ebene').addEventListener('click', function (ev) { if (ev.target === $('ebene')) ebeneZu(); });
 
   function frage(text, knoepfe) {
