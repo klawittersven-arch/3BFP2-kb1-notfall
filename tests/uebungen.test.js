@@ -173,6 +173,7 @@ fs.mkdirSync(ORDNER, { recursive: true });
   pruefe((await s.textContent('.gesamtpunkte')).includes('6 von 10'), 'Begründung zählt');
   await s.check('.fehlerbox .kriterium:has-text("Schocklage") input');
   pruefe((await s.textContent('.gesamtpunkte')).includes('5 von 10'), 'Fehler „Schocklage“ sperrt Lagerung und Begründung', await s.textContent('.gesamtpunkte'));
+  pruefe((await s.textContent('#uebung')).includes('Nachbeobachtung wegen möglicher zweiter Reaktion'), 'Raster 6.3 enthält die Nachbeobachtung');
   await s.screenshot({ path: path.join(ORDNER, 'raster.png'), fullPage: true });
   await s.close();
 
@@ -187,6 +188,10 @@ fs.mkdirSync(ORDNER, { recursive: true });
   pruefe((await s.$$('.muster')).length === 5, 'alle Musterlösungen aufgedeckt');
   for (const c of await s.$$('.kriterium input')) await c.check();
   pruefe((await s.textContent('.gesamtpunkte')).includes('20 von 20'), 'volle Punktzahl 20', await s.textContent('.gesamtpunkte'));
+  // 1.2 wie im KA-Erwartungshorizont: ohne Kreislaufzeichen höchstens 3 von 4 Punkten
+  await s.uncheck('.kriterium:has-text("Kreislauf: Puls") input');
+  pruefe((await s.textContent('.gesamtpunkte')).includes('19 von 20'), '1.2 ohne Kreislaufzeichen: höchstens 3 Punkte', await s.textContent('.gesamtpunkte'));
+  pruefe((await s.textContent('#uebung')).includes('Ohne Kreislaufzeichen höchstens 3 Punkte'), 'Hinweis zur Kreislauf-Pflicht sichtbar');
   await s.close();
 
   pruefe(protokoll.konsole.length === 0, 'keine Fehler in der Konsole', protokoll.konsole);

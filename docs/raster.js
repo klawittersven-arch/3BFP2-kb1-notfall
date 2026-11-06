@@ -30,7 +30,10 @@
       if (k.extra) extra += k.punkte; else normal += k.punkte;
     });
     if (g.maxMassnahmen) normal = Math.min(normal, g.maxMassnahmen);
-    return Math.min(normal + extra, g.max);
+    var hoechst = g.max;
+    // Pflichtkriterium (z. B. Kreislaufzeichen): fehlt es, gibt es höchstens max − 1 Punkte
+    if (g.pflicht && !(z.haken[gid(g, i) + ':' + g.pflicht] && !sperre[g.pflicht])) hoechst = g.max - 1;
+    return Math.min(normal + extra, hoechst);
   }
   function summe() { return gruppen.reduce(function (s, g, i) { return s + punkteGruppe(g, i); }, 0); }
   function maximum() { return gruppen.reduce(function (s, g) { return s + g.max; }, 0); }
@@ -73,6 +76,7 @@
         liste.appendChild(lab);
       });
       box.appendChild(liste);
+      if (g.pflichtHinweis) box.appendChild(el('p', 'klein', g.pflichtHinweis));
       box.appendChild(gp);
       platz.appendChild(box);
       anzeigen.push({ g: g, i: i, gp: gp, liste: liste });

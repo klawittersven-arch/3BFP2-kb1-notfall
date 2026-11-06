@@ -443,7 +443,8 @@ var INHALTE = {
         { id: 'd5', text: 'Maßnahmen mit Uhrzeit und Namenskürzel', punkte: 0.5 },
         { id: 'd6', text: 'Übergabe an den Rettungsdienst (Uhrzeit, Zielklinik)', punkte: 0.5 },
         { id: 'd7', text: 'Information von Angehörigen bzw. Hausärztin', punkte: 0.5 },
-        { id: 'd8', text: 'Insektengiftallergie in der Akte vermerken', punkte: 0.5 }
+        { id: 'd8', text: 'Insektengiftallergie in der Akte vermerken', punkte: 0.5 },
+        { id: 'd9', text: 'Nachbeobachtung wegen möglicher zweiter Reaktion (zweigipfliger Verlauf) weitergeben', punkte: 0.5 }
       ] }
     ],
     fehler: [
@@ -461,19 +462,23 @@ var INHALTE = {
     rueckmeldung: 'Notieren Sie auf dem Arbeitsblatt: Das muss ich noch üben.',
     zuruecksetzen: 'Alles zurücksetzen',
     aufgaben: [
-      { nr: '1.1', titel: 'Messdaten beurteilen (4 P.)', max: 4,
-        muster: 'a) Puls 124/min: deutlich erhöht, Anstieg von 72/min – der Kreislauf gleicht aus.\nb) Blutdruck 86/52 mmHg: zu niedrig, deutlicher Abfall vom Vorwert 128/78; Schockindex 124 : 86 ≈ 1,4 (über 1) → Schock.\nc) Atemfrequenz 20/min, SpO₂ 96 %: noch im Normbereich – die Atmung steht nicht im Vordergrund, aber engmaschig überwachen.',
+      { nr: '1.1', titel: 'Messdaten beurteilen (3 P.)', max: 3,
+        muster: 'a) Puls 124/min: deutlich erhöht, Anstieg von 72/min – der Kreislauf gleicht aus.\nb) Blutdruck 86/52 mmHg: zu niedrig, deutlicher Abfall vom Vorwert 128/78; Schockindex 124 : 86 ≈ 1,4 (über 1) → Schock.',
         kriterien: [
           { id: 'a', text: 'a) Puls als erhöht beurteilt, mit Vergleich zum Vorwert', punkte: 1.5 },
-          { id: 'b', text: 'b) Blutdruck als zu niedrig beurteilt, Vorwert oder Schockindex genannt', punkte: 1.5 },
-          { id: 'c', text: 'c) Atmung und SpO₂ als (noch) normal beurteilt, Überwachung genannt', punkte: 1 }
+          { id: 'b', text: 'b) Blutdruck als zu niedrig beurteilt, Vorwert oder Schockindex genannt', punkte: 1.5 }
         ] },
-      { nr: '1.2', titel: 'Notfall erläutern (3 P.)', max: 3,
-        muster: 'Anaphylaktischer Schock: bekannte Fischallergie, Beginn 15 Minuten nach dem Essen mit Fischsauce; Haut (Juckreiz, Quaddeln), Magen-Darm (Übelkeit) und Kreislauf (Schwindel, Blässe, Unruhe, Puls ↑, Blutdruck ↓) sind beteiligt. Histamin macht die Gefäße weit und durchlässig → relativer Volumenmangel → Blutdruckabfall.',
+      { nr: '1.2', titel: 'Anaphylaktischen Schock begründen (4 P.)', max: 4,
+        // pflicht: ohne dieses Kriterium höchstens max − 1 Punkte (wie im Erwartungshorizont der KA)
+        pflicht: 'kreislauf',
+        pflichtHinweis: 'Ohne Kreislaufzeichen höchstens 3 Punkte – wie in der Klassenarbeit.',
+        muster: 'z. B. (je Symptom mit Zuordnung 1 P.):\nzeitlicher Zusammenhang – Beginn 15 Min. nach dem Essen mit Fischsauce bei bekannter Fischallergie\nHaut – Juckreiz an Händen und Kopfhaut, Quaddeln am Bauch\nKreislauf – Puls 124/min, Blutdruckabfall von 128/78 auf 86/52 mmHg, Blässe, Schwindel\nMagen-Darm – Übelkeit\nGehirn – Unruhe (Minderdurchblutung)\nFür die volle Punktzahl muss die Kreislaufbeteiligung genannt sein.',
         kriterien: [
-          { id: 'name', text: 'Anaphylaktischer Schock benannt', punkte: 1 },
-          { id: 'fall', text: 'Mit Befunden aus dem Fall begründet (Allergie, zeitlicher Zusammenhang, Haut, Kreislauf)', punkte: 1 },
-          { id: 'entstehung', text: 'Entstehung kurz erklärt (Histamin → Gefäße weit → Blutdruck fällt)', punkte: 1 }
+          { id: 'zeit', text: 'Zeitlicher Zusammenhang mit dem Allergen (Fischsauce, bekannte Allergie)', punkte: 1 },
+          { id: 'haut', text: 'Haut: Juckreiz, Quaddeln – zugeordnet', punkte: 1 },
+          { id: 'kreislauf', text: 'Kreislauf: Puls ↑, Blutdruck ↓ (mit Vorwert), Blässe oder Schwindel – zugeordnet', punkte: 1 },
+          { id: 'magen', text: 'Magen-Darm: Übelkeit – zugeordnet', punkte: 1 },
+          { id: 'unruhe', text: 'Unruhe als Zeichen der Minderdurchblutung des Gehirns', punkte: 1 }
         ] },
       { nr: '2.1', titel: 'Sofortmaßnahmen und Positionierung (7 P.)', max: 7,
         muster: 'z. B.: nicht weiteressen (Allergen stoppen) · Stationsärztin bzw. Notfallteam alarmieren, nicht allein lassen · flach lagern, Beine hoch, weil Kreislaufzeichen ohne Atemnot im Vordergrund stehen (mehr Blut zum Herzen); nicht aufsetzen · Adrenalin i. m. nach Notfall-SOP bzw. Anordnung (Außenseite Oberschenkel) · Zugang und Volumengabe n. ä. A. vorbereiten · Sauerstoff n. ä. A./SOP · Puls, Blutdruck, Atmung, SpO₂, Bewusstsein engmaschig · Uhrzeit und Maßnahmen dokumentieren.',

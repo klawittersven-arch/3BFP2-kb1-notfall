@@ -42,7 +42,8 @@ const EXPERTEN = {
       '**Erste Schritte:** Hilfe holen, Ärztin oder Arzt informieren; nicht aufsetzen oder aufstehen lassen; flach lagern, Beine hoch (wenn keine Atemnot); Wärme erhalten; nichts essen oder trinken lassen (mögliche Untersuchung oder Operation); engmaschig überwachen; Volumengabe nur nach ärztlicher Anordnung.'
     ],
     woerter: 'hypovolämisch = mit zu wenig Volumen | Teerstuhl = schwarzer Stuhl durch verdautes Blut | Zentralisation = Umverteilung des Blutes zu Gehirn und Herz',
-    nennen: ['blass; Stirn kalt und feucht (kaltschweißig)', 'Puls 116/min – Anstieg von 78/min (Tachykardie)', 'Blutdruck 98/72 mmHg – Abfall von 145/85 mmHg, kleine Blutdruckamplitude; Schockindex 116 : 98 ≈ 1,2', 'Durst (bittet mehrmals um etwas zu trinken)', 'Unruhe und neu aufgetretene Verwirrtheit', '„Mir wird ganz schwarz vor Augen.“ (Schwindel beim Aufsetzen)', 'Atemfrequenz 24/min (erhöht)'],
+    adjektiv: 'hypovolämischer',
+    nennen: ['Ursache: schwarzer, klebriger Stuhl (Teerstuhl) unter Gerinnungshemmer → Blutung im Magen-Darm-Trakt', 'Kreislauf: Puls 116/min – Anstieg von 78/min (Tachykardie, Gegenregulation)', 'Kreislauf: Blutdruck 98/72 mmHg – Abfall von 145/85 mmHg, kleine Amplitude; Schockindex 116 : 98 ≈ 1,2', 'Haut: blass, Stirn kalt und feucht (Zentralisation)', 'Volumenmangel: Durst (bittet mehrmals um etwas zu trinken)', 'Gehirn: Unruhe, neue Verwirrtheit, „schwarz vor Augen“ (Minderdurchblutung)', 'Atmung: Atemfrequenz 24/min (Frühzeichen)'],
     karte: {
       ursache: 'Blutverlust: Magen-Darm-Blutung (Teerstuhl) unter Gerinnungshemmer',
       entstehung: 'Volumen ↓ → Rückstrom zum Herzen ↓ → Schlagvolumen und Blutdruck ↓ → Sympathikus: Puls ↑, Zentralisation',
@@ -68,7 +69,8 @@ const EXPERTEN = {
       '**Erste Schritte:** Allergen stoppen, Hilfe holen, lagern nach Leitsymptom, Adrenalin i. m. nach Anordnung oder SOP (Mittel der ersten Wahl), überwachen, dokumentieren – mehr dazu in AA3 bis AA5.'
     ],
     woerter: 'Allergen = Auslöser einer Allergie | Mastzellen = Abwehrzellen im Gewebe, die Histamin speichern | Quaddeln = juckende, erhabene Hautschwellungen | anaphylaktisch = durch eine schwere allergische Reaktion',
-    nennen: ['Juckreiz und Quaddeln an Hals und Brust', 'Schwellung von Lippen und Augenlidern', 'heisere Stimme (Schwellung der Kehlkopfschleimhaut)', 'Atemfrequenz 26/min, Sauerstoffsättigung 93 %', 'Puls 128/min (Tachykardie)', 'Blutdruck 88/50 mmHg – deutlich unter ihrem üblichen Wert (120/70)', 'Schwindel, Übelkeit, Bauchkrämpfe'],
+    adjektiv: 'anaphylaktischer',
+    nennen: ['zeitlicher Zusammenhang: Beginn etwa 10 Minuten nach dem Haselnusskuchen (Allergen)', 'Haut: Juckreiz, Quaddeln an Hals und Brust, Schwellung von Lippen und Augenlidern', 'Atemwege: heisere Stimme (Schwellung der Kehlkopfschleimhaut), Atemfrequenz 26/min, SpO₂ 93 %', 'Kreislauf: Blutdruck 88/50 mmHg – deutlich unter ihrem üblichen Wert (120/70); Puls 128/min (Tachykardie)', 'Magen-Darm: Übelkeit, Bauchkrämpfe', 'Gehirn/Kreislauf: Schwindel'],
     karte: {
       ursache: 'Allergie: Haselnüsse im Kuchen (Nahrungsmittel)',
       entstehung: 'Allergen → Mastzellen setzen Histamin frei → Gefäße weit und durchlässig → relativer Volumenmangel → Blutdruck ↓; Schleimhaut ↑, Bronchien eng → Atemnot',
@@ -94,7 +96,8 @@ const EXPERTEN = {
       '**Erste Schritte:** Notruf veranlassen; den Kopf mit beiden Händen in der vorgefundenen Lage halten; nicht aufsetzen, nicht bewegen; Wärme erhalten; Atmung und Puls überwachen (mehr in Woche 4).'
     ],
     woerter: 'neurogen = vom Nervensystem ausgehend | Rückenmark = Nervenstrang im Wirbelkanal | Sympathikus = Teil des Nervensystems, der Puls und Gefäßspannung steigert',
-    nennen: ['Blutdruck 82/45 mmHg (niedrig)', 'langsamer Puls 52/min trotz niedrigem Blutdruck', 'Haut an den Beinen warm, trocken, rosig (keine Zentralisation)', 'flache Atmung', 'Lähmungen: kann Arme und Beine kaum bewegen; „Ich spür meine Beine nicht“', 'Kribbeln in den Händen, starke Nackenschmerzen (Hinweis auf Halswirbelsäule)'],
+    adjektiv: 'neurogener',
+    nennen: ['Ursache: Kopfsprung in flaches Wasser, starke Nackenschmerzen → Verletzung der Halswirbelsäule', 'Kreislauf: Blutdruck 82/45 mmHg (niedrig)', 'Kreislauf: langsamer Puls 52/min trotz niedrigem Blutdruck – der Sympathikus fällt aus', 'Haut: an den Beinen warm, trocken, rosig (keine Zentralisation)', 'Nerven: Lähmungen (Arme und Beine kaum beweglich), „Ich spür meine Beine nicht“, Kribbeln in den Händen', 'Atmung: flach (hohe Verletzung)'],
     karte: {
       ursache: 'Rückenmarksverletzung an der Halswirbelsäule (Kopfsprung in flaches Wasser)',
       entstehung: 'Sympathikus fällt aus → Gefäße weit, Blut versackt → relativer Volumenmangel → Blutdruck ↓; keine Gegenregulation',

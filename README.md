@@ -11,10 +11,10 @@ Die Arbeitsblätter entstehen im Wechsel (Lohner / Klawitter); dieses Repository
 | Min. | Aufgabe | Wo? | Sozialform | Examens-/KA-Bezug |
 |---|---|---|---|---|
 | 0–8 | Einstieg „Ihre Entscheidung, bitte!“ (Runde 1) | 📱 `w2-entscheidung.html` | EA → Plenum | Fehlvorstellungen sichtbar machen |
-| 8–23 | AA1 Expertenrunde: Befunde markieren, Symptome nennen | 📱 `w2-markieren.html?fall=a/b/c` + Expertenblatt | Gruppenpuzzle (Experten) | KA 3.1 |
+| 8–23 | AA1 Expertenrunde: Befunde markieren, Schockform anhand von 4 Symptomen begründen | 📱 `w2-markieren.html?fall=a/b/c` + Expertenblatt | Gruppenpuzzle (Experten) | KA 3.1 (Wortlaut) |
 | 23–43 | AA2 Stammgruppe: Vergleichstabelle, Schockform-Detektiv, Klausurtraining | 📱 `w2-detektiv.html` + ✍️ | Gruppenpuzzle (Stamm) | KA 3.2, 5.5 |
 | 43–63 | AA3 Lagerungsparcours auf Yogamatten, Entscheidungsweg | 📱 `w2-lagerung.html` + ✍️ | PA → EA | KA 3.3 (Lagerung begründen) |
-| 63–88 | AA4 Notfall-Simulation Anaphylaxie (3 Varianten, Rollen, Protokoll) | 📱 `w2-simulation.html` | GA (3–4) | Lehrplan CE 06, I.4.a |
+| 63–88 | AA4 Notfall-Simulation Anaphylaxie (3 Varianten, Rollen, Protokoll), 4.1 Vergleich Klinik – Pflegeheim | 📱 `w2-simulation.html` + ✍️ | GA (3–4) | Lehrplan CE 06, I.4.a; KA 3.3 |
 | 88–100 | AA5 Aufstellung „Wer darf was?“, Stellungnahme Adrenalin | ✍️ + Schilder | Plenum → EA → PA | III.2.b, KA 3.3 |
 | 100–115 | AA6 Klausurtraining Transferfall + Peer-Korrektur | ✍️ + 📱 `w2-raster.html` | EA → PA | Examen Mai 2024 T3 8.2 |
 | 115–130 | AA7 Placemat „Zurück zu Frau Maler“ (Kausalkette) | ✍️ Placemat A3 | GA (4) | IKL W2 Nr. 5 |
