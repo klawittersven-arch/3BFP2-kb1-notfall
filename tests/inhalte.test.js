@@ -88,7 +88,7 @@ const handyJs = fs.readFileSync(path.join(DOCS, 'stunde.js'), 'utf8');
 for (const f of S.folien) {
   pruefe(new RegExp('\\b' + f.typ + ': folie').test(beamerJs), `Folie ${f.id}: Beamer kennt den Typ „${f.typ}“`);
   const h = f.handy || {};
-  pruefe(['vorne', 'entscheidung', 'murmeln', 'gruppe', 'experte', 'stamm', 'modul', 'papier', 'aufstellung', 'ende'].includes(h.typ), `Folie ${f.id}: Handy-Bildschirm „${h.typ}“ ist bekannt`);
+  pruefe(['vorne', 'entscheidung', 'murmeln', 'gruppe', 'experte', 'stamm', 'modul', 'papier', 'faelle', 'aufstellung', 'ende'].includes(h.typ), `Folie ${f.id}: Handy-Bildschirm „${h.typ}“ ist bekannt`);
   if (h.modul) pruefe(fs.existsSync(path.join(DOCS, h.modul + '.js')), `Folie ${f.id}: Übung ${h.modul}.js existiert`);
   (f.uhr || []).forEach((u) => pruefe(Number.isInteger(u.sek) && u.sek >= 5 && u.sek <= 3600, `Folie ${f.id}: Uhr „${u.label}“ zwischen 5 s und 60 min`));
   if (f.uhr) pruefe(f.uhr.length <= 6, `Folie ${f.id}: höchstens 6 Uhr-Abschnitte`);
@@ -99,6 +99,11 @@ pruefe(S.gruppen.length >= 10 && new Set(S.gruppen.map((g) => g.name)).size === 
   pruefe(S.check[b].length === 3 && S.check[b].every((q) => q.optionen[q.richtig]), `Experten-Check ${b}: 3 Fragen mit gültiger Lösung`);
   const r = S.rollen[b];
   pruefe(gleich(S.experten[r.fall].info, AB.EXPERTEN[r.fall].info) && S.experten[r.fall].woerter === AB.EXPERTEN[r.fall].woerter, `Expertentext ${b} gleich in App und Arbeitsblatt`);
+  pruefe(gleich(S.experten[r.fall].nennen, AB.EXPERTEN[r.fall].nennen), 'Selbstkontrolle 1.1 (' + b + ') gleich in App und Arbeitsblatt');
+  const ueberschrift = AB.EXPERTEN[r.fall].info.filter((x) => /\*\*|Ursache|Entstehung|typische Zeichen|Darauf achte/i.test(x));
+  pruefe(ueberschrift.length === 0, 'Infotext ' + b + ': keine Überschriften und keine Namen der Tabellenzeilen', ueberschrift);
+  const fallApp = I.markieren.faelle[r.fall].teile.map((t) => (typeof t === 'string' ? t : t.t)).join('').split('\n').map((x) => x.trim());
+  pruefe(gleich(fallApp, AB.EXPERTEN[r.fall].fall), 'Fall ' + b + ': Expertenblatt (Papier) und Markier-Übung haben denselben Text');
 });
 const aa5 = S.folien.find((f) => f.id === 'aa5a');
 pruefe(aa5.massnahmen.every((m) => m.ecke >= 0 && m.ecke < aa5.ecken.length), 'AA5a: jede Maßnahme hat eine gültige Ecke');
@@ -110,6 +115,8 @@ for (const nr of ['1.1', '2.1', '2.2', '3.1', '3.2', '4.1', '5.1', '6.1', '6.2',
 for (const k of ['1.1', '2.1', '2.2', '3.1', '3.2', '4.1', '5.1', '6.1 und 6.2', '6.3', '7.1', '7.2']) pruefe(Array.isArray(NL.loesungen[k]) && NL.loesungen[k].length > 0, `Lösung ${k} vorhanden`);
 pruefe(!Object.keys(NL.loesungen).some((k) => /^Aufgabe/.test(k)), 'keine Hausaufgaben-Lösungen auf der Nachlese-Seite');
 pruefe(NL.vergleich.length === 6 && NL.pikto.length === 4 && NL.weg.length === 5 && NL.werDarfWas.length === 3, 'Tabelle, Lagerung und Verantwortung vollständig');
+S.folien.find((f) => f.id === 'aa2c').handy.aufgaben.forEach((a) => pruefe(NL.aufgaben[a.nr] && NL.aufgaben[a.nr].text.startsWith(a.text), 'Handy-Text zu ' + a.nr + ' wie im Arbeitsblatt'));
+S.folien.filter((f) => f.typ === 'loesung').forEach((f) => f.aufgaben.forEach((nr) => pruefe(NL.loesungen[nr] && NL.loesungen[nr].length > 0, 'Lösungsfolie ' + f.id + ': Lösung ' + nr + ' vorhanden')));
 
 console.log('Keine Wege zwischen den Übungen');
 const startseite = fs.readFileSync(path.join(DOCS, 'index.html'), 'utf8');

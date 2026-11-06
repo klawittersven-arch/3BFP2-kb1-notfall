@@ -167,18 +167,42 @@ const textDa = (h, text) => bis(h, (t) => document.body.innerText.includes(t), t
     H.pruefe(await bis(lap, () => document.querySelectorAll('.g-karte.fertig').length === 2), 'Beamer: beide Stammgruppen „fertig“');
     await lap.screenshot({ path: path.join(ORDNER, 'stunde_09_stamm.png') });
 
+    console.log('\n== Tabelle sichern (aufdecken am Beamer)');
+    await weiter();
+    H.pruefe(await folieIst(lap, 'aa2a-sichern'), 'nach den Stammgruppen: Folie „Tabelle sichern“');
+    H.pruefe((await lap.$$('.vergleich .aufdeck')).length === 19 && (await lap.$$('.vergleich .aufdeck.offen')).length === 0, 'Vergleichstabelle wie im AB, alle Zellen verdeckt');
+    await lap.click('.vergleich .aufdeck >> nth=0');
+    H.pruefe(await bis(lap, () => document.querySelectorAll('.vergleich .aufdeck.offen').length === 1), 'Zelle anklicken deckt die Lösung auf');
+    H.pruefe(await textDa(handys[0], 'Musterlösung vorne'), 'Handy: Tabelle mit der Musterlösung am Beamer vergleichen');
+    await lap.screenshot({ path: path.join(ORDNER, 'stunde_10_tabelle.png') });
+    await weiter();
+    H.pruefe(await folieIst(lap, 'aa2b-intro') && (await lap.$$('.warum-box')).length === 1, 'Erklärfolie zum Schockform-Detektiv (was und warum)');
+    await lap.screenshot({ path: path.join(ORDNER, 'stunde_11_detektiv_erklaerung.png') });
+
     console.log('\n== Übungen folgen der Folie');
     await weiter();
-    H.pruefe(await folieIst(lap, 'aa2b'), 'Folie 10: Schockform-Detektiv');
+    H.pruefe(await folieIst(lap, 'aa2b'), 'Schockform-Detektiv');
     H.pruefe(await titelIst(handys[0], 'Detektiv'), 'Handy lädt den Schockform-Detektiv');
     H.pruefe(await bis(handys[0], () => !!document.querySelector('.gruppe-mini')), 'Handy zeigt dazu die Stammgruppe');
     await weiter();
+    H.pruefe(await folieIst(lap, 'aa2c'), 'Klausurtraining 2.1/2.2');
+    H.pruefe(await bis(handys[0], () => document.querySelectorAll('details.info').length === 3), 'Handy zeigt die Fälle Mia, Herr Weber und Herr Albrecht zum Nachlesen');
+    H.pruefe(!(await lap.textContent('.folie')).includes('Expertin/Experte B'), 'keine Expertenkorrektur mehr');
+    await handys[0].screenshot({ path: path.join(ORDNER, 'handy_13_faelle.png'), fullPage: true });
     await weiter();
-    H.pruefe(await folieIst(lap, 'aa3-impuls'), 'Folien 11 → 12');
+    H.pruefe(await folieIst(lap, 'aa2c-loesung'), 'Musterlösung 2.1/2.2');
+    const zeilenL = (await lap.$$('.loesungen .aufdeck')).length;
+    await lap.click('button:has-text("Alle aufdecken")');
+    H.pruefe(await bis(lap, (n) => document.querySelectorAll('.loesungen .aufdeck.offen').length === n, zeilenL), 'Alle aufdecken zeigt alle ' + zeilenL + ' Lösungszeilen');
+    await lap.screenshot({ path: path.join(ORDNER, 'stunde_14_musterloesung.png') });
+    await lap.reload();
+    H.pruefe(await bis(lap, (n) => document.querySelectorAll('.loesungen .aufdeck.offen').length === n, zeilenL), 'aufgedeckt bleibt aufgedeckt (auch nach Neuladen)');
     await weiter();
-    H.pruefe(await titelIst(handys[1], 'Lagerung'), 'Folie 13: Handy lädt den Lagerungsparcours');
+    H.pruefe(await folieIst(lap, 'aa3-impuls'), 'weiter zu „Schock → Beine hoch?“');
     await weiter();
-    H.pruefe(await titelIst(handys[2], 'Simulation'), 'Folie 14: Handy lädt die Simulation');
+    H.pruefe(await titelIst(handys[1], 'Lagerung'), 'Handy lädt den Lagerungsparcours');
+    await weiter();
+    H.pruefe(await titelIst(handys[2], 'Simulation'), 'Handy lädt die Simulation');
 
     console.log('\n== Zurück, Menü, Unterschritte');
     await lap.click('#zurueck');

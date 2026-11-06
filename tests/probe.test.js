@@ -76,8 +76,9 @@ const folieIst = (lap, id, ms) => bis(lap, (x) => { const f = document.querySele
     H.pruefe(await bis(lap, () => document.querySelectorAll('.g-karte .haken').length >= 3, null, 60000), 'erfundene Stammgruppen-Mitglieder melden „fertig“');
 
     console.log('\n== Übungsfortschritt der erfundenen Klasse');
-    await lap.click('#weiter');
-    H.pruefe(await folieIst(lap, 'aa2b'), 'Folie 10: Detektiv');
+    await lap.click('#menue-knopf');
+    await lap.click('.menue-folie:has-text("Schockform-Detektiv (AA2b)")');
+    H.pruefe(await folieIst(lap, 'aa2b'), 'Folie Schockform-Detektiv');
     H.pruefe(await bis(lap, () => [...document.querySelectorAll('.g-zahl')].some((z) => /^[1-9]\//.test(z.textContent) || z.textContent === '✓')), 'Fortschrittsbalken der erfundenen Klasse bewegen sich');
 
     console.log('\n== Beamer neu laden: Probestunde läuft weiter');

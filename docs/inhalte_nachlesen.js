@@ -6,8 +6,8 @@ var NACHLESEN = {
    "buchstabe": "A",
    "form": "Hypovolämischer Schock",
    "fall": [
-    "Herr Gerhard Albrecht (81) lebt seit vier Jahren im Pflegeheim „Am Kocherufer“. Wegen eines Vorhofflimmerns nimmt er einen Gerinnungshemmer. Er hört schlecht und trägt deshalb zwei Hörgeräte. Am Vormittag hatte er schwarzen, klebrigen Stuhlgang.",
-    "Als Sie ihn um 11:30 Uhr zum Mittagessen an die Bettkante setzen wollen, sagt er: „Mir wird ganz schwarz vor Augen.“ Er ist blass, seine Stirn ist kalt und feucht. Mehrmals bittet er um etwas zu trinken. Er wirkt unruhig und fragt, wo seine Frau sei, obwohl er sonst gut orientiert ist. Sie messen: Puls 116/min, Blutdruck 98/72 mmHg, Atemfrequenz 24/min. Bei der Morgenrunde lagen die Werte bei Puls 78/min und Blutdruck 145/85 mmHg."
+    "Herr Gerhard Albrecht (81) lebt seit vier Jahren im Pflegeheim „Am Kocherufer“. Wegen eines Vorhofflimmerns nimmt er einen Gerinnungshemmer. Er hört schlecht und trägt deshalb zwei Hörgeräte. Am Vormittag hatte er schwarzen, klebrigen Stuhlgang. Danach hat er mit seinem Zimmernachbarn Karten gespielt.",
+    "Als Sie ihn um 11:30 Uhr zum Mittagessen an die Bettkante setzen wollen, sagt er: „Mir wird ganz schwarz vor Augen.“ Er ist blass, seine Stirn ist kalt und feucht. Auf seinem Nachttisch steht ein Foto seiner Enkelin. Mehrmals bittet er um etwas zu trinken. Er wirkt unruhig und fragt, wo seine Frau sei, obwohl er sonst gut orientiert ist. Sie messen: Puls 116/min, Blutdruck 98/72 mmHg, Atemfrequenz 24/min. Bei der Morgenrunde lagen die Werte bei Puls 78/min und Blutdruck 145/85 mmHg. Seine Tochter hat sich für den Nachmittag zum Besuch angemeldet."
    ],
    "nennen": [
     "Ursache: schwarzer, klebriger Stuhl (Teerstuhl) unter Gerinnungshemmer → Blutung im Magen-Darm-Trakt",
@@ -23,8 +23,8 @@ var NACHLESEN = {
    "buchstabe": "B",
    "form": "Anaphylaktischer Schock",
    "fall": [
-    "Mia (19) ist Auszubildende im ersten Ausbildungsdrittel und mit Ihnen auf einer internistischen Station eingesetzt. In der Pause isst sie ein Stück Geburtstagskuchen, das eine Kollegin mitgebracht hat. Der Kuchen enthält Haselnüsse. Mia erzählt, dass es bei Nüssen „schon mal im Mund gekribbelt“ habe. Es ist ihr dritter Tag auf der Station.",
-    "Zehn Minuten später kratzt sie sich an Hals und Händen, auf Hals und Brust bilden sich Quaddeln. Ihre Lippen und Augenlider schwellen an. Mit heiserer Stimme sagt sie: „Mir ist schlecht, und mir ist so schwindelig.“ Sie hat Bauchkrämpfe. Ihre Kollegin misst: Puls 128/min, Blutdruck 88/50 mmHg, Atemfrequenz 26/min, Sauerstoffsättigung 93 %. Mia sagt, ihr Blutdruck sei sonst „immer so 120 zu 70“."
+    "Mia (19) ist Auszubildende im ersten Ausbildungsdrittel und mit Ihnen auf einer internistischen Station eingesetzt. Es ist ihr dritter Tag auf der Station. In der Pause isst sie ein Stück Geburtstagskuchen, das Haselnüsse enthält. Dabei erzählt sie von ihrem Wochenende im Kletterpark. Mia erwähnt, dass es bei Nüssen „schon mal im Mund gekribbelt“ habe.",
+    "Zehn Minuten später kratzt sie sich an Hals und Händen, auf Hals und Brust bilden sich Quaddeln. Ihre Lippen und Augenlider schwellen an. Auf dem Stationsflur ist es gerade ruhig. Mit heiserer Stimme sagt sie: „Mir ist schlecht, und mir ist so schwindelig.“ Sie hat Bauchkrämpfe. Ihre Kollegin misst: Puls 128/min, Blutdruck 88/50 mmHg, Atemfrequenz 26/min, Sauerstoffsättigung 93 %. Sie notiert die Werte auf einem Zettel. Mia sagt, ihr Blutdruck sei sonst „immer so 120 zu 70“."
    ],
    "nennen": [
     "zeitlicher Zusammenhang: Beginn etwa 10 Minuten nach dem Haselnusskuchen (Allergen)",
@@ -39,8 +39,8 @@ var NACHLESEN = {
    "buchstabe": "C",
    "form": "Neurogener Schock",
    "fall": [
-    "An einem Sonntagnachmittag sind Sie privat mit Freunden am Baggersee. Tobias Weber (24) springt kopfüber vom Steg ins Wasser – an einer Stelle, an der das Wasser nur hüfttief ist. Seine Freunde ziehen ihn sofort ans Ufer. Kurz vorher hatte er sich noch mit Sonnencreme eingecremt.",
-    "Herr Weber ist wach und sagt: „Ich spür meine Beine nicht. Und meine Hände kribbeln.“ Er klagt über starke Nackenschmerzen. Arme und Beine kann er kaum bewegen. Seine Atmung ist flach. Sie tasten einen langsamen Puls von 52/min. Die Haut an seinen Beinen ist warm, trocken und rosig. Der Rettungsdienst misst später einen Blutdruck von 82/45 mmHg."
+    "An einem Sonntagnachmittag sind Sie privat mit Freunden am Baggersee. Tobias Weber (24) springt kopfüber vom Steg ins Wasser – an einer Stelle, an der das Wasser nur hüfttief ist. Seine Freunde ziehen ihn sofort ans Ufer. Kurz vorher hatte er sich noch mit Sonnencreme eingecremt. Er studiert Sport und spielt in einem Volleyballverein.",
+    "Herr Weber ist wach und sagt: „Ich spür meine Beine nicht. Und meine Hände kribbeln.“ Er klagt über starke Nackenschmerzen. Am Steg läuft laute Musik. Arme und Beine kann er kaum bewegen. Seine Atmung ist flach. Sie tasten einen langsamen Puls von 52/min. Die Haut an seinen Beinen ist warm, trocken und rosig. Er fragt, ob jemand sein Handy gesehen hat. Der Rettungsdienst misst später einen Blutdruck von 82/45 mmHg."
    ],
    "nennen": [
     "Ursache: Kopfsprung in flaches Wasser, starke Nackenschmerzen → Verletzung der Halswirbelsäule",
@@ -227,7 +227,7 @@ var NACHLESEN = {
  "aufgaben": {
   "1.1": {
    "nr": "1.1",
-   "text": "Begründen Sie anhand von 4 Symptomen aus Ihrer Fallsituation, dass bei der Person ein hypovolämischer (A), anaphylaktischer (B) bzw. neurogener Schock (C) vorliegt.",
+   "text": "Begründen Sie anhand von 4 Symptomen aus Ihrem Expertenfall (am Handy: A Herr Albrecht · B Mia · C Herr Weber), dass bei der Person ein hypovolämischer, anaphylaktischer bzw. neurogener Schock vorliegt.",
    "punkte": 4
   },
   "2.1": {

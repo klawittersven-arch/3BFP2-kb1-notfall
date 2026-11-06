@@ -33,20 +33,25 @@ geben ihren Vornamen ein – und ihr Handy zeigt ab dann automatisch, was zur ak
 | 5 | Murmeln | umstrittenste Frage groß, 1-Minuten-Uhr (startet selbst) | Frage + eigene Vermutung |
 | 6 | Lernziel | Lernziel, Fahrplan der Stunde | – |
 | 7 | Gruppen einteilen | **„Gruppen zufällig einteilen“**, Gruppenkarten mit Emoji | eigene Stammgruppe in Gruppenfarbe, Buchstabe, Expertenteam |
-| 8 | Expertenrunde (AA1) | Expertenteams mit ✓, Uhr 15 min | Namen des Teams, „Setzen Sie sich …“, Fall markieren, Infotext, Experten-Check, „Unsere Spalte ist fertig“ |
-| 9 | Stammgruppen (AA2a) | Stammgruppen mit ✓, **Erklär-Uhr** A → B → C | Namen der Stammgruppe, Tischkarte, „Jetzt erklärt …“, „Unsere Tabelle ist vollständig“ |
-| 10 | Schockform-Detektiv | Fortschritt je Stammgruppe | Detektiv |
-| 11 | Klausurtraining 2.1/2.2 | Auftrag, Uhr | „Auf Papier“ |
-| 12–13 | Lagerung | Impuls „immer Beine hoch?“, Parcours mit Fortschritt | Lagerungskarten |
-| 14 | Notfall-Simulation | Rollen, Fortschritt je Stammgruppe | Simulation (mit Stammgruppe) |
-| 15 | Pause | Uhr 10 min | „Pause“ |
-| 16 | Wer darf was? | jeder Klick: nächste Maßnahme, dann Lösung (Ecke) | dieselbe Maßnahme, dann Lösung |
-| 17 | Adrenalin oder Antihistaminikum? | Dialog, Think-Pair-Share-Uhr | „Auf Papier“ |
-| 18–19 | Klausurtraining AA6 | 8-Minuten-Countdown, Peer-Korrektur | „Handy umgedreht“, dann Bewertungsraster |
-| 20–21 | Frau Maler | Placemat-Uhr 3/3/4 min, Kausalkette Schritt für Schritt | „Auf Papier“ |
-| 22–23 | Hätten Sie richtig gehandelt? | Zähler, dann vorher – nachher mit Lösung | dieselben 6 Notfälle, danach Auflösung |
-| 24 | Ich-kann-Liste | Ich-kann-Liste, Hausaufgabe, Nachlesen | „Auf Papier“ |
-| 25 | Ende | Ausblick – **gibt die Nachlese-Seite frei** | „Die Stunde ist beendet“ |
+| 8 | Expertenrunde (AA1) | Expertenteams mit ✓, Uhr 15 min | Namen des Teams, Schritte a–e: Fall markieren (Raten-Schutz), 1.1 (KA-Aufgabe), Infotext, Experten-Check, **eigene Tabellenspalte ausfüllen** → „Unsere Spalte ist fertig“; Beamer: „✓ Tabelle fertig!“ |
+| 9 | Stammgruppen (AA2a) | Stammgruppen mit ✓, **Erklär-Uhr** A → B → C | Namen der Stammgruppe, „Jetzt erklärt …“, „Unsere Tabelle ist vollständig“ |
+| 10 | Vergleichstabelle sichern | Tabelle wie im AB, **Zelle anklicken = Lösung aufdecken** („Alle aufdecken“) | „Vergleichen Sie Ihre Tabelle …“ |
+| 11 | Als Nächstes: Schockform-Detektiv | was der Detektiv ist und warum das für die Pflege wichtig ist | – |
+| 12 | Schockform-Detektiv | Fortschritt je Stammgruppe | Detektiv (Befunde antippen und Form wählen, dann „Prüfen“; 2 Versuche) |
+| 13 | Klausurtraining 2.1/2.2 | Auftrag, Uhr 5 min, Hinweis aufs Handy | Fälle Mia, Herr Weber, Herr Albrecht zum Nachlesen |
+| 14 | Musterlösung 2.1/2.2 | Lösungszeilen per Klick aufdecken | „Vergleichen Sie …“ |
+| 15–16 | Lagerung | Impuls „immer Beine hoch?“, Parcours mit Fortschritt | Lagerungskarten |
+| 17 | Notfall-Simulation | Rollen, Fortschritt je Stammgruppe | Simulation (mit Stammgruppe) |
+| 18 | Pause | Uhr 10 min | „Pause“ |
+| 19 | Wer darf was? | jeder Klick: nächste Maßnahme, dann Lösung (Ecke) | dieselbe Maßnahme, dann Lösung |
+| 20 | Adrenalin oder Antihistaminikum? | Dialog, Think-Pair-Share-Uhr | „Auf Papier“ |
+| 21–22 | Klausurtraining AA6 | 8-Minuten-Countdown, Peer-Korrektur (5 min) | „Handy umgedreht“, dann Bewertungsraster |
+| 23–24 | Frau Maler | Placemat-Uhr 3/3/4 min, Kausalkette Schritt für Schritt | „Auf Papier“ |
+| 25–26 | Hätten Sie richtig gehandelt? | Zähler, dann vorher – nachher mit Lösung | dieselben 6 Notfälle, danach Auflösung |
+| 27 | Ich-kann-Liste | Ich-kann-Liste, Hausaufgabe, Nachlesen | „Auf Papier“ |
+| 28 | Ende | Ausblick – **gibt die Nachlese-Seite frei** | „Die Stunde ist beendet“ |
+
+Aufgedeckte Zellen und Lösungszeilen bleiben aufgedeckt, auch wenn der Beamer neu geladen wird.
 
 ### Probestunde: alles selbst ausprobieren
 
@@ -56,12 +61,12 @@ stimmen ab, bearbeiten die Übungen, melden „fertig“ – je nachdem, welche 
 Handy** den QR-Code am Beamer scannen und als Schülerin oder Schüler mitmachen: Das Handy wird wie alle anderen
 einer Stammgruppe und einem Expertenteam mit erfundenen Namen zugeteilt. Oben steht „Probestunde“ und
 „1 Handy + 20 erfundene“. Der Wechsel in die Stammgruppen kommt, sobald auch das eigene Handy „fertig“ meldet.
-Hinweis: Wie eine echte Stunde sperrt auch die Probestunde die Nachlese-Seite, bis Folie 25 erreicht ist.
+Hinweis: Wie eine echte Stunde sperrt auch die Probestunde die Nachlese-Seite, bis Folie 28 erreicht ist.
 
 ### Bedienung
 
 - **Weiter / Zurück** unten (auch → / ← / Bild↓ / Bild↑ / Leertaste – also mit Presenter). Folien mit
-  Schritten (16 „Wer darf was?“, 21 „Kausalkette“) decken mit jedem „Weiter“ den nächsten Schritt auf.
+  Schritten (19 „Wer darf was?“, 24 „Kausalkette“) decken mit jedem „Weiter“ den nächsten Schritt auf.
 - **Menü ⚙** (unten links): zu jeder Folie springen, Vollbild, Namen verbergen, Angemeldete verwalten
   (entfernen, Person ohne Handy hinzufügen), **neuer Raum** für die Parallelklasse.
 - **Gruppen (Folie 7):** Stammgruppen zu 3 (A, B, C), bei Rest Vierergruppen mit doppeltem B; Expertenteams
@@ -73,7 +78,7 @@ Hinweis: Wie eine echte Stunde sperrt auch die Probestunde die Nachlese-Seite, b
   Ton beim Wechsel. Die Handys zeigen die Restzeit mit.
 - **Beamer neu laden** oder Laptop kurz zu: Der Raum bleibt (6 Stunden) und die Folie auch.
 - **Nachlesen** (letzte AB-Seite): alle Inhalte und Lösungen der Stunde (ohne Hausaufgabe). Die Seite ist
-  **gesperrt, solange irgendwo eine Beamer-Stunde läuft** – bis Folie 25 erreicht ist oder 10 Minuten nach dem
+  **gesperrt, solange irgendwo eine Beamer-Stunde läuft** – bis Folie 28 erreicht ist oder 10 Minuten nach dem
   Schließen des Beamers. Hinweis: Die Lösungen stehen technisch auch in den Programmdateien der App; die Sperre
   verhindert den einfachen Weg, nicht jeden.
 
@@ -94,7 +99,6 @@ arbeitsblatt/
   KB1_W2_Schockformen_SV.docx        Schülerversion (3 QR-Codes: Stunden-App, Hausaufgabe, Nachlesen)
   KB1_W2_Schockformen_Anlagen.docx   Expertenblätter A/B/C (Papierfassung, freiwillig), Notfallprotokoll, Placemat, Schilder
   KB1_W2_Schockformen_LV_LSG.docx    Lehrerversion: Verlaufsplan mit Foliennummern, Hinweise, Lösungen
-  KB1_W2_Tischkarten.pdf             10 Tischkarten für die Stammgruppen (quer drucken, in der Mitte falten)
   (+ PDF-Fassungen)
 docs/                ← alles, was GitHub Pages veröffentlicht
   beamer.html/js/css   Beamer-Foliensatz
@@ -112,7 +116,7 @@ worker/src/          ← Cloudflare-Worker: index.js (Räume, Live-Verbindung, N
 wrangler.jsonc       ← Cloudflare-Konfiguration (Projekt „kb1-notfall“)
 qr/                  ← QR-Codes fürs Arbeitsblatt (Stunden-App, Hausaufgabe, Nachlesen)
 werkzeuge/           ← ab_w2.js, ab_w2_texte.js, ab_bausteine.js (Arbeitsblätter + inhalte_nachlesen.js),
-                       tischkarten.js, qr_erzeugen.py, piktogramme.py, bilder/
+                       qr_erzeugen.py, piktogramme.py, bilder/
 tests/               ← automatische Tests; tests/seiten/ = Testgerüst der Übungen (nicht veröffentlicht)
 ```
 
@@ -145,7 +149,6 @@ pip install segno zxing-cpp pillow
 python werkzeuge/qr_erzeugen.py
 python werkzeuge/piktogramme.py
 node werkzeuge/ab_w2.js
-node werkzeuge/tischkarten.js
 soffice --headless --convert-to pdf --outdir arbeitsblatt arbeitsblatt/*.docx
 ```
 

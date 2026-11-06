@@ -53,6 +53,15 @@ fs.mkdirSync(ORDNER, { recursive: true });
     const teile = INHALTE.markieren.faelle[fall].teile.filter((t) => typeof t === 'object');
     const knoepfe = await s.$$('.markierbar');
     pruefe(knoepfe.length === teile.length, `${teile.length} antippbare Stellen`);
+    const ablenker = teile.filter((t) => !t.k).length;
+    pruefe(ablenker >= 4, `Fall ${fall}: ${ablenker} Sätze, die nicht dazugehören`);
+    // Raten: alles antippen → Hinweis, alle Markierungen weg, nichts verraten
+    if (fall === 'a') {
+      for (const k of knoepfe) await k.click();
+      await s.click('button:has-text(\"' + INHALTE.markieren.pruefen + '\")');
+      pruefe((await s.textContent('#uebung')).includes(INHALTE.markieren.ratenTitel), 'alles angetippt → „Bitte nicht raten!“');
+      pruefe((await s.$$('.markierbar.gewaehlt')).length === 0 && (await s.$$('.markierbar.ok, .markierbar.falsch, .markierbar.fehlt')).length === 0, 'Markierungen gelöscht, keine Lösung verraten');
+    }
     // erst eine falsche + eine richtige Stelle, prüfen
     const iFalsch = teile.findIndex((t) => !t.k);
     const iRichtig = teile.findIndex((t) => t.k === 'ursache' || t.k === 'begleit');
@@ -78,36 +87,64 @@ fs.mkdirSync(ORDNER, { recursive: true });
   beobachten(s, protokoll, 'detektiv');
   await s.goto(basis + 'w2-detektiv.html');
   const D = INHALTE.detektiv;
+  const pruefenD = () => s.click('button:has-text(\"' + D.pruefen + '\")');
+  const text = () => s.textContent('#uebung');
   for (let n = 0; n < D.faelle.length; n++) {
     const f = D.faelle[n];
     const formText = D.formen.find((x) => x.kuerzel === f.form).text;
-    if (n === 0) {
-      const falsch = D.formen.find((x) => x.kuerzel !== f.form).text;
-      await s.click(`.antwort:has-text("${falsch}")`);
-      pruefe((await s.textContent('#uebung')).includes(f.tipp), 'Tipp bei falscher Schockform');
-    }
-    await s.click(`.antwort:has-text("${formText}")`);
+    const falschForm = D.formen.find((x) => x.kuerzel !== f.form).text;
     const teile = f.teile.filter((t) => typeof t === 'object');
+    const belege = teile.map((t, i) => (t.b === 'beleg' ? i : -1)).filter((i) => i >= 0);
+    const iSchock = teile.findIndex((t) => t.b === 'schock');
     const btn = await s.$$('.markierbar');
     if (n === 0) {
-      const iSchock = teile.findIndex((t) => t.b === 'schock');
-      const iBeleg = teile.findIndex((t) => t.b === 'beleg');
-      await btn[iSchock].click(); await btn[iBeleg].click();
-      pruefe((await s.textContent('#uebung')).includes(D.belegSchock), 'Hinweis: zeigt Schock, aber nicht die Form');
-      const iBeleg2 = teile.findIndex((t, i) => t.b === 'beleg' && i !== iBeleg);
-      await btn[iBeleg2].click();
+      pruefe(!(await btn[belege[0]].isDisabled()), 'Befunde sind sofort antippbar (vor der Schockform)');
+      await pruefenD();
+      pruefe((await text()).includes(D.auswahlFehlt), 'ohne Auswahl: Hinweis statt Prüfung');
+      await btn[iSchock].click(); await btn[belege[0]].click();
+      await s.click(`.antwort:has-text("${falschForm}")`);
+      await pruefenD();
+      pruefe((await text()).includes(D.zuSchnell), 'zu schnell geprüft: Hinweis, kein Versuch verbraucht');
+      await s.goto(basis + 'w2-detektiv.html?lesezeit=0');   // Stand bleibt im Tab erhalten
+      await pruefenD();
+      pruefe((await text()).includes(f.tipp) && (await text()).includes(D.belegSchock), '1. Versuch falsch: Tipp zur Form und Hinweis „zeigt Schock, aber nicht die Form“');
+      pruefe((await text()).includes(D.zweiterVersuch), 'noch ein Versuch');
+      const btn2 = await s.$$('.markierbar');
+      await btn2[belege[1]].click();
+      await s.click(`.antwort:has-text("${formText}")`);
+      await pruefenD();
+      pruefe((await text()).includes(D.belegRichtig), 'Fall 1: im 2. Versuch richtig');
+    } else if (n === 2) {
+      // 1. Versuch: falsche Form, ein Beleg + ein Schockzeichen
+      await s.click(`.antwort:has-text("${falschForm}")`);
+      await btn[belege[0]].click(); await btn[iSchock].click();
+      await pruefenD();
+      pruefe((await text()).includes(D.zweiterVersuch), 'Fall 3: 1. Versuch falsch');
+      // 2. Versuch: wieder falsche Form, dazu ein Satz, der nicht zum Notfall gehört
+      const b3 = await s.$$('.markierbar');
+      const frei = teile.findIndex((t) => !t.b);
+      await b3[frei].click();
+      await s.click(`.antwort:has-text("${falschForm}")`);
+      await pruefenD();
+      pruefe((await text()).includes(D.loesungGezeigt), 'Fall 3: nach 2 falschen Versuchen kommt die Lösung');
+      pruefe((await s.$$('.markierbar.ok')).length >= 2, 'Fall 3: die passenden Befunde werden gezeigt');
     } else {
-      const idx = teile.map((t, i) => (t.b === 'beleg' ? i : -1)).filter((i) => i >= 0).slice(0, 2);
-      for (const i of idx) await btn[i].click();
+      // Reihenfolge egal: erst die Befunde, dann die Form
+      for (const i of belege.slice(0, 2)) await btn[i].click();
+      await s.click(`.antwort:has-text("${formText}")`);
+      await pruefenD();
+      pruefe((await text()).includes(D.belegRichtig), `Fall ${n + 1}: richtig belegt`);
     }
-    pruefe((await s.textContent('#uebung')).includes(D.belegRichtig), `Fall ${n + 1}: richtig belegt`);
     await s.click('button:has-text(\"' + INHALTE.allgemein.weiter + '\")');
   }
   await s.waitForSelector('.monitorvergleich');
+  pruefe((await text()).includes(D.monitor.titel) && !(await text()).includes('Monitorvergleich'), `Titel „${D.monitor.titel}“ statt „Monitorvergleich“`);
   await s.click('button.mv-zeile:has-text("Blutdruck")');
   await s.click('button.mv-zeile:has-text("Puls")');
-  pruefe((await s.textContent('#uebung')).includes('unterscheidet die Formen nicht'), 'Monitorvergleich: Blutdruck als Fehler erklärt');
+  await pruefenD();
+  pruefe((await text()).includes('unterscheidet die Formen nicht'), 'Vergleich: Blutdruck als Fehler erklärt');
   await s.click('button.mv-zeile:has-text("Haut")');
+  await pruefenD();
   await s.waitForSelector('.merksatz');
   pruefe((await s.textContent('.merksatz')).includes('Sympathikus'), 'Merksatz AA2 erscheint');
   await s.screenshot({ path: path.join(ORDNER, 'detektiv_fertig.png'), fullPage: true });

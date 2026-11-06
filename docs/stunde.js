@@ -304,7 +304,7 @@
     var h = f.handy || {};
     ({
       vorne: zeigeVorne, murmeln: zeigeMurmeln, gruppe: zeigeGruppe, warten: zeigeWarten, stamm: zeigeStamm,
-      papier: zeigePapier, aufstellung: zeigeAufstellung, ende: zeigeEnde
+      papier: zeigePapier, aufstellung: zeigeAufstellung, ende: zeigeEnde, faelle: zeigeFaelle
     }[b.schl] || zeigeVorne)(f, h);
     uhrenAktualisieren();
   }
@@ -370,6 +370,30 @@
     var box = bildschirm('✍️', h.titel, h.text);
     box.insertBefore(el('span', 'vorne-hinweis', H.papier), box.children[1]);
     box.appendChild(uhrZeile());
+  }
+
+  // Klausurtraining 2.1/2.2: Aufgaben mit den Fällen zum Nachlesen (alle drei, auch die fremden)
+  function fallText(fall) {
+    return INHALTE.markieren.faelle[fall].teile.map(function (t) { return typeof t === 'string' ? t : t.t; }).join('');
+  }
+  function zeigeFaelle(f, h) {
+    kopf(f.kurz);
+    var box = bildschirm('✍️', h.titel, h.text);
+    box.insertBefore(el('span', 'vorne-hinweis', H.papier), box.children[1]);
+    box.appendChild(uhrZeile());
+    (h.aufgaben || []).forEach(function (a) {
+      var k = el('section', 'schritt-karte');
+      k.appendChild(fmt('p', null, '**' + a.nr + '** ' + a.text));
+      a.faelle.forEach(function (fall) {
+        var d = el('details', 'info');
+        d.open = true;
+        var titelText = INHALTE.markieren.faelle[fall].titel.split('·').pop().trim();
+        d.appendChild(el('summary', null, 'Fall: ' + titelText));
+        fallText(fall).split('\n').forEach(function (x) { if (x.trim()) d.appendChild(el('p', null, x.trim())); });
+        k.appendChild(d);
+      });
+      uebung.appendChild(k);
+    });
   }
 
   function zeigeMurmeln(f, h) {
@@ -451,6 +475,13 @@
       vor.appendChild(uhrZeile());
       vor.appendChild(el('h2', null, K.ersetzen(H.expFall, { person: r.person })));
       var e = S.experten[r.fall];
+      // Reihenfolge wie im Arbeitsblatt: a) Fall + Merksatz AA1 → b) 1.1 → c) Infotext → d) Check → e) Tabellenspalte
+      nach.appendChild(fmt('p', 'weiter-hinweis', K.ersetzen(H.expWeiter, { b: p.rolle, form: r.form })));
+      var k11 = el('section', 'schritt-karte');
+      k11.appendChild(el('h2', null, H.exp11Titel));
+      k11.appendChild(fmt('p', null, K.ersetzen(H.exp11Text, { person: r.personDativ, adjektiv: r.adjektiv })));
+      k11.appendChild(el('p', 'klein-grau', H.exp11Tipp));
+      nach.appendChild(k11);
       var d = el('details', 'info');
       d.open = infoOffen;
       d.addEventListener('toggle', function () { infoOffen = d.open; });
@@ -458,8 +489,13 @@
       e.info.forEach(function (x) { d.appendChild(fmt('p', null, x)); });
       d.appendChild(fmt('p', 'woerter', '**' + H.expWoerter + ':** ' + e.woerter.split(' | ').join(' · ')));
       nach.appendChild(d);
-      nach.appendChild(el('p', 'papier-hinweis', '📄 ' + H.expPapier));
+      nach.appendChild(el('p', 'papier-hinweis', '📄 ' + K.ersetzen(H.expPapier, { b: p.rolle, form: r.form })));
       var c = el('div'); c.id = 'exp-check'; nach.appendChild(c);
+      var tab = el('section', 'schritt-karte tabelle-karte');
+      tab.appendChild(el('h2', null, H.expTabelleTitel));
+      tab.appendChild(fmt('p', null, K.ersetzen(H.expTabelleText, { b: p.rolle, kurz: r.kurz })));
+      tab.appendChild(fmt('p', null, '**' + H.expTabelleFertig + '**'));
+      nach.appendChild(tab);
       var f = el('div'); f.id = 'exp-fertig'; nach.appendChild(f);
     }
     // oben: Team, Tisch, Aufträge (ändert sich, wenn jemand im Team „fertig“ meldet)
@@ -481,7 +517,17 @@
     teilErneuern('exp-check', JSON.stringify(checkStand()[p.rolle] || {}), function () { return checkZeichnen(p.rolle); });
     var bestanden = checkBestanden(p.rolle);
     teilErneuern('exp-fertig', [p.ichTeamFertig, p.teamsFertig, p.teamsGesamt, bestanden].join('|'), function () {
-      return fertigBereich('team', p.ichTeamFertig, bestanden, K.ersetzen(H.teamFertigText, { x: p.teamsFertig, y: p.teamsGesamt }), H.fertigTeam, H.fertigTeamGesperrt);
+      var box = fertigBereich('team', p.ichTeamFertig, bestanden, K.ersetzen(H.teamFertigText, { x: p.teamsFertig, y: p.teamsGesamt }), H.fertigTeam, H.fertigTeamGesperrt);
+      // Während des Wartens: Selbstkontrolle zur Klausuraufgabe 1.1
+      if (p.ichTeamFertig) {
+        var k = el('section', 'schritt-karte');
+        k.appendChild(fmt('p', null, '**' + H.exp11Kontrolle + '**'));
+        var ul = el('ul', 'auftraege');
+        (S.experten[r.fall].nennen || []).forEach(function (x) { ul.appendChild(el('li', null, x)); });
+        k.appendChild(ul);
+        box.insertBefore(k, box.lastChild);
+      }
+      return box;
     });
   }
 
@@ -569,7 +615,6 @@
     uebung.appendChild(k);
     var andere = namenListe(p.gruppe.mitglieder);
     if (andere) uebung.appendChild(fmt('p', 'setzen', K.ersetzen(H.stammSetzen, { namen: andere })));
-    uebung.appendChild(el('p', 'papier-hinweis', K.ersetzen(H.stammTischkarte, { emoji: info.emoji + ' ' + info.name })));
     var dran = el('p', 'dran-band');
     dran.id = 'dran-band';
     uebung.appendChild(dran);

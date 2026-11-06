@@ -165,7 +165,8 @@
     var bau = {
       start: folieStart, fall: folieFall, abstimmung: folieAbstimmung, ergebnis: folieErgebnis, murmeln: folieMurmeln,
       fahrplan: folieFahrplan, puzzle: foliePuzzle, experten: folieExperten, stamm: folieStamm, fortschritt: folieFortschritt,
-      papier: foliePapier, impuls: folieImpuls, aufstellung: folieAufstellung, dialog: folieDialog, kausalkette: folieKausalkette, ende: folieEnde
+      papier: foliePapier, impuls: folieImpuls, aufstellung: folieAufstellung, dialog: folieDialog, kausalkette: folieKausalkette, ende: folieEnde,
+      tabelle: folieTabelle, loesung: folieLoesung, info: folieInfo
     }[f.typ] || folieImpuls;
     var wurzel = el('section', 'folie folie-' + f.typ);
     wurzel.setAttribute('data-folie', f.id);
@@ -487,9 +488,10 @@
       if (art === 'stamm') {
         var mitHandy = g.mitglieder.filter(function (m) { return !m.ohneHandy; });
         var fertige = mitHandy.filter(function (m) { return m.fertig; }).length;
-        kopf.appendChild(el('span', 'g-status', g.fertig ? '✓ ' + T.fertig : fertige + '/' + mitHandy.length));
+        kopf.appendChild(el('span', 'g-status', g.fertig ? '✓' : fertige + '/' + mitHandy.length));
       } else kopf.appendChild(el('span', 'g-status', g.mitglieder.length + ' 👤'));
       karte.appendChild(kopf);
+      if (art === 'stamm' && g.fertig) karte.appendChild(el('div', 'fertig-band', '✓ ' + T.gruppeFertig));
       var ul = el('ul', 'g-mitglieder');
       g.mitglieder.slice().sort(function (a, b) { return a.rolle < b.rolle ? -1 : a.rolle > b.rolle ? 1 : 0; }).forEach(function (m) {
         var li = el('li', 'g-mitglied' + (m.online || Probe.ist(m.id) ? '' : ' offline'));
@@ -595,8 +597,9 @@
         kopf.appendChild(buchstabe(t.b));
         kopf.appendChild(el('span', 't-name', t.id));
         var mitHandy = t.mitglieder.filter(function (m) { return !m.ohneHandy; });
-        kopf.appendChild(el('span', 't-status', t.fertig ? '✓ ' + T.fertig : mitHandy.filter(function (m) { return m.fertig; }).length + '/' + mitHandy.length));
+        kopf.appendChild(el('span', 't-status', t.fertig ? '✓' : mitHandy.filter(function (m) { return m.fertig; }).length + '/' + mitHandy.length));
         k.appendChild(kopf);
+        if (t.fertig) k.appendChild(el('div', 'fertig-band', '✓ ' + T.teamFertig));
         var ul = el('ul', 'g-mitglieder');
         t.mitglieder.forEach(function (m) {
           var li = el('li', 'g-mitglied' + (m.online || Probe.ist(m.id) ? '' : ' offline'));
@@ -763,6 +766,111 @@
     box.appendChild(fmt('h1', 'f-titel', f.titel));
     box.appendChild(fmt('p', 'f-text', f.text));
     box.appendChild(fmt('p', 'ende-frei', f.frei));
+    w.appendChild(box);
+  }
+
+  /* ---------- Aufdecken (Tabelle sichern, Musterlösungen) ----------
+     Welche Zellen aufgedeckt sind, merkt sich der Laptop je Raum (übersteht Neuladen). */
+  var SCHL_AUFGEDECKT = 'kb1nf_lehrer_aufgedeckt';
+  function aufgedeckt() {
+    var a = K.Speicher.dauer.lesen(SCHL_AUFGEDECKT);
+    return a && raum && a.raum === raum.raum ? a : { raum: raum ? raum.raum : '', zellen: {} };
+  }
+  function aufdeckenSetzen(schluessel, wert) {
+    var a = aufgedeckt();
+    if (Array.isArray(schluessel)) schluessel.forEach(function (x) { a.zellen[x] = wert; }); else a.zellen[schluessel] = wert;
+    K.Speicher.dauer.schreiben(SCHL_AUFGEDECKT, a);
+    zeichnen();
+  }
+  function aufdeckZelle(schluessel, inhalt, klasse) {
+    var offen = !!aufgedeckt().zellen[schluessel];
+    var b = el('button', 'aufdeck ' + (klasse || '') + (offen ? ' offen' : ''));
+    b.type = 'button';
+    b.setAttribute('data-aufdeck', schluessel);
+    if (offen) b.appendChild(fmt('span', null, inhalt)); else b.appendChild(el('span', 'verdeckt', T.verdeckt));
+    b.addEventListener('click', function () { aufdeckenSetzen(schluessel, !offen); });
+    return b;
+  }
+  function aufdeckKnoepfe(f, alle) {
+    var r = el('div', 'knopf-reihe aufdeck-knoepfe');
+    r.appendChild(el('span', 'tipp', f.tipp || ''));
+    r.appendChild(knopf(T.alleAufdecken, 'knopf-klein', function () { aufdeckenSetzen(alle, true); }));
+    r.appendChild(knopf(T.alleVerdecken, 'knopf-klein', function () { aufdeckenSetzen(alle, false); }));
+    return r;
+  }
+
+  // Vergleichstabelle wie auf dem Arbeitsblatt; Zelle anklicken = Lösung aufdecken
+  function folieTabelle(f, w) {
+    var NL = window.NACHLESEN || {};
+    var kopf = el('div', 'ergebnis-kopf');
+    kopf.appendChild(fmt('h1', 'f-titel', f.titel));
+    kopf.appendChild(fmt('p', 'f-unter', f.text));
+    w.appendChild(kopf);
+    var alle = [];
+    var tab = el('div', 'vergleich');
+    ['', 'A hypovolämisch', 'B anaphylaktisch', 'C neurogen'].forEach(function (t, i) {
+      var z = el('div', 'v-kopf' + (i ? ' ' + 'ABC'.charAt(i - 1) : ''), t);
+      tab.appendChild(z);
+    });
+    (NL.vergleich || []).forEach(function (zeile, r) {
+      tab.appendChild(el('div', 'v-zeilenkopf', zeile[0]));
+      for (var c = 1; c <= 3; c++) {
+        var schl = f.id + ':' + r + ':' + c;
+        alle.push(schl);
+        tab.appendChild(aufdeckZelle(schl, zeile[c], 'v-zelle'));
+      }
+    });
+    tab.appendChild(el('div', 'v-zeilenkopf', 'Gemeinsamkeit'));
+    var g = aufdeckZelle(f.id + ':gemeinsam', NL.gemeinsamkeit || '', 'v-zelle v-breit');
+    alle.push(f.id + ':gemeinsam');
+    tab.appendChild(g);
+    w.appendChild(tab);
+    w.appendChild(aufdeckKnoepfe(f, alle));
+  }
+
+  // Musterlösung zu Klausuraufgaben; jede Zeile einzeln aufdecken
+  function folieLoesung(f, w) {
+    var NL = window.NACHLESEN || {};
+    w.appendChild(titel(f));
+    var alle = [];
+    var box = el('div', 'loesungen');
+    (f.aufgaben || []).forEach(function (nr) {
+      var a = (NL.aufgaben || {})[nr] || {};
+      var teil = el('section', 'loesung-teil');
+      var kopf = el('p', 'loesung-aufgabe');
+      kopf.appendChild(el('strong', null, nr + ' '));
+      kopf.appendChild(document.createTextNode(a.text || ''));
+      if (a.punkte) kopf.appendChild(el('span', 'loesung-punkte', ' (' + a.punkte + ' P.)'));
+      teil.appendChild(kopf);
+      ((NL.loesungen || {})[nr] || []).forEach(function (zeile, i) {
+        var schl = f.id + ':' + nr + ':' + i;
+        alle.push(schl);
+        teil.appendChild(aufdeckZelle(schl, zeile, 'l-zeile'));
+      });
+      box.appendChild(teil);
+    });
+    w.appendChild(box);
+    w.appendChild(aufdeckKnoepfe(f, alle));
+  }
+
+  // Erklärfolie: was kommt – und warum
+  function folieInfo(f, w) {
+    var box = el('div', 'info-folie');
+    var links = el('div');
+    links.appendChild(titel(f, f.unter));
+    links.appendChild(punkteListe(f.punkte));
+    box.appendChild(links);
+    var rechts = el('div', 'info-rechts');
+    if (f.emoji) rechts.appendChild(el('div', 'info-emoji', f.emoji));
+    if (f.warum) {
+      var wb = el('div', 'warum-box');
+      wb.appendChild(el('h2', null, f.warumTitel || ''));
+      var ul = el('ul');
+      f.warum.forEach(function (x) { ul.appendChild(fmt('li', null, x)); });
+      wb.appendChild(ul);
+      rechts.appendChild(wb);
+    }
+    box.appendChild(rechts);
     w.appendChild(box);
   }
 
