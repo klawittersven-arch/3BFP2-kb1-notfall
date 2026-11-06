@@ -48,6 +48,16 @@ geben ihren Vornamen ein – und ihr Handy zeigt ab dann automatisch, was zur ak
 | 24 | Ich-kann-Liste | Ich-kann-Liste, Hausaufgabe, Nachlesen | „Auf Papier“ |
 | 25 | Ende | Ausblick – **gibt die Nachlese-Seite frei** | „Die Stunde ist beendet“ |
 
+### Probestunde: alles selbst ausprobieren
+
+Am Laptop `beamer.html` öffnen → **„Probestunde mit erfundener Klasse“** (läuft schon ein Raum: Menü ⚙ →
+„Probestunde (erfundene Klasse)“). Dann meldet der Laptop **20 erfundene Schülerinnen und Schüler** an. Sie
+stimmen ab, bearbeiten die Übungen, melden „fertig“ – je nachdem, welche Folie gerade läuft. Mit dem **eigenen
+Handy** den QR-Code am Beamer scannen und als Schülerin oder Schüler mitmachen: Das Handy wird wie alle anderen
+einer Stammgruppe und einem Expertenteam mit erfundenen Namen zugeteilt. Oben steht „Probestunde“ und
+„1 Handy + 20 erfundene“. Der Wechsel in die Stammgruppen kommt, sobald auch das eigene Handy „fertig“ meldet.
+Hinweis: Wie eine echte Stunde sperrt auch die Probestunde die Nachlese-Seite, bis Folie 25 erreicht ist.
+
 ### Bedienung
 
 - **Weiter / Zurück** unten (auch → / ← / Bild↓ / Bild↑ / Leertaste – also mit Presenter). Folien mit
@@ -149,5 +159,6 @@ node inhalte.test.js       # Arbeitsblatt ↔ App, Foliensatz, Nachlese-Daten, O
 node uebungen.test.js      # alle Übungen in Handygröße 390 × 844
 node simulation.test.js    # Notfall-Simulation: drei Varianten, Fehlerpfade, Merksatz
 node stunde.test.js        # ganze Stunde: Beamer + 6 Handys (eins ohne Live-Verbindung)
+node probe.test.js         # Probestunde: erfundene Klasse + ein Handy der Lehrkraft
 ```
 Playwright und Chromium sind in der Testumgebung vorinstalliert; sonst `npm install` und `npx playwright install chromium`.
