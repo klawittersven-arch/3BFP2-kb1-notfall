@@ -13,14 +13,27 @@ const { bausteine, kopf, fuss, bild, F, SEITE_HOCH, SEITE_QUER, STILE, WURZEL, r
 const T = require('./ab_w2_texte');
 
 const AUS = process.argv[2] || path.join(WURZEL, 'arbeitsblatt');
-// Dateiname des QR-Codes: w2-markieren.html?fall=a → qr_w2_markieren_a.png, w2-entscheidung.html?runde=2 → qr_w2_entscheidung_2.png
+// Dateiname des QR-Codes: w2.html → qr_w2_stunde.png, w2-transfer.html → qr_w2_transfer.png
 const QR = (seite) => {
   const zusatz = (seite.match(/\?[a-z]+=([a-z0-9]+)/) || [])[1];
-  return path.join(WURZEL, 'qr', 'qr_w2_' + seite.replace(/\.html.*$/, '').replace(/^w2-/, '') + (zusatz ? '_' + zusatz : '') + '.png');
+  const name = seite.replace(/\.html.*$/, '');
+  return path.join(WURZEL, 'qr', 'qr_w2_' + (name === 'w2' ? 'stunde' : name.replace(/^w2-/, '')) + (zusatz ? '_' + zusatz : '') + '.png');
 };
 const FUSS = 'KB I · Woche 2 · Schock ist nicht gleich Schock';
 const BREITE_HOCH = 11906 - 2 * 1417;   // 9072
 const BREITE_QUER = 16838 - 2 * 1134;   // 14570
+
+/* Sammelt beim Erzeugen die Lösungstexte für die Nachlese-Seite der App (docs/inhalte_nachlesen.js).
+   So stehen Arbeitsblatt-Lösungen und Nachlese-Seite nur an einer Stelle. */
+const N = { aufgaben: {}, loesungen: {} };
+let sammelnAn = true;
+let aktuellerTeil = '';
+const sammle = (schl, wert) => { N[schl] = wert; return wert; };
+function sammleText(B, schl, text, o) {
+  const liste = N[schl] = N[schl] || [];
+  if (!liste.includes(text)) liste.push(text);
+  return B.p(text, o);
+}
 
 const IC = { lesen: 'icon_lesen.png', markieren: 'icon_markieren.png', schreiben: 'icon_schreiben.png', handy: 'icon_handy.png', stift: 'icon_stift.png', beurteilen: 'icon_beurteilen.png', checkout: 'icon_checkout.png', schere: 'icon_schere.png' };
 
@@ -32,13 +45,18 @@ function schuelerTeil(B, { lsg }) {
   const push = (...x) => k.push(...x.filter(Boolean));
   const handy = (seite, absaetze) => B.handy(seite, absaetze, { linkBasis: T.LINK_BASIS, qrDatei: QR(seite) });
   const merk = (titel, key) => B.merksatz(titel, [T.MERKSAETZE[key]]);
-  const L = (zeilen) => (lsg ? zeilen : []);
+  sammelnAn = true;
+  const L = (zeilen) => { if (sammelnAn && aktuellerTeil) N.loesungen[aktuellerTeil] = zeilen; return lsg ? zeilen : []; };
+  const zw = (text) => { aktuellerTeil = text; return B.zwischen(text); };
+  const teil = (sym, text) => { aktuellerTeil = text; return B.teil(sym, text); };
+  const aufg = (liste) => { if (liste.length === 1) aktuellerTeil = liste[0].nr; if (sammelnAn) liste.forEach((a) => { N.aufgaben[a.nr] = a; }); return B.aufgaben(liste); };
+  const pS = (schl, text, o) => sammleText(B, schl, text, o);
 
   /* ---------- Kopf ---------- */
   push(
     B.titel('Schock ist nicht gleich Schock – vergleichen und nach Leitsymptom handeln', lsg ? '[LSG]' : null),
     new Paragraph({ spacing: { after: 120, line: 264 }, children: [B.emoji('🎯 '), B.b('Lernziel: '), ...B.runs('Sie vergleichen den hypovolämischen, den anaphylaktischen und den neurogenen Schock und begründen Sofortmaßnahmen und Lagerung (Positionierung) anhand des Leitsymptoms. Sie grenzen eigenverantwortliche von ärztlich angeordneten Maßnahmen ab und korrigieren typische Fehlvorstellungen.')] }),
-    new Paragraph({ spacing: { after: 140 }, children: [bild(IC.handy, 0.5, 0.5), B.t(' = am Smartphone (QR-Code scannen)      ', { size: 19 }), bild(IC.stift, 0.5, 0.5), B.t(' = auf Papier', { size: 19 })] }),
+    new Paragraph({ spacing: { after: 140 }, children: [bild(IC.handy, 0.5, 0.5), B.t(' = am Smartphone (Stunden-App)      ', { size: 19 }), bild(IC.stift, 0.5, 0.5), B.t(' = auf Papier', { size: 19 })] }),
     B.kasten([
       B.p('Frau Maler, 71 Jahre, ist seit gestern neu im Pflegeheim. Vor drei Wochen erhielt sie nach einer Schenkelhalsfraktur eine Hüft-TEP. Seit der Entlassung liegt sie die meiste Zeit im Bett.'),
       B.p('Schülerin Christin berichtet: „Gegen elf Uhr wirkte sie unruhig, atmete schnell und sagte, sie bekomme schlecht Luft. Sie war blass, hatte kalten Schweiß auf der Stirn, ihr Puls lag bei 118/min und der Blutdruck bei 105/70 mmHg. Ich dachte, sie sei nur aufgeregt, weil alles neu für sie ist.“'),
@@ -51,64 +69,74 @@ function schuelerTeil(B, { lsg }) {
 
   /* ---------- Einstieg ---------- */
   push(
-    B.aa([IC.handy], 'Einstieg: Ihre Entscheidung, bitte! (Runde 1)', ''),
-    B.meta('8 min · Einzelarbeit → Plenum · AFB I · Ich-kann-Liste W2 Nr. 4 · Vorwissen und Fehlvorstellungen sichtbar machen'),
-    handy(T.SEITEN.entscheidung1, [
-      B.p('Scannen Sie den QR-Code und tragen Sie oben **Vorname + Raumcode vom Beamer** ein. Entscheiden Sie bei fünf kurzen Notfällen, was Sie tun würden, und geben Sie an, wie sicher Sie sind.'),
-      B.p('Am Beamer sehen Sie, wie die Klasse entschieden hat – ohne Namen. **Die Auflösung gibt es erst am Ende der Stunde** (Runde 2).')
+    handy(T.SEITEN.stunde, [
+      B.p('**So läuft die Stunde:** Scannen Sie den QR-Code **am Beamer** und geben Sie Ihren Vornamen ein. Ihr Handy wechselt dann **automatisch mit dem Beamer** – Sie müssen nichts weiter aufrufen.'),
+      B.p('Nur falls das nicht klappt: diesen QR-Code scannen und zusätzlich den **Raumcode vom Beamer** eingeben.')
+    ]),
+    B.leer(100),
+    B.aa([IC.handy], 'Einstieg: Wie hätten Sie gehandelt? – Ihre Vermutungen, bitte!', ''),
+    B.meta('8 min · Einzelarbeit → Murmeln (PA) → Plenum · AFB I · Ich-kann-Liste W2 Nr. 4 · Vorwissen aktivieren, Vermutungen bilden, Fehlvorstellungen sichtbar machen; im Check-out werden die Vermutungen überprüft (vorher/nachher)'),
+    B.app([
+      B.p('Sechs kurze Notfälle – der letzte ist Frau Maler um 11 Uhr: Wie würden Sie handeln? Tippen Sie Ihre Vermutung an und geben Sie an, ob Sie sich sicher sind oder nur vermuten.'),
+      B.p('**Falsch liegen ist jetzt ausdrücklich erlaubt:** Genau diese Entscheidungen lernen Sie heute. Am Ende der Stunde stimmen Sie noch einmal ab und prüfen: Hätte ich richtig gehandelt?'),
+      B.p('**Murmeln (1 Minute):** Am Beamer sehen Sie, wie die Klasse vermutet – ohne Namen. Wo die Klasse am meisten uneinig ist, überzeugen Sie Ihre Nachbarin oder Ihren Nachbarn: Warum würden Sie so handeln? Aufgelöst wird noch nicht.')
     ])
   );
   if (lsg) {
     push(B.tabelle([{ text: 'Nr.', w: 700 }, { text: 'Richtig', w: 1500 }, { text: 'Begründung', w: BREITE_HOCH - 2200 }],
       T.ENTSCHEIDUNG.map((e) => [e.nr, { lsg: e.optionen.find((o) => o.startsWith(e.richtig)) }, { lsg: e.erklaerung }]), { schrift: 19 }));
+    push(B.meta('Ablauf: Abstimmen (ca. 4 min) → am Beamer die Frage mit der größten Uneinigkeit anklicken (groß) und „Murmeln“ einblenden (1 min) → 2–3 Begründungen hören, nicht auflösen. Impuls: „Bei E… sind Sie geteilter Meinung – genau das klären wir heute. Am Ende prüfen Sie Ihre Vermutungen.“ E6 ist die Leitfrage; sie wird in AA7 geklärt.'));
   }
 
   /* ---------- Teil A ---------- */
   push(
     B.abschnitt('Teil A · Drei Wege in den Schock (Gruppenpuzzle)'),
-    B.p('Ihre Lehrkraft teilt Sie in **Stammgruppen** ein. In jeder Stammgruppe gibt es Expertinnen und Experten für **A** (hypovolämischer Schock), **B** (anaphylaktischer Schock) und **C** (neurogener Schock). Ihr Expertenblatt erhalten Sie gesondert.'),
-    new Paragraph({ spacing: { after: 100 }, children: [B.b('Ich bin Expertin/Experte für:  '), B.t('☐ A    ☐ B    ☐ C          '), B.b('Meine Stammgruppe: '), B.t('_'.repeat(14))] }),
-    B.aa([IC.lesen, IC.markieren], 'AA1: Identifizieren – Expertenrunde:', 'Bearbeiten Sie in Ihrer **Expertengruppe** die Aufträge a–c auf Ihrem Expertenblatt: Fall lesen und Befunde am Smartphone markieren, die Schockform anhand von Symptomen **begründen**, Expertenkarte ausfüllen. Üben Sie zum Schluss: Erklären Sie Ihrer Nachbarin oder Ihrem Nachbarn Ihre Schockform in 60 Sekunden.'),
-    B.meta('15 min · Einzelarbeit → Gruppenarbeit (Expertengruppe) · AFB I · Ich-kann-Liste W2 Nr. 1 · KA-Bezug KB 1, Aufg. 3.1'),
-    lsg ? B.lp('Lösungen zu AA1 a–c: siehe Lösung der Expertenblätter (am Ende dieser Lehrerversion).') : null,
-
-    B.umbruch(),
-    B.aa([IC.schreiben], 'AA2: Vergleichen – Stammgruppe:', '**a)** Erklären Sie reihum Ihre Schockform (je 3 Minuten). Die anderen **ergänzen** die Tabelle.'),
-    B.meta('20 min (a–c) · Gruppenarbeit (Stammgruppe 3–4) · AFB II · Ich-kann-Liste W2 Nr. 1 · KA-Bezug KB 1, Aufg. 3.2 und 5.5')
+    B.p('Das Gruppenpuzzle hat **zwei Runden**. Ihre Lehrkraft teilt die Gruppen am Beamer zufällig ein – **wer mit wem** arbeitet, zeigt Ihr Handy. Expertinnen und Experten gibt es für **A** (hypovolämischer Schock), **B** (anaphylaktischer Schock) und **C** (neurogener Schock).'),
+    puzzleGrafik(B),
+    new Paragraph({ spacing: { before: 120, after: 100 }, children: [B.b('Ich bin Expertin/Experte für:  '), B.t('☐ A   ☐ B   ☐ C      '), B.b('Expertenteam: '), B.t('_'.repeat(5) + '    '), B.b('Stammgruppe: '), B.t('_'.repeat(11))] }),
+    B.aa([IC.lesen, IC.markieren], 'AA1: Identifizieren – Expertenteam:', '🚶 Setzen Sie sich mit Ihrem **Expertenteam** zusammen – die Namen stehen auf Ihrem Handy. **a)** Markieren Sie am Handy im Fall alle Hinweise auf einen Schock. **b)** Lesen Sie den Infotext (Handy; auf Papier freiwillig am Pult). **c)** Füllen Sie gemeinsam **Ihre Spalte** der Vergleichstabelle aus. **d)** Bearbeiten Sie die Klausuraufgabe 1.1. **e)** Machen Sie den Experten-Check am Handy und tippen Sie dann auf „Unsere Spalte ist fertig“.'),
+    B.meta('15 min · Gruppenarbeit (Expertenteam, 3–4) · AFB I–II · Ich-kann-Liste W2 Nr. 1 · KA-Bezug KB 1, Aufg. 3.1 · Folie 8 zeigt am Beamer, welche Teams fertig sind')
   );
   const sw = Math.round((BREITE_HOCH - 1700) / 3);
-  const zeilenAA2 = [
+  const zeilenAA2 = sammle('vergleich', [
     ['Ursache', 'Blut- oder Flüssigkeitsverlust (Blutung, z. B. Magen-Darm-Blutung; Verbrennung; Durchfall, Erbrechen)', 'allergische Sofortreaktion auf Medikament, Insektengift oder Nahrungsmittel', 'Verletzung des Rückenmarks (meist Halswirbelsäule), z. B. Kopfsprung, Sturz aus der Höhe'],
     ['Entstehung (kurz)', 'Volumen ↓ → Rückstrom zum Herzen ↓ → Schlagvolumen ↓ → Blutdruck ↓', 'Histamin → Gefäße weit und durchlässig → relativer Volumenmangel → Blutdruck ↓; Bronchien eng', 'Sympathikus fällt aus → Gefäße weit, Blut versackt → Blutdruck ↓; keine Gegenregulation'],
     ['Puls', 'schnell, schwach', 'schnell', 'langsam oder normal'],
     ['Haut', 'blass, kalt, schweißig (Zentralisation)', 'Juckreiz, Rötung, Quaddeln, Schwellungen (kann auch blass sein)', 'unterhalb der Verletzung warm, trocken, rosig'],
     ['weitere typische Zeichen', 'Durst, Unruhe, schnelle Atmung, wenig Urin; ggf. sichtbares Blut, Teerstuhl', 'Heiserkeit, Atemnot, Übelkeit, Erbrechen, Bauchkrämpfe, Schwindel', 'Lähmungen, Kribbeln, Taubheit, Nacken-/Rückenschmerz, flache Atmung, Auskühlung'],
     ['Darauf achte ich besonders', 'Blutungsquelle; Puls und Blutdruck im Verlauf (Schockindex); Bewusstsein; Urin', 'Atemwege und Atmung (Heiserkeit, SpO₂); Kreislauf; zweite Reaktion nach Stunden möglich', 'Atmung; Blutdruck und Puls; Temperatur; nicht bewegen']
-  ];
+  ]);
+  push(new Paragraph({ spacing: { before: 120, after: 60 }, children: B.runs('**Vergleichstabelle** – AA1: Ihre Spalte im Expertenteam · AA2: die anderen Spalten in der Stammgruppe') }));
   push(B.tabelle(
     [{ text: '', w: 1700 }, { text: 'A hypovolämisch', w: sw }, { text: 'B anaphylaktisch', w: sw }, { text: 'C neurogen', w: BREITE_HOCH - 1700 - 2 * sw }],
     [
       ...zeilenAA2.map((z) => [{ text: `**${z[0]}**`, fill: F.LACHS }, { lsg: z[1] }, { lsg: z[2] }, { lsg: z[3] }]),
-      [{ text: '**Gemeinsamkeit**', fill: F.LACHS }, { colSpan: 3, lsg: 'Bei allen drei Formen fällt der Blutdruck, die Organe werden schlecht durchblutet → Sauerstoffmangel → Lebensgefahr. Anaphylaktischer und neurogener Schock sind distributive Schockformen: Die Gefäße sind weit gestellt (relativer Volumenmangel).' }]
+      [{ text: '**Gemeinsamkeit**', fill: F.LACHS }, { colSpan: 3, lsg: sammle('gemeinsamkeit', 'Bei allen drei Formen fällt der Blutdruck, die Organe werden schlecht durchblutet → Sauerstoffmangel → Lebensgefahr. Anaphylaktischer und neurogener Schock sind distributive Schockformen: Die Gefäße sind weit gestellt (relativer Volumenmangel).') }]
     ],
     { hoehe: 640, schrift: 19 }
   ));
   push(
-    B.teil([IC.handy], '**b) Schockform-Detektiv:**'),
-    handy(T.SEITEN.detektiv, [
+    aufg([{ nr: '1.1', text: 'Begründen Sie anhand von 4 Symptomen aus Ihrer Fallsituation, dass bei der Person ein hypovolämischer (A), anaphylaktischer (B) bzw. neurogener Schock (C) vorliegt.', punkte: 4 }]),
+    new Paragraph({ spacing: { before: 40, after: 40 }, children: [B.i('Tipp wie in der Klassenarbeit: Ordnen Sie jedes Symptom zu (z. B. Kreislauf, Haut, Atemwege) und erklären Sie kurz, was es zeigt. Ohne Kreislaufzeichen gibt es nicht die volle Punktzahl.', { size: 18 })] }),
+    (aktuellerTeil = '1.1', B.linien(5, L(['A) Herr Albrecht: ' + T.EXPERTEN.a.nennen.join(' · '), 'B) Mia: ' + T.EXPERTEN.b.nennen.join(' · '), 'C) Herr Weber: ' + T.EXPERTEN.c.nennen.join(' · '), '(je Symptom mit Zuordnung 1 P.; Werte nur mit Vorwert-Vergleich voll werten; für die volle Punktzahl muss die Kreislaufbeteiligung genannt sein – vgl. Erwartungshorizont KA, Aufg. 3.1)']))),
+    B.umbruch(),
+    B.aa([IC.schreiben], 'AA2: Vergleichen – Stammgruppe:', '**a)** 🚶 **Umsetzen!** Setzen Sie sich mit Ihrer **Stammgruppe** zusammen – Namen und Tischkarte zeigt Ihr Handy. Erklären Sie reihum **A → B → C** (je 3 Minuten, die Uhr läuft am Beamer). Die anderen füllen ihre Spalten der Vergleichstabelle aus. Zum Schluss gemeinsam: die Gemeinsamkeit. Dann am Handy: „Unsere Tabelle ist vollständig“.'),
+    B.meta('20 min (a–c) · Gruppenarbeit (Stammgruppe 3–4) · AFB II · Ich-kann-Liste W2 Nr. 1 · KA-Bezug KB 1, Aufg. 3.2 und 5.5 · Folie 9 zeigt am Beamer, welche Stammgruppen fertig sind'),
+    teil([IC.handy], '**b) Schockform-Detektiv:**'),
+    B.app([
       B.p('Bestimmen Sie bei sechs kurzen Fällen die Schockform und markieren Sie die **zwei Befunde**, die Ihre Entscheidung belegen. Im **Monitorvergleich** finden Sie die Unterschiede zwischen zwei Patienten.'),
       B.p('**Am Ende:** Ergänzen Sie den Merksatz.')
     ]),
     B.leer(80),
     merk('Merksatz AA2', 'aa2'),
-    B.teil([IC.schreiben], '**c) Klausurtraining:** Bearbeiten Sie die Aufgaben allein. Danach prüft **Expertin/Experte B** Ihre Antwort zu 2.1 und **Expertin/Experte C** Ihre Antwort zu 2.2.'),
-    B.aufgaben([
+    teil([IC.schreiben], '**c) Klausurtraining:** Bearbeiten Sie die Aufgaben allein. Danach prüft **Expertin/Experte B** Ihre Antwort zu 2.1 und **Expertin/Experte C** Ihre Antwort zu 2.2.'),
+    aufg([
       { nr: '2.1', text: 'Erläutern Sie, wie es bei Mia zum Schock kommt.\nTipp: Denken Sie in einer Pfeilkette – Auslöser → Botenstoff → Gefäße → Blutdruck; die Atemwege extra.'.split('\n').join(' – '), punkte: 3 },
       { nr: '2.2', text: 'Nennen Sie 1 Befund, der bei Herrn Weber anders ist als bei Herrn Albrecht. Begründen Sie den Unterschied.', punkte: 2 }
     ]),
-    B.zwischen('2.1'),
+    zw('2.1'),
     B.linien(4, L(['Die Haselnuss (Allergen) löst eine allergische Sofortreaktion aus: Mastzellen setzen Histamin und weitere Botenstoffe frei.', 'Die Gefäße werden weit und durchlässig: Flüssigkeit tritt ins Gewebe (Quaddeln, Schwellung von Lippen und Lidern), im Gefäßsystem fehlt Volumen → der Blutdruck fällt (88/50 mmHg), das Herz gleicht mit 128/min aus.', 'Zusätzlich schwellen die Schleimhäute an (Heiserkeit) und die Bronchien verengen sich → Atemnot, Sauerstoffmangel (SpO₂ 93 %).', '(je schlüssiger Schritt 1 P.)'])),
-    B.zwischen('2.2'),
+    zw('2.2'),
     B.linien(3, L(['Befund: Herr Weber hat einen langsamen Puls (52/min), Herr Albrecht einen schnellen (116/min). – oder: Herr Webers Haut ist warm, trocken, rosig, Herrn Albrechts Haut blass, kalt, schweißig.', 'Begründung: Bei Herrn Weber ist das Rückenmark verletzt, der Sympathikus fällt aus. Der Körper kann nicht gegenregulieren: kein Pulsanstieg, keine Zentralisation. (Befund 1 P., Begründung 1 P.)']))
   );
 
@@ -118,12 +146,12 @@ function schuelerTeil(B, { lsg }) {
     B.meta('20 min · Partnerarbeit (Yogamatte) → Einzelarbeit · AFB II · Ich-kann-Liste W2 Nr. 2 und 4 · KA-Bezug KB 1, Aufg. 3.3')
   );
   const pw = Math.floor(BREITE_HOCH / 4);
-  const pikto = [
+  const pikto = sammle('pikto', [
     ['lagerung_oberkoerper_hoch.png', 'Oberkörper hoch (halbsitzend)', '**Wann?** Atemnot steht im Vordergrund.', '**Warum?** Die Atemhilfsmuskulatur kann besser arbeiten, die Bauchorgane drücken nicht gegen das Zwerchfell.'],
     ['lagerung_beine_hoch.png', 'Flach, Beine hoch (Schocklage)', '**Wann?** Schockzeichen ohne Atemnot.', '**Warum?** Blut aus den Beinen fließt zum Körperstamm, das Herz bekommt mehr Blut. Nicht bei Atemnot und nicht bei Verletzungen an Beinen, Becken oder Wirbelsäule.'],
     ['lagerung_seitenlage.png', 'Stabile Seitenlage', '**Wann?** Bewusstlos, Atmung normal.', '**Warum?** Die Atemwege bleiben frei, Erbrochenes kann abfließen. Nach einem Unfall nur achsengerecht drehen.'],
     ['lagerung_nicht_bewegen.png', 'Nicht bewegen', '**Wann?** Verdacht auf Wirbelsäulenverletzung.', '**Warum?** Jede Bewegung kann das Rückenmark weiter schädigen. Kopf mit beiden Händen halten (Woche 4).']
-  ];
+  ]);
   push(new Table({
     width: { size: pw * 4, type: WidthType.DXA }, columnWidths: [pw, pw, pw, pw], layout: TableLayoutType.FIXED,
     rows: [
@@ -133,32 +161,32 @@ function schuelerTeil(B, { lsg }) {
   push(
     new Paragraph({ spacing: { before: 60, after: 60 }, children: [B.emoji('⚠️ '), ...B.runs('**Bei Anaphylaxie:** nicht aufsitzen, aufstehen oder gehen lassen – das Blut kann „versacken“, ein Kreislaufstillstand droht. **Atmet die Person nicht normal → Reanimation** (KB III).', { size: 19 })] }),
     new Paragraph({ spacing: { after: 80 }, children: [B.i('Quelle: nach S2k-Leitlinie Akuttherapie und Management der Anaphylaxie (AWMF 061-025, 2021); Ich-kann-Liste KB I; sprachlich vereinfacht.', { size: 15, color: F.GRAU_T })] }),
-    B.teil([IC.handy], '**a) Lagerungsparcours** (Partnerarbeit auf der Yogamatte):'),
-    handy(T.SEITEN.lagerung, [
+    teil([IC.handy], '**a) Lagerungsparcours** (Partnerarbeit auf der Yogamatte):'),
+    B.app([
       B.p('Die App zieht eine Situationskarte. **Person A lagert Person B** innerhalb von 60 Sekunden und begründet: „Ich lagere …, weil …“. Dann tippen Sie auf **Aufdecken** und vergleichen. Wechseln Sie nach jeder Karte die Rollen.'),
       B.p('Sicherheit: behutsam lagern, nicht heben. Wer nicht gelagert werden möchte, übernimmt die Begründung. **Am Ende:** Ergänzen Sie den Merksatz.')
     ]),
     B.leer(80),
     merk('Merksatz AA3', 'aa3'),
-    B.teil([IC.schreiben], '**b) Entscheidungsweg:** Ergänzen Sie, wie Sie lagern. Prüfen Sie die Fragen **von oben nach unten** – die erste Frage, die Sie mit „Ja“ beantworten, entscheidet.')
+    teil([IC.schreiben], '**b) Entscheidungsweg:** Ergänzen Sie, wie Sie lagern. Prüfen Sie die Fragen **von oben nach unten** – die erste Frage, die Sie mit „Ja“ beantworten, entscheidet.')
   );
   const wegW = [5600, BREITE_HOCH - 5600];
-  push(B.tabelle([{ text: 'Frage', w: wegW[0] }, { text: '„Ja“ → so handle bzw. lagere ich', w: wegW[1] }], [
+  push(B.tabelle([{ text: 'Frage', w: wegW[0] }, { text: '„Ja“ → so handle bzw. lagere ich', w: wegW[1] }], sammle('weg', [
     ['1. Atmet die Person **nicht normal**?', { lsg: 'Reanimation beginnen (KB III)' }],
     ['2. Ist sie **bewusstlos**, atmet aber normal?', { lsg: 'stabile Seitenlage (nach Unfall achsengerecht)' }],
     ['3. Gibt es Hinweise auf eine **Wirbelsäulenverletzung**?', { lsg: 'nicht bewegen, Kopf mit beiden Händen halten' }],
     ['4. Steht **Atemnot** im Vordergrund?', { lsg: 'Oberkörper hoch (halbsitzend)' }],
     ['5. **Schockzeichen** ohne Atemnot?', { lsg: 'flach, Beine hoch' }]
-  ], { hoehe: 420, schrift: 20 }));
+  ]), { hoehe: 420, schrift: 20 }));
   push(
-    B.teil([IC.schreiben], '**c) Klausurtraining:**'),
-    B.aufgaben([
+    teil([IC.schreiben], '**c) Klausurtraining:**'),
+    aufg([
       { nr: '3.1', vorsatz: 'Frau Carla Yıldız (55) hat in der Radiologie Kontrastmittel erhalten. Sie ist heiser und atmet pfeifend mit 30 Atemzügen pro Minute. Ihr Blutdruck liegt bei 90/55 mmHg.', text: 'Begründen Sie, warum Sie Frau Yıldız trotz des niedrigen Blutdrucks mit erhöhtem Oberkörper lagern.', punkte: 2 },
       { nr: '3.2', text: 'Nehmen Sie Stellung zu der Aussage: „Bei einem Schock legt man immer die Beine hoch.“', punkte: 2 }
     ]),
-    B.zwischen('3.1'),
+    zw('3.1'),
     B.linien(3, L(['Bei Frau Yıldız steht die Atemnot im Vordergrund (Heiserkeit, pfeifende Atmung, 30/min). Mit erhöhtem Oberkörper kann sie die Atemhilfsmuskulatur einsetzen, die Bauchorgane drücken nicht gegen das Zwerchfell.', 'Flach mit Beinen hoch würde die Atemnot verstärken. Nicht aufsetzen oder aufstehen lassen, Kreislauf engmaschig überwachen. (je schlüssiges Argument 1 P.)'])),
-    B.zwischen('3.2'),
+    zw('3.2'),
     B.linien(3, L(['Die Aussage ist falsch. Die Schocklage hilft nur bei Schockzeichen ohne Atemnot, weil Blut aus den Beinen zum Herzen fließt.', 'Entscheidend ist das Leitsymptom: bei Atemnot Oberkörper hoch, bei Bewusstlosigkeit mit normaler Atmung stabile Seitenlage, bei Verdacht auf Wirbelsäulenverletzung nicht bewegen; bei Verletzungen an Beinen oder Becken keine Schocklage. (Beurteilung 1 P., Begründung mit Gegenbeispiel 1 P.)']))
   );
 
@@ -175,17 +203,17 @@ function schuelerTeil(B, { lsg }) {
     'Führt das Notfallprotokoll (Anlage): Uhrzeit, Werte, Maßnahme, Grundlage. In 4er-Gruppen zusätzlich: Beobachtung (Lagerung, Verantwortung).'
   ]], { schrift: 19 }));
   push(
-    handy(T.SEITEN.simulation, [
+    B.app([
       B.p('Spielen Sie die drei Varianten nacheinander (je ca. 6 Minuten) und **wechseln Sie nach jeder Runde die Rollen**:'),
       B.p('**A – Klinik:** Herr Kaiser (58), Eisen-Kurzinfusion · **B – Pflegeheim:** Frau Gruber (84), neues Schmerzmittel · **C – ambulante Pflege:** Herr Hager (66), Bienenstich, eigenes Notfallset'),
       B.p('Nach jeder Runde zeigt die App einen **Zeitstrahl**. Vergleichen Sie ihn mit Ihrem Protokoll. Nach der dritten Runde: Ergänzen Sie den Merksatz.')
     ]),
     B.leer(80),
     merk('Merksatz AA4', 'aa4'),
-    B.teil([IC.schreiben], '**b) Nachbesprechung:** Es war jedes Mal ein anaphylaktischer Schock. **Begründen** Sie, warum Sie in den drei Varianten trotzdem unterschiedlich gelagert haben.'),
+    teil([IC.schreiben], '**b) Nachbesprechung:** Es war jedes Mal ein anaphylaktischer Schock. **Begründen** Sie, warum Sie in den drei Varianten trotzdem unterschiedlich gelagert haben.'),
     B.linien(3, L(['Die Lagerung richtet sich nach dem Leitsymptom: A (Herr Kaiser) Atemnot → Oberkörper hoch; B (Frau Gruber) Kreislaufzeichen ohne Atemnot → flach, Beine hoch; C (Herr Hager) bewusstlos mit normaler Atmung → stabile Seitenlage.'])),
-    B.teil([IC.schreiben], '**c) Klausurtraining:** Vergleichen Sie die Klinik (Variante A) mit dem Pflegeheim (Variante B).'),
-    B.aufgaben([{ nr: '4.1', text: 'Nennen Sie 3 Maßnahmen, die Sie bei Herrn Kaiser zusätzlich zu den Maßnahmen bei Frau Gruber durchführen dürfen oder müssen. Begründen Sie jede Maßnahme.', punkte: 3 }]),
+    teil([IC.schreiben], '**c) Klausurtraining:** Vergleichen Sie die Klinik (Variante A) mit dem Pflegeheim (Variante B).'),
+    aufg([{ nr: '4.1', text: 'Nennen Sie 3 Maßnahmen, die Sie bei Herrn Kaiser zusätzlich zu den Maßnahmen bei Frau Gruber durchführen dürfen oder müssen. Begründen Sie jede Maßnahme.', punkte: 3 }]),
     B.linien(5, L([
       'z. B.: Infusion sofort stoppen, venösen Zugang belassen – das Allergen fließt sonst weiter; den Zugang braucht das Notfallteam für Medikamente und Volumen.',
       'Adrenalin 0,5 mg i. m. in die Außenseite des Oberschenkels nach Notfall-SOP – die SOP erlaubt Pflegefachpersonen die Gabe (bei Frau Gruber gibt es keine Anordnung und keine SOP).',
@@ -203,31 +231,31 @@ function schuelerTeil(B, { lsg }) {
     B.kasten([B.p('Infusion stoppen, Zugang belassen · Hilfe holen (Notfallteam bzw. 112) · nach Leitsymptom lagern · Puls, Blutdruck, Atmung, SpO₂ messen · Adrenalin i. m. geben · Sauerstoff geben · Antihistaminikum geben · Infusion zur Volumengabe anschließen · eigenen Autoinjektor nach dem ärztlichen Notfallplan anwenden · Diagnose „anaphylaktischer Schock“ stellen · Ereignis dokumentieren · über weitere Therapie und Dauer der Überwachung entscheiden', { spacing: { after: 0, line: 276 } })], { kopf: 'Wortspeicher', fill: F.GRAU_HELL, kopfFill: F.GRAU_HELL, rand: F.GRAU_R })
   );
   const vw = Math.floor(BREITE_HOCH / 3);
-  push(B.tabelle([{ text: '🟢 mache ich selbst (eigenverantwortlich)', w: vw }, { text: '🟡 nur nach ärztlicher Anordnung (n. ä. A.) oder SOP', w: vw }, { text: '🔴 ärztliche Aufgabe', w: BREITE_HOCH - 2 * vw }], [[
+  push(B.tabelle([{ text: '🟢 mache ich selbst (eigenverantwortlich)', w: vw }, { text: '🟡 nur nach ärztlicher Anordnung (n. ä. A.) oder SOP', w: vw }, { text: '🔴 ärztliche Aufgabe', w: BREITE_HOCH - 2 * vw }], sammle('werDarfWas', [[
     { lsg: 'Infusion stoppen, Zugang belassen; Hilfe holen (Notfallteam bzw. 112); nach Leitsymptom lagern; Puls, Blutdruck, Atmung, SpO₂ messen; Ereignis dokumentieren' },
     { lsg: 'Adrenalin i. m.; Sauerstoff; Antihistaminikum; Infusion zur Volumengabe; eigenen Autoinjektor nach dem Notfallplan (der Plan ist die ärztliche Anordnung für diese Person)' },
     { lsg: 'Diagnose stellen; über weitere Therapie und Dauer der Überwachung entscheiden; Medikamente anordnen' }
-  ]], { hoehe: 2000, schrift: 19, kopfFill: F.LACHS_KOPF }));
+  ]]), { hoehe: 2000, schrift: 19, kopfFill: F.LACHS_KOPF }));
   push(
     B.leer(80),
     B.kasten([
       new Paragraph({ spacing: { after: 60, line: 264 }, children: [B.i('„[Pflegefachpersonen] treffen in lebensbedrohlichen Situationen erforderliche Interventionsentscheidungen und leiten lebenserhaltende Sofortmaßnahmen bis zum Eintreffen der Ärztin oder des Arztes ein.“'), B.t(' (PflAPrV, Anlage 1, I.4.a; vgl. § 5 PflBG)', { size: 18 })] }),
-      B.p('**Eigenverantwortlich:** Gefahr erkennen, Hilfe holen, Allergen stoppen, lagern, überwachen, dokumentieren.'),
-      B.p('**Nur nach ärztlicher Anordnung (n. ä. A.) oder SOP:** Medikamente – auch Adrenalin –, Sauerstoff und Infusionen. Eine **Notfall-SOP** ist eine schriftliche, ärztlich freigegebene Handlungsanweisung der Einrichtung für eine bestimmte Notfallsituation. Pflegende „wirken … an der Durchführung ärztlich veranlasster Maßnahmen … mit“ (III.2.b).'),
-      B.p('**Als Auszubildende/r:** unter Anleitung handeln, sofort eine Pflegefachperson holen, die eigenen Grenzen kennen.', { spacing: { after: 0 } })
+      pS('verantwortung', '**Eigenverantwortlich:** Gefahr erkennen, Hilfe holen, Allergen stoppen, lagern, überwachen, dokumentieren.'),
+      pS('verantwortung', '**Nur nach ärztlicher Anordnung (n. ä. A.) oder SOP:** Medikamente – auch Adrenalin –, Sauerstoff und Infusionen. Eine **Notfall-SOP** ist eine schriftliche, ärztlich freigegebene Handlungsanweisung der Einrichtung für eine bestimmte Notfallsituation. Pflegende „wirken … an der Durchführung ärztlich veranlasster Maßnahmen … mit“ (III.2.b).'),
+      pS('verantwortung', '**Als Auszubildende/r:** unter Anleitung handeln, sofort eine Pflegefachperson holen, die eigenen Grenzen kennen.', { spacing: { after: 0 } })
     ], { kopf: 'Informationstext: Verantwortung im Notfall' }),
-    B.teil([IC.beurteilen], '**b) Adrenalin oder Antihistaminikum?** Lesen Sie den Informationstext und den Dialog.')
+    teil([IC.beurteilen], '**b) Adrenalin oder Antihistaminikum?** Lesen Sie den Informationstext und den Dialog.')
   );
   const aw = [3900, BREITE_HOCH - 3900];
   push(
-    B.tabelle([{ text: 'Problem bei der Anaphylaxie', w: aw[0] }, { text: 'Wirkung von Adrenalin', w: aw[1] }], [
+    B.tabelle([{ text: 'Problem bei der Anaphylaxie', w: aw[0] }, { text: 'Wirkung von Adrenalin', w: aw[1] }], sammle('adrenalin', [
       ['Gefäße weit → Blutdruck fällt', 'Gefäße eng → Blutdruck steigt'],
       ['Schleimhäute geschwollen (Kehlkopf, Lippen)', 'Schleimhäute schwellen ab'],
       ['Bronchien eng → Atemnot', 'Bronchien weit'],
       ['Herz muss mehr leisten', 'Herz schlägt kräftiger'],
       ['Mastzellen setzen weiter Histamin frei', 'weniger Histamin wird freigesetzt']
-    ], { schrift: 19 }),
-    B.p('Adrenalin wirkt von allen Notfallmedikamenten bei Anaphylaxie **am schnellsten**. Erwachsene erhalten 0,3–0,5 mg in den Muskel an der **Außenseite des Oberschenkels** (auch als Fertigspritze, sog. Autoinjektor); nach 5–10 Minuten kann die Gabe wiederholt werden. **Antihistaminika** blockieren nur die Histamin-Wirkung, wirken langsamer und haben keine belegte Wirkung auf Kreislauf und Bronchien. **Glukokortikoide** (Kortison) wirken erst nach Stunden. Beide kommen erst **nach** Adrenalin – sie ersetzen es nicht.', { spacing: { before: 80, after: 40, line: 264 } }),
+    ]), { schrift: 19 }),
+    pS('adrenalinText', 'Adrenalin wirkt von allen Notfallmedikamenten bei Anaphylaxie **am schnellsten**. Erwachsene erhalten 0,3–0,5 mg in den Muskel an der **Außenseite des Oberschenkels** (auch als Fertigspritze, sog. Autoinjektor); nach 5–10 Minuten kann die Gabe wiederholt werden. **Antihistaminika** blockieren nur die Histamin-Wirkung, wirken langsamer und haben keine belegte Wirkung auf Kreislauf und Bronchien. **Glukokortikoide** (Kortison) wirken erst nach Stunden. Beide kommen erst **nach** Adrenalin – sie ersetzen es nicht.', { spacing: { before: 80, after: 40, line: 264 } }),
     new Paragraph({ spacing: { after: 100 }, children: [B.i('Quelle: nach S2k-Leitlinie Akuttherapie und Management der Anaphylaxie (AWMF 061-025, 2021); sprachlich vereinfacht.', { size: 15, color: F.GRAU_T })] })
   );
   const dw = Math.floor(BREITE_HOCH / 2) - 100;
@@ -239,7 +267,7 @@ function schuelerTeil(B, { lsg }) {
       blase('💬 Lina, Auszubildende:', '„Aber in unserer Notfall-SOP steht Adrenalin ganz oben …“')
     ] })] }),
     B.p('**Think:** Wer hat recht? Notieren Sie zwei Argumente (2 Min.). **Pair:** Vergleichen Sie mit Ihrer Partnerin oder Ihrem Partner (2 Min.). **Share:** Einige Paare stellen vor.', { spacing: { before: 100, after: 80 } }),
-    B.aufgaben([{ nr: '5.1', text: 'Nehmen Sie Stellung zu der Aussage von Herrn Brandt.', punkte: 3 }]),
+    aufg([{ nr: '5.1', text: 'Nehmen Sie Stellung zu der Aussage von Herrn Brandt.', punkte: 3 }]),
     B.linien(4, L(['Die Aussage ist fachlich falsch. Beim anaphylaktischen Schock ist Adrenalin i. m. das Mittel der ersten Wahl (nach SOP bzw. ärztlicher Anordnung): Es stellt die Gefäße eng und hebt den Blutdruck, lässt die Schleimhäute abschwellen, weitet die Bronchien und wirkt am schnellsten.', 'Ein Antihistaminikum blockiert nur Histamin, wirkt langsamer und hebt weder den Blutdruck noch weitet es die Bronchien. Es darf Adrenalin nicht verzögern und kann danach gegeben werden.', 'Lina sollte die SOP ansprechen und sofort das Notfallteam bzw. die Ärztin einbeziehen. (Beurteilung 1 P., je fachliches Argument 1 P., max. 3 P.)']))
   );
 
@@ -249,17 +277,17 @@ function schuelerTeil(B, { lsg }) {
     B.aa([IC.schreiben], 'AA6: Klausurtraining – Transferfall:', 'Lösen Sie die Aufgaben **allein und ohne Unterlagen** (ca. 8 Minuten). Tauschen Sie dann mit einer Person aus einer **anderen** Stammgruppe. Bewerten Sie deren Lösung mit dem **Bewertungsraster in der App** und geben Sie eine Rückmeldung in einem Satz.'),
     B.meta('15 min · Einzelarbeit → Peer-Korrektur mit App-Raster · AFB I–III · KA-Format (KB 1, Aufg. 3.3) · Examensvorbild: Mai 2024 Tag 3, Aufg. 8.2; Mai 2026 Tag 1, Aufg. 3.2'),
     B.kasten([
-      B.p('Sie sind in der Tagespflege „Sonnenhof“ eingesetzt. Herr Klaus Martens (74) hat einen Diabetes mellitus Typ 2 und eine Herzinsuffizienz. Gegen 14:15 Uhr sitzt er mit anderen Gästen auf der Terrasse beim Kaffee. Plötzlich schreit er auf: Eine Wespe hat ihn in die Oberlippe gestochen.'),
-      B.p('Nach etwa fünf Minuten ist seine Oberlippe stark geschwollen, am Hals bilden sich Quaddeln. Mit kloßiger Stimme sagt er: „Mir ist so eng im Hals.“ Beim Einatmen hören Sie ein pfeifendes Geräusch. Sie messen: Atemfrequenz 28/min, Puls 124/min, Blutdruck 92/60 mmHg (am Morgen: 150/85 mmHg). In der Tagespflege ist keine Ärztin anwesend. Ein Notfallset hat Herr Martens nicht dabei.', { spacing: { after: 0, line: 264 } })
+      pS('transferfall', 'Sie sind in der Tagespflege „Sonnenhof“ eingesetzt. Herr Klaus Martens (74) hat einen Diabetes mellitus Typ 2 und eine Herzinsuffizienz. Gegen 14:15 Uhr sitzt er mit anderen Gästen auf der Terrasse beim Kaffee. Plötzlich schreit er auf: Eine Wespe hat ihn in die Oberlippe gestochen.'),
+      pS('transferfall', 'Nach etwa fünf Minuten ist seine Oberlippe stark geschwollen, am Hals bilden sich Quaddeln. Mit kloßiger Stimme sagt er: „Mir ist so eng im Hals.“ Beim Einatmen hören Sie ein pfeifendes Geräusch. Sie messen: Atemfrequenz 28/min, Puls 124/min, Blutdruck 92/60 mmHg (am Morgen: 150/85 mmHg). In der Tagespflege ist keine Ärztin anwesend. Ein Notfallset hat Herr Martens nicht dabei.', { spacing: { after: 0, line: 264 } })
     ], { kopf: 'Fallsituation', fill: F.GRAU_HELL, kopfFill: F.GRAU_HELL, rand: F.GRAU_R }),
     B.leer(80),
     new Paragraph({ spacing: { after: 60 }, children: [B.i('Pflegefachpersonen treffen in lebensbedrohlichen Situationen erforderliche Interventionsentscheidungen und leiten lebenserhaltende Sofortmaßnahmen ein.')] }),
-    B.aufgaben([
+    aufg([
       { nr: '6.1', text: 'Beschreiben Sie stichwortartig 5 Sofortmaßnahmen, die Sie bei Herrn Martens bis zum Eintreffen des Rettungsdienstes einleiten. Begründen Sie dabei die Positionierung von Herrn Martens.', punkte: 6 },
       { nr: '6.2', text: 'Kennzeichnen Sie in Ihrer Antwort zu 6.1 jede Maßnahme, die Sie nur nach ärztlicher Anordnung durchführen dürfen, mit „n. ä. A.“.', punkte: 1 },
       { nr: '6.3', vorsatz: 'Der Rettungsdienst hat Herrn Martens übernommen.', text: 'Nennen Sie 6 Informationen, die Sie in der Pflegedokumentation festhalten.', punkte: 3 }
     ]),
-    B.zwischen('6.1 und 6.2'),
+    zw('6.1 und 6.2'),
     B.linien(8, L([
       'z. B.: Hilfe holen: eine Kollegin setzt den Notruf 112 ab (Notärztin nötig); Herrn Martens nicht allein lassen.',
       'Oberkörper hoch (halbsitzend), weil Atemnot und Schwellung im Vordergrund stehen (Kloßgefühl, pfeifende Einatmung, 28/min): Die Atemhilfsmuskulatur kann arbeiten. Keine Schocklage – auch wegen der Herzinsuffizienz. Nicht aufstehen oder gehen lassen.',
@@ -270,11 +298,11 @@ function schuelerTeil(B, { lsg }) {
       'Uhrzeit, Werte und Maßnahmen notieren; bei Bewusstlosigkeit mit normaler Atmung stabile Seitenlage, ohne normale Atmung Reanimation (KB III).',
       '6.1: je beschriebene Maßnahme 1 P. (max. 5), Begründung der Positionierung 1 P.; Schocklage trotz Atemnot oder Antihistaminikum statt Adrenalin wird nicht gewertet. 6.2: 1 P., wenn alle Medikamenten- und Sauerstoff-Maßnahmen mit „n. ä. A.“ gekennzeichnet sind.'
     ])),
-    B.zwischen('6.3'),
+    zw('6.3'),
     B.linien(4, L([
       'z. B. (je 0,5 P.): Uhrzeit des Stichs und Beginn der Beschwerden · Auslöser (Wespenstich Oberlippe) · Symptome (Lippenschwellung, Quaddeln, Kloßgefühl, pfeifende Atmung) · Vitalwerte mit Uhrzeit (AF 28/min, Puls 124/min, RR 92/60 mmHg, Vorwert 150/85) · Maßnahmen mit Uhrzeit und Namenskürzel (Notruf, Lagerung, Überwachung) · Übergabe an den Rettungsdienst (Uhrzeit, Zielklinik) · Information der Angehörigen bzw. Hausärztin · Insektengiftallergie in der Akte vermerken · Hinweis auf Nachbeobachtung wegen möglicher zweiter Reaktion (zweigipfliger Verlauf) weitergeben.'
     ])),
-    handy(T.SEITEN.raster, [B.p('**Peer-Korrektur:** Öffnen Sie das Bewertungsraster, haken Sie ab, was Ihre Partnerin oder Ihr Partner geschrieben hat. Die App zählt die Punkte – wie im Erwartungshorizont der Klassenarbeit.')]),
+    B.app([B.p('**Peer-Korrektur:** Das Bewertungsraster erscheint auf Ihrem Handy. Haken Sie ab, was Ihre Partnerin oder Ihr Partner geschrieben hat. Die App zählt die Punkte – wie im Erwartungshorizont der Klassenarbeit.')]),
     B.punktezeile(10)
   );
 
@@ -285,26 +313,26 @@ function schuelerTeil(B, { lsg }) {
     B.meta('15 min · Gruppenarbeit (4er, Placemat) → Plenum · AFB III · Ich-kann-Liste W2 Nr. 5 · Brücke zu Woche 4 (Aspiration) und Woche 7 (Thrombose)'),
     B.p('**Tipp:** Erinnern Sie sich an die Thromboseprophylaxe aus dem 1. Ausbildungsjahr. Nicht jeder Zeitpunkt gehört zur Kette!'),
     lsg ? B.kasten([
-      B.p('**Feld Wade (morgens):** Wade dick, Schmerz beim Auftreten → Verdacht auf tiefe Beinvenenthrombose (Immobilität nach Hüft-TEP, Angst vor Luxation). Gehört zur Kette. Christin: sofort weitergeben, nicht massieren, nicht mobilisieren bis zur ärztlichen Abklärung.'),
-      B.p('**Feld Frühstück:** verschluckt sich, hustet kräftig → leichte Atemwegsverlegung; Husten lassen war richtig. Gehört **nicht** zur Kette (Woche 4).'),
-      B.p('**Feld 11 Uhr:** Luftnot, P 118, RR 105/70, blass, kaltschweißig, unruhig → Lungenembolie mit obstruktivem Schock (kompensiert, Schockindex ≈ 1,1). Sofort Hilfe holen, Oberkörper hoch, nicht mobilisieren, nicht allein lassen, überwachen.'),
-      B.p('**Feld Mittag:** zyanotisch, keine Reaktion, kein Puls → Kreislaufstillstand; Hilfe rufen, Reanimation (KB III).'),
-      B.p('**Mitte (Kette):** Immobilität → tiefe Beinvenenthrombose → Lungenembolie → obstruktiver Schock → Kreislaufstillstand.', { spacing: { after: 0 } })
+      pS('placemat', '**Feld Wade (morgens):** Wade dick, Schmerz beim Auftreten → Verdacht auf tiefe Beinvenenthrombose (Immobilität nach Hüft-TEP, Angst vor Luxation). Gehört zur Kette. Christin: sofort weitergeben, nicht massieren, nicht mobilisieren bis zur ärztlichen Abklärung.'),
+      pS('placemat', '**Feld Frühstück:** verschluckt sich, hustet kräftig → leichte Atemwegsverlegung; Husten lassen war richtig. Gehört **nicht** zur Kette (Woche 4).'),
+      pS('placemat', '**Feld 11 Uhr:** Luftnot, P 118, RR 105/70, blass, kaltschweißig, unruhig → Lungenembolie mit obstruktivem Schock (kompensiert, Schockindex ≈ 1,1). Sofort Hilfe holen, Oberkörper hoch, nicht mobilisieren, nicht allein lassen, überwachen.'),
+      pS('placemat', '**Feld Mittag:** zyanotisch, keine Reaktion, kein Puls → Kreislaufstillstand; Hilfe rufen, Reanimation (KB III).'),
+      pS('placemat', '**Mitte (Kette):** Immobilität → tiefe Beinvenenthrombose → Lungenembolie → obstruktiver Schock → Kreislaufstillstand.', { spacing: { after: 0 } })
     ], { kopf: 'Lösung Placemat', fill: 'FFFFFF', kopfFill: 'FFF2CC', rand: F.GRAU_R }) : null,
-    B.teil([IC.schreiben], '**Klausurtraining** (in der Stunde beginnen, zu Hause fertigstellen):'),
+    teil([IC.schreiben], '**Klausurtraining** (in der Stunde beginnen, zu Hause fertigstellen):'),
     new Paragraph({ spacing: { after: 60 }, children: [B.i('Frau Maler zeigte bereits Stunden vor dem Kreislaufstillstand Warnzeichen.')] }),
-    B.aufgaben([
+    aufg([
       { nr: '7.1', text: 'Erläutern Sie in Bezug auf die Situation von Frau Maler, wie es von ihrer Immobilität bis zum Kreislaufstillstand kommen konnte.', punkte: 5 },
       { nr: '7.2', text: 'Beschreiben Sie 3 Maßnahmen, die um 11 Uhr hätten eingeleitet werden müssen. Begründen Sie die Positionierung von Frau Maler.', punkte: 4 }
     ]),
-    B.zwischen('7.1'),
+    zw('7.1'),
     B.linien(5, L([
       'Nach der Hüft-TEP liegt Frau Maler aus Angst vor einer Luxation fast nur im Bett (Immobilität) → das Blut fließt in den Beinvenen langsamer und gerinnt nach der Operation leichter → tiefe Beinvenenthrombose (rechte Wade dick, schmerzt beim Auftreten) – trotz Heparin.',
       'Ein Teil des Gerinnsels löst sich (möglicherweise beim Aufsetzen an der Bettkante) und wird über das rechte Herz in die Lungenarterie geschwemmt → Lungenembolie: Das Blut kann nicht mehr ungehindert durch die Lunge fließen.',
       'Das linke Herz bekommt zu wenig Blut, das Herzzeitvolumen sinkt → obstruktiver Schock (11 Uhr: Luftnot, Puls 118/min, Blässe, kalter Schweiß, Unruhe; Schockindex ≈ 1,1).',
       'Ohne Behandlung dekompensiert der Kreislauf → Kreislaufstillstand (Mittag: Zyanose, kein Puls). (je schlüssiges Glied mit Fallbezug 1 P., max. 5 P.)'
     ])),
-    B.zwischen('7.2'),
+    zw('7.2'),
     B.linien(4, L([
       'z. B.: Sofort eine Pflegefachkraft holen bzw. Ärztin oder Notruf – Verdacht auf Lungenembolie mit Schockzeichen, nicht abwarten.',
       'Oberkörper hoch lagern, weil die Luftnot im Vordergrund steht (Atemhilfsmuskulatur); keine Schocklage.',
@@ -317,27 +345,29 @@ function schuelerTeil(B, { lsg }) {
   /* ---------- Check-out ---------- */
   push(
     B.umbruch(),
-    B.aa([IC.checkout, IC.handy], 'Check-out:', '**Ihre Entscheidung, bitte! – Runde 2.** Stimmen Sie erneut ab und vergleichen Sie am Beamer: Wo hat sich die Klasse verändert?'),
-    B.meta('5 min · Einzelarbeit → Plenum · Lernstandsdiagnose; Verbindung zur Klausurvorbereitung'),
-    handy(T.SEITEN.entscheidung2, [
-      B.p('Scannen Sie diesen QR-Code (Runde 2). Nach dem Abschicken sehen Sie die Auflösung und Ihre Antworten aus Runde 1 und Runde 2 nebeneinander.')
+    B.aa([IC.checkout, IC.handy], 'Check-out: Hätten Sie richtig gehandelt? – Prüfen Sie Ihre Vermutungen', ''),
+    B.meta('5 min · Einzelarbeit → Plenum · Vermutungen überprüfen (vorher/nachher), Lernzuwachs sichtbar machen, Lernstandsdiagnose; Verbindung zur Klausurvorbereitung'),
+    B.app([
+      B.p('Jetzt wissen Sie mehr. Entscheiden Sie **dieselben sechs Notfälle** noch einmal – Ihr Handy zeigt sie automatisch. Danach sehen Sie die Auflösung – und Ihre Vermutungen vom Stundenbeginn daneben.'),
+      B.p('Vergleichen Sie am Beamer: Bei welcher Frage hat sich die Klasse am stärksten verändert?')
     ]),
     new Paragraph({ spacing: { before: 80, after: 80 }, children: [B.b('Ich-kann-Liste Woche 2: '), B.t('Schätzen Sie sich ein: '), B.emoji('☺'), B.t(' sicher · '), B.emoji('😐'), B.t(' teilweise · '), B.emoji('☹'), B.t(' noch nicht. Bei 😐 oder ☹ notieren Sie, wo Sie nachlesen.')] })
   );
-  const ikl = [
-    ['1. … den hypovolämischen, den anaphylaktischen und den neurogenen Schock vergleichen.', 'Expertenblätter, AA2'],
+  const ikl = sammle('ikl', [
+    ['1. … den hypovolämischen, den anaphylaktischen und den neurogenen Schock vergleichen.', 'AA1, AA2'],
     ['2. … die Lagerung nach Leitsymptom beschreiben und begründen.', 'AA3, AA4b'],
     ['3. … Sofortmaßnahmen bei einem anaphylaktischen Schock ableiten und meine Verantwortung beschreiben.', 'AA4, AA5, AA6'],
     ['4. … falsche Aussagen zum Schock identifizieren und die Korrektur fachlich begründen.', 'Einstieg, AA3.2, AA5.1'],
     ['5. … am Fall Frau Maler die Kausalkette bis zum Kreislaufstillstand erklären.', 'AA7']
-  ];
+  ]);
   push(B.tabelle([{ text: 'Ich kann …', w: 5300 }, { text: '☺ 😐 ☹', w: 1100 }, { text: 'Nachlesen in …', w: BREITE_HOCH - 6400 }], ikl.map((z) => [z[0], '', lsg ? { lsg: z[1] } : ''])  , { hoehe: 480, schrift: 19 }));
   push(
-    new Paragraph({ spacing: { before: 160, after: 60 }, children: [B.b('Zurück zur Leitfrage: '), B.i('Woher kommt Frau Malers Luftnot – und wie hätte man sie um 11 Uhr lagern müssen?')] }),
+    (aktuellerTeil = 'Leitfrage', new Paragraph({ spacing: { before: 160, after: 60 }, children: [B.b('Zurück zur Leitfrage: '), B.i('Woher kommt Frau Malers Luftnot – und wie hätte man sie um 11 Uhr lagern müssen?')] })),
     B.linien(2, L(['Die Luftnot kommt von einer Lungenembolie: Ein Gerinnsel aus der Beinvene hat die Lungenstrombahn verlegt → obstruktiver Schock. Um 11 Uhr: Oberkörper hoch (Luftnot im Vordergrund), nicht mobilisieren, nicht allein lassen, sofort Hilfe holen und engmaschig überwachen.']))
   );
 
   /* ---------- Hausaufgabe ---------- */
+  sammelnAn = false;   // Lösungen der Hausaufgabe gehören nicht auf die Nachlese-Seite (eigene Selbstkontrolle)
   push(B.umbruch());
   push(
     B.abschnitt('Hausaufgabe · Klausurtraining wie im Examen'),
@@ -347,9 +377,9 @@ function schuelerTeil(B, { lsg }) {
       B.p('Sie arbeiten als Auszubildende bzw. Auszubildender im zweiten Ausbildungsdrittel in der orthopädischen Rehabilitationsklinik „Talblick“. Frau Sabine Lorenz (52) ist seit einer Woche nach einer Bandscheibenoperation an der Lendenwirbelsäule bei Ihnen. Sie ist verheiratet, arbeitet als Bankkauffrau und möchte „so schnell wie möglich wieder fit sein“. In ihrem Allergiepass steht eine Fischallergie. Ihr Notfallset hat sie zu Hause vergessen.'),
       B.p('Beim Mittagessen um 12:20 Uhr isst sie Gemüsecurry. Erst später stellt sich heraus, dass die Soße mit Fischsauce gewürzt war. Um 12:35 Uhr klingelt Frau Lorenz. Sie kratzt sich an den Händen und an der Kopfhaut, am Bauch sind Quaddeln zu sehen. Sie sagt: „Mir ist so schwindelig und übel.“ Sie ist blass und unruhig. Sie messen: Puls 124/min, Blutdruck 86/52 mmHg, Atemfrequenz 20/min, Sauerstoffsättigung 96 %. Bei der Morgenrunde lagen der Blutdruck bei 128/78 mmHg und der Puls bei 72/min. Ihre Stimme klingt normal, sie hat keine Atemnot. Die Stationsärztin ist im Haus erreichbar; für allergische Notfälle gibt es eine Notfall-SOP.', { spacing: { after: 0, line: 264 } })
     ], { kopf: 'Ausgangssituation', fill: F.GRAU_HELL, kopfFill: F.GRAU_HELL, rand: F.GRAU_R }),
-    B.zwischen('Aufgabe 1 (7 Punkte)'),
+    zw('Aufgabe 1 (7 Punkte)'),
     new Paragraph({ spacing: { after: 60 }, children: [B.i('Pflegefachpersonen schätzen akute Situationen anhand von Beobachtungen und Messwerten ein.')] }),
-    B.aufgaben([
+    aufg([
       { nr: '1.1', text: 'Beurteilen Sie aus pflegerischer Perspektive die im vorliegenden Fall beschriebenen Messdaten von Frau Lorenz: a) Puls b) Blutdruck', punkte: 3 },
       { nr: '1.2', text: 'Begründen Sie anhand von 4 Symptomen aus der Situation, dass bei Frau Lorenz ein anaphylaktischer Schock vorliegt.', punkte: 4 }
     ]),
@@ -359,9 +389,9 @@ function schuelerTeil(B, { lsg }) {
       '1.2 z. B. (je Symptom mit Zuordnung 1 P.): zeitlicher Zusammenhang – Beginn 15 Min. nach dem Essen mit Fischsauce bei bekannter Fischallergie · Haut – Juckreiz an Händen und Kopfhaut, Quaddeln am Bauch · Kreislauf – Puls 124/min, Blutdruckabfall von 128/78 auf 86/52 mmHg, Blässe, Schwindel · Magen-Darm – Übelkeit · Gehirn – Unruhe (Minderdurchblutung).',
       'Für die volle Punktzahl muss die Kreislaufbeteiligung genannt sein (wie in der Klassenarbeit).'
     ])),
-    B.zwischen('Aufgabe 2 (9 Punkte)'),
+    zw('Aufgabe 2 (9 Punkte)'),
     new Paragraph({ spacing: { after: 60 }, children: [B.i('Pflegefachpersonen treffen in lebensbedrohlichen Situationen erforderliche Interventionsentscheidungen und leiten Sofortmaßnahmen ein.')] }),
-    B.aufgaben([
+    aufg([
       { nr: '2.1', text: 'Beschreiben Sie stichwortartig 6 Sofortmaßnahmen, die Sie bei Frau Lorenz einleiten. Begründen Sie die Positionierung.', punkte: 7 },
       { nr: '2.2', vorsatz: 'Fünf Minuten später ist Frau Lorenz heiser und sagt: „Ich krieg so schlecht Luft.“ Die Sauerstoffsättigung sinkt auf 90 %.', text: 'Begründen Sie, wie Sie Frau Lorenz jetzt positionieren.', punkte: 2 }
     ]),
@@ -370,9 +400,9 @@ function schuelerTeil(B, { lsg }) {
       '(je Maßnahme 1 P., max. 6 P.; Begründung der Positionierung 1 P.; Antihistaminikum statt Adrenalin wird nicht gewertet)',
       '2.2 Jetzt Oberkörper hoch (halbsitzend), weil die Atemnot im Vordergrund steht (Heiserkeit = Schleimhautschwellung, SpO₂ 90 %): Die Atemhilfsmuskulatur kann arbeiten. Trotzdem nicht auf die Bettkante setzen oder aufstehen lassen; Kreislauf weiter überwachen und die Ärztin über die Verschlechterung informieren. (Positionierung 1 P., Begründung 1 P.)'
     ])),
-    B.zwischen('Aufgabe 3 (4 Punkte)'),
+    zw('Aufgabe 3 (4 Punkte)'),
     new Paragraph({ spacing: { after: 60 }, children: [B.i('Pflegefachpersonen steuern den Pflegeprozess auch nach einem Notfall.')] }),
-    B.aufgaben([{ nr: '3.1', vorsatz: 'Frau Lorenz geht es nach der Behandlung besser. Die Ärztin ordnet an, sie 24 Stunden lang zu überwachen.', text: 'Formulieren Sie 1 Pflegeproblem von Frau Lorenz im PESR-Format.', punkte: 4 }]),
+    aufg([{ nr: '3.1', vorsatz: 'Frau Lorenz geht es nach der Behandlung besser. Die Ärztin ordnet an, sie 24 Stunden lang zu überwachen.', text: 'Formulieren Sie 1 Pflegeproblem von Frau Lorenz im PESR-Format.', punkte: 4 }]),
     B.linien(5, L([
       'P: Frau Lorenz ist gefährdet, erneut eine anaphylaktische Reaktion bis hin zum Schock zu entwickeln (zweigipfliger Verlauf möglich).',
       'E: Fischallergie; anaphylaktischer Schock um 12:35 Uhr nach Fischsauce; Notfallset nicht vorhanden.',
@@ -380,47 +410,51 @@ function schuelerTeil(B, { lsg }) {
       'R: kennt ihre Allergie und hat einen Allergiepass; ist wach und kann Beschwerden sofort mitteilen; möchte rasch wieder gesund werden. (je P, E, S, R 1 P.)'
     ])),
     handy(T.SEITEN.transfer, [B.p('**Selbstkontrolle:** Die App zeigt die Musterlösung erst, wenn Sie bestätigen, dass Ihre Antwort auf dem Papier steht. Dann haken Sie ab und zählen Ihre Punkte.')]),
-    B.punktezeile(20)
+    B.punktezeile(20),
+    B.leer(240),
+    handy(T.SEITEN.nachlesen, [
+      B.p('📖 **Nachlesen:** Alles aus dieser Stunde – Expertentexte, Merksätze, Lösungen der Übungen und Klausuraufgaben – zum Wiederholen vor der Klassenarbeit.'),
+      B.p('**Erst nach der Stunde scannen:** Solange die Stunde am Beamer läuft, ist die Seite gesperrt.')
+    ])
   );
   return k;
+}
+
+// Ablauf des Gruppenpuzzles: ① Expertenteam → umsetzen → ② Stammgruppe
+function puzzleGrafik(B) {
+  const w = [3900, BREITE_HOCH - 7800, 3900];
+  const kasten = (titel, zeilen, fill) => B.zelle([
+    new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 40 }, children: [B.b(titel, { size: 22 })] }),
+    ...zeilen.map((z) => new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 20 }, children: B.runs(z, { size: 18 }) }))
+  ], w[0], { borders: rahmen('2E75B6', 8), shading: { type: ShadingType.CLEAR, color: 'auto', fill }, verticalAlign: VerticalAlign.CENTER });
+  const mitte = B.zelle([
+    new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 0 }, children: [B.emoji('🚶')] }),
+    new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 0 }, children: [B.b('umsetzen!', { size: 20, color: F.ORANGE_D })] }),
+    new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 0 }, children: [B.b('→', { size: 36, color: F.ORANGE_D })] })
+  ], w[1], { borders: { top: keinRand, bottom: keinRand, left: keinRand, right: keinRand }, verticalAlign: VerticalAlign.CENTER });
+  return new Table({
+    width: { size: BREITE_HOCH, type: WidthType.DXA }, columnWidths: w, layout: TableLayoutType.FIXED,
+    rows: [new TableRow({ cantSplit: true, children: [
+      kasten('① Expertenteam (15 min)', ['👥 gleicher Buchstabe: **A + A + A**', 'Fall markieren · Infotext · **Ihre Spalte** der Tabelle · 1.1', '✓ „Unsere Spalte ist fertig“'], F.BLAU_HELL),
+      mitte,
+      kasten('② Stammgruppe (12 min)', ['🧩 **A + B + C** an einem Tisch', 'reihum erklären · **Tabelle vollständig**', '✓ „Unsere Tabelle ist vollständig“'], F.LACHS_HELL)
+    ] })]
+  });
 }
 
 /* =====================================================================
    ANLAGEN: Expertenblätter A/B/C, Notfallprotokoll, Placemat, Schilder
    ===================================================================== */
-function expertenblatt(B, key, { lsg }) {
+function expertenblatt(B, key) {
   const e = T.EXPERTEN[key];
-  const k = [];
-  const push = (...x) => k.push(...x.filter(Boolean));
-  const seite = T.SEITEN['markieren' + e.buchstabe];
-  push(
-    B.titel(`Expertenblatt ${e.buchstabe} · ${e.form}`, lsg ? '[LSG]' : null),
-    B.p('**Ihre Aufgabe als Expertin oder Experte:** Gleich erklären Sie Ihrer Stammgruppe Ihre Schockform. Bearbeiten Sie dafür die Aufträge a–c in Ihrer Expertengruppe.'),
+  return [
+    B.titel(`Expertenblatt ${e.buchstabe} · ${e.form}`),
+    B.p('**Papierfassung (freiwillig):** Die Aufträge, den Fall zum Markieren und den Experten-Check finden Sie in der Stunden-App auf Ihrem Handy. Hier können Sie Fall und Infotext zusätzlich auf Papier lesen und markieren.'),
     B.kasten(e.fall.map((x, i) => B.p(x, i === e.fall.length - 1 ? { spacing: { after: 0, line: 264 } } : {})), { kopf: 'Fallsituation', fill: F.GRAU_HELL, kopfFill: F.GRAU_HELL, rand: F.GRAU_R }),
-    B.teil([IC.handy, IC.markieren], '**a) Identifizieren:** Markieren Sie in der App alle Stellen im Fall, die auf einen Schock hinweisen.'),
-    B.handy(seite, [B.p('Scannen Sie den QR-Code und tragen Sie **Vorname + Raumcode** ein. Tippen Sie im Fall alle Hinweise auf einen Schock an. Die App zeigt Ihnen, was Sie übersehen haben. **Am Ende:** Ergänzen Sie den Merksatz.')], { linkBasis: T.LINK_BASIS, qrDatei: QR(seite) }),
-    B.leer(60),
-    B.merksatz('Merksatz AA1', [T.MERKSAETZE.aa1]),
-    B.leer(100),
+    B.leer(120),
     B.kasten([...e.info.map((x) => B.p(x)), new Paragraph({ spacing: { after: 0 }, children: [B.i('Quelle: nach MSD Manual Profi-Ausgabe: Schock; S2k-Leitlinie Anaphylaxie (AWMF 061-025, 2021); Ich-kann-Liste KB I; sprachlich vereinfacht.', { size: 15, color: F.GRAU_T })] })], { kopf: `Informationstext ${e.buchstabe}: ${e.form}` }),
-    new Paragraph({ spacing: { before: 40, after: 100 }, children: [B.b('Wörterhilfe: ', { size: 17 }), B.t(e.woerter, { size: 17 })] }),
-    B.teil([IC.schreiben], `**b) Klausurtraining:**`),
-    B.aufgaben([{ nr: 'b', text: `Begründen Sie anhand von 4 Symptomen aus der Situation, dass bei ${e.person} ein ${e.adjektiv} Schock vorliegt.`, punkte: 4 }]),
-    new Paragraph({ spacing: { before: 40, after: 40 }, children: [B.i('Tipp wie in der Klassenarbeit: Ordnen Sie jedes Symptom zu (z. B. Kreislauf, Haut, Atemwege) und erklären Sie kurz, was es zeigt. Ohne Kreislaufzeichen gibt es nicht die volle Punktzahl.', { size: 18 })] }),
-    B.linien(5, lsg ? ['z. B. (je Symptom mit Zuordnung 1 P.): ' + e.nennen.join(' · '), 'Werte nur mit Vorwert-Vergleich voll werten; für die volle Punktzahl muss die Kreislaufbeteiligung genannt sein (vgl. Erwartungshorizont KA, Aufg. 3.1).'] : []),
-    B.teil([IC.schreiben], '**c) Expertenkarte:** Fassen Sie zusammen, was Ihre Stammgruppe wissen muss. Damit erklären Sie gleich.')
-  );
-  const kw = [2600, B.breite - 2600];
-  const kk = e.karte;
-  push(B.tabelle([{ text: 'Meine Schockform', w: kw[0] }, { text: e.form, w: kw[1] }], [
-    ['**Ursache**', { lsg: kk.ursache }],
-    ['**Entstehung** (in Pfeilen)', { lsg: kk.entstehung }],
-    ['**Puls · Haut · weitere Zeichen**', { lsg: kk.zeichen }],
-    ['**Das gibt es nur bei meiner Schockform**', { lsg: kk.nur }],
-    ['**Darauf achte ich besonders**', { lsg: kk.achten }],
-    ['**Lagerung und erste Sofortmaßnahme**', { lsg: kk.erstes }]
-  ], { hoehe: 700, schrift: 19 }));
-  return k;
+    new Paragraph({ spacing: { before: 40, after: 100 }, children: [B.b('Wörterhilfe: ', { size: 17 }), B.t(e.woerter, { size: 17 })] })
+  ];
 }
 
 function notfallprotokoll(B) {
@@ -490,20 +524,20 @@ function verlaufsplan(B) {
   const z = (zeit, phase, l, s, soz, mat, fkt) => [zeit, `**${phase}**`, l, s, soz, mat, fkt];
   const ueber = (text) => [{ colSpan: 7, text, fill: F.GRAU_HELL, o: { italics: true } }];
   const zeilen = [
-    z('vor der Stunde', 'Vorbereitung', 'Yogamatten auslegen; 3 Schilder in Raumecken (Anlage); Stammgruppen-Liste am Beamer; fortschritt.html öffnen → „Neuen Raum starten“.', '–', '–', 'Matten, Schilder, Beamer', 'Ablauf ohne Umbaupausen'),
-    z('0–8', 'Problemorientierter Einstieg', 'An den Schlusssatz von Woche 1 anknüpfen; Fallauszug und Leitfrage (Sprechblase) an die Tafel; Vermutungen aus W1 (AA3a) abrufen; Abstimmung Runde 1 freigeben, Ergebnis am Beamer zeigen, nicht auflösen.', 'Vermutung nennen; am Handy entscheiden und Sicherheit angeben.', 'EA → Plenum', 'AB S. 1, Handy, Beamer', 'Vorwissen und Fehlvorstellungen sichtbar machen (IKL Nr. 4); kognitiver Konflikt. AFB I'),
-    ueber('„In Woche 1 haben Sie gesehen, wie der Körper einen Schock ausgleicht. Heute geht es um die Frage: Ist jeder Schock gleich – und muss ich deshalb immer gleich handeln?“'),
-    z('8–23', 'Erarbeitung I: Expertenrunde (AA1)', 'Stammgruppen und Expertenrollen einteilen (siehe Hinweise), Expertenblätter A/B/C austeilen, Zeit ansagen; Fortschritt am Beamer beobachten.', 'Fall lesen, Befunde in der App markieren, Infotext lesen, Schockform anhand von 4 Symptomen begründen (Wortlaut KA 3.1), Expertenkarte ausfüllen, 60-Sekunden-Erklärprobe.', 'EA → GA (Experten)', 'Expertenblätter, Handy', 'Befunde im Fließtext identifizieren wie in KA 3.1; Expertenwissen aufbauen. AFB I'),
-    z('23–43', 'Erarbeitung II: Stammgruppe (AA2)', 'Zeitsignal alle 3 min; Hilfekarten bei Bedarf; Expertinnen und Experten an ihre Prüferrolle erinnern.', 'Reihum erklären, Vergleichstabelle ergänzen, Schockform-Detektiv, Merksatz; 2.1 und 2.2 schreiben, Expertenkorrektur.', 'GA (3–4)', 'AB S. 2–3, Handy', 'Vergleichen (IKL Nr. 1); Pathophysiologie erläutern (KA 3.2), Unterschied neurogen (KA 5.5). AFB II'),
+    z('vor der Stunde', 'Vorbereitung', 'Yogamatten auslegen; 3 Schilder in die Raumecken (Anlage); **Tischkarten** mit Emoji auf die Gruppentische (KB1_W2_Tischkarten.pdf, so viele wie Stammgruppen); wenige Expertenblätter A/B/C ans Pult; **beamer.html** öffnen → „Neuen Raum starten“.', '–', '–', 'Matten, Schilder, Tischkarten, Beamer', 'Ablauf ohne Umbaupausen'),
+    z('0–8', 'Problemorientierter Einstieg: „Wie hätten Sie gehandelt?“ (Folien 1–6)', '**Folie 1:** QR-Code am Beamer, die Namen der Angemeldeten erscheinen. **Folie 2:** Fallauszug und Leitfrage; Vermutung aus W1 (AA3a) kurz abrufen. **Folie 3:** Abstimmung freigeben: „Falsch liegen ist erlaubt.“ **Folie 4:** Ergebnis (★ = größte Uneinigkeit, Karte anklicken = groß). **Folie 5:** Murmeln – die Uhr (1 min) startet automatisch; 2–3 Begründungen hören, nicht auflösen. **Folie 6:** Lernziel und Fahrplan.', 'Mit Vornamen anmelden; Vermutungen am Handy abgeben (sicher / vermute nur), auch zur Leitfrage (E6); die Nachbarin oder den Nachbarn von der eigenen Wahl überzeugen.', 'EA → PA (Murmeln) → Plenum', 'Beamer, Handy, AB S. 1', 'Vorwissen aktivieren, Vermutungen bilden, Fehlvorstellungen sichtbar machen (IKL Nr. 4); kognitiver Konflikt; die Vermutungen werden im Check-out überprüft (vorher/nachher). AFB I'),
+    ueber('„Bei E… sind Sie geteilter Meinung – genau das klären wir heute. In Woche 1 haben Sie gesehen, wie der Körper einen Schock ausgleicht. Heute geht es um die Frage: Ist jeder Schock gleich – und muss ich deshalb immer gleich handeln? Am Ende der Stunde prüfen Sie Ihre Vermutungen.“'),
+    z('8–23', 'Erarbeitung I: Expertenteams (AA1, Folien 7–8)', '**Folie 7:** Ablauf zeigen; Personen ohne Handy mit „+ Person ohne Handy“ eintragen; **„Gruppen zufällig einteilen“** (Name anklicken = in die nächste Gruppe). **Folie 8:** Uhr starten; die Teams finden sich über die Namen am Handy; Status je Team am Beamer. Sind alle Teams fertig, wechseln Beamer und Handys **automatisch** zu Folie 9.', 'Im Expertenteam: Fall am Handy markieren, Infotext lesen, die eigene Spalte der Vergleichstabelle ausfüllen, Klausuraufgabe 1.1 (Wortlaut KA 3.1), Experten-Check, „Unsere Spalte ist fertig“.', 'GA (Expertenteam 3–4)', 'Handy, AB S. 2–3, Expertenblätter (freiwillig)', 'Befunde im Fließtext identifizieren wie in KA 3.1; Expertenwissen aufbauen; der Experten-Check sichert, dass jede Person erklären kann. AFB I–II'),
+    z('23–43', 'Erarbeitung II: Stammgruppe (AA2, Folien 9–11)', '**Folie 9:** „Umsetzen!“ – die Handys zeigen Stammgruppe, Namen und Tischkarte; **Erklär-Uhr** starten (A → B → C je 3 min, Ton beim Wechsel, dazu 2 min Gemeinsamkeit); Status je Gruppe. **Folie 10:** Detektiv, Fortschritt je Stammgruppe. **Folie 11:** Klausurtraining 2.1/2.2 mit Uhr, Expertenkorrektur.', 'Reihum erklären, die Spalten der anderen ausfüllen, „Unsere Tabelle ist vollständig“; Schockform-Detektiv, Merksatz; 2.1 und 2.2 schreiben, Expertenkorrektur.', 'GA (Stammgruppe 3–4)', 'AB S. 2–4, Handy, Tischkarten', 'Vergleichen (IKL Nr. 1); Pathophysiologie erläutern (KA 3.2), Unterschied neurogen (KA 5.5). AFB II'),
     ueber('„Sie wissen jetzt, wie sich die Schockformen unterscheiden. Aber wie lagern Sie? Aus dem Erste-Hilfe-Kurs kennen Sie: ‚Beine hoch.‘ Prüfen wir, ob das immer stimmt.“'),
-    z('43–63', 'Erarbeitung III: Lagerungsparcours (AA3)', 'Paare bilden, eine Karte gemeinsam vormachen (Ablauf, Sicherheit); Paare begleiten; Entscheidungsweg kurz sichern.', 'Karten ziehen, lagern und begründen, aufdecken, Rollen tauschen; Merksatz; Entscheidungsweg; 3.1 und 3.2.', 'PA → EA', 'Yogamatten, Kissen, Handy, AB S. 3–4', 'Handlungsorientiert; Fehlvorstellung „immer Beine hoch“ korrigieren; Lagerungsbegründung als K.-o.-Kriterium in KA 3.3. AFB II'),
-    z('63–88', 'Erarbeitung IV: Notfall-Simulation (AA4)', 'Rollen erklären, Start gemeinsam, Gruppen begleiten, Rollenwechsel einfordern; Plenum: Warum unterschiedliche Lagerung?', 'Drei Varianten spielen, protokollieren, Zeitstrahl mit Protokoll vergleichen; 4b und 4.1 (Vergleich Klinik – Pflegeheim) beantworten.', 'GA (3–4) → Plenum', 'Handy (1 je Gruppe), Notfallprotokoll (Anlage)', 'Sofortmaßnahmen in Entscheidungen umsetzen (I.4.a); Dokumentation; 4.1 übt die KA-Punkte „Infusion stoppen, Zugang belassen“, „Adrenalin/Sauerstoff nach SOP“ schriftlich (KA 3.3). AFB II'),
+    z('43–63', 'Erarbeitung III: Lagerungsparcours (AA3, Folien 12–13)', '**Folie 12:** Impuls „Bei einem Schock immer Beine hoch?“. **Folie 13:** Paare bilden, eine Karte gemeinsam vormachen (Ablauf, Sicherheit); Fortschritt am Beamer; Entscheidungsweg kurz sichern.', 'Karten am Handy ziehen, lagern und begründen, aufdecken, Rollen tauschen; Merksatz; Entscheidungsweg; 3.1 und 3.2.', 'PA → EA', 'Yogamatten, Kissen, Handy, AB S. 4–5', 'Handlungsorientiert; Fehlvorstellung „immer Beine hoch“ korrigieren; Lagerungsbegründung als K.-o.-Kriterium in KA 3.3. AFB II'),
+    z('63–88', 'Erarbeitung IV: Notfall-Simulation (AA4, Folien 14–15)', '**Folie 14:** Rollen erklären, Start gemeinsam, Rollenwechsel einfordern; Fortschritt je Stammgruppe; Plenum: Warum unterschiedliche Lagerung? **Folie 15:** Pause mit Uhr (bei Bedarf überspringen).', 'Drei Varianten spielen (die Handys zeigen die Stammgruppe), protokollieren, Zeitstrahl mit Protokoll vergleichen; 4b und 4.1 beantworten.', 'GA (Stammgruppe 3–4) → Plenum', 'Handy (1 je Gruppe), Notfallprotokoll (Anlage)', 'Sofortmaßnahmen in Entscheidungen umsetzen (I.4.a); Dokumentation; 4.1 übt die KA-Punkte „Infusion stoppen, Zugang belassen“, „Adrenalin/Sauerstoff nach SOP“ schriftlich (KA 3.3). AFB II'),
     ueber('Pause (falls im Stundenraster vorgesehen). – „In der Simulation mussten Sie entscheiden: Darf ich das – oder brauche ich eine Anordnung?“'),
-    z('88–100', 'Vertiefung: Wer darf was? (AA5)', 'Maßnahmen vorlesen (Liste in den Hinweisen), bei Uneinigkeit nachfragen; Dialog zeigen, Think-Pair-Share moderieren.', 'Positionieren und begründen, Tabelle ausfüllen; Stellungnahme zu Herrn Brandt schreiben.', 'Plenum (Bewegung) → EA → PA', 'Schilder, AB S. 4–5', 'Verantwortungsgrenzen (III.2.b); Fehlvorstellung Antihistaminikum (IKL Nr. 3–4). AFB II–III'),
+    z('88–100', 'Vertiefung: Wer darf was? (AA5, Folien 16–17)', '**Folie 16:** Jeder Klick deckt die nächste Maßnahme auf, der nächste zeigt die Lösung (8 Maßnahmen); bei Uneinigkeit nachfragen. **Folie 17:** Dialog, Think-Pair-Share mit Uhr.', 'In die passende Ecke gehen und begründen, Tabelle ausfüllen; Stellungnahme zu Herrn Brandt schreiben.', 'Plenum (Bewegung) → EA → PA', 'Schilder, AB S. 6–7', 'Verantwortungsgrenzen (III.2.b); Fehlvorstellung Antihistaminikum (IKL Nr. 3–4). AFB II–III'),
     ueber('„Jetzt wie in der Klassenarbeit: allein, ohne Unterlagen, mit Punkten.“'),
-    z('100–115', 'Sicherung: Klausurtraining (AA6)', 'Zeit stoppen (8 min), Tauschpartner aus anderer Stammgruppe zuweisen, Raster am Handy, Rückmeldesatz einfordern.', 'Transferfall lösen; Lösung der Partnerin/des Partners mit App-Raster bewerten.', 'EA → PA', 'AB S. 5–6, Handy', 'Transfer auf neuen Fall wie in der KA (3.3); Examensformat. AFB III'),
-    z('115–130', 'Transfer: Zurück zu Frau Maler (AA7)', 'Placemats austeilen, Zeiten ansagen (3/3/4 min), eine Gruppe stellt vor; Auflösung: obstruktiver Schock, Lagerung um 11 Uhr.', 'Placemat bearbeiten, Kausalkette in der Mitte, Leitfrage beantworten; 7.1/7.2 beginnen.', 'GA (4) → Plenum', 'Placemat A3', 'Kausalkette (IKL Nr. 5); offene Frage aus W1 klären; Brücke zu W4 und W7. AFB III'),
-    z('130–135', 'Abschlusssicherung', 'Abstimmung Runde 2 freigeben, vorher/nachher zeigen, größte Veränderung kurz besprechen; Hausaufgabe erteilen.', 'Erneut abstimmen; Ich-kann-Liste (Ampel); Leitfrage beantworten.', 'EA → Plenum', 'Handy, Beamer, Ich-kann-Liste', 'Lernzuwachs sichtbar machen; Lernstandsdiagnose.'),
+    z('100–115', 'Sicherung: Klausurtraining (AA6, Folien 18–19)', '**Folie 18:** Countdown 8 min. **Folie 19:** Tauschpartnerin oder Tauschpartner aus einer anderen Stammgruppe; das Raster erscheint am Handy; Rückmeldesatz einfordern.', 'Transferfall lösen; Lösung der Partnerin oder des Partners mit dem App-Raster bewerten.', 'EA → PA', 'AB S. 7–8, Handy', 'Transfer auf einen neuen Fall wie in der KA (3.3); Examensformat. AFB III'),
+    z('115–130', 'Transfer: Zurück zu Frau Maler (AA7, Folien 20–21)', '**Folie 20:** Placemats austeilen, Uhr mit 3/3/4 min. **Folie 21:** Die Kausalkette Schritt für Schritt aufdecken, dann die Antwort auf die Leitfrage; eine Gruppe stellt vor.', 'Placemat bearbeiten, Kausalkette in der Mitte, Leitfrage beantworten; 7.1/7.2 beginnen.', 'GA (4) → Plenum', 'Placemat A3', 'Kausalkette (IKL Nr. 5); offene Frage aus W1 klären; Brücke zu W4 und W7. AFB III'),
+    z('130–135', 'Abschlusssicherung: „Hätten Sie richtig gehandelt?“ (Folien 22–25)', '**Folie 22:** Check-out-Abstimmung. **Folie 23:** Vermutung (Beginn) und Entscheidung (Ende) mit Lösung; größte Veränderung besprechen (v. a. E6 = Leitfrage). **Folie 24:** Ich-kann-Liste, Hausaufgabe. **Folie 25:** Ausblick – damit wird die Nachlese-Seite freigeschaltet.', 'Dieselben Fragen erneut entscheiden, Auflösung mit der eigenen Vermutung vergleichen; Ich-kann-Liste (Ampel); Leitfrage beantworten.', 'EA → Plenum', 'Handy, Beamer, Ich-kann-Liste', 'Vermutungen überprüfen, Lernzuwachs sichtbar machen (vorher/nachher); Lernstandsdiagnose.'),
     ueber('„Nächste Woche geht es darum, wie man eine starke Blutung stoppt – damit es gar nicht erst zum hypovolämischen Schock kommt.“')
   ];
   push(B.tabelle(sp, zeilen, { kopfFill: F.BLAU_D, kopfFarbe: 'FFFFFF', schrift: 17 }));
@@ -517,15 +551,17 @@ function hinweise(B) {
   push(
     B.abschnitt('Vorbereitung und Hinweise'),
     B.zwischen('Gruppeneinteilung'),
-    punkt('**3BFP2.1 (23 SuS):** 7 Stammgruppen – 5 Dreiergruppen (A, B, C) und 2 Vierergruppen (A, B, B, C; Anaphylaxie ist Klausurschwerpunkt). Expertengruppen: A = 7 (4 + 3), B = 9 (3 × 3), C = 7 (4 + 3). Lagerungsparcours: 10 Paare + 1 Dreiergruppe (11 Matten). Placemat: 5 Vierergruppen + 1 Dreiergruppe (eine Person übernimmt zwei Felder).'),
-    punkt('**3BFP2.2 (20 SuS):** 6 Stammgruppen – 4 Dreiergruppen und 2 Vierergruppen (A, B, B, C). Expertengruppen: A = 6 (3 + 3), B = 8 (4 + 4), C = 6 (3 + 3). Lagerungsparcours: 10 Paare (10 Matten). Placemat: 5 Vierergruppen.'),
+    punkt('**Per Knopfdruck am Beamer (Folie 7):** Stammgruppen zu 3 (A, B, C); geht es nicht auf, Vierergruppen mit doppeltem B (Anaphylaxie ist Klausurschwerpunkt). Expertenteams zu 3, Rest zu 4; zwei B-Expertinnen derselben Stammgruppe kommen in verschiedene Teams. Wer später kommt, wird automatisch eingeteilt; Personen ohne Handy trägt die Lehrkraft vorher mit „+ Person ohne Handy“ ein.'),
+    punkt('**3BFP2.1 (23 SuS):** 7 Stammgruppen (5 × 3, 2 × 4) · Expertenteams A1–A2, B1–B3, C1–C2 · Lagerungsparcours: 10 Paare + 1 Dreiergruppe (11 Matten) · Placemat: 5 Vierergruppen + 1 Dreiergruppe. **3BFP2.2 (20 SuS):** 6 Stammgruppen (4 × 3, 2 × 4) · Expertenteams A1–A2, B1–B2, C1–C2 · 10 Paare (10 Matten) · Placemat: 5 Vierergruppen.'),
     punkt('Die Simulation (AA4) läuft in den Stammgruppen; in Vierergruppen übernimmt die vierte Person die Beobachtung (Lagerung, Verantwortung) und gibt nach jeder Runde einen Hinweis.'),
     B.zwischen('Material und Technik'),
-    punkt('Kopien: AB (SV) für alle; Expertenblätter A/B/C nach Einteilung; Notfallprotokoll 1 je Stammgruppe; Placemat auf A3 (1 je Vierergruppe); drei Schilder (Anlage) für die Raumecken. Yogamatten, einige Kissen/Decken als Polster.'),
-    punkt('Beamer: **fortschritt.html** öffnen → „Neuen Raum starten“ → Raumcode zeigen. Die Seite zeigt den Fortschritt (AA1a, AA2b, AA3a) und unter **„Abstimmung“** die Runden 1 und 2 der Entscheidungsfragen nebeneinander. Namen lassen sich verbergen; nach 6 Stunden wird alles gelöscht.'),
+    punkt('Kopien: AB (SV) für alle; Expertenblätter A/B/C nur zum Auslegen am Pult (freiwillig, z. B. je 3); Notfallprotokoll 1 je Stammgruppe; Placemat auf A3 (1 je Vierergruppe); drei Schilder für die Raumecken; **Tischkarten** (KB1_W2_Tischkarten.pdf) – quer drucken, in der Mitte falten. Yogamatten, einige Kissen/Decken als Polster.'),
+    punkt('**Beamer:** **beamer.html** öffnen → „Neuen Raum starten“. Unten rechts **Weiter**, links **Zurück** (auch Pfeiltasten, Presenter); Menü ⚙ unten links: zu jeder Folie springen, Vollbild, Namen verbergen, Angemeldete verwalten, neuer Raum für die Parallelklasse. Die Handys wechseln automatisch mit; ein QR-Code unten auf jeder Folie lässt Nachzügler einsteigen. Probeansicht ohne Internet: beamer.html?demo=1.'),
+    punkt('**Nachlese-Seite** (QR-Code auf der letzten AB-Seite): alle Inhalte und Lösungen der Stunde zum Wiederholen. Sie ist gesperrt, solange irgendwo eine Beamer-Stunde läuft – bis Folie 25 erreicht ist oder 10 Minuten nach dem Schließen des Beamers.'),
     punkt('Ohne WLAN oder Handys: Abstimmung per Handzeichen/Ampelkarten; Lagerungskarten aus der Liste unten vorlesen; Simulation als Fallkarte – die Lehrkraft spielt „Monitor“ und nennt die Werte nach den Entscheidungen der Gruppe (Drehbuch unten).'),
     punkt('Schutz gegen Durchklicken wie gewohnt: Merksätze erscheinen nur, wenn genug Aufgaben beim ersten Versuch richtig sind.'),
     B.zwischen('Inhaltliche Hinweise'),
+    punkt('**Einstieg und Check-out („Wie hätten Sie gehandelt?“):** Zu Beginn geben die SuS Vermutungen ab – falsch liegen ist ausdrücklich erlaubt, die Sicherheit („sicher“ / „vermute nur“) macht Fehlvorstellungen sichtbar, die mit Überzeugung vertreten werden. Beim Einstieg nichts auflösen, auch nicht beim Murmeln. Im Check-out entscheiden die SuS dieselben sechs Fragen erneut und sehen danach die Auflösung neben ihrer Vermutung. E6 ist die Leitfrage (Frau Maler um 11 Uhr); sie wird in AA7 geklärt.'),
     punkt('Die Lagerungsempfehlungen folgen der S2k-Leitlinie Anaphylaxie (AWMF 061-025, 2021): symptomorientiert; Flachlagerung und Vermeiden abrupter Lageveränderungen (Aufsitzen, Aufstehen) als Grundstrategie; bei führender Atemnot (halb-)sitzend; bei eingeschränktem Bewusstsein und intaktem Kreislauf stabile Seitenlage; zur Kreislaufverbesserung Beine hoch.'),
     punkt('Adrenalin i. m. laut Leitlinie 0,15–0,6 mg in die Außenseite des Oberschenkels, Autoinjektoren 0,15/0,3/0,5 mg, Wiederholung nach ca. 5–10 min. Antihistaminika: langsamerer Wirkungseintritt, Wirkung auf Kreislauf und Bronchokonstriktion nicht belegt, lebensrettende Sofortmaßnahmen dürfen nicht verzögert werden. Glukokortikoide: untergeordnete Rolle in der Akutphase. Die KA-Lösung nennt „Erwachsene 0,5 mg“ – das liegt in diesem Bereich.'),
     punkt('Der Leitfall ist belastend (Christin, Reanimation). AA7 bleibt bewusst fachlich (Kausalkette, verpasste Chancen) und bewertet Christin nicht; Erleben, Hilflosigkeit und Verarbeitung sind Thema in KB II und KB V.'),
@@ -541,11 +577,11 @@ function hinweise(B) {
   push(B.tabelle([{ text: 'Karte', w: 2000 }, { text: 'Situation', w: 3900 }, { text: 'Lösung und Begründung', w: B.breite - 5900 }],
     T.LAGERUNGSKARTEN.map((c) => [`**${c.titel}**${c.dilemma ? ' (Dilemma)' : ''}`, c.text, `**${c.loesung}** – ${c.warum}`]), { schrift: 17 }));
   push(B.zwischen('Drehbuch der Simulation (AA4) – idealer Ablauf und typische Fehler'));
-  push(B.tabelle([{ text: 'Variante', w: 1700 }, { text: 'Leitsymptom und richtige Schritte', w: 4500 }, { text: 'Typische Fehler und ihre Folgen in der App', w: B.breite - 6200 }], [
+  push(B.tabelle([{ text: 'Variante', w: 1700 }, { text: 'Leitsymptom und richtige Schritte', w: 4500 }, { text: 'Typische Fehler und ihre Folgen in der App', w: B.breite - 6200 }], sammle('drehbuch', [
     ['**A Klinik** – Herr Kaiser (58), Eisen-Kurzinfusion, Notfall-SOP', 'Atemnot (Heiserkeit, pfeifende Atmung, SpO₂ ↓) → Infusion stoppen, Zugang belassen · Notfallteam rufen · Oberkörper hoch · Adrenalin i. m. nach SOP · Sauerstoff nach SOP · Vitalzeichen · dokumentieren, Allergie vermerken, Nachbeobachtung', 'Zugang ziehen (kein Weg für Medikamente) · Beine hoch (Atemnot nimmt zu) · Antihistaminikum statt Adrenalin (keine Besserung) · allein lassen'],
     ['**B Pflegeheim** – Frau Gruber (84), neues Schmerzmittel (Tablette), keine Ärztin im Haus, keine SOP', 'Kreislauf ohne Atemnot (Schwindel, RR ↓, Puls ↑) → Hilfe holen: Pflegefachkraft, Notruf 112 · flach, Beine hoch · nicht aufsetzen · überwachen · keine Medikamente ohne Anordnung · Übergabe an Notärztin, dokumentieren', 'Zur Toilette begleiten/aufsetzen (Kollaps) · Adrenalin aus dem Notfallkoffer ohne Anordnung · etwas zu trinken geben'],
     ['**C ambulant** – Herr Hager (66), Bienenstich, eigenes Notfallset mit ärztlichem Notfallplan', 'Heiserkeit, dann Bewusstseinstrübung bei erhaltener Atmung → Notruf 112 · Autoinjektor aus dem Notfallset nach Notfallplan (Außenseite Oberschenkel) · bei Bewusstlosigkeit mit normaler Atmung stabile Seitenlage · Atmung überwachen · Stachel abstreifen (Biene) · Uhrzeit notieren', 'Tropfen aus dem Notfallset zuerst (Antihistaminikum; Aspirationsgefahr) · aufrichten · Autoinjektor nicht nutzen und nur warten']
-  ], { schrift: 17 }));
+  ]), { schrift: 17 }));
   push(B.zwischen('Quellen'), punkt('S2k-Leitlinie Akuttherapie und Management der Anaphylaxie, AWMF 061-025, Update 2021 (Ring et al., Allergo J Int 2021;30:1–25) · MSD Manual Profi-Ausgabe: Schock · Landeslehrplan Berufsfachschule Pflege BW, CE 06 · Ich-kann-Liste KB I (3BFP2) · BW-Abschlussprüfungen Mai 2023–Mai 2026 (Operatoren, Aufgabenformat)'));
   return k;
 }
@@ -575,14 +611,14 @@ async function main() {
   const SV = bausteine({ lsg: false, breite: BREITE_HOCH });
   await speichern(new Document({ creator: 'KB I · 3BFP2', title: 'KB1 W2 Schockformen – Schülerversion', styles: STILE, sections: [sektionHoch(schuelerTeil(SV, { lsg: false }))] }), 'KB1_W2_Schockformen_SV.docx');
 
-  const anl = (B, lsg) => [
-    ...['a', 'b', 'c'].flatMap((x, i) => [...(i ? [B.umbruch()] : []), ...expertenblatt(B, x, { lsg })])
+  const anl = (B) => [
+    ...['a', 'b', 'c'].flatMap((x, i) => [...(i ? [B.umbruch()] : []), ...expertenblatt(B, x)])
   ];
   const AN = bausteine({ lsg: false, breite: BREITE_HOCH });
   await speichern(new Document({
     creator: 'KB I · 3BFP2', title: 'KB1 W2 Schockformen – Anlagen', styles: STILE,
     sections: [
-      sektionHoch([...anl(AN, false), AN.umbruch(), ...notfallprotokoll(AN), AN.umbruch(), ...placemat(AN)]),
+      sektionHoch([...anl(AN), AN.umbruch(), ...notfallprotokoll(AN), AN.umbruch(), ...placemat(AN)]),
       { properties: { page: SEITE_QUER }, children: [...schild(bausteine({ breite: BREITE_QUER }), '🟢', 'mache ich selbst', 'eigenverantwortlich'), new Paragraph({ children: [new D.PageBreak()] }), ...schild(bausteine({ breite: BREITE_QUER }), '🟡', 'nur n. ä. A. oder SOP', 'nach ärztlicher Anordnung oder Notfall-SOP'), new Paragraph({ children: [new D.PageBreak()] }), ...schild(bausteine({ breite: BREITE_QUER }), '🔴', 'ärztliche Aufgabe', 'Diagnose, Therapieentscheidung, Anordnung')] }
     ]
   }), 'KB1_W2_Schockformen_Anlagen.docx');
@@ -594,10 +630,30 @@ async function main() {
     numbering: { config: [] },
     sections: [
       { properties: { page: SEITE_QUER }, headers: { default: kopf(BREITE_QUER) }, footers: { default: fuss(FUSS + ' · Lehrerversion') }, children: trenne([...verlaufsplan(LQ), ...hinweise(LQ)]) },
-      sektionHoch([...schuelerTeil(LH, { lsg: true })]),
-      sektionHoch([...anl(LH, true)])
+      sektionHoch([...schuelerTeil(LH, { lsg: true })])
     ]
   }), 'KB1_W2_Schockformen_LV_LSG.docx');
+
+  nachleseSchreiben();
+}
+
+// docs/inhalte_nachlesen.js: Lösungstexte aus dem Arbeitsblatt für die Nachlese-Seite der App
+function nachleseSchreiben() {
+  const daten = {
+    experten: Object.fromEntries(['a', 'b', 'c'].map((k) => [k, { buchstabe: T.EXPERTEN[k].buchstabe, form: T.EXPERTEN[k].form, fall: T.EXPERTEN[k].fall, nennen: T.EXPERTEN[k].nennen }])),
+    vergleich: N.vergleich, gemeinsamkeit: N.gemeinsamkeit,
+    pikto: N.pikto.map((x) => ({ bild: x[0], titel: x[1], wann: x[2], warum: x[3] })),
+    weg: N.weg.map((z) => ({ frage: z[0], antwort: z[1].lsg })),
+    werDarfWas: N.werDarfWas[0].map((c) => c.lsg),
+    verantwortung: N.verantwortung, adrenalin: N.adrenalin, adrenalinText: N.adrenalinText,
+    transferfall: N.transferfall, placemat: N.placemat, drehbuch: N.drehbuch,
+    ikl: N.ikl, aufgaben: N.aufgaben, loesungen: N.loesungen
+  };
+  const ziel = path.join(WURZEL, 'docs', 'inhalte_nachlesen.js');
+  fs.writeFileSync(ziel, '/* Automatisch erzeugt von werkzeuge/ab_w2.js – bitte nicht von Hand ändern.\n' +
+    '   Lösungstexte aus dem Arbeitsblatt für die Nachlese-Seite (w2-nachlesen.html). */\n' +
+    'var NACHLESEN = ' + JSON.stringify(daten, null, 1) + ';\n');
+  console.log('geschrieben:', ziel);
 }
 
 main().catch((e) => { console.error(e); process.exit(1); });

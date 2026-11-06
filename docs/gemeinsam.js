@@ -199,7 +199,9 @@
     if (window.KB1Melden) window.KB1Melden.stand(seite, geloest, gesamt, status);
   }
 
+  // In der Beamer-Stunde (w2.html) setzt die App die Werte selbst (window.KB1_PARAMS), sonst die Adresse
   function urlParam(name) {
+    if (window.KB1_PARAMS && Object.prototype.hasOwnProperty.call(window.KB1_PARAMS, name)) return String(window.KB1_PARAMS[name]);
     try { return new URLSearchParams(location.search).get(name); } catch (e) { return null; }
   }
 

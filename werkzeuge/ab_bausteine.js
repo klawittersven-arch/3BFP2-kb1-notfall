@@ -151,6 +151,17 @@ function bausteine({ lsg = false, breite = 9072 } = {}) {
     });
   };
 
+  // App-Kasten ohne QR-Code: Die Übung erscheint in der Stunden-App automatisch, sobald die Folie am Beamer kommt.
+  B.app = (absaetze, { fill = F.BLAU_HELL } = {}) => new Table({
+    width: { size: breite, type: WidthType.DXA }, columnWidths: [breite], layout: TableLayoutType.FIXED,
+    rows: [new TableRow({ cantSplit: true, children: [
+      zelle([
+        new Paragraph({ spacing: { after: 40 }, children: [B.emoji('📱 '), B.i('In der Stunden-App – erscheint automatisch mit der Folie am Beamer', { size: 16, color: F.GRAU_T })] }),
+        ...absaetze
+      ], breite, { borders: rahmen('2E75B6', 6), shading: { type: ShadingType.CLEAR, color: 'auto', fill } })
+    ] })]
+  });
+
   // Merksatz-Kasten mit Lücken. teile: Strings und { l: 'Lösung', n: Zeichenzahl }
   B.merksatz = (titel, zeilen) => B.kasten(
     zeilen.map((teile) => new Paragraph({ spacing: { after: 100, line: 300 }, children: teile.flatMap((x) => (typeof x === 'string' ? B.runs(x) : [B.luecke(x.l, x.n || 14)])) })),

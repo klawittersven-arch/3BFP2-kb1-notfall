@@ -52,14 +52,7 @@ var INHALTE = {
   // auf dem Arbeitsblatt zu den Übungen (Adressen der Übungen: siehe README).
   start: {
     titel: 'Schock ist nicht gleich Schock',
-    einleitung: 'Bitte scannen Sie den QR-Code bei der Aufgabe auf Ihrem Arbeitsblatt. Jede Übung öffnet sich nur über ihren eigenen QR-Code.',
-    // Spalten der Fortschrittsanzeige am Beamer (kurz = Spaltenbeschriftung)
-    spalten: [
-      { seite: 'w2-markieren', kurz: 'AA1' },
-      { seite: 'w2-detektiv', kurz: 'AA2' },
-      { seite: 'w2-lagerung', kurz: 'AA3' },
-      { seite: 'w2-simulation', kurz: 'AA4' }
-    ]
+    einleitung: 'Die Stunde läuft über den QR-Code am Beamer: scannen, Vornamen eingeben – Ihr Handy wechselt dann automatisch mit. Zum Nachlesen nach der Stunde gibt es einen eigenen QR-Code auf der letzten Seite des Arbeitsblatts.'
   },
 
   /* ------------------------------------------------------------------------
@@ -73,109 +66,45 @@ var INHALTE = {
   },
 
   /* ------------------------------------------------------------------------
-     FORTSCHRITT AM BEAMER – Anmeldung auf dem Handy (oben in jeder Übung)
+     ANMELDUNG in der Stunden-App (w2.html) – Prüfung des Vornamens
+     (alle übrigen Texte der Stunde: inhalte_stunde.js)
      ------------------------------------------------------------------------ */
   melden: {
-    titel: '📺 Fortschritt am Beamer',
-    text: 'Geben Sie Ihren Vornamen und den Raumcode vom Beamer ein. Dann sieht Ihre Lehrkraft, wie weit Sie sind – nur „x von y gelöst“, keine einzelnen Antworten.',
-    nameLabel: 'Vorname',
-    raumLabel: 'Raumcode (4 Ziffern, steht am Beamer)',
-    mitmachen: 'Mitmachen',
-    ohne: 'Ohne Anzeige weiter',
-    dochMitmachen: '📺 Beim Beamer-Fortschritt mitmachen',
-    angemeldet: 'Angemeldet als {name} · Raum {raum}',
-    aendern: 'ändern',
-    gesendet: '✓ Stand übertragen',
-    sendet: 'Stand wird übertragen …',
-    offline: 'Gerade keine Verbindung – der Stand wird nachgereicht.',
     fehlerNameLaenge: 'Bitte geben Sie Ihren Vornamen ein (2 bis 20 Zeichen).',
     fehlerNameZeichen: 'Bitte nur Buchstaben, Ziffern, Leerzeichen und Bindestrich verwenden.',
-    fehlerNameWort: 'Bitte wählen Sie einen anderen Namen.',
-    fehlerRaum: 'Der Raumcode hat genau 4 Ziffern.',
-    fehlerUnbekannt: 'Diesen Raumcode gibt es nicht (mehr). Bitte schauen Sie am Beamer nach.',
-    fehlerVoll: 'Der Raum ist voll. Bitte sagen Sie Ihrer Lehrkraft Bescheid.',
-    fehlerEntfernt: 'Ihr Eintrag wurde von der Lehrkraft entfernt. Sie können sich neu anmelden.'
+    fehlerNameWort: 'Bitte wählen Sie einen anderen Namen.'
   },
 
   /* ------------------------------------------------------------------------
-     FORTSCHRITT AM BEAMER – Seite für die Lehrkraft (fortschritt.html)
-     ------------------------------------------------------------------------ */
-  beamer: {
-    titel: 'Fortschritt · Schock ist nicht gleich Schock',
-    startTitel: 'Fortschritt am Beamer',
-    startText: 'Starten Sie einen Raum und zeigen Sie den Raumcode. Die Schülerinnen und Schüler geben in der Übung ihren Vornamen und den Code ein. Angezeigt werden nur „x von y gelöst“ je Übung und – unter „Abstimmung“ – die Ergebnisse der Entscheidungsfragen ohne Namen. Nach 6 Stunden wird alles automatisch gelöscht.',
-    starten: 'Neuen Raum starten',
-    nichtEingerichtet: 'Die Fortschrittsanzeige ist noch nicht eingerichtet: In docs/config.js fehlt FORTSCHRITT_URL. Siehe README, Abschnitt „Fortschritt am Beamer“.',
-    startFehler: 'Der Raum konnte nicht gestartet werden. Bitte prüfen Sie die Internetverbindung und versuchen Sie es noch einmal.',
-    raumcode: 'Raumcode',
-    raumHinweis: 'In der Übung: Vorname + Raumcode',
-    warten: 'Warten auf die ersten Anmeldungen …',
-    angemeldet: '{n} angemeldet',
-    fertigZahl: '{kurz} fertig: {x}',
-    legendeFertig: '✓ Merksatz erreicht',
-    legendeDurch: '⚠ zu viel geraten',
-    aktualisiert: 'aktualisiert {uhr} Uhr',
-    getrennt: 'keine Verbindung – neuer Versuch läuft …',
-    namenVerbergen: 'Namen verbergen',
-    namenZeigen: 'Namen zeigen',
-    person: 'Person {n}',
-    vollbild: 'Vollbild',
-    vollbildAus: 'Vollbild beenden',
-    leeren: 'Liste leeren',
-    leerenFrage: 'Alle Einträge entfernen? Handys, die weiterarbeiten, erscheinen beim nächsten gelösten Schritt wieder. Die Abstimmung bleibt erhalten.',
-    neuerRaum: 'Neuer Raum',
-    neuerRaumFrage: 'Neuen Raum starten? Alle müssen dann den neuen Code eingeben.',
-    entfernenFrage: '„{name}“ entfernen? Das Handy kann sich danach neu anmelden.',
-    entfernen: 'Entfernen',
-    abbrechen: 'Abbrechen',
-    ja: 'Ja',
-    abgelaufen: 'Der Raum ist abgelaufen. Bitte starten Sie einen neuen Raum.',
-    demo: 'Probeansicht mit erfundenen Namen',
-
-    // Umschalten zwischen Fortschritt und Abstimmung
-    ansichtFortschritt: 'Fortschritt',
-    ansichtAbstimmung: 'Abstimmung',
-    loesungZeigen: 'Lösung zeigen',
-    loesungVerbergen: 'Lösung verbergen',
-    runde1: 'Runde 1 (Beginn)',
-    runde2: 'Runde 2 (Ende)',
-    stimmenZahl: 'Runde 1: {a} Stimmen · Runde 2: {b} Stimmen',
-    keineStimmen: 'Noch keine Stimmen – die Klasse stimmt über „Ihre Entscheidung, bitte!“ ab.',
-    sicherAnteil: 'davon sicher: {n}',
-
-    anweisungen: [
-      { knopf: 'Einstieg', text: 'Ihre Entscheidung, bitte! – Runde 1: Scannen Sie den QR-Code auf Seite 1.' },
-      { knopf: 'AA1–AA2', text: 'Expertenrunde (AA1) → danach in die Stammgruppe (AA2).' },
-      { knopf: 'AA3', text: 'Lagerungsparcours: Partnerarbeit auf der Yogamatte (AA3).' },
-      { knopf: 'AA4', text: 'Notfall-Simulation in der Stammgruppe (AA4) – Rollen nach jeder Runde wechseln!' },
-      { knopf: 'Check-out', text: 'Ihre Entscheidung, bitte! – Runde 2: Stimmen Sie noch einmal ab.' }
-    ],
-    anweisungTipp: 'Anweisung groß einblenden – noch einmal klicken blendet sie wieder aus'
-  },
-
-  /* ------------------------------------------------------------------------
-     EINSTIEG & CHECK-OUT: „Ihre Entscheidung, bitte!“ (w2-entscheidung.html)
+     EINSTIEG & CHECK-OUT: „Wie hätten Sie gehandelt?“ (w2-entscheidung.html)
+     Runde 1 (Einstieg, ?runde=1): Vermutungen – keine Auflösung.
+     Runde 2 (Check-out, ?runde=2): dieselben Fragen noch einmal, danach Auflösung.
      Gleiche Fragen wie im Arbeitsblatt (werkzeuge/ab_w2_texte.js → ENTSCHEIDUNG)
      ------------------------------------------------------------------------ */
   entscheidung: {
-    titel: 'Ihre Entscheidung, bitte!',
-    anweisung: 'Fünf kurze Notfälle: Entscheiden Sie, was Sie tun würden, und geben Sie an, wie sicher Sie sind. Am Beamer erscheint nur, wie die Klasse entschieden hat – ohne Namen.',
+    titel: 'Wie hätten Sie gehandelt?',
+    titel2: 'Hätten Sie richtig gehandelt?',
+    anweisung: 'Sechs kurze Notfälle – wie würden Sie handeln? Tippen Sie Ihre **Vermutung** an und geben Sie an, ob Sie sich sicher sind oder nur vermuten. **Falsch liegen ist jetzt ausdrücklich erlaubt:** Genau diese Entscheidungen lernen Sie heute. Am Beamer erscheint nur, wie die Klasse vermutet – ohne Namen.',
+    anweisung2: 'Jetzt wissen Sie mehr. Entscheiden Sie **dieselben sechs Notfälle** noch einmal. Danach sehen Sie die Auflösung – und Ihre Vermutungen vom Stundenbeginn daneben.',
     // Die Runde kommt nur aus dem QR-Code: Einstieg → w2-entscheidung.html?runde=1, Check-out → ?runde=2
-    runde1: 'Runde 1 – Stundenbeginn',
-    runde2: 'Runde 2 – Stundenende',
-    ohneQr: 'Bitte scannen Sie den QR-Code auf Ihrem Arbeitsblatt: beim Einstieg (Runde 1) oder beim Check-out (Runde 2).',
+    runde1: 'Einstieg · Ihre Vermutungen, bitte!',
+    runde2: 'Check-out · Prüfen Sie Ihre Vermutungen',
+    ohneQr: 'Bitte scannen Sie den QR-Code auf Ihrem Arbeitsblatt: beim Einstieg oder beim Check-out.',
     sicherFrage: 'Wie sicher sind Sie?',
-    sicher: 'sicher',
-    unsicher: 'unsicher',
-    abschicken: 'Abstimmung abschicken',
-    nochOffen: 'Bitte beantworten Sie alle fünf Fragen (Antwort und Sicherheit).',
-    danke1: 'Danke! Ihre Stimmen sind am Beamer. Die Auflösung gibt es am Ende der Stunde – in Runde 2.',
-    danke2: 'Danke! Hier ist die Auflösung. Vergleichen Sie mit Ihrer Entscheidung aus Runde 1.',
-    ohneRaum: 'Hinweis: Sie sind nicht mit einem Raumcode angemeldet – Ihre Stimmen erscheinen deshalb nicht am Beamer.',
+    sicher: 'Ich bin mir sicher',
+    unsicher: 'Ich vermute nur',
+    sicherKurz: 'sicher',
+    unsicherKurz: 'nur vermutet',
+    abschicken1: 'Vermutungen abschicken',
+    abschicken2: 'Abschicken und Auflösung ansehen',
+    nochOffen: 'Bitte beantworten Sie alle sechs Fragen – jeweils eine Antwort und „sicher“ oder „vermute nur“.',
+    danke1: 'Danke! Ihre Vermutungen sind am Beamer – ohne Namen. Ob Sie richtig lagen, prüfen Sie am Ende der Stunde.',
+    danke2: 'Hier ist die Auflösung. Vergleichen Sie: Wie haben Sie am Stundenbeginn vermutet – und wie entscheiden Sie jetzt?',
+    ohneRaum: 'Hinweis: Sie sind nicht mit einem Raumcode angemeldet – Ihre Antworten erscheinen deshalb nicht am Beamer.',
     gesendet: '✓ am Beamer angekommen',
-    nichtGesendet: 'Gerade keine Verbindung – Ihre Stimmen werden nachgereicht.',
-    ihreRunde1: 'Runde 1: {a}',
-    ihreRunde2: 'Runde 2: {a}',
+    nichtGesendet: 'Gerade keine Verbindung – Ihre Antworten werden nachgereicht.',
+    ihreRunde1: 'Ihre Vermutung (Beginn): {a}',
+    ihreRunde2: 'Ihre Entscheidung (Ende): {a}',
     richtig: 'richtig',
     neu: 'Antworten ändern',
     fragen: [
@@ -183,7 +112,8 @@ var INHALTE = {
       { nr: 'E2', frage: 'Welches Medikament ist beim anaphylaktischen Schock das Mittel der ersten Wahl?', optionen: ['A Antihistaminikum', 'B Adrenalin i. m.', 'C Kortison i. v.'], richtig: 'B', erklaerung: 'Adrenalin wirkt am schnellsten auf Kreislauf, Schleimhäute und Bronchien. Antihistaminikum und Kortison kommen danach.' },
       { nr: 'E3', frage: 'Herr T. kann nach einem Kopfsprung die Beine nicht bewegen. Puls 54/min, Haut warm und rosig, Blutdruck 85/50 mmHg. Ist er stabil?', optionen: ['A Ja – Puls ruhig, Haut gut durchblutet', 'B Nein – das kann ein Schock sein'], richtig: 'B', erklaerung: 'Neurogener Schock: Der Sympathikus fällt aus – kein Pulsanstieg, keine Zentralisation, aber der Blutdruck ist niedrig.' },
       { nr: 'E4', frage: 'Während einer Kurzinfusion bekommt Herr M. Juckreiz und Atemnot. Was tun Sie mit der Infusion?', optionen: ['A langsamer laufen lassen', 'B stoppen und den Zugang entfernen', 'C stoppen, Zugang liegen lassen'], richtig: 'C', erklaerung: 'Allergen sofort stoppen – den venösen Zugang braucht das Notfallteam für Medikamente und Volumen.' },
-      { nr: 'E5', frage: 'Frau K. ringt nach Luft. Dürfen Sie ihr ohne ärztliche Anordnung oder SOP Sauerstoff geben?', optionen: ['A Ja, im Notfall immer', 'B Nein, nur nach Anordnung oder SOP'], richtig: 'B', erklaerung: 'Sauerstoff ist ein Arzneimittel. Eigenverantwortlich: erkennen, Hilfe holen, lagern, überwachen.' }
+      { nr: 'E5', frage: 'Frau K. ringt nach Luft. Dürfen Sie ihr ohne ärztliche Anordnung oder SOP Sauerstoff geben?', optionen: ['A Ja, im Notfall immer', 'B Nein, nur nach Anordnung oder SOP'], richtig: 'B', erklaerung: 'Sauerstoff ist ein Arzneimittel. Eigenverantwortlich: erkennen, Hilfe holen, lagern, überwachen.' },
+      { nr: 'E6', frage: 'Frau Maler (Leitfall) um 11 Uhr: Sie ist unruhig, atmet schnell und bekommt schlecht Luft, ist blass und kaltschweißig. Puls 118/min, Blutdruck 105/70 mmHg. Wie lagern Sie sie?', optionen: ['A flach, Beine hoch', 'B Oberkörper hoch', 'C aufstehen lassen – ans offene Fenster'], richtig: 'B', erklaerung: 'Die Luftnot steht im Vordergrund → Oberkörper hoch, trotz Schockzeichen keine Schocklage. Nicht aufstehen lassen (Lungenembolie: weitere Gerinnsel können sich lösen), nicht allein lassen, sofort Hilfe holen.' }
     ]
   },
 

@@ -1,6 +1,6 @@
-/* Einstieg & Check-out · „Ihre Entscheidung, bitte!“ (Programmlogik – Texte in inhalte.js → entscheidung).
-   Runde 1 (Stundenbeginn): abstimmen, keine Auflösung. Runde 2 (Stundenende): abstimmen, dann Auflösung
-   mit den eigenen Antworten aus beiden Runden. Mit Raumcode-Anmeldung gehen die Stimmen OHNE Namen an
+/* Einstieg & Check-out · „Wie hätten Sie gehandelt?“ (Programmlogik – Texte in inhalte.js → entscheidung).
+   Runde 1 (Einstieg): Vermutungen abgeben, keine Auflösung. Runde 2 (Check-out): dieselben Fragen noch einmal,
+   dann Auflösung mit den eigenen Antworten aus beiden Runden. Mit Raumcode-Anmeldung gehen die Stimmen OHNE Namen an
    den Beamer (POST /api/stimme): nur Geräte-ID (Zufall), Runde, Antwortbuchstaben und „sicher/unsicher“. */
 (function () {
   'use strict';
@@ -15,7 +15,18 @@
 
   var z = K.Speicher.dauer.lesen(SCHL);
   if (!z || typeof z !== 'object' || !z.runden) z = { runde: null, runden: { 1: null, 2: null }, entwurf: {}, gesendet: { 1: false, 2: false } };
+  if (!z.entwurf || typeof z.entwurf !== 'object') z.entwurf = {};
+  if (!z.gesendet || typeof z.gesendet !== 'object') z.gesendet = { 1: false, 2: false };
   function speichern() { K.Speicher.dauer.schreiben(SCHL, z); }
+
+  // Vollständig = jede aktuelle Frage hat Antwort und Sicherheit. Gespeicherte Runden zu einem älteren
+  // Fragensatz (z. B. vor dem Ergänzen einer Frage) gelten als nicht abgegeben und werden neu gestellt.
+  function vollstaendig(d) {
+    return !!d && !!d.antworten && !!d.sicher && T.fragen.every(function (f) {
+      return /^[A-D]$/.test(String(d.antworten[f.nr])) && (d.sicher[f.nr] === 0 || d.sicher[f.nr] === 1);
+    });
+  }
+  [1, 2].forEach(function (r) { if (z.runden[r] && !vollstaendig(z.runden[r])) { z.runden[r] = null; z.gesendet[r] = false; } });
 
   function anmeldung() {
     var a = K.Speicher.dauer.lesen('kb1nf_anmeldung');
@@ -47,6 +58,8 @@
      Die Runde kommt NUR aus dem QR-Code (…?runde=1 beim Einstieg, …?runde=2 beim Check-out).
      Es gibt bewusst keine Auswahl und keinen Wechsel zwischen den Runden in der App. */
   function ohneQr() {
+    var an = document.getElementById('anweisung');
+    if (an) an.hidden = true;
     platz.textContent = '';
     var box = el('section', 'karte');
     box.appendChild(el('p', null, T.ohneQr));
@@ -95,9 +108,8 @@
     var fehler = el('p', 'rueckmeldung falsch');
     fehler.hidden = true;
     platz.appendChild(fehler);
-    platz.appendChild(K.knopf(T.abschicken, 'knopf-breit', function () {
-      var vollstaendig = T.fragen.every(function (f) { return entwurf.antworten[f.nr] && (entwurf.sicher[f.nr] === 0 || entwurf.sicher[f.nr] === 1); });
-      if (!vollstaendig) { fehler.hidden = false; fehler.textContent = T.nochOffen; K.scrollen(fehler); return; }
+    platz.appendChild(K.knopf(r === 1 ? T.abschicken1 : T.abschicken2, 'knopf-breit', function () {
+      if (!vollstaendig(entwurf)) { fehler.hidden = false; fehler.textContent = T.nochOffen; K.scrollen(fehler); return; }
       z.runden[r] = { antworten: entwurf.antworten, sicher: entwurf.sicher };
       z.gesendet[r] = false;
       z.bearbeiten = false;
@@ -132,7 +144,7 @@
           var d = z.runden[rr];
           if (!d) return;
           var a = d.antworten[f.nr];
-          k.appendChild(el('p', 'klein ' + (a === f.richtig ? 'ok-text' : 'falsch-text'), K.ersetzen(rr === 1 ? T.ihreRunde1 : T.ihreRunde2, { a: a + (a === f.richtig ? ' (' + T.richtig + ')' : '') + ' · ' + (d.sicher[f.nr] ? T.sicher : T.unsicher) })));
+          k.appendChild(el('p', 'klein ' + (a === f.richtig ? 'ok-text' : 'falsch-text'), K.ersetzen(rr === 1 ? T.ihreRunde1 : T.ihreRunde2, { a: a + (a === f.richtig ? ' (' + T.richtig + ')' : '') + ' · ' + (d.sicher[f.nr] ? T.sicherKurz : T.unsicherKurz) })));
         });
         platz.appendChild(k);
       });
@@ -164,5 +176,13 @@
   z.runde = rundeAusQr === 1 || rundeAusQr === 2 ? rundeAusQr : null;
   z.bearbeiten = false;
   speichern();
+  // Check-out: eigener Titel und eigene Anweisung („Hätten Sie richtig gehandelt?“)
+  if (z.runde === 2) {
+    var h1 = document.getElementById('titel');
+    var an = document.getElementById('anweisung');
+    if (h1) h1.textContent = T.titel2;
+    if (an) { an.textContent = ''; an.appendChild(K.formatiert('span', null, T.anweisung2)); }
+    document.title = T.titel2 + ' – ' + INHALTE.allgemein.kopfzeile;
+  }
   if (!z.runde) ohneQr(); else fragen();
 })();

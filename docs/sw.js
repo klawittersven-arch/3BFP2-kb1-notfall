@@ -1,41 +1,50 @@
 /* Service Worker: speichert alle Dateien beim ersten Aufruf, damit die Übungen
- * auch bei schlechtem oder kurz unterbrochenem WLAN funktionieren.
+ * auch bei schlechtem oder kurz unterbrochenem WLAN funktionieren (die Live-Verbindung
+ * zum Worker läuft an ihm vorbei – sie geht an eine andere Adresse).
  *
  * Strategie: zuerst das Netz fragen (mit Zeitlimit), sonst die gespeicherte Fassung.
  * So erscheinen Änderungen im Repository sofort, sobald Netz da ist.
  * Nach größeren Änderungen VERSION erhöhen – dann wird der Speicher erneuert. */
 'use strict';
 
-var VERSION = 'v3';
+var VERSION = 'v6';
 var CACHE = 'kb1-notfall-' + VERSION;
 var ZEITLIMIT_MS = 4000;
 
 var DATEIEN = [
   './',
   'index.html',
-  'w2-entscheidung.html',
-  'w2-markieren.html',
-  'w2-detektiv.html',
-  'w2-lagerung.html',
-  'w2-simulation.html',
-  'w2-raster.html',
+  'w2.html',
   'w2-transfer.html',
-  'fortschritt.html',
+  'w2-nachlesen.html',
+  'beamer.html',
   'style.css',
   'simulation.css',
-  'fortschritt.css',
+  'stunde.css',
+  'beamer.css',
+  'nachlesen.css',
   'inhalte.js',
   'inhalte_simulation.js',
+  'inhalte_stunde.js',
+  'inhalte_nachlesen.js',
   'config.js',
   'gemeinsam.js',
-  'melden.js',
+  'verbindung.js',
+  'stunde.js',
+  'beamer.js',
+  'nachlesen.js',
   'entscheidung.js',
   'markieren.js',
   'detektiv.js',
   'lagerung.js',
   'simulation.js',
   'raster.js',
-  'fortschritt.js'
+  'vendor/qrcode.min.js',
+  'bilder/kbs-logo.png',
+  'bilder/lagerung_beine_hoch.png',
+  'bilder/lagerung_nicht_bewegen.png',
+  'bilder/lagerung_oberkoerper_hoch.png',
+  'bilder/lagerung_seitenlage.png'
 ];
 
 self.addEventListener('install', function (e) {

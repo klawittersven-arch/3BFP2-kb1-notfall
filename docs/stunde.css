@@ -1,0 +1,93 @@
+/* Handy-App der Beamer-Stunde (w2.html) – ergänzt style.css */
+.app-leiste {
+  display: flex; align-items: center; gap: 10px; padding: 8px 16px;
+  background: #fff; border-bottom: 1px solid var(--rand); font-size: 16px; font-weight: 600;
+}
+.app-gruppe { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: 999px; color: #fff; background: var(--petrol); font-size: 15px; }
+.app-gruppe:empty { display: none; }
+.app-punkt { margin-left: auto; width: 12px; height: 12px; border-radius: 50%; background: #5CC27A; flex: none; }
+.app-punkt.weg { background: #F0A030; }
+.app-getrennt { margin: 0; padding: 8px 16px; background: var(--bernstein-hell); color: var(--bernstein); font-weight: 700; font-size: 16px; }
+
+/* Bildschirme */
+.bildschirm { text-align: center; padding: 26px 6px 10px; }
+.bildschirm-emoji { font-size: 76px; line-height: 1.1; margin-bottom: 10px; }
+.bildschirm h2 { margin: 0 0 12px; font-size: 26px; line-height: 1.25; color: var(--dunkelpetrol); }
+.bildschirm p { margin: 0 0 12px; font-size: 20px; line-height: 1.45; }
+.vorne-hinweis { display: inline-block; margin-top: 8px; padding: 6px 14px; border-radius: 999px; background: var(--hellblau); color: var(--petrol); font-weight: 800; font-size: 15px; letter-spacing: .04em; text-transform: uppercase; }
+.uhr-zeile { margin: 6px 0 16px; padding: 10px 14px; border-radius: 12px; background: var(--hellblau); font-size: 19px; font-weight: 700; text-align: center; }
+.uhr-zeile:empty { display: none; }
+.uhr-zeile .zeit { font-variant-numeric: tabular-nums; font-size: 24px; color: var(--dunkelpetrol); }
+
+/* Anmeldung */
+.anmelde-karte { background: var(--hellblau); border-radius: 14px; padding: 18px 16px; margin: 6px 0 16px; }
+.anmelde-karte h2 { margin: 0 0 6px; font-size: 24px; color: var(--dunkelpetrol); }
+.anmelde-karte p { margin: 0 0 14px; }
+.feld { display: grid; gap: 4px; margin-bottom: 12px; }
+.feld label { font-weight: 700; }
+.feld input { font: inherit; font-size: 20px; padding: 10px 12px; border: 2px solid var(--rand); border-radius: 10px; width: 100%; }
+.feld input.code { letter-spacing: .2em; font-weight: 800; max-width: 160px; }
+.app-fehler { color: var(--bernstein); background: var(--bernstein-hell); padding: 8px 12px; border-radius: 10px; font-weight: 700; }
+.app-fehler:empty { display: none; }
+
+/* Gruppe (Vollbild in Gruppenfarbe) */
+.gruppe-gross { margin: -16px -16px 16px; padding: 30px 18px 28px; text-align: center; color: #fff; background: var(--farbe, var(--petrol)); }
+.gruppe-gross .emoji { font-size: 96px; line-height: 1.05; }
+.gruppe-gross .label { font-size: 15px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; opacity: .9; margin-top: 8px; }
+.gruppe-gross .name { font-size: 34px; font-weight: 900; line-height: 1.15; margin: 4px 0 16px; text-shadow: 0 2px 6px rgba(0,0,0,.25); }
+.chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.chip { background: #fff; color: var(--text); border-radius: 999px; padding: 6px 14px; font-weight: 700; font-size: 17px; display: inline-flex; align-items: center; gap: 6px; }
+.chip.ich { outline: 3px solid rgba(255,255,255,.8); }
+.buchstabe { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 7px; color: #fff; font-weight: 900; font-size: 14px; flex: none; }
+.buchstabe.A { background: #B5443A; } .buchstabe.B { background: #C77D12; } .buchstabe.C { background: #2F6DB5; }
+.buchstabe.gross { width: 40px; height: 40px; font-size: 22px; border-radius: 10px; }
+.rolle-zeile { font-size: 19px; line-height: 1.4; margin: 14px 0 0; }
+
+/* Team- und Gruppenkasten */
+.team-kasten { border-radius: 14px; padding: 14px 16px; margin: 0 0 16px; background: var(--hellblau); border-left: 8px solid var(--petrol); }
+.team-kasten.A { border-left-color: #B5443A; } .team-kasten.B { border-left-color: #C77D12; } .team-kasten.C { border-left-color: #2F6DB5; }
+.team-kasten h2 { margin: 0 0 8px; font-size: 21px; display: flex; align-items: center; gap: 10px; }
+.team-kasten p { margin: 0 0 8px; }
+.setzen { font-size: 19px; background: #FFF3C4; border: 2px solid #F2B600; border-radius: 10px; padding: 8px 12px; }
+.mitglieder { list-style: none; margin: 8px 0 8px; padding: 0; display: grid; gap: 6px; }
+.mitglieder li { display: flex; align-items: center; gap: 8px; font-size: 18px; background: #fff; border-radius: 10px; padding: 6px 10px; }
+.mitglieder li.ich { font-weight: 800; }
+.mitglieder li.dran { outline: 3px solid #F2B600; }
+.mitglieder .haken { margin-left: auto; color: var(--gruen); font-weight: 900; }
+.auftraege { margin: 8px 0 0; padding-left: 20px; }
+.auftraege li { margin-bottom: 4px; }
+.stamm-kopf { margin: -16px -16px 16px; padding: 18px 16px; color: #fff; background: var(--farbe, var(--petrol)); display: flex; align-items: center; gap: 12px; }
+.stamm-kopf .emoji { font-size: 50px; line-height: 1; }
+.stamm-kopf .name { font-size: 26px; font-weight: 900; line-height: 1.15; }
+.stamm-kopf .label { font-size: 13px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; opacity: .9; }
+.dran-band { margin: 0 0 14px; padding: 12px 14px; border-radius: 12px; background: #FFF3C4; border: 3px solid #F2B600; font-weight: 800; font-size: 19px; text-align: center; }
+.dran-band:empty { display: none; }
+.gruppe-mini { display: flex; align-items: center; gap: 8px; margin: 0 0 12px; padding: 8px 12px; border-radius: 10px; color: #fff; background: var(--farbe, var(--petrol)); font-weight: 700; }
+
+/* Infotext */
+details.info { margin: 0 0 16px; border: 2px solid var(--rand); border-radius: 12px; padding: 0 14px; background: #fff; }
+details.info summary { cursor: pointer; font-weight: 800; padding: 12px 0; color: var(--dunkelpetrol); font-size: 19px; }
+details.info p { margin: 0 0 12px; }
+.woerter { font-size: 16px; color: #3B4D52; }
+.papier-hinweis { font-size: 16px; color: #3B4D52; margin: 0 0 16px; }
+
+/* Experten-Check */
+.check { background: var(--hellblau); border-radius: 14px; padding: 14px 16px; margin: 0 0 16px; }
+.check h2 { margin: 0 0 6px; font-size: 21px; color: var(--dunkelpetrol); }
+.check-frage { background: #fff; border-radius: 12px; padding: 12px; margin: 10px 0 0; }
+.check-frage p { margin: 0 0 8px; font-weight: 700; }
+.check-optionen { display: grid; gap: 8px; }
+.check-optionen .antwort { justify-content: flex-start; text-align: left; }
+.check-rueck { margin: 8px 0 0; font-weight: 700; }
+.check-rueck.ok { color: var(--gruen); }
+.check-rueck.nein { color: var(--bernstein); }
+.check-bestanden { color: var(--gruen); font-weight: 800; margin: 10px 0 0; }
+
+.fertig-knopf { display: block; width: 100%; min-height: 60px; font: inherit; font-size: 20px; font-weight: 800; color: #fff; background: var(--gruen); border: 0; border-radius: 14px; cursor: pointer; margin: 6px 0 10px; }
+.fertig-knopf:disabled { background: #B9C8CB; cursor: default; }
+.fertig-text { background: var(--gruen-hell); color: #10421F; border-radius: 12px; padding: 12px 14px; font-weight: 700; margin: 0 0 10px; }
+.textknopf-leise { background: none; border: 0; color: var(--petrol); text-decoration: underline; font: inherit; font-size: 16px; cursor: pointer; padding: 4px 0; }
+
+/* Aufstellung */
+.ecke-gross { margin: 12px auto 0; padding: 14px; border-radius: 14px; background: var(--gruen-hell); border: 3px solid var(--gruen); font-size: 22px; font-weight: 800; max-width: 420px; }
+.massnahme-handy { font-size: 26px; font-weight: 900; color: var(--dunkelpetrol); line-height: 1.25; margin: 8px 0 6px; }

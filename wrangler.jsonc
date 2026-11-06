@@ -1,4 +1,5 @@
-// Cloudflare-Konfiguration: Verbindungsdienst für die Fortschrittsanzeige am Beamer.
+// Cloudflare-Konfiguration: Verbindungsdienst für die Beamer-Stunde (Folien, Handys, Abstimmung,
+// Gruppenpuzzle, Sperre der Nachlese-Seite).
 // Das Cloudflare-Projekt „kb1-notfall“ ist mit diesem GitHub-Repository verknüpft
 // (wie bei Tetris): Jede Änderung geht nach ca. einer Minute automatisch online.
 // Die Web-App selbst läuft weiter über GitHub Pages (Ordner docs/).
@@ -10,9 +11,15 @@
   "workers_dev": true,
   "preview_urls": false,
   "durable_objects": {
-    "bindings": [{ "name": "RAUM", "class_name": "Raum" }]
+    "bindings": [
+      { "name": "RAUM", "class_name": "Raum" },
+      { "name": "ZENTRALE", "class_name": "Zentrale" }
+    ]
   },
-  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Raum"] }],
+  "migrations": [
+    { "tag": "v1", "new_sqlite_classes": ["Raum"] },
+    { "tag": "v2", "new_sqlite_classes": ["Zentrale"] }
+  ],
   "vars": {
     // So lange gibt es einen Raum; danach wird alles automatisch gelöscht.
     "LEBENSDAUER_MINUTEN": "360"
