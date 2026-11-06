@@ -8,6 +8,7 @@ const path = require('path');
 const { chromium } = require('playwright');
 
 const DOCS = path.resolve(__dirname, '..', 'docs');
+const SEITEN = path.resolve(__dirname, 'seiten');
 const TYPEN = {
   '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8',
   '.css': 'text/css; charset=utf-8', '.png': 'image/png', '.txt': 'text/plain; charset=utf-8'
@@ -21,8 +22,12 @@ function serverStarten(optionen = {}) {
     const server = http.createServer((req, res) => {
       let p = decodeURIComponent(new URL(req.url, 'http://x').pathname);
       if (p.endsWith('/')) p += 'index.html';
-      const datei = path.join(DOCS, p);
-      if (!datei.startsWith(DOCS) || !fs.existsSync(datei) || fs.statSync(datei).isDirectory()) {
+      let datei = path.join(DOCS, p);
+      // Einzelseiten der Übungen gibt es nur noch als Testgerüst (tests/seiten) – die SuS erreichen
+      // die Übungen in der Stunde nur über w2.html.
+      const testSeite = path.join(SEITEN, p);
+      if (!fs.existsSync(datei) && testSeite.startsWith(SEITEN) && fs.existsSync(testSeite)) datei = testSeite;
+      if ((!datei.startsWith(DOCS) && !datei.startsWith(SEITEN)) || !fs.existsSync(datei) || fs.statSync(datei).isDirectory()) {
         res.writeHead(404); res.end('nicht gefunden'); return;
       }
       res.writeHead(200, { 'Content-Type': TYPEN[path.extname(datei)] || 'application/octet-stream', 'Cache-Control': 'no-cache' });

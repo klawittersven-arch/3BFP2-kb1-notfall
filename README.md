@@ -1,112 +1,131 @@
 # KB I – Notfallsituationen · Themenblock 2 (3BFP2)
 
-Arbeitsblätter und Smartphone-Übungen für den Themenblock 2 „Notfallsituationen“ im Fach KB I
+Arbeitsblätter und Beamer-Stunde mit Smartphone-App für den Themenblock 2 „Notfallsituationen“ im Fach KB I
 (generalistische Pflegeausbildung, 2. Ausbildungsjahr, Leitfall „Reanimation – und nicht nur ich war hilflos“).
 Die Arbeitsblätter entstehen im Wechsel (Lohner / Klawitter); dieses Repository enthält bisher
 **Woche 2 (SW 7): „Schock ist nicht gleich Schock – vergleichen und nach Leitsymptom handeln“**
-(3 UStd. am Stück). Weitere Wochen können hier ergänzt werden (Seiten mit Präfix `w3-`, `w4-` …).
+(3 UStd. am Stück).
 
-## Woche 2 auf einen Blick
+## So läuft die Stunde
 
-| Min. | Aufgabe | Wo? | Sozialform | Examens-/KA-Bezug |
-|---|---|---|---|---|
-| 0–8 | Einstieg „Wie hätten Sie gehandelt? – Ihre Vermutungen, bitte!“ (6 Notfälle, E6 = Frau Maler), Murmeln | 📱 `w2-entscheidung.html?runde=1` | EA → PA → Plenum | Vorwissen aktivieren, Fehlvorstellungen sichtbar machen |
-| 8–23 | AA1 Expertenrunde: Befunde markieren, Schockform anhand von 4 Symptomen begründen | 📱 `w2-markieren.html?fall=a/b/c` + Expertenblatt | Gruppenpuzzle (Experten) | KA 3.1 (Wortlaut) |
-| 23–43 | AA2 Stammgruppe: Vergleichstabelle, Schockform-Detektiv, Klausurtraining | 📱 `w2-detektiv.html` + ✍️ | Gruppenpuzzle (Stamm) | KA 3.2, 5.5 |
-| 43–63 | AA3 Lagerungsparcours auf Yogamatten, Entscheidungsweg | 📱 `w2-lagerung.html` + ✍️ | PA → EA | KA 3.3 (Lagerung begründen) |
-| 63–88 | AA4 Notfall-Simulation Anaphylaxie (3 Varianten, Rollen, Protokoll), 4.1 Vergleich Klinik – Pflegeheim | 📱 `w2-simulation.html` + ✍️ | GA (3–4) | Lehrplan CE 06, I.4.a; KA 3.3 |
-| 88–100 | AA5 Aufstellung „Wer darf was?“, Stellungnahme Adrenalin | ✍️ + Schilder | Plenum → EA → PA | III.2.b, KA 3.3 |
-| 100–115 | AA6 Klausurtraining Transferfall + Peer-Korrektur | ✍️ + 📱 `w2-raster.html` | EA → PA | Examen Mai 2024 T3 8.2 |
-| 115–130 | AA7 Placemat „Zurück zu Frau Maler“ (Kausalkette) | ✍️ Placemat A3 | GA (4) | IKL W2 Nr. 5 |
-| 130–135 | Check-out „Hätten Sie richtig gehandelt? – Prüfen Sie Ihre Vermutungen“, Ich-kann-Liste | 📱 `w2-entscheidung.html?runde=2` | EA → Plenum | Vermutungen überprüfen (vorher/nachher) |
-| HA | Mini-Examen (20 P., ca. 26 min) mit Selbstkontrolle | ✍️ + 📱 `w2-transfer.html` | EA | Examensformat |
+Der Laptop am Beamer führt wie eine Präsentation durch die Stunde: **eine Folie pro Unterrichtsabschnitt**,
+unten rechts **„Weiter: …“**, links **„Zurück“**. Die Schülerinnen und Schüler scannen **einen** QR-Code am Beamer,
+geben ihren Vornamen ein – und ihr Handy zeigt ab dann automatisch, was zur aktuellen Folie gehört
+(Abstimmung, Gruppe, Expertentext, Übung, „Auf Papier“ …). Zwischen den Übungen springen können sie nicht.
 
-**Nur über QR-Codes:** Jede Übung öffnet sich nur über ihren eigenen QR-Code. Es gibt keine Links zwischen den
-Übungen, keine Startseite mit Übersicht, keine Rundenauswahl (Einstieg und Check-out haben je einen QR-Code) und keine
-Fallauswahl in AA1 (jedes Expertenblatt hat seinen QR-Code). Ohne Parameter zeigen die Seiten nur „Bitte QR-Code scannen“.
+| Adresse | wofür |
+|---|---|
+| https://klawittersven-arch.github.io/3BFP2-kb1-notfall/beamer.html | **Beamer** (Laptop) – „Neuen Raum starten“ |
+| …/beamer.html?demo=1 | Probeansicht ohne Internet (erfundene Namen und Stimmen) |
+| …/w2.html?raum=1234 | Handy – kommt über den QR-Code am Beamer (Raumcode steckt schon drin) |
+| …/w2.html | Handy über den QR-Code auf Seite 1 des AB (Raumcode von Hand), falls der Beamer-QR nicht klappt |
+| …/w2-transfer.html | Hausaufgabe: Selbstkontrolle (QR-Code im AB) |
+| …/w2-nachlesen.html | Nachlesen nach der Stunde (QR-Code auf der letzten AB-Seite) |
+
+### Folien
+
+| Nr. | Folie | Beamer | Handys |
+|---|---|---|---|
+| 1 | Willkommen | großer QR-Code, Namen der Angemeldeten | Vorname eingeben → „Sie sind dabei“ |
+| 2 | Frau Maler | Fallauszug, Leitfrage | Leitfrage |
+| 3 | Wie hätten Sie gehandelt? | Auftrag, „x von y haben abgestimmt“ | 6 Notfälle, sicher / vermute nur |
+| 4 | Ergebnis | 6 Karten, ★ = größte Uneinigkeit, Karte anklicken = groß | „Ergebnis vorne“ |
+| 5 | Murmeln | umstrittenste Frage groß, 1-Minuten-Uhr (startet selbst) | Frage + eigene Vermutung |
+| 6 | Lernziel | Lernziel, Fahrplan der Stunde | – |
+| 7 | Gruppen einteilen | **„Gruppen zufällig einteilen“**, Gruppenkarten mit Emoji | eigene Stammgruppe in Gruppenfarbe, Buchstabe, Expertenteam |
+| 8 | Expertenrunde (AA1) | Expertenteams mit ✓, Uhr 15 min | Namen des Teams, „Setzen Sie sich …“, Fall markieren, Infotext, Experten-Check, „Unsere Spalte ist fertig“ |
+| 9 | Stammgruppen (AA2a) | Stammgruppen mit ✓, **Erklär-Uhr** A → B → C | Namen der Stammgruppe, Tischkarte, „Jetzt erklärt …“, „Unsere Tabelle ist vollständig“ |
+| 10 | Schockform-Detektiv | Fortschritt je Stammgruppe | Detektiv |
+| 11 | Klausurtraining 2.1/2.2 | Auftrag, Uhr | „Auf Papier“ |
+| 12–13 | Lagerung | Impuls „immer Beine hoch?“, Parcours mit Fortschritt | Lagerungskarten |
+| 14 | Notfall-Simulation | Rollen, Fortschritt je Stammgruppe | Simulation (mit Stammgruppe) |
+| 15 | Pause | Uhr 10 min | „Pause“ |
+| 16 | Wer darf was? | jeder Klick: nächste Maßnahme, dann Lösung (Ecke) | dieselbe Maßnahme, dann Lösung |
+| 17 | Adrenalin oder Antihistaminikum? | Dialog, Think-Pair-Share-Uhr | „Auf Papier“ |
+| 18–19 | Klausurtraining AA6 | 8-Minuten-Countdown, Peer-Korrektur | „Handy umgedreht“, dann Bewertungsraster |
+| 20–21 | Frau Maler | Placemat-Uhr 3/3/4 min, Kausalkette Schritt für Schritt | „Auf Papier“ |
+| 22–23 | Hätten Sie richtig gehandelt? | Zähler, dann vorher – nachher mit Lösung | dieselben 6 Notfälle, danach Auflösung |
+| 24 | Ich-kann-Liste | Ich-kann-Liste, Hausaufgabe, Nachlesen | „Auf Papier“ |
+| 25 | Ende | Ausblick – **gibt die Nachlese-Seite frei** | „Die Stunde ist beendet“ |
+
+### Bedienung
+
+- **Weiter / Zurück** unten (auch → / ← / Bild↓ / Bild↑ / Leertaste – also mit Presenter). Folien mit
+  Schritten (16 „Wer darf was?“, 21 „Kausalkette“) decken mit jedem „Weiter“ den nächsten Schritt auf.
+- **Menü ⚙** (unten links): zu jeder Folie springen, Vollbild, Namen verbergen, Angemeldete verwalten
+  (entfernen, Person ohne Handy hinzufügen), **neuer Raum** für die Parallelklasse.
+- **Gruppen (Folie 7):** Stammgruppen zu 3 (A, B, C), bei Rest Vierergruppen mit doppeltem B; Expertenteams
+  zu 3 (Rest 4). Personen ohne Handy vorher mit „+ Person ohne Handy“ eintragen. **Name anklicken** schiebt die
+  Person in die nächste Gruppe; „Neu mischen“ teilt neu ein. Wer später kommt, wird automatisch eingeteilt.
+- **Expertenrunde → Stammgruppen:** Sobald alle Expertenteams „fertig“ gemeldet haben, wechseln Beamer und
+  Handys **automatisch** zu Folie 9. Vorher wechselt man mit „Weiter“.
+- **Uhren:** „▶ Uhr starten“ an der Folie; „↻“ startet neu, „■“ stoppt. Bei mehreren Abschnitten gibt es einen
+  Ton beim Wechsel. Die Handys zeigen die Restzeit mit.
+- **Beamer neu laden** oder Laptop kurz zu: Der Raum bleibt (6 Stunden) und die Folie auch.
+- **Nachlesen** (letzte AB-Seite): alle Inhalte und Lösungen der Stunde (ohne Hausaufgabe). Die Seite ist
+  **gesperrt, solange irgendwo eine Beamer-Stunde läuft** – bis Folie 25 erreicht ist oder 10 Minuten nach dem
+  Schließen des Beamers. Hinweis: Die Lösungen stehen technisch auch in den Programmdateien der App; die Sperre
+  verhindert den einfachen Weg, nicht jeden.
+
+## Einrichtung
+
+Beides ist bereits eingerichtet (siehe frühere Fassung dieser Datei); nach dem Zusammenführen in **main** geht
+alles von selbst online:
+
+- **GitHub Pages** (Settings → Pages → Branch main, Ordner /docs) veröffentlicht die App nach 1–5 Minuten.
+- **Cloudflare-Worker `kb1-notfall`** (https://kb1-notfall.klawittersven.workers.dev) wird von Cloudflare aus
+  dem Repository neu gebaut. Neu ist ein zweiter kleiner Speicher („Zentrale“, Migration v2) für die
+  Nachlese-Sperre – den legt Cloudflare beim Veröffentlichen selbst an.
 
 ## Dateien
 
 ```
 arbeitsblatt/
-  KB1_W2_Schockformen_SV.docx        Schülerversion (AA1–AA7, Check-out, Hausaufgabe)
-  KB1_W2_Schockformen_Anlagen.docx   Expertenblätter A/B/C, Notfallprotokoll, Placemat (A3), 3 Schilder
-  KB1_W2_Schockformen_LV_LSG.docx    Lehrerversion: Verlaufsplan, Hinweise, Gruppeneinteilung, Lösungen
+  KB1_W2_Schockformen_SV.docx        Schülerversion (3 QR-Codes: Stunden-App, Hausaufgabe, Nachlesen)
+  KB1_W2_Schockformen_Anlagen.docx   Expertenblätter A/B/C (Papierfassung, freiwillig), Notfallprotokoll, Placemat, Schilder
+  KB1_W2_Schockformen_LV_LSG.docx    Lehrerversion: Verlaufsplan mit Foliennummern, Hinweise, Lösungen
+  KB1_W2_Tischkarten.pdf             10 Tischkarten für die Stammgruppen (quer drucken, in der Mitte falten)
   (+ PDF-Fassungen)
-docs/                ← alles, was GitHub Pages veröffentlicht (die Web-App)
-  inhalte.js           ALLE Texte der Übungen (außer Simulation)
+docs/                ← alles, was GitHub Pages veröffentlicht
+  beamer.html/js/css   Beamer-Foliensatz
+  w2.html, stunde.js/css   Handy-App der Stunde (bindet die Übungen ein)
+  verbindung.js        Live-Verbindung zum Worker (WebSocket, sonst Abfragen)
+  inhalte_stunde.js    ALLE Texte der Folien und Handy-Bildschirme, Gruppennamen, Experten-Check
+  inhalte.js           Texte der Übungen (Abstimmung, Markieren, Detektiv, Lagerung, Raster, Hausaufgabe)
   inhalte_simulation.js  Texte, Werte und Regeln der Notfall-Simulation
-  config.js            Adresse des Cloudflare-Workers, Sperrwörter für Vornamen
-  index.html (nur Hinweis „QR-Code scannen“, ohne Links), w2-*.html, fortschritt.html (Beamer, nirgends verlinkt)
-  *.js, *.css, sw.js   Programmlogik, Gestaltung, Offline-Speicher
-worker/src/index.js  ← Cloudflare-Worker: Fortschritt und anonyme Abstimmung am Beamer
+  inhalte_nachlesen.js Lösungstexte für die Nachlese (automatisch aus dem Arbeitsblatt erzeugt)
+  w2-nachlesen.html, nachlesen.js/css   Nachlese-Seite
+  w2-transfer.html     Hausaufgabe (Selbstkontrolle)
+  entscheidung.js, markieren.js, detektiv.js, lagerung.js, simulation.js, raster.js   Übungen
+  config.js            Adresse des Workers, Sperrwörter für Vornamen
+worker/src/          ← Cloudflare-Worker: index.js (Räume, Live-Verbindung, Nachlese-Sperre), stunde.js (Gruppenpuzzle)
 wrangler.jsonc       ← Cloudflare-Konfiguration (Projekt „kb1-notfall“)
-qr/                  ← QR-Codes für alle Smartphone-Aufgaben
-werkzeuge/
-  ab_w2.js, ab_w2_texte.js, ab_bausteine.js   erzeugen die drei Word-Dateien
-  qr_erzeugen.py, piktogramme.py              QR-Codes und Lagerungs-Piktogramme
-  bilder/                                     Schullogo, Symbole (wie Woche 1), Piktogramme
-tests/               ← automatische Tests (Playwright, lokaler Worker), Ergebnisse in tests/ergebnisse/
+qr/                  ← QR-Codes fürs Arbeitsblatt (Stunden-App, Hausaufgabe, Nachlesen)
+werkzeuge/           ← ab_w2.js, ab_w2_texte.js, ab_bausteine.js (Arbeitsblätter + inhalte_nachlesen.js),
+                       tischkarten.js, qr_erzeugen.py, piktogramme.py, bilder/
+tests/               ← automatische Tests; tests/seiten/ = Testgerüst der Übungen (nicht veröffentlicht)
 ```
 
-## GitHub Pages einschalten (einmalig, ca. 2 Minuten)
+## Datenschutz
 
-1. Auf GitHub im Repository **Settings → Pages** öffnen.
-2. „Build and deployment“ → Source: **Deploy from a branch** → Branch: der Branch mit diesen Dateien
-   (nach dem Zusammenführen **main**), Ordner **/docs** → **Save**.
-3. Nach 1–5 Minuten sind die Seiten erreichbar, z. B.
-   https://klawittersven-arch.github.io/3BFP2-kb1-notfall/ – die QR-Codes zeigen bereits auf diese
-   Adressen (Groß-/Kleinschreibung wie der Repository-Name).
-
-## Fortschritt und Abstimmung am Beamer
-
-### Einrichtung (einmalig, ca. 5 Minuten – wie bei kb1-diabetes)
-
-Der Verbindungsdienst läuft als Cloudflare-Worker **`kb1-notfall`** unter
-**https://kb1-notfall.klawittersven.workers.dev** (steht schon in `docs/config.js`).
-
-1. https://dash.cloudflare.com → **Workers & Pages** → **Create** → **Import a repository**.
-2. GitHub-Konto **klawittersven-arch**, Repository **3BFP2-kb1-notfall** wählen (fehlt es: über
-   „Configure GitHub App“ der Cloudflare-App Zugriff geben).
-3. **Project name `kb1-notfall`** (genau so), Build command leer, Deploy command `npx wrangler deploy`,
-   Root directory `/` → **Deploy**.
-4. Nach ca. 1 Minute zeigt https://kb1-notfall.klawittersven.workers.dev
-   `{"dienst":"KB1 Notfallsituationen (3BFP2) – Fortschritt und Abstimmung","ok":true}`.
-
-### Im Unterricht
-
-1. Am Laptop `…/3BFP2-kb1-notfall/fortschritt.html` öffnen → **„Neuen Raum starten“**. Der Raumcode
-   steht groß oben rechts; die SuS geben ihn mit ihrem Vornamen ein (das Handy merkt sich beides 3 Stunden).
-2. **Fortschritt** (Spalten AA1–AA4): je Person „x von y gelöst“, ✓ = Merksatz erreicht, ⚠ = zu viel geraten.
-3. **Abstimmung** (Knopf unten): „Wie hätten Sie gehandelt?“ – **Vermutung (Beginn)** und **Entscheidung (Ende)**
-   nebeneinander, **ohne Namen**; der helle Teil des Balkens = „sicher“. **Lösung zeigen** markiert die
-   richtigen Antworten – erst beim Check-out drücken.
-   **Karte anklicken** (E1–E6) zeigt nur diese Frage groß über den ganzen Bildschirm, mit „Lösung zeigen“ auch
-   die Erklärung; „Vorherige/Nächste Frage“ oder die Pfeiltasten blättern, „Alle Fragen“, ein Klick auf die
-   Karte oder Esc führt zurück.
-   **Murmeln beim Einstieg:** die Frage mit der größten Uneinigkeit anklicken und unten „Murmeln“ einblenden
-   (1 Minute, Sitznachbarn begründen sich ihre Wahl) – nicht auflösen.
-4. Unten: Anweisungen groß einblenden (Einstieg, Murmeln, AA1–AA2, AA3, AA4, Check-out), **Namen verbergen**,
-   **Vollbild**, **Liste leeren** (Abstimmung bleibt), **Neuer Raum** (für die Parallelklasse).
-5. **Probeansicht ohne Internet:** `…/fortschritt.html?demo=1` (erfundene Namen und Stimmen).
-
-### Datenschutz
-
-- Übungen: Das Handy sendet nur nach Anmeldung `{ Raumcode, Zufalls-Geräte-ID, Vorname, Übung, x, y, Status }`.
-- Abstimmung: `{ Raumcode, Zufalls-Geräte-ID, Runde, Antwortbuchstaben, sicher/unsicher }` – **ohne Namen**;
-  der Beamer erhält nur die ausgezählten Summen.
-- Lesen kann nur der Laptop, der den Raum gestartet hat (geheimer Schlüssel). Nach 6 Stunden löscht der
-  Worker den Raum vollständig. Keine Cookies, keine Analyse, keine fremden Schriften oder Skripte;
-  Cloudflare-Protokolle sind abgeschaltet. Ohne Anmeldung oder ohne Netz funktionieren alle Übungen normal.
+- Anmeldung: Raumcode, Zufalls-Geräte-ID, **Vorname**. Übungen melden nur „x von y gelöst“ und den Status.
+- Abstimmung: Raumcode, Geräte-ID, Runde, Antwortbuchstaben, sicher/unsicher – der Beamer erhält nur Summen,
+  **ohne Namen**.
+- Gruppenpuzzle: Ein Handy erhält nur die **Vornamen der eigenen Stammgruppe und des eigenen Expertenteams**;
+  alle Namen sieht nur der Laptop, der den Raum gestartet hat (geheimer Schlüssel). „Namen verbergen“ im Menü.
+- Nach 6 Stunden löscht der Worker den Raum vollständig. Die Zentrale speichert nur Raumcode und Ablaufzeit.
+  Keine Cookies, keine Analyse, keine fremden Schriften oder Skripte (die QR-Bibliothek liegt im Repository);
+  Cloudflare-Protokolle sind abgeschaltet.
 
 ## Texte ändern
 
-- **Übungen:** `docs/inhalte.js` auf GitHub mit dem Stift bearbeiten → „Commit changes“ → nach 1–2 Minuten online.
-  Nur Text **zwischen den Hochkommas** ändern; `**Wort**` = fett, `\n` = neue Zeile.
-- **Simulation:** `docs/inhalte_simulation.js` (Texte, Startwerte, Verlauf, Bewertungen, Checklisten – im Dateikopf erklärt).
-- **Merksätze, Einstiegsfragen (E1–E6) und Lagerungskarten** stehen auch im Arbeitsblatt
+- **Folien und Handy-Bildschirme:** `docs/inhalte_stunde.js` auf GitHub mit dem Stift bearbeiten → „Commit
+  changes“ → nach 1–2 Minuten online. Nur Text **zwischen den Hochkommas** ändern; `**Wort**` = fett.
+  Die Kennungen der Folien (`id: 'aa1'` …) nicht ändern.
+- **Übungen:** `docs/inhalte.js`; **Simulation:** `docs/inhalte_simulation.js`.
+- **Merksätze, Einstiegsfragen (E1–E6), Lagerungskarten, Expertentexte** stehen auch im Arbeitsblatt
   (`werkzeuge/ab_w2_texte.js`). Bei Änderungen beide Stellen anpassen; `tests/inhalte.test.js` meldet Abweichungen.
-- **Schutz gegen Durchklicken:** `mindestensErsterVersuch` bzw. `hoechstensFalschErsterVersuch` in `docs/inhalte.js`.
+- **Lösungen im Arbeitsblatt** (`werkzeuge/ab_w2.js`) danach neu erzeugen – das aktualisiert auch die Nachlese-Seite.
 - Nach größeren Änderungen in `docs/sw.js` `VERSION` erhöhen (Offline-Speicher).
 
 ## Arbeitsblätter neu erzeugen
@@ -116,6 +135,7 @@ pip install segno zxing-cpp pillow
 python werkzeuge/qr_erzeugen.py
 python werkzeuge/piktogramme.py
 node werkzeuge/ab_w2.js
+node werkzeuge/tischkarten.js
 soffice --headless --convert-to pdf --outdir arbeitsblatt arbeitsblatt/*.docx
 ```
 
@@ -124,9 +144,10 @@ soffice --headless --convert-to pdf --outdir arbeitsblatt arbeitsblatt/*.docx
 ```
 cd worker && npm install && cd ..
 cd tests
-node inhalte.test.js       # Arbeitsblatt ↔ App, Offline-Liste, QR-Codes (ohne Browser)
+node worker.test.js        # Worker: Raum, Live-Verbindung, Gruppen, automatischer Wechsel, Nachlese-Sperre
+node inhalte.test.js       # Arbeitsblatt ↔ App, Foliensatz, Nachlese-Daten, Offline-Liste, QR-Codes
 node uebungen.test.js      # alle Übungen in Handygröße 390 × 844
 node simulation.test.js    # Notfall-Simulation: drei Varianten, Fehlerpfade, Merksatz
-node fortschritt.test.js   # Beamer: Raum, Anmeldung, Fortschritt, Abstimmung (lokaler Worker)
+node stunde.test.js        # ganze Stunde: Beamer + 6 Handys (eins ohne Live-Verbindung)
 ```
 Playwright und Chromium sind in der Testumgebung vorinstalliert; sonst `npm install` und `npx playwright install chromium`.

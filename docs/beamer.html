@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex">
+<title>Beamer – KB I Notfallsituationen</title>
+<link rel="stylesheet" href="beamer.css">
+</head>
+<body>
+<div id="buehne">
+  <header class="kopf">
+    <img src="bilder/kbs-logo.png" alt="">
+    <div class="schule"><span id="kopf-titel"></span><small id="kopf-unter"></small></div>
+    <span class="abschnitt" id="kopf-abschnitt" hidden></span>
+    <div class="rechts">
+      <span class="kopf-raum" id="kopf-raum" hidden></span>
+      <span class="zaehler" id="kopf-zaehler" hidden><span class="punkt" id="kopf-punkt"></span><span id="kopf-handys"></span></span>
+    </div>
+  </header>
+  <main class="inhalt" id="inhalt" aria-live="polite"></main>
+  <footer class="fuss" id="fuss" hidden>
+    <button type="button" class="menue-knopf" id="menue-knopf" aria-label="Menü">⚙</button>
+    <button type="button" class="zurueck" id="zurueck"></button>
+    <span class="seitenzahl" id="seitenzahl"></span>
+    <div class="mini" id="mini" hidden><div class="mini-qr" id="mini-qr"></div><div class="mini-text" id="mini-text"></div></div>
+    <button type="button" class="weiter" id="weiter"></button>
+  </footer>
+  <div class="ebene" id="ebene" hidden></div>
+</div>
+<noscript><p>Bitte aktivieren Sie JavaScript.</p></noscript>
+<script src="inhalte.js"></script>
+<script src="inhalte_stunde.js"></script>
+<script src="config.js"></script>
+<script src="gemeinsam.js"></script>
+<script src="vendor/qrcode.min.js"></script>
+<script src="verbindung.js"></script>
+<script src="beamer.js"></script>
+</body>
+</html>

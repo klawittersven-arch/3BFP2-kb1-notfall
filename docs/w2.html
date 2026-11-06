@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#25434B">
+<meta name="referrer" content="no-referrer">
+<title>KB I – Notfallsituationen</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="simulation.css">
+<link rel="stylesheet" href="stunde.css">
+</head>
+<body data-seite="w2-stunde">
+<header class="kopf">
+  <p class="kopfzeile" id="kopfzeile"></p>
+  <h1 id="titel"></h1>
+</header>
+<div class="app-leiste" id="app-leiste" hidden>
+  <span class="app-wer" id="app-wer"></span>
+  <span class="app-gruppe" id="app-gruppe"></span>
+  <span class="app-punkt" id="app-punkt" title=""></span>
+</div>
+<p class="app-getrennt" id="app-getrennt" role="status" hidden></p>
+<div class="fortschritt" role="status" id="fortschritt" hidden>
+  <span id="fortschritt-text"></span>
+  <span class="fortschritt-spur" aria-hidden="true"><span class="fortschritt-balken" id="fortschritt-balken"></span></span>
+</div>
+<main class="inhalt">
+  <div id="vor-uebung"></div>
+  <p class="anweisung" id="anweisung" hidden></p>
+  <div id="uebung"></div>
+  <div id="nach-uebung"></div>
+</main>
+<noscript><p class="inhalt">Bitte aktivieren Sie JavaScript.</p></noscript>
+<script src="inhalte.js"></script>
+<script src="inhalte_stunde.js"></script>
+<script src="inhalte_simulation.js"></script>
+<script src="config.js"></script>
+<script src="gemeinsam.js"></script>
+<script src="verbindung.js"></script>
+<script src="stunde.js"></script>
+</body>
+</html>

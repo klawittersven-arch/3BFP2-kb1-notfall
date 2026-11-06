@@ -5,17 +5,12 @@
 
 const LINK_BASIS = 'klawittersven-arch.github.io/3BFP2-kb1-notfall/';
 
+// Nur noch drei QR-Codes im Arbeitsblatt: Stunden-App (Seite 1, Ersatz für den QR-Code am Beamer),
+// Hausaufgabe (Selbstkontrolle) und Nachlesen (letzte Seite, während der Stunde gesperrt).
 const SEITEN = {
-  entscheidung1: 'w2-entscheidung.html?runde=1',
-  entscheidung2: 'w2-entscheidung.html?runde=2',
-  markierenA: 'w2-markieren.html?fall=a',
-  markierenB: 'w2-markieren.html?fall=b',
-  markierenC: 'w2-markieren.html?fall=c',
-  detektiv: 'w2-detektiv.html',
-  lagerung: 'w2-lagerung.html',
-  simulation: 'w2-simulation.html',
-  raster: 'w2-raster.html',
-  transfer: 'w2-transfer.html'
+  stunde: 'w2.html',
+  transfer: 'w2-transfer.html',
+  nachlesen: 'w2-nachlesen.html'
 };
 
 const MERKSAETZE = {
