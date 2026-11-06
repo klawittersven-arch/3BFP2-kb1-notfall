@@ -58,10 +58,8 @@
     a.kette.forEach(function (g) { var li = el('li'); li.appendChild(fmt('strong', null, g.titel)); li.appendChild(document.createTextNode(' – ' + g.text)); ol.appendChild(li); });
     w.appendChild(ol);
     w.appendChild(box('loesung', ['**' + a.antwortTitel + ':** ' + a.antwort]));
-    w.appendChild(el('h3', null, 'Placemat: die vier Zeitpunkte'));
-    w.appendChild(box('box', N.placemat));
-    w.appendChild(el('h3', null, 'Klausurtraining'));
-    ['7.1', '7.2'].forEach(function (nr) { w.appendChild(aufgabe(nr)); w.appendChild(loesung(nr)); });
+    w.appendChild(el('h3', null, 'Klausurtraining (freiwillig)'));
+    ['6.1', '6.2'].forEach(function (nr) { w.appendChild(aufgabe(nr)); w.appendChild(loesung(nr)); });
   });
 
   abschnitt('Einstieg: Wie hätten Sie gehandelt?', function (w) {
@@ -142,7 +140,7 @@
     N.pikto.forEach(function (x) {
       var d = el('div', 'pikto');
       var img = el('img');
-      img.src = 'bilder/' + x.bild;
+      img.src = 'bilder/' + x.bild.replace(/\.png$/, '.svg');
       img.alt = x.titel;
       d.appendChild(img);
       d.appendChild(box(null, ['**' + x.titel + '**', x.wann, x.warum]));
@@ -158,34 +156,21 @@
     ['3.1', '3.2'].forEach(function (nr) { w.appendChild(aufgabe(nr)); w.appendChild(loesung(nr)); });
   });
 
-  abschnitt('Notfall-Simulation (Anaphylaxie)', function (w) {
-    N.drehbuch.forEach(function (z) {
-      w.appendChild(box('zeile-karte', [z[0], '**Richtig:** ' + z[1], '**Typische Fehler:** ' + z[2]]));
-    });
-    w.appendChild(el('h3', null, 'Nachbesprechung: Warum unterschiedlich gelagert?'));
-    w.appendChild(loesung('**b) Nachbesprechung'));
-    w.appendChild(el('h3', null, 'Klausurtraining'));
-    w.appendChild(aufgabe('4.1'));
-    w.appendChild(loesung('4.1'));
-  });
-
   abschnitt('Wer darf was?', function (w) {
-    var e = folie('aa5a').ecken;
+    var e = folie('aa4a').ecken;
     N.werDarfWas.forEach(function (t, i) { w.appendChild(box('zeile-karte', ['**' + e[i].emoji + ' ' + e[i].text + ':** ' + t])); });
     w.appendChild(box('box', N.verantwortung));
     w.appendChild(el('h3', null, 'Adrenalin oder Antihistaminikum?'));
     w.appendChild(box('box', N.adrenalin.map(function (z) { return z[0] + ' → ' + z[1]; }).concat(N.adrenalinText)));
-    folie('aa5b').sprecher.forEach(function (sp) { w.appendChild(p('💬 **' + sp.wer + ':** ' + sp.text)); });
-    w.appendChild(aufgabe('5.1'));
-    w.appendChild(loesung('5.1'));
+    folie('aa4b').sprecher.forEach(function (sp) { w.appendChild(p('💬 **' + sp.wer + ':** ' + sp.text)); });
+    w.appendChild(aufgabe('4.1'));
+    w.appendChild(loesung('4.1'));
   });
 
-  abschnitt('Klausurtraining wie in der KA (AA6)', function (w) {
+  abschnitt('Klausurtraining wie in der KA (AA5)', function (w) {
     w.appendChild(box('box', N.transferfall));
-    ['6.1', '6.2'].forEach(function (nr) { w.appendChild(aufgabe(nr)); });
-    w.appendChild(loesung('6.1 und 6.2'));
-    w.appendChild(aufgabe('6.3'));
-    w.appendChild(loesung('6.3'));
+    ['5.1', '5.2'].forEach(function (nr) { w.appendChild(aufgabe(nr)); });
+    w.appendChild(loesung('5.1 und 5.2'));
   });
 
   abschnitt('Ich-kann-Liste', function (w) {

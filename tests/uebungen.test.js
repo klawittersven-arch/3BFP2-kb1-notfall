@@ -27,7 +27,7 @@ fs.mkdirSync(ORDNER, { recursive: true });
   beobachten(s, protokoll, 'index');
   await s.goto(basis + 'index.html');
   pruefe((await s.$$('a')).length === 0, 'Startseite ohne Links (nur über QR-Codes zu den Übungen)');
-  const seiten = ['w2-entscheidung.html?runde=1', 'w2-entscheidung.html?runde=2', 'w2-markieren.html?fall=a', 'w2-detektiv.html', 'w2-lagerung.html', 'w2-simulation.html', 'w2-raster.html', 'w2-transfer.html'];
+  const seiten = ['w2-entscheidung.html?runde=1', 'w2-entscheidung.html?runde=2', 'w2-markieren.html?fall=a', 'w2-detektiv.html', 'w2-lagerung.html', 'w2-raster.html', 'w2-transfer.html'];
   for (const l of seiten) {
     const r = await s.request.get(basis + l);
     pruefe(r.status() === 200, `Seite erreichbar: ${l}`);
@@ -162,6 +162,9 @@ fs.mkdirSync(ORDNER, { recursive: true });
       await s.click('button:has-text(\"' + L.timerStart + '\")');
       await s.waitForTimeout(1100);
       pruefe(/noch \d+ s/.test(await s.textContent('.timer')), 'Timer läuft');
+      pruefe(!(await s.textContent('#uebung')).includes('Etwas anderes') && (await s.textContent('#uebung')).includes('Reanimation beginnen'), 'Auswahl wie im Entscheidungsweg (Reanimation statt „Etwas anderes“)');
+      await s.click('.lager-bilder summary');
+      pruefe(await s.$$eval('.lager-bild img', (b) => b.length === 4 && b.every((x) => x.complete && x.naturalWidth > 0)), 'Hilfe: die vier Lagerungen mit Bildern am Handy');
       await s.screenshot({ path: path.join(ORDNER, 'lagerung_karte.png'), fullPage: true });
     }
     const opt = L.optionen.find((o) => o.kuerzel === k.richtig).text;
@@ -231,18 +234,18 @@ fs.mkdirSync(ORDNER, { recursive: true });
   await s.close();
 
   /* ---------- AA6 Raster ---------- */
-  console.log('AA6 Bewertungsraster');
+  console.log('AA5 Bewertungsraster');
   s = await kontext.newPage();
   beobachten(s, protokoll, 'raster');
   await s.goto(basis + 'w2-raster.html');
   const kr = await s.$$('.kriterium input');
   for (const c of kr.slice(0, 9)) await c.check();      // alle 9 Sofortmaßnahmen → max 5
-  pruefe((await s.textContent('.gesamtpunkte')).includes('5 von 10'), 'Obergrenze 5 Punkte bei Sofortmaßnahmen', await s.textContent('.gesamtpunkte'));
+  pruefe((await s.textContent('.gesamtpunkte')).includes('5 von 7'), 'Obergrenze 5 Punkte bei Sofortmaßnahmen', await s.textContent('.gesamtpunkte'));
   await kr[9].check();   // Begründung
-  pruefe((await s.textContent('.gesamtpunkte')).includes('6 von 10'), 'Begründung zählt');
+  pruefe((await s.textContent('.gesamtpunkte')).includes('6 von 7'), 'Begründung zählt');
   await s.check('.fehlerbox .kriterium:has-text("Schocklage") input');
-  pruefe((await s.textContent('.gesamtpunkte')).includes('5 von 10'), 'Fehler „Schocklage“ sperrt Lagerung und Begründung', await s.textContent('.gesamtpunkte'));
-  pruefe((await s.textContent('#uebung')).includes('Nachbeobachtung wegen möglicher zweiter Reaktion'), 'Raster 6.3 enthält die Nachbeobachtung');
+  pruefe((await s.textContent('.gesamtpunkte')).includes('5 von 7'), 'Fehler „Schocklage“ sperrt Lagerung und Begründung', await s.textContent('.gesamtpunkte'));
+  pruefe(!(await s.textContent('#uebung')).includes('6.3') && (await s.textContent('#uebung')).includes('5.2 Kennzeichnung'), 'Raster nur noch 5.1 und 5.2 (ohne Dokumentationsaufgabe)');
   await s.screenshot({ path: path.join(ORDNER, 'raster.png'), fullPage: true });
   await s.close();
 

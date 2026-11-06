@@ -1,4 +1,4 @@
-/* AA6 · Bewertungsraster (w2-raster.html) und Hausaufgabe · Selbstkontrolle (w2-transfer.html)
+/* AA5 · Bewertungsraster (w2-raster.html) und Hausaufgabe · Selbstkontrolle (w2-transfer.html)
    (Programmlogik – Texte in inhalte.js → raster bzw. transfer).
    Kriterien abhaken → die App zählt Punkte wie im Erwartungshorizont (Obergrenzen, Fehler sperren Kriterien).
    Bei der Hausaufgabe erscheint die Musterlösung je Aufgabe erst nach „Meine Antwort steht auf dem Papier“. */

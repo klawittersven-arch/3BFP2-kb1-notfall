@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="Oberkörper hoch: Person halbsitzend im Bett, Rückenteil hochgestellt, Knie leicht unterstützt">
+  <rect width="800" height="450" fill="#F4F7FA"/>
+  <!-- Bett -->
+  <rect x="120" y="352" width="600" height="18" rx="6" fill="#9AA9B8"/>
+  <rect x="140" y="370" width="14" height="50" fill="#7D8C9B"/>
+  <rect x="686" y="370" width="14" height="50" fill="#7D8C9B"/>
+  <rect x="340" y="318" width="380" height="36" rx="12" fill="#DCE6EF"/>
+  <!-- hochgestelltes Kopfteil (Matratze) -->
+  <path d="M352 336 L196 114" stroke="#DCE6EF" stroke-width="38" stroke-linecap="round"/>
+  <path d="M342 356 L182 128" stroke="#9AA9B8" stroke-width="10" stroke-linecap="round"/>
+  <!-- Knierolle -->
+  <ellipse cx="510" cy="306" rx="42" ry="15" fill="#FFFFFF" stroke="#C9D3DD" stroke-width="3"/>
+  <!-- Beine -->
+  <path d="M384 306 L510 276 L652 304" stroke="#2E3F55" stroke-width="46" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M664 306 L682 276" stroke="#F1C9A5" stroke-width="22" stroke-linecap="round"/>
+  <!-- Oberkörper liegt am Kopfteil an -->
+  <path d="M384 300 L290 168" stroke="#3E7CB1" stroke-width="66" stroke-linecap="round"/>
+  <!-- Kissen hinter dem Kopf -->
+  <ellipse cx="236" cy="128" rx="44" ry="24" transform="rotate(-55 236 128)" fill="#FFFFFF" stroke="#C9D3DD" stroke-width="3"/>
+  <!-- Arm auf dem Schoß -->
+  <path d="M294 178 L326 258" stroke="#356C9C" stroke-width="28" stroke-linecap="round"/>
+  <path d="M326 258 L410 292" stroke="#F1C9A5" stroke-width="20" stroke-linecap="round"/>
+  <!-- Kopf -->
+  <circle cx="266" cy="116" r="34" fill="#F1C9A5"/>
+  <path d="M234 108 A34 34 0 0 1 290 92 Q270 86 256 102 Q246 116 240 128 Q232 120 234 108 Z" fill="#5B4636"/>
+  <circle cx="282" cy="110" r="3.5" fill="#333"/>
+  <path d="M298 114 l7 7 l-7 2" stroke="#C99A78" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M282 134 q6 3 11 -2" stroke="#9A5A4A" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- Atemluft -->
+  <g stroke="#2E86C1" stroke-width="5" fill="none" stroke-linecap="round">
+    <path d="M318 112 q14 -6 28 0 q14 6 28 0"/>
+    <path d="M322 132 q14 -6 28 0 q14 6 28 0"/>
+  </g>
+  <text class="beschriftung" x="400" y="128" font-family="Arial, sans-serif" font-size="26" font-weight="bold" fill="#2E86C1">leichter atmen</text>
+</svg>

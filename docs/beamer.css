@@ -375,3 +375,61 @@ b, strong { font-weight: 800; }
 .warum-box ul { margin: 0; padding-left: 22px; display: grid; gap: 10px; }
 .warum-box li { font-size: 20px; line-height: 1.4; }
 .info-folie .punkte li { font-size: 25px; }
+
+/* Merksatz prüfen: Lücken per Klick aufdecken */
+.merksatz-folie { margin-top: 18px; background: #fff; border-radius: 24px; box-shadow: var(--schatten); border-left: 12px solid var(--petrol); padding: 26px 34px 30px; }
+.merksatz-kopf { font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: .06em; color: var(--petrol); margin-bottom: 12px; }
+.merksatz-satz { margin: 0; font-size: 34px; line-height: 2.05; }
+.aufdeck.luecke { display: inline-block; min-width: 220px; min-height: 0; padding: 0 16px; margin: 0 4px; font-size: 32px; line-height: 1.5; text-align: center; vertical-align: baseline; font-weight: 800; }
+.aufdeck.luecke .verdeckt { display: inline; font-size: 28px; }
+
+/* Lagerung: Bild + Wann / Warum / So geht's */
+.lagerung-ueber { display: flex; justify-content: space-between; font-size: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--akzent); margin-bottom: 4px; }
+.lagerung-nr { color: var(--leise); }
+.lagerung-folie { display: grid; grid-template-columns: 820px 1fr; gap: 28px; flex: 1; min-height: 0; margin-top: 8px; }
+.lagerung-bild { width: 820px; height: auto; border-radius: 22px; box-shadow: var(--schatten); background: #fff; align-self: start; }
+.lagerung-text { display: grid; gap: 14px; align-content: start; }
+.lagerung-karte { background: #fff; border-radius: 18px; box-shadow: var(--schatten); padding: 14px 20px; border-left: 10px solid var(--petrol); }
+.lagerung-karte.wann { border-left-color: var(--akzent); }
+.lagerung-karte.warum { border-left-color: var(--gruen); }
+.lagerung-karte h2 { margin: 0 0 6px; font-size: 24px; color: var(--dunkelpetrol); }
+.lagerung-karte ul { margin: 0; padding-left: 22px; display: grid; gap: 4px; }
+.lagerung-karte li { font-size: 21px; line-height: 1.32; }
+
+/* Aufgabe wie im Arbeitsblatt, dann „Bearbeiten Sie jetzt …“ */
+.aufgabe-folie { display: grid; grid-template-columns: 1fr; gap: 26px; flex: 1; min-height: 0; margin-top: 6px; }
+.aufgabe-folie.mit-los { grid-template-columns: 1fr 380px; }
+.aufgabe-blatt { display: grid; gap: 14px; align-content: start; min-height: 0; }
+.aufgabe-los { background: var(--gelb-hell); border: 4px solid var(--gelb); border-radius: 22px; padding: 16px 18px; display: grid; gap: 10px; align-content: start; }
+.los-text { margin: 0; font-size: 25px; line-height: 1.3; font-weight: 700; }
+.aufgabe-los .uhr { padding: 14px 18px; }
+.aufgabe-los .uhr-zeit { font-size: 64px; }
+.aufgabe-los .punkte { gap: 8px; margin: 0; }
+.aufgabe-los .punkte li { font-size: 18px; padding-left: 30px; }
+.aufgabe-los .punkte li::before { top: 9px; width: 13px; height: 13px; }
+.aufgabe-los .uhr { width: 100%; }
+.a-text { margin: 0; font-size: 23px; line-height: 1.35; }
+.a-tabelle { display: grid; grid-template-columns: 80px 1fr 120px; border: 2px solid #E3A57A; border-radius: 10px; overflow: hidden; background: #fff; }
+.a-tabelle > div { padding: 8px 12px; font-size: 21px; line-height: 1.35; border-top: 1px solid #F0C9AE; }
+.a-kopf { background: #F2B48C; font-weight: 900; border-top: 0 !important; }
+.a-nr { font-weight: 900; }
+.a-punkte { color: var(--leise); white-space: nowrap; }
+.a-auftrag p { margin: 0; }
+.a-vorsatz { font-style: italic; color: var(--leise); margin-bottom: 4px !important; }
+.a-fall { background: #F3F5F6; border: 2px solid #C9D3D8; border-radius: 12px; padding: 10px 16px; }
+.a-fall h3 { margin: 0 0 4px; font-size: 18px; text-transform: uppercase; letter-spacing: .05em; color: var(--leise); }
+.a-fall p { margin: 0 0 6px; font-size: 19px; line-height: 1.38; }
+.aufgabe-blatt .dialog-blasen { margin: 0; gap: 20px; }
+.aufgabe-blatt .sprechblase { padding: 14px 20px; }
+.aufgabe-blatt .sprechblase .was { font-size: 24px; }
+.weg { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.weg-kopf { font-weight: 900; font-size: 18px; padding: 6px 12px; background: #F2B48C; border-radius: 8px; }
+.weg-frage { font-size: 21px; line-height: 1.3; padding: 8px 12px; background: #fff; border-radius: 8px; border: 1px solid #F0C9AE; }
+.weg-leer { background: #fff; border-radius: 8px; border: 1px dashed #C9D3D8; min-height: 42px; }
+.weg-antwort { font-size: 21px; }
+.a-vorsatz + p, .loesung-aufgabe p { margin: 0; }
+.loesung-aufgabe .a-vorsatz { font-size: 18px; }
+.loesung-mit-uhr { grid-template-columns: 1fr 360px; }
+.loesung-rechts { display: grid; gap: 14px; align-content: start; }
+.loesung-rechts .punkte li { font-size: 20px; padding-left: 34px; }
+.loesung-rechts .punkte li::before { top: 9px; width: 13px; height: 13px; }

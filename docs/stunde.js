@@ -2,7 +2,7 @@
  *
  * Ein QR-Code für die ganze Stunde. Das Handy meldet sich mit Vornamen im Raum an und zeigt
  * dann immer den Bildschirm, der zur Folie am Beamer passt. Übungen (Abstimmung, Markieren,
- * Detektiv, Lagerung, Simulation, Raster) werden als fertige Module eingebunden: Wechselt die
+ * Detektiv, Lagerung, Raster) werden als fertige Module eingebunden: Wechselt die
  * Folie zu einer anderen Übung, lädt die Seite neu (der letzte Stand liegt im Tab-Speicher).
  * Springen zwischen Übungen ist so nicht möglich – das Handy folgt nur dem Beamer. */
 (function () {
@@ -98,6 +98,8 @@
     if (!m || !m.ich) return { schl: 'anmelden' };
     var f = folieVon(m.folie);
     var h = f.handy || { typ: 'vorne' };
+    // Aufgabenfolie: erst erklärt die Lehrkraft (Handy: nach vorne schauen), nach „Weiter“ wird gearbeitet
+    if (f.typ === 'aufgabe' && !(m.schritt > 0)) return { schl: 'aufgabeVorne' };
     if (h.typ === 'entscheidung') return { schl: 'modul:entscheidung:' + h.runde, modul: 'entscheidung', params: { runde: h.runde } };
     if (h.typ === 'experte') {
       if (!m.puzzle) return { schl: 'warten' };
@@ -304,7 +306,8 @@
     var h = f.handy || {};
     ({
       vorne: zeigeVorne, murmeln: zeigeMurmeln, gruppe: zeigeGruppe, warten: zeigeWarten, stamm: zeigeStamm,
-      papier: zeigePapier, aufstellung: zeigeAufstellung, ende: zeigeEnde, faelle: zeigeFaelle
+      papier: zeigePapier, aufstellung: zeigeAufstellung, ende: zeigeEnde, faelle: zeigeFaelle,
+      aufgabeVorne: zeigeAufgabeVorne, bild: zeigeBild
     }[b.schl] || zeigeVorne)(f, h);
     uhrenAktualisieren();
   }
@@ -352,6 +355,24 @@
     kopf(f.kurz);
     var box = bildschirm('📺', mitName(h.titel || f.titel), mitName(h.text || H.vorneStandard));
     box.appendChild(uhrZeile());
+    box.appendChild(el('span', 'vorne-hinweis', H.vorneStandard));
+  }
+
+  function zeigeAufgabeVorne(f) {
+    kopf(f.kurz);
+    var box = bildschirm('📺', f.titel, H.aufgabeVorne);
+    box.appendChild(el('span', 'vorne-hinweis', H.vorneStandard));
+  }
+
+  // Lagerungsfolien: dasselbe Bild wie am Beamer
+  function zeigeBild(f, h) {
+    kopf(f.kurz);
+    var box = bildschirm('', h.titel, '');
+    var img = el('img', 'handy-bild');
+    img.src = h.bild;
+    img.alt = h.titel;
+    box.appendChild(img);
+    if (h.text) box.appendChild(fmt('p', null, h.text));
     box.appendChild(el('span', 'vorne-hinweis', H.vorneStandard));
   }
 

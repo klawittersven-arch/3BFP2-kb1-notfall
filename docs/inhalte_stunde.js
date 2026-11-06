@@ -8,7 +8,7 @@
    - **Wort** = fett. Ein Apostroph im Text: ’ (typografisch) verwenden.
    - Reihenfolge der Folien = Reihenfolge in der Liste „folien“.
    - Die Kennungen (id: 'aa1' …) nicht ändern – der Worker und die Handys erkennen
-     die Folien daran ('aa1' → 'aa2a' wechselt automatisch, 'ende' gibt die Nachlese frei).
+     die Folien daran ('aa1' → 'aa1-merksatz' wechselt automatisch, 'ende' gibt die Nachlese frei).
 
    Die Expertentexte (unten, „experten“) stehen auch im Arbeitsblatt
    (werkzeuge/ab_w2_texte.js). tests/inhalte.test.js meldet Abweichungen.
@@ -43,9 +43,12 @@ var STUNDE = {
 
   /* ---------- Folien ----------
      typ (Beamer): start, fall, abstimmung, ergebnis, murmeln, fahrplan, puzzle, experten, stamm, tabelle,
-                   info, fortschritt, papier, loesung, impuls, aufstellung, dialog, kausalkette, ende
-                   (tabelle und loesung: Inhalte aus inhalte_nachlesen.js, Zellen/Zeilen per Klick aufdecken)
-     handy.typ:    vorne, entscheidung, murmeln, gruppe, experte, stamm, modul, papier, faelle, aufstellung, ende
+                   info, fortschritt, papier, loesung, impuls, aufstellung, dialog, kausalkette, ende,
+                   merksatz (Lücken per Klick aufdecken), lagerung (Bild + Wann/Warum/So geht’s),
+                   aufgabe (Aufgabe wie im AB; „Weiter“ blendet „Bearbeiten Sie jetzt …“ und die Uhr ein)
+                   (tabelle, loesung, aufgabe: Inhalte aus inhalte_nachlesen.js, also wie im Arbeitsblatt)
+     handy.typ:    vorne, bild, entscheidung, murmeln, gruppe, experte, stamm, modul, papier, faelle, aufstellung, ende
+                   (bei typ aufgabe zeigt das Handy erst „Schauen Sie nach vorne“, nach „Weiter“ den handy-Bildschirm)
      uhr:          Abschnitte der Uhr (Sekunden). autoUhr: true = startet beim Öffnen der Folie. */
   folien: [
     {
@@ -90,13 +93,12 @@ var STUNDE = {
       impuls: '„Ist jeder Schock gleich – und muss ich deshalb immer gleich handeln?“',
       lernziel: 'Sie vergleichen den hypovolämischen, den anaphylaktischen und den neurogenen Schock und begründen Sofortmaßnahmen und Lagerung anhand des Leitsymptoms. Sie unterscheiden, was Sie selbst tun dürfen und was nur nach ärztlicher Anordnung.',
       plan: [
-        { emoji: '🧩', text: 'Gruppenpuzzle: drei Schockformen', zeit: '45 min' },
-        { emoji: '🧘', text: 'Lagerungsparcours auf der Matte', zeit: '17 min' },
-        { emoji: '🚨', text: 'Notfall-Simulation', zeit: '22 min' },
-        { emoji: '⚖️', text: 'Wer darf was?', zeit: '10 min' },
-        { emoji: '📝', text: 'Klausurtraining wie in der KA', zeit: '13 min' },
-        { emoji: '🔎', text: 'Zurück zu Frau Maler', zeit: '15 min' },
-        { emoji: '✅', text: 'Hätten Sie richtig gehandelt?', zeit: '5 min' }
+        { emoji: '🧩', text: 'Gruppenpuzzle: drei Schockformen', zeit: '52 min' },
+        { emoji: '🧘', text: 'Lagerung nach Leitsymptom', zeit: '23 min' },
+        { emoji: '⚖️', text: 'Wer darf was? Adrenalin oder Antihistaminikum?', zeit: '14 min' },
+        { emoji: '📝', text: 'Klausurtraining wie in der KA', zeit: '11 min' },
+        { emoji: '🔎', text: 'Zurück zu Frau Maler', zeit: '5 min' },
+        { emoji: '✅', text: 'Hätten Sie richtig gehandelt?', zeit: '10 min' }
       ],
       handy: { typ: 'vorne', titel: 'Heute: Schock ist nicht gleich Schock', text: 'Schauen Sie nach vorne – gleich geht es mit dem Gruppenpuzzle los.' }
     },
@@ -122,8 +124,15 @@ var STUNDE = {
       text: '🚶 **Setzen Sie sich mit Ihrem Expertenteam zusammen** – die Namen stehen auf Ihrem Handy.',
       auftraege: ['Fall markieren (Handy) → **Merksatz AA1** (AB)', 'Klausuraufgabe **1.1** (AB, allein)', 'Infotext lesen (Handy oder Papier am Pult)', 'Experten-Check (Handy)', 'Gemeinsam die **Spalte** der Tabelle (AB) → „Unsere Spalte ist fertig“'],
       uhr: [{ label: 'Expertenrunde', sek: 900 }],
-      alleFertig: 'Alle Expertenteams fertig – die Handys zeigen jetzt die Stammgruppen.',
+      alleFertig: 'Alle Expertenteams fertig – gleich prüfen wir den Merksatz AA1, dann geht es in die Stammgruppen.',
       handy: { typ: 'experte' }
+    },
+    {
+      id: 'aa1-merksatz', abschnitt: 'Gruppenpuzzle', kurz: 'Merksatz AA1 prüfen', typ: 'merksatz', merksatz: 'aa1',
+      titel: 'Merksatz AA1 – richtig notiert?',
+      text: 'Was haben Sie in die Lücken geschrieben?',
+      tipp: 'Lücke anklicken = aufdecken',
+      handy: { typ: 'vorne', titel: 'Merksatz AA1 prüfen', text: 'Überprüfen Sie am Beamer, ob Sie den **Merksatz AA1** richtig notiert haben. Verbessern Sie, falls nötig – am besten in einer anderen Farbe.' }
     },
     {
       id: 'aa2a', abschnitt: 'Gruppenpuzzle', kurz: 'Stammgruppen (AA2a)', typ: 'stamm',
@@ -154,7 +163,7 @@ var STUNDE = {
       warum: [
         'Im Notfall sehen Sie zuerst nur Befunde – eine Diagnose gibt es noch nicht. Trotzdem müssen Sie sofort richtig handeln.',
         'Von der Schockform hängt ab, was Sie zuerst tun: **Allergen stoppen** und an Adrenalin nach SOP denken (anaphylaktisch), **Blutungsquelle suchen** (hypovolämisch), **nicht bewegen** (neurogen).',
-        'In der Klassenarbeit und im Examen begründen Sie die Schockform **mit Befunden** (KA 3.1 und 5.5).'
+        'In der Klassenarbeit begründen Sie die Schockform **mit Befunden**.'
       ],
       handy: { typ: 'vorne', titel: 'Gleich: Schockform-Detektiv', text: 'Schauen Sie nach vorne – gleich geht es am Handy los.' }
     },
@@ -165,9 +174,18 @@ var STUNDE = {
       handy: { typ: 'modul', modul: 'detektiv', gruppeZeigen: true }
     },
     {
-      id: 'aa2c', abschnitt: 'Gruppenpuzzle', kurz: 'Klausurtraining 2.1/2.2', typ: 'papier',
+      id: 'aa2b-merksatz', abschnitt: 'Gruppenpuzzle', kurz: 'Merksatz AA2 prüfen', typ: 'merksatz', merksatz: 'aa2',
+      titel: 'Merksatz AA2 – richtig notiert?',
+      text: 'Was haben Sie in die Lücken geschrieben?',
+      tipp: 'Lücke anklicken = aufdecken',
+      handy: { typ: 'vorne', titel: 'Merksatz AA2 prüfen', text: 'Überprüfen Sie am Beamer, ob Sie den **Merksatz AA2** richtig notiert haben. Verbessern Sie, falls nötig – am besten in einer anderen Farbe.' }
+    },
+    {
+      id: 'aa2c', abschnitt: 'Gruppenpuzzle', kurz: 'Klausurtraining 2.1/2.2', typ: 'aufgabe',
       titel: 'AA2c · Klausurtraining',
-      punkte: ['Bearbeiten Sie **2.1 und 2.2 allein** auf dem Arbeitsblatt.', '📱 Die Fälle von **Mia**, **Herrn Weber** und **Herrn Albrecht** können Sie jetzt auf Ihrem Handy nachlesen.', 'Danach vergleichen wir mit der Musterlösung.'],
+      bloecke: [{ art: 'aufgaben', nrs: ['2.1', '2.2'] }],
+      los: '✍️ Bearbeiten Sie jetzt **2.1 und 2.2** allein auf dem Arbeitsblatt.',
+      losPunkte: ['📱 Die Fälle von **Mia**, **Herrn Weber** und **Herrn Albrecht** können Sie auf Ihrem Handy nachlesen.', 'Danach vergleichen wir mit der Musterlösung.'],
       uhr: [{ label: 'Schreiben', sek: 300 }],
       handy: {
         typ: 'faelle', titel: 'Klausurtraining 2.1 und 2.2', text: 'Schreiben Sie allein auf dem Arbeitsblatt. Hier können Sie die Fälle nachlesen:',
@@ -191,28 +209,97 @@ var STUNDE = {
       handy: { typ: 'vorne', titel: 'Stimmt das?', text: '„Bei einem Schock legt man immer die Beine hoch.“' }
     },
     {
+      id: 'lagerung-1', abschnitt: 'Lagerung', kurz: 'Lagerung 1: Oberkörper hoch', typ: 'lagerung', nr: 1,
+      ueber: '4 wichtige Lagerungen bei Schock',
+      titel: 'Oberkörper hoch (halbsitzend)',
+      bild: 'bilder/lagerung_oberkoerper_hoch.svg',
+      wann: ['**Atemnot** steht im Vordergrund', 'z. B. Heiserkeit, pfeifende Atmung, Schwellung im Hals'],
+      warum: ['Die **Atemhilfsmuskulatur** kann besser arbeiten', 'Die Bauchorgane drücken nicht gegen das **Zwerchfell**'],
+      so: ['Kopfteil hochstellen oder Rücken mit Kissen abstützen', 'Knie leicht unterpolstern', 'Bei Anaphylaxie: **nicht aufstehen** oder gehen lassen'],
+      handy: { typ: 'bild', titel: 'Oberkörper hoch (halbsitzend)', bild: 'bilder/lagerung_oberkoerper_hoch.svg', text: 'Wann? **Atemnot** steht im Vordergrund.' }
+    },
+    {
+      id: 'lagerung-2', abschnitt: 'Lagerung', kurz: 'Lagerung 2: Flach, Beine hoch', typ: 'lagerung', nr: 2,
+      ueber: '4 wichtige Lagerungen bei Schock',
+      titel: 'Flach, Beine hoch (Schocklage)',
+      bild: 'bilder/lagerung_beine_hoch.svg',
+      wann: ['**Schockzeichen ohne Atemnot**', 'z. B. Puls schnell, Blutdruck niedrig, blass, kalter Schweiß'],
+      warum: ['Blut aus den Beinen fließt zum **Körperstamm**', 'Das Herz bekommt mehr Blut – Gehirn und Organe werden besser versorgt'],
+      so: ['Flach auf den Rücken legen', 'Beine erhöht lagern, z. B. auf Kissen oder einer zusammengelegten Decke', '**Nicht** bei Atemnot und **nicht** bei Verletzungen an Beinen, Becken oder Wirbelsäule'],
+      handy: { typ: 'bild', titel: 'Flach, Beine hoch (Schocklage)', bild: 'bilder/lagerung_beine_hoch.svg', text: 'Wann? **Schockzeichen ohne Atemnot.**' }
+    },
+    {
+      id: 'lagerung-3', abschnitt: 'Lagerung', kurz: 'Lagerung 3: Stabile Seitenlage', typ: 'lagerung', nr: 3,
+      ueber: '4 wichtige Lagerungen bei Schock',
+      titel: 'Stabile Seitenlage',
+      bild: 'bilder/lagerung_seitenlage.svg',
+      wann: ['**Bewusstlos**, aber die **Atmung ist normal**'],
+      warum: ['Die **Atemwege bleiben frei** – die Zunge fällt nicht nach hinten', 'Erbrochenes und Speichel können aus dem Mund **abfließen**'],
+      so: ['Kopf überstreckt, der **Mund ist der tiefste Punkt**', 'Obere Hand unter der Wange, oberes Bein in Hüfte und Knie angewinkelt', 'Atmung ständig kontrollieren – **atmet die Person nicht normal → Reanimation** (KB III)', 'Nach einem Unfall nur **achsengerecht** drehen'],
+      handy: { typ: 'bild', titel: 'Stabile Seitenlage', bild: 'bilder/lagerung_seitenlage.svg', text: 'Wann? **Bewusstlos**, aber die **Atmung ist normal**.' }
+    },
+    {
+      id: 'lagerung-4', abschnitt: 'Lagerung', kurz: 'Lagerung 4: Nicht bewegen', typ: 'lagerung', nr: 4,
+      ueber: '4 wichtige Lagerungen bei Schock',
+      titel: 'Nicht bewegen – Kopf halten',
+      bild: 'bilder/lagerung_nicht_bewegen.svg',
+      wann: ['Verdacht auf **Wirbelsäulenverletzung**', 'z. B. Sturz aus der Höhe, Kopfsprung; Nackenschmerz, Kribbeln, Lähmung'],
+      warum: ['Jede Bewegung kann das **Rückenmark** weiter schädigen'],
+      so: ['In der vorgefundenen Lage lassen', '**Kopf mit beiden Händen** halten', 'Die Person bitten, sich nicht zu bewegen (mehr dazu in Woche 4)'],
+      handy: { typ: 'bild', titel: 'Nicht bewegen – Kopf halten', bild: 'bilder/lagerung_nicht_bewegen.svg', text: 'Wann? Verdacht auf **Wirbelsäulenverletzung**.' }
+    },
+    {
       id: 'aa3', abschnitt: 'Lagerung', kurz: 'Lagerungsparcours (AA3)', typ: 'fortschritt', seite: 'w2-lagerung',
       titel: 'AA3 · Lagerungsparcours',
-      punkte: ['Zu zweit auf der Yogamatte: Das Handy zieht eine **Situationskarte**.', 'Person A lagert Person B in 60 Sekunden und begründet: „Ich lagere …, **weil** …“', 'Aufdecken, vergleichen, **Rollen tauschen**.', 'Sicherheit: behutsam lagern, nicht heben. Wer nicht gelagert werden möchte, begründet.'],
+      punkte: ['Zu zweit auf der Yogamatte: Das Handy zieht eine **Situationskarte**.', 'Person A lagert Person B in 60 Sekunden und begründet: „Ich lagere …, **weil** …“', 'Aufdecken, vergleichen, **Rollen tauschen**.', 'Hilfe: die **Bilder der vier Lagerungen** auf dem Arbeitsblatt (S. 4) und am Handy.', 'Sicherheit: behutsam lagern, nicht heben. Wer nicht gelagert werden möchte, begründet.'],
       handy: { typ: 'modul', modul: 'lagerung' }
     },
     {
-      id: 'aa4', abschnitt: 'Simulation', kurz: 'Notfall-Simulation (AA4)', typ: 'fortschritt', seite: 'w2-simulation', jeGruppe: true,
-      titel: 'AA4 · Notfall-Simulation in der Stammgruppe',
-      punkte: ['🩺 **Pflegefachperson** entscheidet und sagt laut, was sie tut und warum.', '📟 **Monitor & Stimme** bedient das Handy und liest vor.', '📝 **Protokoll** füllt das Notfallprotokoll aus.', 'Drei Varianten – **nach jeder Runde Rollen wechseln!**'],
-      handy: { typ: 'modul', modul: 'simulation', gruppeZeigen: true }
+      id: 'aa3-merksatz', abschnitt: 'Lagerung', kurz: 'Merksatz AA3 prüfen', typ: 'merksatz', merksatz: 'aa3',
+      titel: 'Merksatz AA3 – richtig notiert?',
+      text: 'Was haben Sie in die Lücken geschrieben?',
+      tipp: 'Lücke anklicken = aufdecken',
+      handy: { typ: 'vorne', titel: 'Merksatz AA3 prüfen', text: 'Überprüfen Sie am Beamer, ob Sie den **Merksatz AA3** richtig notiert haben. Verbessern Sie, falls nötig – am besten in einer anderen Farbe.' }
     },
     {
-      id: 'pause', abschnitt: 'Simulation', kurz: 'Pause', typ: 'impuls',
+      id: 'aa3bc', abschnitt: 'Lagerung', kurz: 'Entscheidungsweg und 3.1/3.2', typ: 'aufgabe',
+      titel: 'AA3 b) und c) · Auf dem Arbeitsblatt',
+      bloecke: [
+        { art: 'text', text: '**b) Entscheidungsweg:** Ergänzen Sie, wie Sie lagern. Prüfen Sie die Fragen **von oben nach unten** – die erste Frage, die Sie mit „Ja“ beantworten, entscheidet.' },
+        { art: 'weg' },
+        { art: 'text', text: '**c) Klausurtraining:**' },
+        { art: 'aufgaben', nrs: ['3.1', '3.2'] }
+      ],
+      los: '✍️ Bearbeiten Sie jetzt **AA3 b) Entscheidungsweg** und **AA3 c) Klausurtraining (3.1 und 3.2)** allein auf dem Arbeitsblatt.',
+      losPunkte: ['Danach vergleichen wir mit der Musterlösung.'],
+      uhr: [{ label: 'Schreiben', sek: 300 }],
+      handy: { typ: 'papier', titel: 'AA3 b) und c) auf dem Arbeitsblatt', text: 'Bearbeiten Sie jetzt den **Entscheidungsweg** und die Aufgaben **3.1 und 3.2** allein auf dem Arbeitsblatt. Die Zeit läuft vorne.' }
+    },
+    {
+      id: 'aa3b-loesung', abschnitt: 'Lagerung', kurz: 'Musterlösung Entscheidungsweg', typ: 'loesung',
+      titel: 'AA3 b) Entscheidungsweg – Musterlösung',
+      bloecke: [{ art: 'weg' }],
+      tipp: 'Zeile anklicken = aufdecken',
+      handy: { typ: 'papier', titel: 'Musterlösung vorne', text: 'Vergleichen Sie Ihren Entscheidungsweg mit der Musterlösung am Beamer. Verbessern Sie, falls nötig – am besten in einer anderen Farbe.' }
+    },
+    {
+      id: 'aa3c-loesung', abschnitt: 'Lagerung', kurz: 'Musterlösung 3.1/3.2', typ: 'loesung',
+      titel: 'Klausurtraining 3.1 und 3.2 – Musterlösung',
+      aufgaben: ['3.1', '3.2'],
+      tipp: 'Zeile anklicken = aufdecken',
+      handy: { typ: 'papier', titel: 'Musterlösung vorne', text: 'Vergleichen Sie Ihre Antworten mit der Musterlösung am Beamer. Verbessern oder ergänzen Sie auf dem Arbeitsblatt – am besten in einer anderen Farbe.' }
+    },
+    {
+      id: 'pause', abschnitt: 'Pause', kurz: 'Pause', typ: 'impuls',
       titel: 'Pause',
       text: 'Bis gleich!',
       uhr: [{ label: 'Pause', sek: 600 }],
       handy: { typ: 'vorne', titel: 'Pause', text: 'Bis gleich!' }
     },
     {
-      id: 'aa5a', abschnitt: 'Verantwortung', kurz: 'Wer darf was? (AA5a)', typ: 'aufstellung',
-      titel: 'AA5a · Wer darf was?',
-      text: 'Gehen Sie in die passende **Ecke** – und begründen Sie Ihre Wahl.',
+      id: 'aa4a', abschnitt: 'Verantwortung', kurz: 'Wer darf was? (AA4a)', typ: 'aufstellung',
+      titel: 'AA4a · Wer darf was?',
+      text: 'Gehen Sie in die passende **Ecke** – und begründen Sie Ihre Wahl. Nach jeder Lösung: Maßnahme in die **Tabelle** (AB) eintragen.',
       ecken: [
         { emoji: '🟢', text: 'mache ich selbst' },
         { emoji: '🟡', text: 'nur n. ä. A. oder SOP' },
@@ -221,52 +308,64 @@ var STUNDE = {
       massnahmen: [
         { text: 'Infusion stoppen, Zugang belassen', ecke: 0, warum: 'Allergen sofort stoppen – den Zugang braucht das Notfallteam.' },
         { text: 'Adrenalin i. m. geben', ecke: 1, warum: 'Medikament: nur nach ärztlicher Anordnung oder Notfall-SOP – dann aber sofort.' },
-        { text: 'Hilfe holen (Notfallteam bzw. 112)', ecke: 0, warum: 'Erkennen und Hilfe holen ist immer eigenverantwortlich.' },
+        { text: 'Nach Leitsymptom lagern', ecke: 0, warum: 'Lagern gehört zu den Sofortmaßnahmen, die Sie selbst verantworten.' },
+        { text: 'Sauerstoff geben', ecke: 1, warum: 'Sauerstoff ist ein Arzneimittel: nur nach Anordnung oder SOP.' },
         { text: 'Antihistaminikum geben', ecke: 1, warum: 'Medikament: nur nach Anordnung oder SOP – und erst nach Adrenalin.' },
-        { text: 'Diagnose „anaphylaktischer Schock“ stellen', ecke: 2, warum: 'Diagnosen stellt die Ärztin oder der Arzt.' },
-        { text: 'Sauerstoff geben', ecke: 1, warum: 'Sauerstoff ist ein Arzneimittel.' },
-        { text: 'Eigenen Autoinjektor nach dem ärztlichen Notfallplan anwenden', ecke: 1, warum: 'Der Notfallplan ist die ärztliche Anordnung für diese Person.' },
-        { text: 'Über die Dauer der Überwachung entscheiden', ecke: 2, warum: 'Therapieentscheidungen trifft die Ärztin oder der Arzt.' }
+        { text: 'Diagnose „anaphylaktischer Schock“ stellen', ecke: 2, warum: 'Diagnosen stellt die Ärztin oder der Arzt.' }
       ],
       zeigen: 'Lösung zeigen',
       naechste: 'Nächste Maßnahme',
-      handy: { typ: 'aufstellung', titel: 'Wer darf was?', start: 'Gleich liest Ihre Lehrkraft Maßnahmen vor. Gehen Sie dann in die passende Ecke.' }
+      handy: { typ: 'aufstellung', titel: 'Wer darf was?', start: 'Gleich liest Ihre Lehrkraft Maßnahmen vor. Gehen Sie dann in die passende Ecke. Nach jeder Lösung: Maßnahme in die Tabelle auf dem Arbeitsblatt eintragen.' }
     },
     {
-      id: 'aa5b', abschnitt: 'Verantwortung', kurz: 'Adrenalin oder Antihistaminikum? (AA5b)', typ: 'dialog',
-      titel: 'AA5b · Wer hat recht?',
+      id: 'aa4b', abschnitt: 'Verantwortung', kurz: 'Adrenalin oder Antihistaminikum? (AA4b)', typ: 'aufgabe',
+      titel: 'AA4b · Wer hat recht?',
+      bloecke: [{ art: 'dialog' }, { art: 'aufgaben', nrs: ['4.1'] }],
       sprecher: [
         { wer: 'Herr Brandt, Pflegefachkraft', text: '„Geben Sie ihr erst mal das Antihistaminikum aus dem Notfallkoffer. Adrenalin ist mir zu heftig.“' },
         { wer: 'Lina, Auszubildende', text: '„Aber in unserer Notfall-SOP steht Adrenalin ganz oben …“' }
       ],
-      punkte: ['**Think:** zwei Argumente notieren (2 Min.)', '**Pair:** mit der Partnerin oder dem Partner vergleichen (2 Min.)', '**Share:** einige Paare stellen vor – danach 5.1 schriftlich'],
-      uhr: [{ label: 'Think', sek: 120 }, { label: 'Pair', sek: 120 }],
-      handy: { typ: 'papier', titel: 'Wer hat recht?', text: 'Lesen Sie Informationstext und Dialog (AB). Notieren Sie zwei Argumente – danach 5.1 schriftlich.' }
+      los: '✍️ Bearbeiten Sie jetzt **4.1** auf dem Arbeitsblatt.',
+      losPunkte: ['**Think** (2,5 Min.): allein schreiben – Infotext und Adrenalin-Tabelle helfen.', '**Pair** (1,5 Min.): zu zweit vergleichen und ergänzen.', 'Danach: Musterlösung.'],
+      uhr: [{ label: 'Think', sek: 150 }, { label: 'Pair', sek: 90 }],
+      handy: { typ: 'papier', titel: 'Wer hat recht? – 4.1', text: '**Think:** Schreiben Sie Ihre Stellungnahme zu 4.1 allein auf das Arbeitsblatt. **Pair:** Vergleichen und ergänzen Sie zu zweit. Die Zeit läuft vorne.' }
     },
     {
-      id: 'aa6', abschnitt: 'Klausurtraining', kurz: 'Transferfall (AA6)', typ: 'papier',
-      titel: 'AA6 · Klausurtraining wie in der KA',
-      punkte: ['**Allein und ohne Unterlagen** – 8 Minuten.', 'Herr Martens, Wespenstich in der Tagespflege: **6.1 bis 6.3**.', 'Handy umgedreht hinlegen.'],
-      uhr: [{ label: 'Klausurtraining', sek: 480 }],
-      handy: { typ: 'papier', titel: 'Klausurtraining: 6.1 bis 6.3', text: 'Allein und ohne Unterlagen. Legen Sie das Handy umgedreht hin – die Zeit läuft vorne.' }
+      id: 'aa4b-loesung', abschnitt: 'Verantwortung', kurz: 'Musterlösung 4.1', typ: 'loesung',
+      titel: 'Klausurtraining 4.1 – Musterlösung',
+      aufgaben: ['4.1'],
+      tipp: 'Zeile anklicken = aufdecken',
+      handy: { typ: 'papier', titel: 'Musterlösung vorne', text: 'Vergleichen Sie Ihre Antwort mit der Musterlösung am Beamer. Verbessern oder ergänzen Sie auf dem Arbeitsblatt – am besten in einer anderen Farbe.' }
     },
     {
-      id: 'aa6-peer', abschnitt: 'Klausurtraining', kurz: 'Peer-Korrektur (AA6)', typ: 'papier',
-      titel: 'AA6 · Peer-Korrektur',
-      punkte: ['Tauschen Sie mit einer Person aus einer **anderen Stammgruppe**.', 'Haken Sie im **Bewertungsraster am Handy** ab, was geschrieben wurde – die App zählt die Punkte.', 'Geben Sie eine Rückmeldung in **einem Satz**.'],
-      uhr: [{ label: 'Peer-Korrektur', sek: 300 }],
+      id: 'aa4-merksatz', abschnitt: 'Verantwortung', kurz: 'Merksatz AA4', typ: 'merksatz', merksatz: 'aa4',
+      titel: 'Merksatz AA4 – Sofortmaßnahmen bei Anaphylaxie',
+      text: 'Ergänzen Sie zuerst allein die Lücken auf dem Arbeitsblatt – dann decken wir gemeinsam auf.',
+      tipp: 'Lücke anklicken = aufdecken',
+      handy: { typ: 'papier', titel: 'Merksatz AA4', text: 'Ergänzen Sie den **Merksatz AA4** auf dem Arbeitsblatt. Danach überprüfen Sie am Beamer, ob Sie ihn richtig notiert haben.' }
+    },
+    {
+      id: 'aa5', abschnitt: 'Klausurtraining', kurz: 'Transferfall (AA5)', typ: 'aufgabe',
+      titel: 'AA5 · Klausurtraining wie in der KA',
+      bloecke: [{ art: 'fall', schluessel: 'transferfall', titel: 'Fallsituation' }, { art: 'aufgaben', nrs: ['5.1', '5.2'] }],
+      los: '✍️ Bearbeiten Sie jetzt **5.1 und 5.2** – **allein und ohne Unterlagen**.',
+      losPunkte: ['Legen Sie das Handy umgedreht hin – die Zeit läuft vorne.', 'Danach: Peer-Korrektur mit einer Person aus einer **anderen Stammgruppe**.'],
+      uhr: [{ label: 'Klausurtraining', sek: 360 }],
+      handy: { typ: 'papier', titel: 'Klausurtraining: 5.1 und 5.2', text: 'Allein und ohne Unterlagen. Legen Sie das Handy umgedreht hin – die Zeit läuft vorne.' }
+    },
+    {
+      id: 'aa5-peer', abschnitt: 'Klausurtraining', kurz: 'Peer-Korrektur (AA5)', typ: 'loesung',
+      titel: 'AA5 · Peer-Korrektur mit Musterlösung',
+      punkte: ['Tauschen Sie mit einer Person aus einer **anderen Stammgruppe**.', 'Haken Sie im **Bewertungsraster am Handy** ab – die App zählt die Punkte.', 'Rückmeldung in **einem Satz**.'],
+      aufgaben: [{ nrs: ['5.1', '5.2'], loesung: '5.1 und 5.2' }],
+      uhr: [{ label: 'Peer-Korrektur', sek: 240 }],
+      tipp: 'Zeile anklicken = aufdecken',
       handy: { typ: 'modul', modul: 'raster' }
     },
     {
-      id: 'aa7', abschnitt: 'Frau Maler', kurz: 'Placemat (AA7)', typ: 'papier',
-      titel: 'AA7 · Zurück zu Frau Maler',
-      punkte: ['Zu viert mit der **Placemat** (A3): Jede Person übernimmt ein Außenfeld.', '**Allein:** Was steckt dahinter? Gehört es zur Kette?', '**Drehen und lesen**, dann in der **Mitte** auf die Kausalkette einigen.', 'Tipp: Thromboseprophylaxe aus dem 1. Ausbildungsjahr. Nicht jeder Zeitpunkt gehört zur Kette!'],
-      uhr: [{ label: 'Allein: Außenfeld', sek: 180 }, { label: 'Drehen und lesen', sek: 180 }, { label: 'Mitte: einigen', sek: 240 }],
-      handy: { typ: 'papier', titel: 'Placemat: Zurück zu Frau Maler', text: 'Arbeiten Sie auf der Placemat. Die Zeit für jeden Schritt läuft vorne.' }
-    },
-    {
-      id: 'aufloesung', abschnitt: 'Frau Maler', kurz: 'Auflösung', typ: 'kausalkette',
-      titel: 'Woher kam Frau Malers Luftnot?',
+      id: 'aufloesung', abschnitt: 'Frau Maler', kurz: 'Zurück zu Frau Maler (AA6)', typ: 'kausalkette',
+      titel: 'AA6 · Woher kam Frau Malers Luftnot?',
+      text: 'Was kommt als Nächstes? Ergänzen Sie die Kausalkette auf dem Arbeitsblatt.',
       kette: [
         { titel: 'Immobilität', text: 'Nach der Hüft-TEP liegt sie aus Angst vor einer Luxation fast nur im Bett.' },
         { titel: 'Tiefe Beinvenenthrombose', text: 'Morgens: rechte Wade dick, Schmerz beim Auftreten.' },
@@ -276,8 +375,8 @@ var STUNDE = {
       ],
       antwortTitel: 'Antwort auf die Leitfrage',
       antwort: 'Die Luftnot kam von einer **Lungenembolie**. Um 11 Uhr: **Oberkörper hoch** (Luftnot steht im Vordergrund), **nicht mobilisieren**, nicht allein lassen, **sofort Hilfe holen** und engmaschig überwachen.',
-      aufdecken: 'Nächster Schritt',
-      handy: { typ: 'vorne', titel: 'Auflösung vorne', text: 'Vergleichen Sie mit Ihrer Placemat.' }
+      aufdecken: 'Nächstes Glied',
+      handy: { typ: 'vorne', titel: 'Zurück zu Frau Maler', text: 'Ergänzen Sie die **Kausalkette** auf dem Arbeitsblatt (AA6), während sie vorne Schritt für Schritt aufgedeckt wird.' }
     },
     {
       id: 'checkout', abschnitt: 'Abschluss', kurz: 'Hätten Sie richtig gehandelt?', typ: 'abstimmung', runde: 2,
@@ -296,7 +395,7 @@ var STUNDE = {
     {
       id: 'ikl', abschnitt: 'Abschluss', kurz: 'Ich-kann-Liste', typ: 'papier',
       titel: 'Was kann ich jetzt?',
-      punkte: ['Füllen Sie die **Ich-kann-Liste** aus: ☺ sicher · 😐 teilweise · ☹ noch nicht.', '**Hausaufgabe:** Mini-Examen (20 Punkte) – Selbstkontrolle über den QR-Code im Arbeitsblatt.', '**Nachlesen:** Alles aus dieser Stunde über den QR-Code auf der letzten Seite – freigeschaltet nach der Stunde.'],
+      punkte: ['Füllen Sie die **Ich-kann-Liste** aus: ☺ sicher · 😐 teilweise · ☹ noch nicht.', '**Hausaufgabe:** Klausurtraining (20 Punkte) – Selbstkontrolle über den QR-Code im Arbeitsblatt. Freiwillig: 6.1 und 6.2 zu Frau Maler.', '**Nachlesen:** Alles aus dieser Stunde über den QR-Code auf der letzten Seite – freigeschaltet nach der Stunde.'],
       handy: { typ: 'papier', titel: 'Ich-kann-Liste', text: 'Füllen Sie die Ich-kann-Liste auf dem Arbeitsblatt aus.' }
     },
     {
@@ -346,6 +445,11 @@ var STUNDE = {
     gruppenFertig: '{x} von {y} Stammgruppen fertig',
     fertig: 'fertig',
     teamFertig: 'Tabelle fertig!',
+    losKnopf: 'Jetzt bearbeiten',
+    wannTitel: 'Wann?',
+    warumTitel: 'Warum?',
+    soTitel: 'So geht’s',
+    lagerungNr: '{n} von 4',
     gruppeFertig: 'Tabelle vollständig!',
     ohneHandyKurz: 'ohne Handy',
     jetztErklaert: 'Jetzt: {label}',
@@ -393,6 +497,7 @@ var STUNDE = {
     getrennt: 'Keine Verbindung – neuer Versuch läuft …',
     anderer: 'Nicht Sie?',
     vorneStandard: 'Schauen Sie nach vorne.',
+    aufgabeVorne: 'Ihre Lehrkraft erklärt gleich die Aufgabe – Sie finden sie auf Ihrem Arbeitsblatt.',
     ihreGruppe: 'Ihre Stammgruppe',
     expertin: 'Expertin/Experte {b}',
     noch: 'noch {zeit}',

@@ -94,8 +94,8 @@ const warte = (ms) => new Promise((r) => setTimeout(r, ms));
     }
     await warte(400);
     b = beamerNachrichten[beamerNachrichten.length - 1];
-    H.pruefe(b.puzzle.alleTeamsFertig && b.stunde.folie === 'aa2a', 'alle Teams fertig (ohne die Person ohne Handy) → Folie „aa2a“', b.stunde.folie);
-    H.pruefe(letzte(handyWs[3]).folie === 'aa2a', 'Handys wechseln mit in die Stammgruppen');
+    H.pruefe(b.puzzle.alleTeamsFertig && b.stunde.folie === 'aa1-merksatz', 'alle Teams fertig (ohne die Person ohne Handy) → Folie „Merksatz AA1“', b.stunde.folie);
+    H.pruefe(letzte(handyWs[3]).folie === 'aa1-merksatz', 'Handys wechseln mit (Merksatz AA1, danach Stammgruppen)');
     for (const id of alle) await post('/api/aktion', { raum: raum.raum, geraeteId: id, typ: 'fertig', schritt: 'stamm' });
     await warte(400);
     b = beamerNachrichten[beamerNachrichten.length - 1];
@@ -112,7 +112,7 @@ const warte = (ms) => new Promise((r) => setTimeout(r, ms));
 
     console.log('\n== Reserve ohne Live-Verbindung');
     const z = await get(`/api/zustand?raum=${raum.raum}&geraeteId=${ids[1]}`);
-    H.pruefe(z.status === 200 && z.d.folie === 'aa2a' && z.d.puzzle, 'Abfrage liefert denselben Handy-Stand');
+    H.pruefe(z.status === 200 && z.d.folie === 'aa1-merksatz' && z.d.puzzle, 'Abfrage liefert denselben Handy-Stand');
     const s = await get(`/api/stand?raum=${raum.raum}&schluessel=${raum.schluessel}`);
     H.pruefe(s.status === 200 && s.d.typ === 'beamer', 'Abfrage liefert den Beamer-Stand');
 

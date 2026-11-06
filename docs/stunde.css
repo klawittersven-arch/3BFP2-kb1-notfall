@@ -99,3 +99,4 @@ details.info p { margin: 0 0 12px; }
 .schritt-karte p { margin: 0 0 8px; }
 .tabelle-karte { border: 3px solid var(--gruen); background: var(--gruen-hell); }
 .klein-grau { font-size: 15px; color: #3B4D52; }
+.handy-bild { display: block; width: 100%; height: auto; border-radius: 12px; border: 1px solid #D5DEE5; margin: 6px 0 10px; }

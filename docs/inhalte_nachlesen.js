@@ -140,9 +140,9 @@ var NACHLESEN = {
   }
  ],
  "werDarfWas": [
-  "Infusion stoppen, Zugang belassen; Hilfe holen (Notfallteam bzw. 112); nach Leitsymptom lagern; Puls, Blutdruck, Atmung, SpO₂ messen; Ereignis dokumentieren",
-  "Adrenalin i. m.; Sauerstoff; Antihistaminikum; Infusion zur Volumengabe; eigenen Autoinjektor nach dem Notfallplan (der Plan ist die ärztliche Anordnung für diese Person)",
-  "Diagnose stellen; über weitere Therapie und Dauer der Überwachung entscheiden; Medikamente anordnen"
+  "Infusion stoppen, Zugang belassen; nach Leitsymptom lagern",
+  "Adrenalin i. m.; Sauerstoff; Antihistaminikum",
+  "Diagnose „anaphylaktischer Schock“ stellen"
  ],
  "verantwortung": [
   "**Eigenverantwortlich:** Gefahr erkennen, Hilfe holen, Allergen stoppen, lagern, überwachen, dokumentieren.",
@@ -178,30 +178,6 @@ var NACHLESEN = {
   "Sie sind in der Tagespflege „Sonnenhof“ eingesetzt. Herr Klaus Martens (74) hat einen Diabetes mellitus Typ 2 und eine Herzinsuffizienz. Gegen 14:15 Uhr sitzt er mit anderen Gästen auf der Terrasse beim Kaffee. Plötzlich schreit er auf: Eine Wespe hat ihn in die Oberlippe gestochen.",
   "Nach etwa fünf Minuten ist seine Oberlippe stark geschwollen, am Hals bilden sich Quaddeln. Mit kloßiger Stimme sagt er: „Mir ist so eng im Hals.“ Beim Einatmen hören Sie ein pfeifendes Geräusch. Sie messen: Atemfrequenz 28/min, Puls 124/min, Blutdruck 92/60 mmHg (am Morgen: 150/85 mmHg). In der Tagespflege ist keine Ärztin anwesend. Ein Notfallset hat Herr Martens nicht dabei."
  ],
- "placemat": [
-  "**Feld Wade (morgens):** Wade dick, Schmerz beim Auftreten → Verdacht auf tiefe Beinvenenthrombose (Immobilität nach Hüft-TEP, Angst vor Luxation). Gehört zur Kette. Christin: sofort weitergeben, nicht massieren, nicht mobilisieren bis zur ärztlichen Abklärung.",
-  "**Feld Frühstück:** verschluckt sich, hustet kräftig → leichte Atemwegsverlegung; Husten lassen war richtig. Gehört **nicht** zur Kette (Woche 4).",
-  "**Feld 11 Uhr:** Luftnot, P 118, RR 105/70, blass, kaltschweißig, unruhig → Lungenembolie mit obstruktivem Schock (kompensiert, Schockindex ≈ 1,1). Sofort Hilfe holen, Oberkörper hoch, nicht mobilisieren, nicht allein lassen, überwachen.",
-  "**Feld Mittag:** zyanotisch, keine Reaktion, kein Puls → Kreislaufstillstand; Hilfe rufen, Reanimation (KB III).",
-  "**Mitte (Kette):** Immobilität → tiefe Beinvenenthrombose → Lungenembolie → obstruktiver Schock → Kreislaufstillstand."
- ],
- "drehbuch": [
-  [
-   "**A Klinik** – Herr Kaiser (58), Eisen-Kurzinfusion, Notfall-SOP",
-   "Atemnot (Heiserkeit, pfeifende Atmung, SpO₂ ↓) → Infusion stoppen, Zugang belassen · Notfallteam rufen · Oberkörper hoch · Adrenalin i. m. nach SOP · Sauerstoff nach SOP · Vitalzeichen · dokumentieren, Allergie vermerken, Nachbeobachtung",
-   "Zugang ziehen (kein Weg für Medikamente) · Beine hoch (Atemnot nimmt zu) · Antihistaminikum statt Adrenalin (keine Besserung) · allein lassen"
-  ],
-  [
-   "**B Pflegeheim** – Frau Gruber (84), neues Schmerzmittel (Tablette), keine Ärztin im Haus, keine SOP",
-   "Kreislauf ohne Atemnot (Schwindel, RR ↓, Puls ↑) → Hilfe holen: Pflegefachkraft, Notruf 112 · flach, Beine hoch · nicht aufsetzen · überwachen · keine Medikamente ohne Anordnung · Übergabe an Notärztin, dokumentieren",
-   "Zur Toilette begleiten/aufsetzen (Kollaps) · Adrenalin aus dem Notfallkoffer ohne Anordnung · etwas zu trinken geben"
-  ],
-  [
-   "**C ambulant** – Herr Hager (66), Bienenstich, eigenes Notfallset mit ärztlichem Notfallplan",
-   "Heiserkeit, dann Bewusstseinstrübung bei erhaltener Atmung → Notruf 112 · Autoinjektor aus dem Notfallset nach Notfallplan (Außenseite Oberschenkel) · bei Bewusstlosigkeit mit normaler Atmung stabile Seitenlage · Atmung überwachen · Stachel abstreifen (Biene) · Uhrzeit notieren",
-   "Tropfen aus dem Notfallset zuerst (Antihistaminikum; Aspirationsgefahr) · aufrichten · Autoinjektor nicht nutzen und nur warten"
-  ]
- ],
  "ikl": [
   [
    "1. … den hypovolämischen, den anaphylaktischen und den neurogenen Schock vergleichen.",
@@ -209,19 +185,19 @@ var NACHLESEN = {
   ],
   [
    "2. … die Lagerung nach Leitsymptom beschreiben und begründen.",
-   "AA3, AA4b"
+   "AA3, Merksatz AA3"
   ],
   [
    "3. … Sofortmaßnahmen bei einem anaphylaktischen Schock ableiten und meine Verantwortung beschreiben.",
-   "AA4, AA5, AA6"
+   "AA4, Merksatz AA4, AA5"
   ],
   [
    "4. … falsche Aussagen zum Schock identifizieren und die Korrektur fachlich begründen.",
-   "Einstieg, AA3.2, AA5.1"
+   "Einstieg, 3.2, 4.1"
   ],
   [
    "5. … am Fall Frau Maler die Kausalkette bis zum Kreislaufstillstand erklären.",
-   "AA7"
+   "AA6"
   ]
  ],
  "aufgaben": {
@@ -253,37 +229,26 @@ var NACHLESEN = {
   },
   "4.1": {
    "nr": "4.1",
-   "text": "Nennen Sie 3 Maßnahmen, die Sie bei Herrn Kaiser zusätzlich zu den Maßnahmen bei Frau Gruber durchführen dürfen oder müssen. Begründen Sie jede Maßnahme.",
+   "text": "Nehmen Sie Stellung zu der Aussage von Herrn Brandt.",
    "punkte": 3
   },
   "5.1": {
    "nr": "5.1",
-   "text": "Nehmen Sie Stellung zu der Aussage von Herrn Brandt.",
-   "punkte": 3
-  },
-  "6.1": {
-   "nr": "6.1",
    "text": "Beschreiben Sie stichwortartig 5 Sofortmaßnahmen, die Sie bei Herrn Martens bis zum Eintreffen des Rettungsdienstes einleiten. Begründen Sie dabei die Positionierung von Herrn Martens.",
    "punkte": 6
   },
-  "6.2": {
-   "nr": "6.2",
-   "text": "Kennzeichnen Sie in Ihrer Antwort zu 6.1 jede Maßnahme, die Sie nur nach ärztlicher Anordnung durchführen dürfen, mit „n. ä. A.“.",
+  "5.2": {
+   "nr": "5.2",
+   "text": "Kennzeichnen Sie in Ihrer Antwort zu 5.1 jede Maßnahme, die Sie nur nach ärztlicher Anordnung durchführen dürfen, mit „n. ä. A.“.",
    "punkte": 1
   },
-  "6.3": {
-   "nr": "6.3",
-   "vorsatz": "Der Rettungsdienst hat Herrn Martens übernommen.",
-   "text": "Nennen Sie 6 Informationen, die Sie in der Pflegedokumentation festhalten.",
-   "punkte": 3
-  },
-  "7.1": {
-   "nr": "7.1",
+  "6.1": {
+   "nr": "6.1",
    "text": "Erläutern Sie in Bezug auf die Situation von Frau Maler, wie es von ihrer Immobilität bis zum Kreislaufstillstand kommen konnte.",
    "punkte": 5
   },
-  "7.2": {
-   "nr": "7.2",
+  "6.2": {
+   "nr": "6.2",
    "text": "Beschreiben Sie 3 Maßnahmen, die um 11 Uhr hätten eingeleitet werden müssen. Begründen Sie die Positionierung von Frau Maler.",
    "punkte": 4
   }
@@ -313,23 +278,12 @@ var NACHLESEN = {
    "Die Aussage ist falsch. Die Schocklage hilft nur bei Schockzeichen ohne Atemnot, weil Blut aus den Beinen zum Herzen fließt.",
    "Entscheidend ist das Leitsymptom: bei Atemnot Oberkörper hoch, bei Bewusstlosigkeit mit normaler Atmung stabile Seitenlage, bei Verdacht auf Wirbelsäulenverletzung nicht bewegen; bei Verletzungen an Beinen oder Becken keine Schocklage. (Beurteilung 1 P., Begründung mit Gegenbeispiel 1 P.)"
   ],
-  "**b) Nachbesprechung:** Es war jedes Mal ein anaphylaktischer Schock. **Begründen** Sie, warum Sie in den drei Varianten trotzdem unterschiedlich gelagert haben.": [
-   "Die Lagerung richtet sich nach dem Leitsymptom: A (Herr Kaiser) Atemnot → Oberkörper hoch; B (Frau Gruber) Kreislaufzeichen ohne Atemnot → flach, Beine hoch; C (Herr Hager) bewusstlos mit normaler Atmung → stabile Seitenlage."
-  ],
   "4.1": [
-   "z. B.: Infusion sofort stoppen, venösen Zugang belassen – das Allergen fließt sonst weiter; den Zugang braucht das Notfallteam für Medikamente und Volumen.",
-   "Adrenalin 0,5 mg i. m. in die Außenseite des Oberschenkels nach Notfall-SOP – die SOP erlaubt Pflegefachpersonen die Gabe (bei Frau Gruber gibt es keine Anordnung und keine SOP).",
-   "Sauerstoff nach SOP (Maske mit Reservoir) – Atemnot, SpO₂ ↓; die SOP erlaubt die Gabe.",
-   "Volumengabe nach ärztlicher Anordnung vorbereiten – der Zugang liegt bereits.",
-   "Notfallteam der Klinik statt Notruf 112 – Ärztin ist im Haus und schnell da.",
-   "(je Maßnahme mit Begründung 1 P., max. 3 P.)"
-  ],
-  "5.1": [
    "Die Aussage ist fachlich falsch. Beim anaphylaktischen Schock ist Adrenalin i. m. das Mittel der ersten Wahl (nach SOP bzw. ärztlicher Anordnung): Es stellt die Gefäße eng und hebt den Blutdruck, lässt die Schleimhäute abschwellen, weitet die Bronchien und wirkt am schnellsten.",
    "Ein Antihistaminikum blockiert nur Histamin, wirkt langsamer und hebt weder den Blutdruck noch weitet es die Bronchien. Es darf Adrenalin nicht verzögern und kann danach gegeben werden.",
    "Lina sollte die SOP ansprechen und sofort das Notfallteam bzw. die Ärztin einbeziehen. (Beurteilung 1 P., je fachliches Argument 1 P., max. 3 P.)"
   ],
-  "6.1 und 6.2": [
+  "5.1 und 5.2": [
    "z. B.: Hilfe holen: eine Kollegin setzt den Notruf 112 ab (Notärztin nötig); Herrn Martens nicht allein lassen.",
    "Oberkörper hoch (halbsitzend), weil Atemnot und Schwellung im Vordergrund stehen (Kloßgefühl, pfeifende Einatmung, 28/min): Die Atemhilfsmuskulatur kann arbeiten. Keine Schocklage – auch wegen der Herzinsuffizienz. Nicht aufstehen oder gehen lassen.",
    "Vitalzeichen engmaschig überwachen: Atmung, Puls, Blutdruck, Bewusstsein, wenn vorhanden SpO₂ (Schockindex 124 : 92 ≈ 1,3).",
@@ -337,26 +291,26 @@ var NACHLESEN = {
    "Nichts zu essen oder zu trinken geben (Schwellung, Aspirationsgefahr).",
    "Adrenalin i. m. (n. ä. A.) – gibt hier die Notärztin, da keine Anordnung und kein Notfallset vorliegen; Sauerstoff (n. ä. A.).",
    "Uhrzeit, Werte und Maßnahmen notieren; bei Bewusstlosigkeit mit normaler Atmung stabile Seitenlage, ohne normale Atmung Reanimation (KB III).",
-   "6.1: je beschriebene Maßnahme 1 P. (max. 5), Begründung der Positionierung 1 P.; Schocklage trotz Atemnot oder Antihistaminikum statt Adrenalin wird nicht gewertet. 6.2: 1 P., wenn alle Medikamenten- und Sauerstoff-Maßnahmen mit „n. ä. A.“ gekennzeichnet sind."
+   "5.1: je beschriebene Maßnahme 1 P. (max. 5), Begründung der Positionierung 1 P.; Schocklage trotz Atemnot oder Antihistaminikum statt Adrenalin wird nicht gewertet. 5.2: 1 P., wenn alle Medikamenten- und Sauerstoff-Maßnahmen mit „n. ä. A.“ gekennzeichnet sind."
   ],
-  "6.3": [
-   "z. B. (je 0,5 P.): Uhrzeit des Stichs und Beginn der Beschwerden · Auslöser (Wespenstich Oberlippe) · Symptome (Lippenschwellung, Quaddeln, Kloßgefühl, pfeifende Atmung) · Vitalwerte mit Uhrzeit (AF 28/min, Puls 124/min, RR 92/60 mmHg, Vorwert 150/85) · Maßnahmen mit Uhrzeit und Namenskürzel (Notruf, Lagerung, Überwachung) · Übergabe an den Rettungsdienst (Uhrzeit, Zielklinik) · Information der Angehörigen bzw. Hausärztin · Insektengiftallergie in der Akte vermerken · Hinweis auf Nachbeobachtung wegen möglicher zweiter Reaktion (zweigipfliger Verlauf) weitergeben."
+  "Kausalkette": [
+   "Immobilität → tiefe Beinvenenthrombose → Lungenembolie → obstruktiver Schock → Kreislaufstillstand"
   ],
-  "7.1": [
+  "Leitfrage": [
+   "Die Luftnot kommt von einer Lungenembolie: Ein Gerinnsel aus der Beinvene hat die Lungenstrombahn verlegt → obstruktiver Schock. Um 11 Uhr: Oberkörper hoch (Luftnot im Vordergrund), nicht mobilisieren, nicht allein lassen, sofort Hilfe holen und engmaschig überwachen."
+  ],
+  "6.1": [
    "Nach der Hüft-TEP liegt Frau Maler aus Angst vor einer Luxation fast nur im Bett (Immobilität) → das Blut fließt in den Beinvenen langsamer und gerinnt nach der Operation leichter → tiefe Beinvenenthrombose (rechte Wade dick, schmerzt beim Auftreten) – trotz Heparin.",
    "Ein Teil des Gerinnsels löst sich (möglicherweise beim Aufsetzen an der Bettkante) und wird über das rechte Herz in die Lungenarterie geschwemmt → Lungenembolie: Das Blut kann nicht mehr ungehindert durch die Lunge fließen.",
    "Das linke Herz bekommt zu wenig Blut, das Herzzeitvolumen sinkt → obstruktiver Schock (11 Uhr: Luftnot, Puls 118/min, Blässe, kalter Schweiß, Unruhe; Schockindex ≈ 1,1).",
    "Ohne Behandlung dekompensiert der Kreislauf → Kreislaufstillstand (Mittag: Zyanose, kein Puls). (je schlüssiges Glied mit Fallbezug 1 P., max. 5 P.)"
   ],
-  "7.2": [
+  "6.2": [
    "z. B.: Sofort eine Pflegefachkraft holen bzw. Ärztin oder Notruf – Verdacht auf Lungenembolie mit Schockzeichen, nicht abwarten.",
    "Oberkörper hoch lagern, weil die Luftnot im Vordergrund steht (Atemhilfsmuskulatur); keine Schocklage.",
    "Nicht aufstehen oder mobilisieren lassen (weitere Gerinnsel könnten sich lösen); nicht allein lassen.",
    "Vitalzeichen engmaschig: Puls, Blutdruck, Atemfrequenz, SpO₂, Bewusstsein; Sauerstoff n. ä. A. oder SOP; Beobachtungen mit Uhrzeit dokumentieren und weitergeben.",
    "(je Maßnahme 1 P., Begründung der Positionierung 1 P.)"
-  ],
-  "Leitfrage": [
-   "Die Luftnot kommt von einer Lungenembolie: Ein Gerinnsel aus der Beinvene hat die Lungenstrombahn verlegt → obstruktiver Schock. Um 11 Uhr: Oberkörper hoch (Luftnot im Vordergrund), nicht mobilisieren, nicht allein lassen, sofort Hilfe holen und engmaschig überwachen."
   ]
  }
 };

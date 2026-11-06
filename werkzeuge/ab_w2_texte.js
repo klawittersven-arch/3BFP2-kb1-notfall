@@ -126,9 +126,7 @@ const LAGERUNGSKARTEN = [
   { titel: 'Frau Engel (63)', text: 'Nach einem Wespenstich reagiert sie nicht mehr auf Ansprache. Sie atmet normal.', loesung: 'stabile Seitenlage', warum: 'Bewusstlos mit normaler Atmung: Die Atemwege bleiben frei, Erbrochenes kann abfließen.' },
   { titel: 'Herr Fuchs (81)', text: 'Teerstuhl seit dem Morgen. Er ist blass und kaltschweißig, Puls 116/min, Blutdruck 98/72 mmHg, keine Atemnot.', loesung: 'flach, Beine hoch', warum: 'Hypovolämischer Schock ohne Atemnot. Nicht aufsetzen – Kollapsgefahr.' },
   { titel: 'Frau Graf (35)', text: 'Sie hat eine Nussallergie und Quaddeln am Hals: „Ich krieg so schlecht Luft.“ Blutdruck 120/80 mmHg.', loesung: 'Oberkörper hoch', warum: 'Atemnot steht im Vordergrund, der Kreislauf ist noch stabil. Nicht aufstehen lassen.' },
-  { titel: 'Herr Hahn (28)', text: 'Sturz mit dem Fahrrad, offener Unterschenkelbruch. Er ist blass, Puls 120/min. Keine Nacken- oder Rückenschmerzen.', loesung: 'flach, verletztes Bein nicht anheben', warum: 'Keine Schocklage bei Verletzungen an Bein oder Becken: Bein in der vorgefundenen Lage ruhigstellen (Woche 3).', profi: true },
-  { titel: 'Herr Ivo (66)', text: 'Nach einem Wespenstich ist er bewusstlos und atmet nicht normal.', loesung: 'Reanimation beginnen (KB III)', warum: 'Keine normale Atmung = Kreislaufstillstand. Lagerung: Rückenlage auf harter Unterlage.' },
-  { titel: 'Profi-Karte: Frau Jäger (74)', text: 'Plötzlich peitschenartiger Schmerz im linken Bein. Das Bein ist blass und kalt, am Fuß ist kein Puls tastbar.', loesung: 'Bein tief lagern, polstern', warum: 'Verdacht auf akuten Arterienverschluss: Tieflagern verbessert die Durchblutung (Examen Mai 2024). Die Lagerung richtet sich immer nach dem Problem.', profi: true }
+  { titel: 'Herr Ivo (66)', text: 'Nach einem Wespenstich ist er bewusstlos und atmet nicht normal.', loesung: 'Reanimation beginnen (KB III)', warum: 'Keine normale Atmung = Kreislaufstillstand. Lagerung: Rückenlage auf harter Unterlage.' }
 ];
 
 module.exports = { LINK_BASIS, SEITEN, MERKSAETZE, EXPERTEN, ENTSCHEIDUNG, LAGERUNGSKARTEN };

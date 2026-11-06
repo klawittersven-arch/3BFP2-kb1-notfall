@@ -7,7 +7,7 @@
  * Nach größeren Änderungen VERSION erhöhen – dann wird der Speicher erneuert. */
 'use strict';
 
-var VERSION = 'v8';
+var VERSION = 'v9';
 var CACHE = 'kb1-notfall-' + VERSION;
 var ZEITLIMIT_MS = 4000;
 
@@ -19,12 +19,10 @@ var DATEIEN = [
   'w2-nachlesen.html',
   'beamer.html',
   'style.css',
-  'simulation.css',
   'stunde.css',
   'beamer.css',
   'nachlesen.css',
   'inhalte.js',
-  'inhalte_simulation.js',
   'inhalte_stunde.js',
   'inhalte_nachlesen.js',
   'config.js',
@@ -37,14 +35,13 @@ var DATEIEN = [
   'markieren.js',
   'detektiv.js',
   'lagerung.js',
-  'simulation.js',
   'raster.js',
   'vendor/qrcode.min.js',
   'bilder/kbs-logo.png',
-  'bilder/lagerung_beine_hoch.png',
-  'bilder/lagerung_nicht_bewegen.png',
-  'bilder/lagerung_oberkoerper_hoch.png',
-  'bilder/lagerung_seitenlage.png'
+  'bilder/lagerung_beine_hoch.svg',
+  'bilder/lagerung_nicht_bewegen.svg',
+  'bilder/lagerung_oberkoerper_hoch.svg',
+  'bilder/lagerung_seitenlage.svg'
 ];
 
 self.addEventListener('install', function (e) {

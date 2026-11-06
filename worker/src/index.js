@@ -455,9 +455,9 @@ export class Raum extends DurableObject {
     const haken = m.schritt === 'team' ? p.fertigTeam : p.fertigStamm;
     if (m.wert === false) delete haken[id]; else haken[id] = Date.now();
     await this.ctx.storage.put('puzzle', p);
-    // Alle Expertenteams fertig → automatisch weiter in die Stammgruppen
+    // Alle Expertenteams fertig → automatisch weiter (Merksatz AA1, danach Stammgruppen)
     if (m.schritt === 'team' && d.stunde.folie === S.FOLIE_EXPERTEN && S.alleTeamsFertig(p)) {
-      d.stunde.folie = S.FOLIE_STAMM;
+      d.stunde.folie = S.FOLIE_NACH_EXPERTEN;
       d.stunde.schritt = 0;
       d.stunde.version++;
       await this.ctx.storage.put('stunde', d.stunde);

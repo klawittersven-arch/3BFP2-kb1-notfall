@@ -348,6 +348,10 @@ button.mv-zeile { cursor: pointer; min-height: 52px; }
 .lagerkarte .situation { font-size: 20px; font-weight: 600; margin: 0; }
 .timer { font-size: 22px; font-weight: 800; text-align: center; color: var(--dunkelpetrol); min-height: 1.2em; margin: 0 0 12px; }
 .timer.ende { color: #8A1C00; }
+.lager-bilder { margin-top: 14px; }
+.lager-bild { margin: 10px 0 0; }
+.lager-bild img { display: block; width: 100%; height: auto; border-radius: 10px; border: 1px solid #D5DEE5; }
+.lager-bild figcaption { font-size: 16px; line-height: 1.35; margin-top: 4px; }
 .loesung { background: #fff; border: 2px solid var(--rand); }
 
 /* ---------- Abstimmung (Einstieg/Check-out) ---------- */

@@ -3,8 +3,7 @@
    „Schock ist nicht gleich Schock – vergleichen und nach Leitsymptom handeln“
    ==========================================================================
 
-   In dieser Datei stehen die Texte der Übungen (die Simulation hat ihre
-   eigene Datei: inhalte_simulation.js). Sie können die Texte hier ändern,
+   In dieser Datei stehen die Texte der Übungen. Sie können die Texte hier ändern,
    ohne etwas vom Programm zu verstehen.
 
    So ändern Sie einen Text sicher:
@@ -324,7 +323,7 @@ var INHALTE = {
       { kuerzel: 'BH', text: 'Flach, Beine hoch' },
       { kuerzel: 'SSL', text: 'Stabile Seitenlage' },
       { kuerzel: 'NB', text: 'Nicht bewegen, Kopf halten' },
-      { kuerzel: 'AND', text: 'Etwas anderes' }
+      { kuerzel: 'REA', text: 'Reanimation beginnen' }
     ],
     aufdecken: 'Aufdecken',
     loesung: 'Lösung:',
@@ -334,6 +333,14 @@ var INHALTE = {
     naechste: 'Nächste Karte – Rollen tauschen!',
     karteVon: 'Karte {n} von {y}',
     profi: 'Profi-Karte',
+    bilderTitel: '📄 Hilfe: die vier Lagerungen mit Bildern',
+    bilderHinweis: 'Dieselben Bilder finden Sie auf Ihrem Arbeitsblatt (Seite 4).',
+    bilder: [
+      { bild: 'bilder/lagerung_oberkoerper_hoch.svg', titel: 'Oberkörper hoch (halbsitzend)', wann: 'Atemnot steht im Vordergrund.' },
+      { bild: 'bilder/lagerung_beine_hoch.svg', titel: 'Flach, Beine hoch (Schocklage)', wann: 'Schockzeichen ohne Atemnot.' },
+      { bild: 'bilder/lagerung_seitenlage.svg', titel: 'Stabile Seitenlage', wann: 'Bewusstlos, Atmung normal.' },
+      { bild: 'bilder/lagerung_nicht_bewegen.svg', titel: 'Nicht bewegen, Kopf halten', wann: 'Verdacht auf Wirbelsäulenverletzung.' }
+    ],
     mindestensErsterVersuch: 5,
     karten: [
       { titel: 'Herr Bauer (70)', text: 'Nach einem Bienenstich ist ihm schwindelig. Puls 120/min, Blutdruck 85/50 mmHg. Er atmet ruhig und ist ansprechbar.', richtig: 'BH', loesung: 'flach, Beine hoch', warum: 'Schockzeichen ohne Atemnot: Blut aus den Beinen fließt zum Herzen.' },
@@ -342,20 +349,18 @@ var INHALTE = {
       { titel: 'Frau Engel (63)', text: 'Nach einem Wespenstich reagiert sie nicht mehr auf Ansprache. Sie atmet normal.', richtig: 'SSL', loesung: 'stabile Seitenlage', warum: 'Bewusstlos mit normaler Atmung: Die Atemwege bleiben frei, Erbrochenes kann abfließen.' },
       { titel: 'Herr Fuchs (81)', text: 'Teerstuhl seit dem Morgen. Er ist blass und kaltschweißig, Puls 116/min, Blutdruck 98/72 mmHg, keine Atemnot.', richtig: 'BH', loesung: 'flach, Beine hoch', warum: 'Hypovolämischer Schock ohne Atemnot. Nicht aufsetzen – Kollapsgefahr.' },
       { titel: 'Frau Graf (35)', text: 'Sie hat eine Nussallergie und Quaddeln am Hals: „Ich krieg so schlecht Luft.“ Blutdruck 120/80 mmHg.', richtig: 'OK', loesung: 'Oberkörper hoch', warum: 'Atemnot steht im Vordergrund, der Kreislauf ist noch stabil. Nicht aufstehen lassen.' },
-      { titel: 'Herr Hahn (28)', text: 'Sturz mit dem Fahrrad, offener Unterschenkelbruch. Er ist blass, Puls 120/min. Keine Nacken- oder Rückenschmerzen.', richtig: 'AND', loesung: 'flach, verletztes Bein nicht anheben', warum: 'Keine Schocklage bei Verletzungen an Bein oder Becken: Bein in der vorgefundenen Lage ruhigstellen (Woche 3).', profi: true },
-      { titel: 'Herr Ivo (66)', text: 'Nach einem Wespenstich ist er bewusstlos und atmet nicht normal.', richtig: 'AND', loesung: 'Reanimation beginnen (KB III)', warum: 'Keine normale Atmung = Kreislaufstillstand. Lagerung: Rückenlage auf harter Unterlage.' },
-      { titel: 'Profi-Karte: Frau Jäger (74)', text: 'Plötzlich peitschenartiger Schmerz im linken Bein. Das Bein ist blass und kalt, am Fuß ist kein Puls tastbar.', richtig: 'AND', loesung: 'Bein tief lagern, polstern', warum: 'Verdacht auf akuten Arterienverschluss: Tieflagern verbessert die Durchblutung (Examen Mai 2024). Die Lagerung richtet sich immer nach dem Problem.', profi: true }
+      { titel: 'Herr Ivo (66)', text: 'Nach einem Wespenstich ist er bewusstlos und atmet nicht normal.', richtig: 'REA', loesung: 'Reanimation beginnen (KB III)', warum: 'Keine normale Atmung = Kreislaufstillstand. Lagerung: Rückenlage auf harter Unterlage.' }
     ]
   },
 
   /* ------------------------------------------------------------------------
-     AA6 und Hausaufgabe: BEWERTUNGSRASTER (w2-raster.html, w2-transfer.html)
+     AA5 und Hausaufgabe: BEWERTUNGSRASTER (w2-raster.html, w2-transfer.html)
      punkte: je Kriterium; max: Höchstpunktzahl der Gruppe;
      fehler: ein angehakter Fehler setzt die genannten Kriterien auf 0 (sperrt).
      erstSchreiben: true = die Musterlösung erscheint erst nach Bestätigung.
      ------------------------------------------------------------------------ */
   raster: {
-    titel: 'AA6 · Bewertungsraster',
+    titel: 'AA5 · Bewertungsraster',
     anweisung: 'Lesen Sie die Lösung Ihrer Partnerin oder Ihres Partners. **Haken Sie an, was dort steht.** Die App zählt die Punkte wie im Erwartungshorizont.',
     gesamt: 'Punkte: {x} von {y}',
     rueckmeldung: 'Geben Sie jetzt eine Rückmeldung in einem Satz: Was ist gut gelungen – was fehlt noch?',
@@ -363,7 +368,7 @@ var INHALTE = {
     gesperrt: 'zählt nicht (Fehler angehakt)',
     zuruecksetzen: 'Alles zurücksetzen',
     gruppen: [
-      { titel: '6.1 Sofortmaßnahmen (je 1 P., höchstens 5 P.)', max: 5, kriterien: [
+      { titel: '5.1 Sofortmaßnahmen (je 1 P., höchstens 5 P.)', max: 5, kriterien: [
         { id: 'hilfe', text: 'Hilfe holen: Notruf 112 / Notärztin, Herrn Martens nicht allein lassen', punkte: 1 },
         { id: 'ok', text: 'Oberkörper hoch (halbsitzend) lagern', punkte: 1 },
         { id: 'vital', text: 'Atmung, Puls, Blutdruck, Bewusstsein (SpO₂) engmaschig überwachen', punkte: 1 },
@@ -374,22 +379,11 @@ var INHALTE = {
         { id: 'doku', text: 'Uhrzeit, Werte und Maßnahmen notieren', punkte: 1 },
         { id: 'andere', text: 'andere fachlich richtige Maßnahme (z. B. bei Bewusstlosigkeit stabile Seitenlage)', punkte: 1 }
       ] },
-      { titel: '6.1 Begründung der Positionierung (1 P.)', max: 1, kriterien: [
+      { titel: '5.1 Begründung der Positionierung (1 P.)', max: 1, kriterien: [
         { id: 'begruendung', text: 'Positionierung mit der Atemnot begründet (Atemhilfsmuskulatur, Zwerchfell)', punkte: 1 }
       ] },
-      { titel: '6.2 Kennzeichnung (1 P.)', max: 1, kriterien: [
+      { titel: '5.2 Kennzeichnung (1 P.)', max: 1, kriterien: [
         { id: 'naea', text: 'Alle Medikamenten- und Sauerstoff-Maßnahmen sind mit „n. ä. A.“ gekennzeichnet', punkte: 1 }
-      ] },
-      { titel: '6.3 Dokumentation (je 0,5 P., höchstens 3 P.)', max: 3, kriterien: [
-        { id: 'd1', text: 'Uhrzeit des Stichs und Beginn der Beschwerden', punkte: 0.5 },
-        { id: 'd2', text: 'Auslöser (Wespenstich in die Oberlippe)', punkte: 0.5 },
-        { id: 'd3', text: 'Symptome (Schwellung, Quaddeln, Kloßgefühl, pfeifende Atmung)', punkte: 0.5 },
-        { id: 'd4', text: 'Vitalwerte mit Uhrzeit (und Vorwert)', punkte: 0.5 },
-        { id: 'd5', text: 'Maßnahmen mit Uhrzeit und Namenskürzel', punkte: 0.5 },
-        { id: 'd6', text: 'Übergabe an den Rettungsdienst (Uhrzeit, Zielklinik)', punkte: 0.5 },
-        { id: 'd7', text: 'Information von Angehörigen bzw. Hausärztin', punkte: 0.5 },
-        { id: 'd8', text: 'Insektengiftallergie in der Akte vermerken', punkte: 0.5 },
-        { id: 'd9', text: 'Nachbeobachtung wegen möglicher zweiter Reaktion (zweigipfliger Verlauf) weitergeben', punkte: 0.5 }
       ] }
     ],
     fehler: [
