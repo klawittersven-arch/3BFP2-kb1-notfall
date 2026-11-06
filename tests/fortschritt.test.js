@@ -36,14 +36,15 @@ async function bis(seite, fn, arg, ms = 15000) {
       const ctx = await browser.newContext(H.MOBIL);
       const h = await ctx.newPage();
       H.beobachten(h, protokoll, name);
-      await h.goto(basis + 'w2-entscheidung.html');
+      await h.goto(basis + 'w2-entscheidung.html?runde=1');
       await h.fill('#anmelde-name', name);
       await h.fill('#anmelde-raum', raum);
       await h.click('.anmelde-los');
       H.pruefe(await bis(h, () => !!document.querySelector('.anmeldung.angemeldet')), `${name}: angemeldet`);
       const E = await h.evaluate(() => INHALTE.entscheidung);
       for (const runde of [1, 2]) {
-        await h.click(`button:has-text("${runde === 1 ? E.runde1 : E.runde2}")`);
+        // Runde kommt aus dem QR-Code (Einstieg: ?runde=1, Check-out: ?runde=2)
+        if (runde === 2) await h.goto(basis + 'w2-entscheidung.html?runde=2');
         const boxen = await h.$$('.frage');
         for (let i = 0; i < E.fragen.length; i++) {
           const f = E.fragen[i];
@@ -53,7 +54,6 @@ async function bis(seite, fn, arg, ms = 15000) {
         }
         await h.click(`button:has-text("${E.abschicken}")`);
         H.pruefe(await bis(h, (t) => document.getElementById('uebung').textContent.includes(t), E.gesendet), `${name}: Runde ${runde} am Beamer angekommen`);
-        if (runde === 1) await h.click(`button:has-text("← ${E.rundeFrage}")`);
       }
       handys.push(h);
     }

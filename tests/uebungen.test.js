@@ -26,12 +26,22 @@ fs.mkdirSync(ORDNER, { recursive: true });
   let s = await kontext.newPage();
   beobachten(s, protokoll, 'index');
   await s.goto(basis + 'index.html');
-  const links = await s.$$eval('.startlink', (a) => a.map((x) => x.getAttribute('href')));
-  pruefe(links.length === 7, '7 Links auf der Startseite', links);
-  for (const l of links) {
+  pruefe((await s.$$('a')).length === 0, 'Startseite ohne Links (nur über QR-Codes zu den Übungen)');
+  const seiten = ['w2-entscheidung.html?runde=1', 'w2-entscheidung.html?runde=2', 'w2-markieren.html?fall=a', 'w2-detektiv.html', 'w2-lagerung.html', 'w2-simulation.html', 'w2-raster.html', 'w2-transfer.html'];
+  for (const l of seiten) {
     const r = await s.request.get(basis + l);
     pruefe(r.status() === 200, `Seite erreichbar: ${l}`);
   }
+  await s.close();
+
+  /* ---------- Ohne Parameter aus dem QR-Code: keine Auswahl ---------- */
+  console.log('Aufruf ohne QR-Parameter');
+  s = await kontext.newPage();
+  beobachten(s, protokoll, 'ohne-parameter');
+  await s.goto(basis + 'w2-entscheidung.html');
+  pruefe((await s.$$('#uebung button')).length === 0 && (await s.textContent('#uebung')).includes(INHALTE.entscheidung.ohneQr), 'Abstimmung ohne ?runde: nur Hinweis, keine Rundenauswahl');
+  await s.goto(basis + 'w2-markieren.html');
+  pruefe((await s.$$('#uebung button')).length === 0 && (await s.textContent('#uebung')).includes(INHALTE.markieren.ohneQr), 'Markieren ohne ?fall: nur Hinweis, keine Fallauswahl');
   await s.close();
 
   /* ---------- AA1 Markieren ---------- */
@@ -131,9 +141,9 @@ fs.mkdirSync(ORDNER, { recursive: true });
   console.log('Ihre Entscheidung, bitte!');
   s = await kontext.newPage();
   beobachten(s, protokoll, 'entscheidung');
-  await s.goto(basis + 'w2-entscheidung.html');
+  await s.goto(basis + 'w2-entscheidung.html?runde=1');
   const E = INHALTE.entscheidung;
-  await s.click('button:has-text(\"' + E.runde1 + '\")');
+  pruefe((await s.textContent('.rundenkopf')) === E.runde1, 'QR-Code Einstieg öffnet Runde 1');
   await s.click('button:has-text(\"' + E.abschicken + '\")');
   pruefe((await s.textContent('#uebung')).includes(E.nochOffen), 'unvollständig → Hinweis');
   const fragenBoxen = await s.$$('.frage');
@@ -146,8 +156,10 @@ fs.mkdirSync(ORDNER, { recursive: true });
   await s.click('button:has-text(\"' + E.abschicken + '\")');
   pruefe((await s.textContent('#uebung')).includes(E.danke1), 'Runde 1: Dank, keine Auflösung');
   pruefe(!(await s.textContent('#uebung')).includes(E.fragen[0].erklaerung), 'Runde 1 verrät die Lösung nicht');
-  await s.click('button:has-text("← ' + E.rundeFrage + '")');
-  await s.click('button:has-text(\"' + E.runde2 + '\")');
+  const knoepfe1 = await s.$$eval('#uebung button', (b) => b.map((x) => x.textContent));
+  pruefe(knoepfe1.length === 1 && knoepfe1[0] === E.neu, 'nach Runde 1 nur „Antworten ändern“ – kein Weg zu Runde 2', knoepfe1);
+  await s.goto(basis + 'w2-entscheidung.html?runde=2');
+  pruefe((await s.textContent('.rundenkopf')) === E.runde2, 'QR-Code Check-out öffnet Runde 2');
   const boxen2 = await s.$$('.frage');
   for (let i = 0; i < E.fragen.length; i++) {
     const f = E.fragen[i];

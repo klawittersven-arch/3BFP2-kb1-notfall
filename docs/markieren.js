@@ -1,6 +1,7 @@
 /* AA1 · Befunde markieren (Programmlogik – Texte in inhalte.js → markieren).
-   Ablauf: Fall wählen (oder ?fall=a|b|c) → Textstellen antippen → „Prüfen“ →
-   Rückmeldung (gefunden / übersehen / falsch) → so lange verbessern, bis alles stimmt → Merksatz AA1. */
+   Ablauf: Fall aus dem QR-Code des Expertenblatts (?fall=a|b|c) → Textstellen antippen → „Prüfen“ →
+   Rückmeldung (gefunden / übersehen / falsch) → so lange verbessern, bis alles stimmt → Merksatz AA1.
+   Bewusst KEINE Fallauswahl in der App: Die SuS kommen nur über den QR-Code ihres Expertenblatts zum Fall. */
 (function () {
   'use strict';
   var K = window.KB1;
@@ -10,7 +11,6 @@
   var platz = document.getElementById('uebung');
 
   var fallId = K.urlParam('fall');
-  if (!T.faelle[fallId]) fallId = K.Speicher.sitzung.lesen('kb1nf_markieren_fall');
   if (!T.faelle[fallId]) fallId = null;
 
   /* ---------- Zustand je Fall (übersteht Neuladen) ---------- */
@@ -28,18 +28,11 @@
   function istTipp(teil) { return teil && typeof teil === 'object'; }
   function istHinweis(teil) { return istTipp(teil) && !!teil.k; }
 
-  /* ---------- Fallwahl ---------- */
-  function wahlZeigen() {
+  /* ---------- Ohne Fall in der Adresse: nur Hinweis auf den QR-Code ---------- */
+  function ohneQr() {
     platz.textContent = '';
     var box = el('section', 'karte');
-    box.appendChild(el('h2', null, T.wahl));
-    Object.keys(T.faelle).forEach(function (id) {
-      box.appendChild(K.knopf(T.faelle[id].titel, 'knopf-zweit knopf-breit', function () {
-        fallId = id;
-        K.Speicher.sitzung.schreiben('kb1nf_markieren_fall', id);
-        fallZeigen();
-      }));
-    });
+    box.appendChild(el('p', null, T.ohneQr));
     platz.appendChild(box);
     K.fortschrittSetzen(0, 1);
   }
@@ -93,8 +86,7 @@
     var ende = el('div');
     platz.appendChild(ende);
     var unten = el('p', 'klein');
-    unten.appendChild(K.knopf(T.andererFall, 'knopf-leise', function () { K.Speicher.sitzung.schreiben('kb1nf_markieren_fall', null); fallId = null; wahlZeigen(); }));
-    unten.appendChild(K.knopf(K.ersetzen(INHALTE.allgemein.nochEinmal, {}), 'knopf-leise', function () { speichern(leer(fall)); fallZeigen(); }));
+    unten.appendChild(K.knopf(INHALTE.allgemein.nochEinmal, 'knopf-leise', function () { speichern(leer(fall)); fallZeigen(); }));
     platz.appendChild(unten);
 
     function zaehlen() {
@@ -172,5 +164,5 @@
     darstellen(false);
   }
 
-  if (fallId) fallZeigen(); else wahlZeigen();
+  if (fallId) fallZeigen(); else ohneQr();
 })();

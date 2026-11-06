@@ -14,8 +14,8 @@
   <h1 id="titel"></h1>
 </header>
 <main class="inhalt">
+  <!-- Bewusst ohne Links: Die SuS kommen nur über die QR-Codes auf dem Arbeitsblatt zu den Übungen. -->
   <p class="anweisung" id="einleitung"></p>
-  <nav class="startlinks" id="startlinks"></nav>
 </main>
 <script src="inhalte.js"></script>
 <script src="gemeinsam.js"></script>
@@ -25,13 +25,6 @@
     document.getElementById('kopfzeile').textContent = INHALTE.allgemein.kopfzeile;
     document.getElementById('titel').textContent = S.titel;
     document.getElementById('einleitung').textContent = S.einleitung;
-    var nav = document.getElementById('startlinks');
-    S.links.forEach(function (l) {
-      var a = KB1.element('a', 'startlink' + (KB1.Erledigt.ist(l.seite) ? ' erledigt' : ''), l.text);
-      a.href = l.seite + '.html';
-      a.id = 'link-' + l.seite;
-      nav.appendChild(a);
-    });
   })();
 </script>
 </body>

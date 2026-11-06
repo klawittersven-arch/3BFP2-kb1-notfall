@@ -20,7 +20,8 @@ QR_ORDNER = WURZEL / "qr"
 BASIS = "https://klawittersven-arch.github.io/3BFP2-kb1-notfall"
 # Dateiname → Seite (Woche 2). Die Namen verwendet werkzeuge/ab_w2.js.
 SEITEN = {
-    "w2_entscheidung": "w2-entscheidung.html",
+    "w2_entscheidung_1": "w2-entscheidung.html?runde=1",
+    "w2_entscheidung_2": "w2-entscheidung.html?runde=2",
     "w2_markieren_a": "w2-markieren.html?fall=a",
     "w2_markieren_b": "w2-markieren.html?fall=b",
     "w2_markieren_c": "w2-markieren.html?fall=c",
