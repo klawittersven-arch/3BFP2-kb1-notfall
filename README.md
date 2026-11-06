@@ -81,6 +81,8 @@ Der Verbindungsdienst läuft als Cloudflare-Worker **`kb1-notfall`** unter
 3. **Abstimmung** (Knopf unten): „Ihre Entscheidung, bitte!“ – Runde 1 und Runde 2 nebeneinander,
    **ohne Namen**; der helle Teil des Balkens = „sicher“. **Lösung zeigen** markiert die richtigen
    Antworten und blendet die Erklärung ein – erst beim Check-out drücken.
+   **Karte anklicken** (E1–E5) zeigt nur diese Frage groß über den ganzen Bildschirm; „Vorherige/Nächste
+   Frage“ oder die Pfeiltasten blättern, „Alle Fragen“, ein Klick auf die Karte oder Esc führt zurück.
 4. Unten: Anweisungen groß einblenden (Einstieg, AA1–AA2, AA3, AA4, Check-out), **Namen verbergen**,
    **Vollbild**, **Liste leeren** (Abstimmung bleibt), **Neuer Raum** (für die Parallelklasse).
 5. **Probeansicht ohne Internet:** `…/fortschritt.html?demo=1` (erfundene Namen und Stimmen).

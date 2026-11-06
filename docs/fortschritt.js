@@ -34,6 +34,7 @@
   var anweisung = null;       // Nummer der eingeblendeten Anweisung oder null
   var stimmen = null;         // ausgezählte Abstimmung vom Worker
   var ansicht = 'fortschritt';  // 'fortschritt' | 'abstimmung'
+  var grossIndex = null;        // Abstimmung: Nummer der groß gezeigten Frage oder null (alle Karten)
   var loesungAn = false;
   var abfrageTimer = null;
   var laeuft = false;
@@ -197,8 +198,20 @@
     var r2 = (stimmen && stimmen[2]) || { n: 0, fragen: {} };
     $('zusammenfassung').textContent = K.ersetzen(T.stimmenZahl, { a: r1.n, b: r2.n });
     if (!r1.n && !r2.n) { box.appendChild(el('p', 'abst-leer', T.keineStimmen)); return; }
-    FRAGEN.forEach(function (f) {
-      var karte = el('section', 'abst-frage');
+    // Einzelansicht: nur eine Frage groß (Klick auf eine Karte); sonst alle fünf Karten
+    var einzeln = grossIndex !== null && !!FRAGEN[grossIndex];
+    box.classList.toggle('einzeln', einzeln);
+    if (!einzeln) $('zusammenfassung').textContent += '   ·   ' + T.vergroessernHinweis;
+    FRAGEN.forEach(function (f, i) {
+      if (einzeln && i !== grossIndex) return;
+      var karte = el('section', 'abst-frage' + (einzeln ? ' gross' : ''));
+      karte.tabIndex = 0;
+      karte.setAttribute('role', 'button');
+      karte.title = einzeln ? T.verkleinernTipp : T.vergroessernTipp;
+      karte.addEventListener('click', function () { grossSetzen(einzeln ? null : i); });
+      karte.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); grossSetzen(einzeln ? null : i); }
+      });
       karte.appendChild(el('h2', null, f.nr + ' · ' + f.frage));
       var tab = el('div', 'abst-raster');
       tab.appendChild(el('span', 'abst-kopf', ''));
@@ -229,6 +242,33 @@
       if (loesungAn) karte.appendChild(el('p', 'abst-erklaerung', f.erklaerung));
       box.appendChild(karte);
     });
+    if (einzeln) {
+      var nav = el('div', 'abst-nav');
+      var zurueck = el('button', 'leise', '← ' + T.vorherigeFrage);
+      zurueck.type = 'button';
+      zurueck.disabled = grossIndex === 0;
+      zurueck.addEventListener('click', function () { grossSetzen(grossIndex - 1); });
+      var alle = el('button', 'leise', T.alleFragen);
+      alle.type = 'button';
+      alle.addEventListener('click', function () { grossSetzen(null); });
+      var vor = el('button', 'leise', T.naechsteFrage + ' →');
+      vor.type = 'button';
+      vor.disabled = grossIndex === FRAGEN.length - 1;
+      vor.addEventListener('click', function () { grossSetzen(grossIndex + 1); });
+      nav.appendChild(zurueck);
+      nav.appendChild(alle);
+      nav.appendChild(vor);
+      box.appendChild(nav);
+    }
+  }
+
+  // Eine Frage groß zeigen (Index) oder zurück zu allen Karten (null)
+  function grossSetzen(i) {
+    if (i !== null && (i < 0 || i >= FRAGEN.length)) return;
+    grossIndex = i;
+    abstimmungZeichnen();
+    var fokus = document.querySelector('#abstimmung .abst-frage');
+    if (fokus && grossIndex !== null) fokus.focus({ preventScroll: true });
   }
 
   function ansichtSetzen(neu) {
@@ -364,6 +404,12 @@
   });
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') $('dialog').hidden = true;
+    // Abstimmung in der Einzelansicht: Pfeiltasten blättern, Esc zurück zu allen Karten
+    if (ansicht === 'abstimmung' && grossIndex !== null) {
+      if (e.key === 'ArrowRight' && grossIndex < FRAGEN.length - 1) grossSetzen(grossIndex + 1);
+      else if (e.key === 'ArrowLeft' && grossIndex > 0) grossSetzen(grossIndex - 1);
+      else if (e.key === 'Escape') grossSetzen(null);
+    }
   });
 
   /* ---------- Anweisung für die Klasse (groß über den Karten) ---------- */

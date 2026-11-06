@@ -142,6 +142,13 @@ var INHALTE = {
     stimmenZahl: 'Runde 1: {a} Stimmen · Runde 2: {b} Stimmen',
     keineStimmen: 'Noch keine Stimmen – die Klasse stimmt über „Ihre Entscheidung, bitte!“ ab.',
     sicherAnteil: 'davon sicher: {n}',
+    // Vergrößern einer Frage (Klick auf eine Karte; Pfeiltasten blättern, Esc = alle Karten)
+    vergroessernHinweis: 'Karte anklicken = groß anzeigen',
+    vergroessernTipp: 'Anklicken: diese Frage groß anzeigen',
+    verkleinernTipp: 'Anklicken: zurück zu allen Fragen',
+    vorherigeFrage: 'Vorherige Frage',
+    naechsteFrage: 'Nächste Frage',
+    alleFragen: 'Alle Fragen',
 
     anweisungen: [
       { knopf: 'Einstieg', text: 'Ihre Entscheidung, bitte! – Runde 1: Scannen Sie den QR-Code auf Seite 1.' },

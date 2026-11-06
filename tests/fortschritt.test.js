@@ -90,7 +90,35 @@ async function bis(seite, fn, arg, ms = 15000) {
     await demo.waitForSelector('#tafel:not([hidden])');
     await demo.click('#ansicht');
     H.pruefe((await demo.$$('.abst-frage')).length === 5, 'Probeansicht: Abstimmung mit erfundenen Daten');
-    void html;
+
+    console.log('\n== Beamer: eine Frage groß anzeigen');
+    await demo.click('.abst-frage >> nth=0');
+    H.pruefe((await demo.$$('.abst-frage')).length === 1 && (await demo.$$('.abst-frage.gross')).length === 1, 'Klick auf E1: nur diese Karte, groß');
+    H.pruefe((await demo.locator('.abst-frage.gross h2').innerText()).startsWith('E1'), 'groß gezeigt: E1');
+    const kleinH = await demo.evaluate(() => 0);
+    const groesse = await demo.$eval('.abst-frage.gross .abst-option', (e) => parseFloat(getComputedStyle(e).fontSize));
+    H.pruefe(groesse >= 28, `Antworttext groß lesbar (${groesse}px bei 900px Höhe)`, groesse);
+    const passt = () => demo.$eval('.abst-frage.gross', (e) => e.scrollHeight <= e.clientHeight + 1);
+    H.pruefe(await passt(), 'große Karte passt ohne Abschneiden auf den Bildschirm');
+    await demo.screenshot({ path: path.join(ORDNER, 'beamer_abstimmung_gross.png') });
+    await demo.keyboard.press('ArrowRight');
+    H.pruefe((await demo.locator('.abst-frage.gross h2').innerText()).startsWith('E2'), 'Pfeil rechts → E2');
+    await demo.click('.abst-nav button:has-text("Nächste Frage")');
+    H.pruefe((await demo.locator('.abst-frage.gross h2').innerText()).startsWith('E3'), '„Nächste Frage“ → E3');
+    await demo.click('#loesung');
+    H.pruefe((await demo.$$('.abst-option.richtig')).length === 1 && (await demo.$$('.abst-frage.gross .abst-erklaerung')).length === 1, 'Lösung zeigen: richtige Antwort und Erklärung in der großen Ansicht');
+    await demo.click('.abst-nav button:has-text("Nächste Frage")');
+    H.pruefe(await passt(), 'E4 (längste Antworten) mit Lösung passt ohne Abschneiden');
+    await demo.screenshot({ path: path.join(ORDNER, 'beamer_abstimmung_gross_loesung.png') });
+    await demo.click('.abst-nav button:has-text("Vorherige Frage")');
+    await demo.waitForTimeout(3500);
+    H.pruefe((await demo.locator('.abst-frage.gross h2').innerText()).startsWith('E3'), 'große Ansicht bleibt bei der nächsten Aktualisierung erhalten');
+    await demo.keyboard.press('Escape');
+    H.pruefe((await demo.$$('.abst-frage')).length === 5, 'Esc → zurück zu allen fünf Karten');
+    await demo.click('.abst-frage >> nth=4');
+    await demo.click('.abst-frage.gross');
+    H.pruefe((await demo.$$('.abst-frage')).length === 5, 'Klick auf die große Karte → zurück zu allen Karten');
+    void html; void kleinH;
 
     H.pruefe(protokoll.konsole.length === 0, 'keine Fehler in der Konsole', protokoll.konsole);
     H.pruefe(protokoll.extern.length === 0, 'keine Anfragen an fremde Adressen', protokoll.extern);
