@@ -336,3 +336,8 @@ b, strong { font-weight: 800; }
 .abst.zwei .abst-spur { height: 13px; }
 .abst.zwei .abst-zahl { font-size: 11px; }
 .weiter:disabled { opacity: .55; cursor: default; }
+
+/* Probestunde */
+.probe-chip { display: inline-block; margin-right: 12px; padding: 4px 12px; border-radius: 999px; background: var(--akzent); color: #fff; font-size: 15px; letter-spacing: .06em; text-transform: uppercase; vertical-align: 3px; }
+.probe-start { margin-top: 10px; padding-top: 18px; border-top: 2px solid var(--hell); display: grid; gap: 8px; justify-items: start; }
+.probe-start .tipp { margin: 0; font-size: 17px; line-height: 1.4; }

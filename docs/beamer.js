@@ -177,10 +177,12 @@
     $('kopf-abschnitt').textContent = f.abschnitt || '';
     $('kopf-raum').hidden = false;
     $('kopf-raum').textContent = '';
+    if (raum.probe) $('kopf-raum').appendChild(el('span', 'probe-chip', T.probeChip));
     $('kopf-raum').appendChild(document.createTextNode(T.raumcode + ' '));
     $('kopf-raum').appendChild(el('b', null, raum.raum));
     $('kopf-zaehler').hidden = false;
-    $('kopf-handys').textContent = K.ersetzen(T.handys, { n: stand.online || 0 });
+    var handys = stand.online === 1 ? T.handyEins : K.ersetzen(T.handys, { n: stand.online || 0 });
+    $('kopf-handys').textContent = raum.probe ? K.ersetzen(T.handysProbe, { handys: handys, f: Probe.anzahl() }) : handys;
 
     // Fuß
     $('fuss').hidden = false;
@@ -490,7 +492,7 @@
       karte.appendChild(kopf);
       var ul = el('ul', 'g-mitglieder');
       g.mitglieder.slice().sort(function (a, b) { return a.rolle < b.rolle ? -1 : a.rolle > b.rolle ? 1 : 0; }).forEach(function (m) {
-        var li = el('li', 'g-mitglied' + (m.online ? '' : ' offline'));
+        var li = el('li', 'g-mitglied' + (m.online || Probe.ist(m.id) ? '' : ' offline'));
         var inhalt = art === 'einteilen' ? el('button') : li;
         if (art === 'einteilen') {
           inhalt.type = 'button';
@@ -597,7 +599,7 @@
         k.appendChild(kopf);
         var ul = el('ul', 'g-mitglieder');
         t.mitglieder.forEach(function (m) {
-          var li = el('li', 'g-mitglied' + (m.online ? '' : ' offline'));
+          var li = el('li', 'g-mitglied' + (m.online || Probe.ist(m.id) ? '' : ' offline'));
           li.appendChild(el('span', null, anzeigeName(m.id, m.name)));
           if (m.ohneHandy) li.appendChild(el('span', 'ohne', T.ohneHandyKurz));
           if (m.fertig) li.appendChild(el('span', 'haken', '✓'));
@@ -825,7 +827,10 @@
     }));
     r.appendChild(knopf(T.menueTeilnehmende, 'knopf-klein', function () { teilnehmende(); }));
     if (!demo) r.appendChild(knopf(T.menueNeuerRaum, 'knopf-klein', function () {
-      frage(T.neuerRaumFrage, [[T.abbrechen, false], [T.ja, true]]).then(function (ja) { if (ja) raumStarten(); });
+      frage(T.neuerRaumFrage, [[T.abbrechen, false], [T.ja, true]]).then(function (ja) { if (ja) raumStarten(false); });
+    }));
+    if (!demo) r.appendChild(knopf(T.menueProbe, 'knopf-klein', function () {
+      frage(T.probeFrage, [[T.abbrechen, false], [T.ja, true]]).then(function (ja) { if (ja) raumStarten(true); });
     }));
     k.appendChild(r);
     k.appendChild(el('p', 'tipp', T.tastenTipp));
@@ -898,27 +903,37 @@
     k.appendChild(el('p', 'f-text', T.startText));
     var fehler = el('p', 'fehler', meldung || (BASIS ? '' : T.nichtEingerichtet));
     k.appendChild(fehler);
-    var b = knopf(T.starten, 'knopf-gross', raumStarten);
+    var b = knopf(T.starten, 'knopf-gross', function () { raumStarten(false); });
     b.id = 'starten';
     b.disabled = !BASIS;
     k.appendChild(b);
+    var probe = el('div', 'probe-start');
+    var pb = knopf(T.probeStarten, 'knopf-klein', function () { raumStarten(true); });
+    pb.id = 'probe-starten';
+    pb.disabled = !BASIS;
+    probe.appendChild(pb);
+    probe.appendChild(el('p', 'tipp', T.probeText));
+    k.appendChild(probe);
     box.appendChild(k);
     inhalt.appendChild(box);
   }
 
-  function raumStarten() {
+  function raumStarten(probe) {
     if (verbindung) { verbindung.stopp(); verbindung = null; }
+    Probe.stopp();
     KB1Verbindung.senden(BASIS, '/api/raum', {}).then(function (x) {
       if (x.status !== 200 || !x.d.ok) { startBildschirm(T.startFehler); return; }
-      raum = { raum: x.d.raum, schluessel: x.d.schluessel, laeuftAb: x.d.laeuftAb };
+      raum = { raum: x.d.raum, schluessel: x.d.schluessel, laeuftAb: x.d.laeuftAb, probe: !!probe };
       K.Speicher.dauer.schreiben(SCHL_RAUM, raum);
       bekannt = {};
+      if (probe) Probe.starten(true);
       verbinden();
     }).catch(function () { startBildschirm(T.startFehler); });
   }
 
   function abgelaufen() {
     if (verbindung) { verbindung.stopp(); verbindung = null; }
+    Probe.stopp();
     K.Speicher.dauer.schreiben(SCHL_RAUM, null);
     raum = null;
     stand = null;
@@ -1026,11 +1041,104 @@
     }
   };
 
+  /* ---------- Probestunde: Der Laptop spielt eine erfundene Klasse ----------
+     Die erfundenen Handys melden sich über die normalen Schnittstellen an, stimmen ab, melden Fortschritt
+     und „fertig“ – je nachdem, welche Folie gerade läuft. Die Lehrkraft macht mit dem eigenen Handy mit
+     und wird wie alle anderen eingeteilt. Takt für Tests: beamer.html?takt=300 (Millisekunden). */
+  var Probe = (function () {
+    var SCHL = 'kb1nf_probe';
+    var TAKT = Number(K.urlParam('takt')) || 2500;
+    var z = null, timer = null;
+    function speichern() { K.Speicher.dauer.schreiben(SCHL, z); }
+    function post(weg, d) { d.raum = raum.raum; return KB1Verbindung.senden(BASIS, weg, d).catch(function () { return null; }); }
+    function auswahl(liste, n) { return K.mischen(liste).slice(0, n); }
+    function rolle(id) {
+      var r = null;
+      ((stand && stand.puzzle && stand.puzzle.teams) || []).forEach(function (t) { t.mitglieder.forEach(function (m) { if (m.id === id) r = t.b; }); });
+      return r;
+    }
+    function gesamt(seite, id) {
+      if (seite === 'w2-markieren') {
+        var fall = rolle(id) ? S.rollen[rolle(id)].fall : 'a';
+        return INHALTE.markieren.faelle[fall].teile.filter(function (t) { return typeof t === 'object' && t.k; }).length;
+      }
+      return { 'w2-detektiv': INHALTE.detektiv.faelle.length + 1, 'w2-lagerung': INHALTE.lagerung.karten.length, 'w2-simulation': 3 }[seite] || 5;
+    }
+    function abstimmen(p, runde) {
+      var antworten = {}, sicher = {};
+      FRAGEN.forEach(function (f, i) {
+        // Beginn: typische Fehlvorstellungen (besonders E1 und E6), Ende: meist richtig
+        var quote = runde === 2 ? 0.85 : (i === 0 || i === FRAGEN.length - 1 ? 0.35 : 0.55);
+        antworten[f.nr] = Math.random() < quote ? f.richtig : f.optionen[Math.floor(Math.random() * f.optionen.length)].charAt(0);
+        sicher[f.nr] = Math.random() < (runde === 2 ? 0.75 : 0.4) ? 1 : 0;
+      });
+      post('/api/stimme', { geraeteId: p.id, runde: runde, antworten: antworten, sicher: sicher });
+    }
+    function takt() {
+      if (!raum || !raum.probe || !stand || !z) return;
+      var f = folie();
+      if (z.folie !== f.id) { z.folie = f.id; z.seit = Date.now(); }
+      var eingeteilt = stand.puzzle ? stand.puzzle.eingeteilt : null;
+      if (z.eingeteilt !== eingeteilt) { z.eingeteilt = eingeteilt; z.ft = {}; z.fs = {}; }   // neu gemischt → Haken weg
+      var draussen = z.leute.filter(function (p) { return !z.an[p.id]; });
+      if (draussen.length) {
+        auswahl(draussen, 4).forEach(function (p) { z.an[p.id] = true; post('/api/anmelden', { geraeteId: p.id, name: p.name }); });
+        speichern();
+        return;
+      }
+      if (f.typ === 'abstimmung') {
+        var schon = f.runde === 2 ? z.s2 : z.s1;
+        auswahl(z.leute.filter(function (p) { return !schon[p.id]; }), 3).forEach(function (p) { schon[p.id] = true; abstimmen(p, f.runde); });
+      }
+      var seite = f.seite || (f.typ === 'experten' ? 'w2-markieren' : null);
+      if (seite) {
+        auswahl(z.leute, 5).forEach(function (p) {
+          var g = gesamt(seite, p.id), schl = seite + ':' + p.id;
+          var x = Math.min(g, (z.prog[schl] || 0) + 1);
+          z.prog[schl] = x;
+          post('/api/melden', { geraeteId: p.id, name: p.name, seite: seite, geloest: x, gesamt: g, status: x >= g ? 'fertig' : 'arbeitet' });
+        });
+      }
+      if (f.typ === 'experten') {
+        z.leute.forEach(function (p) {
+          if (z.ft[p.id] || !rolle(p.id) || (z.prog['w2-markieren:' + p.id] || 0) < gesamt('w2-markieren', p.id) || Math.random() > 0.3) return;
+          z.ft[p.id] = true;
+          post('/api/aktion', { geraeteId: p.id, typ: 'fertig', schritt: 'team' });
+        });
+      }
+      if (f.typ === 'stamm' && Date.now() - z.seit > 8 * TAKT) {
+        z.leute.forEach(function (p) {
+          if (z.fs[p.id] || !rolle(p.id) || Math.random() > 0.15) return;
+          z.fs[p.id] = true;
+          post('/api/aktion', { geraeteId: p.id, typ: 'fertig', schritt: 'stamm' });
+        });
+      }
+      speichern();
+    }
+    return {
+      starten: function (neu) {
+        if (neu) {
+          z = { raum: raum.raum, leute: T.probeNamen.map(function (n) { return { id: 'probe' + K.zufallsId(12), name: n }; }), an: {}, s1: {}, s2: {}, prog: {}, ft: {}, fs: {}, folie: null, seit: 0, eingeteilt: null };
+          speichern();
+        } else {
+          var g = K.Speicher.dauer.lesen(SCHL);
+          z = g && raum && g.raum === raum.raum ? g : null;
+        }
+        clearInterval(timer);
+        if (raum && raum.probe && z) timer = setInterval(takt, TAKT);
+      },
+      stopp: function () { clearInterval(timer); timer = null; },
+      ist: function (id) { return !!(raum && raum.probe && z) && z.leute.some(function (p) { return p.id === id; }); },
+      anzahl: function () { return z ? z.leute.length : 0; }
+    };
+  })();
+
   /* ---------- Start ---------- */
   if (demo) { Demo.start(); return; }
   var gespeichert = K.Speicher.dauer.lesen(SCHL_RAUM);
   if (BASIS && gespeichert && /^\d{4}$/.test(gespeichert.raum) && gespeichert.schluessel && (!gespeichert.laeuftAb || gespeichert.laeuftAb > Date.now())) {
     raum = gespeichert;
+    if (raum.probe) Probe.starten(false);
     verbinden();
   } else startBildschirm();
 })();
