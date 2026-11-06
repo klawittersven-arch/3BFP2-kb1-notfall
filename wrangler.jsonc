@@ -1,0 +1,22 @@
+// Cloudflare-Konfiguration: Verbindungsdienst für die Fortschrittsanzeige am Beamer.
+// Das Cloudflare-Projekt „kb1-notfall“ ist mit diesem GitHub-Repository verknüpft
+// (wie bei Tetris): Jede Änderung geht nach ca. einer Minute automatisch online.
+// Die Web-App selbst läuft weiter über GitHub Pages (Ordner docs/).
+{
+  "$schema": "worker/node_modules/wrangler/config-schema.json",
+  "name": "kb1-notfall",
+  "main": "worker/src/index.js",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": true,
+  "preview_urls": false,
+  "durable_objects": {
+    "bindings": [{ "name": "RAUM", "class_name": "Raum" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Raum"] }],
+  "vars": {
+    // So lange gibt es einen Raum; danach wird alles automatisch gelöscht.
+    "LEBENSDAUER_MINUTEN": "360"
+  },
+  // Keine Protokolle bei Cloudflare speichern (enthielten sonst Vornamen).
+  "observability": { "enabled": false }
+}

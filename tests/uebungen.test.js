@@ -1,0 +1,200 @@
+/* Test: Übungen von Woche 2 in Handygröße (390 × 844) durchspielen – ohne Worker.
+ * Start (im Ordner tests/): node uebungen.test.js */
+'use strict';
+const fs = require('fs');
+const path = require('path');
+const { chromium, serverStarten, pruefe, ergebnis, MOBIL, beobachten } = require('./hilfen');
+
+const ORDNER = path.join(__dirname, 'ergebnisse');
+fs.mkdirSync(ORDNER, { recursive: true });
+
+(async () => {
+  const { server, basis } = await serverStarten();
+  const browser = await chromium.launch();
+  const kontext = await browser.newContext({ ...MOBIL, deviceScaleFactor: 1 });
+  const protokoll = { konsole: [], extern: [] };
+  const INHALTE = await (async () => {
+    const s = await kontext.newPage();
+    await s.goto(basis + 'index.html');
+    const i = await s.evaluate(() => window.INHALTE);
+    await s.close();
+    return i;
+  })();
+
+  /* ---------- Startseite ---------- */
+  console.log('Startseite');
+  let s = await kontext.newPage();
+  beobachten(s, protokoll, 'index');
+  await s.goto(basis + 'index.html');
+  const links = await s.$$eval('.startlink', (a) => a.map((x) => x.getAttribute('href')));
+  pruefe(links.length === 7, '7 Links auf der Startseite', links);
+  for (const l of links) {
+    const r = await s.request.get(basis + l);
+    pruefe(r.status() === 200, `Seite erreichbar: ${l}`);
+  }
+  await s.close();
+
+  /* ---------- AA1 Markieren ---------- */
+  for (const fall of ['a', 'b', 'c']) {
+    console.log(`AA1 Markieren – Fall ${fall}`);
+    s = await kontext.newPage();
+    beobachten(s, protokoll, 'markieren-' + fall);
+    await s.goto(basis + `w2-markieren.html?fall=${fall}`);
+    const teile = INHALTE.markieren.faelle[fall].teile.filter((t) => typeof t === 'object');
+    const knoepfe = await s.$$('.markierbar');
+    pruefe(knoepfe.length === teile.length, `${teile.length} antippbare Stellen`);
+    // erst eine falsche + eine richtige Stelle, prüfen
+    const iFalsch = teile.findIndex((t) => !t.k);
+    const iRichtig = teile.findIndex((t) => t.k === 'ursache' || t.k === 'begleit');
+    await knoepfe[iFalsch].click();
+    await knoepfe[iRichtig].click();
+    await s.click('button:has-text(\"' + INHALTE.markieren.pruefen + '\")');
+    pruefe(await s.$('.markierbar.falsch') !== null, 'falsche Markierung wird grau durchgestrichen');
+    pruefe(await s.$('.markierbar.fehlt') !== null, 'übersehene Stellen werden orange markiert');
+    pruefe((await s.textContent('#uebung')).includes('noch kein Zeichen des Kreislaufs'), 'Hinweis „kein Kreislaufzeichen“');
+    // korrigieren: falsche weg, alle richtigen an
+    await knoepfe[iFalsch].click();
+    for (let i = 0; i < teile.length; i++) if (teile[i].k && i !== iRichtig) await knoepfe[i].click();
+    await s.click('button:has-text(\"' + INHALTE.markieren.pruefen + '\")');
+    await s.waitForSelector('.merksatz');
+    pruefe((await s.textContent('.merksatz')).includes('Kreislaufs'), 'Merksatz AA1 erscheint');
+    if (fall === 'a') await s.screenshot({ path: path.join(ORDNER, 'markieren_fertig.png'), fullPage: true });
+    await s.close();
+  }
+
+  /* ---------- AA2 Detektiv ---------- */
+  console.log('AA2 Detektiv');
+  s = await kontext.newPage();
+  beobachten(s, protokoll, 'detektiv');
+  await s.goto(basis + 'w2-detektiv.html');
+  const D = INHALTE.detektiv;
+  for (let n = 0; n < D.faelle.length; n++) {
+    const f = D.faelle[n];
+    const formText = D.formen.find((x) => x.kuerzel === f.form).text;
+    if (n === 0) {
+      const falsch = D.formen.find((x) => x.kuerzel !== f.form).text;
+      await s.click(`.antwort:has-text("${falsch}")`);
+      pruefe((await s.textContent('#uebung')).includes(f.tipp), 'Tipp bei falscher Schockform');
+    }
+    await s.click(`.antwort:has-text("${formText}")`);
+    const teile = f.teile.filter((t) => typeof t === 'object');
+    const btn = await s.$$('.markierbar');
+    if (n === 0) {
+      const iSchock = teile.findIndex((t) => t.b === 'schock');
+      const iBeleg = teile.findIndex((t) => t.b === 'beleg');
+      await btn[iSchock].click(); await btn[iBeleg].click();
+      pruefe((await s.textContent('#uebung')).includes(D.belegSchock), 'Hinweis: zeigt Schock, aber nicht die Form');
+      const iBeleg2 = teile.findIndex((t, i) => t.b === 'beleg' && i !== iBeleg);
+      await btn[iBeleg2].click();
+    } else {
+      const idx = teile.map((t, i) => (t.b === 'beleg' ? i : -1)).filter((i) => i >= 0).slice(0, 2);
+      for (const i of idx) await btn[i].click();
+    }
+    pruefe((await s.textContent('#uebung')).includes(D.belegRichtig), `Fall ${n + 1}: richtig belegt`);
+    await s.click('button:has-text(\"' + INHALTE.allgemein.weiter + '\")');
+  }
+  await s.waitForSelector('.monitorvergleich');
+  await s.click('button.mv-zeile:has-text("Blutdruck")');
+  await s.click('button.mv-zeile:has-text("Puls")');
+  pruefe((await s.textContent('#uebung')).includes('unterscheidet die Formen nicht'), 'Monitorvergleich: Blutdruck als Fehler erklärt');
+  await s.click('button.mv-zeile:has-text("Haut")');
+  await s.waitForSelector('.merksatz');
+  pruefe((await s.textContent('.merksatz')).includes('Sympathikus'), 'Merksatz AA2 erscheint');
+  await s.screenshot({ path: path.join(ORDNER, 'detektiv_fertig.png'), fullPage: true });
+  await s.close();
+
+  /* ---------- AA3 Lagerung ---------- */
+  console.log('AA3 Lagerungsparcours');
+  s = await kontext.newPage();
+  beobachten(s, protokoll, 'lagerung');
+  await s.goto(basis + 'w2-lagerung.html');
+  const L = INHALTE.lagerung;
+  for (let n = 0; n < L.karten.length; n++) {
+    const k = L.karten[n];
+    if (n === 0) {
+      await s.click('button:has-text(\"' + L.timerStart + '\")');
+      await s.waitForTimeout(1100);
+      pruefe(/noch \d+ s/.test(await s.textContent('.timer')), 'Timer läuft');
+      await s.screenshot({ path: path.join(ORDNER, 'lagerung_karte.png'), fullPage: true });
+    }
+    const opt = L.optionen.find((o) => o.kuerzel === k.richtig).text;
+    await s.click(`.antwort:has-text("${opt}")`);
+    await s.click('button:has-text(\"' + L.aufdecken + '\")');
+    pruefe((await s.textContent('#uebung')).includes(k.warum), `Karte ${n + 1}: Begründung sichtbar`);
+    await s.click('button:has-text(\"' + L.naechste + '\")');
+  }
+  await s.waitForSelector('.merksatz');
+  pruefe((await s.textContent('.merksatz')).includes('Leitsymptom'), 'Merksatz AA3 erscheint');
+  await s.close();
+
+  /* ---------- Einstieg / Check-out ---------- */
+  console.log('Ihre Entscheidung, bitte!');
+  s = await kontext.newPage();
+  beobachten(s, protokoll, 'entscheidung');
+  await s.goto(basis + 'w2-entscheidung.html');
+  const E = INHALTE.entscheidung;
+  await s.click('button:has-text(\"' + E.runde1 + '\")');
+  await s.click('button:has-text(\"' + E.abschicken + '\")');
+  pruefe((await s.textContent('#uebung')).includes(E.nochOffen), 'unvollständig → Hinweis');
+  const fragenBoxen = await s.$$('.frage');
+  for (let i = 0; i < E.fragen.length; i++) {
+    const f = E.fragen[i];
+    const falsch = f.optionen.find((o) => o.charAt(0) !== f.richtig);
+    await (await fragenBoxen[i].$(`.antwort:has-text("${falsch}")`)).click();
+    await (await fragenBoxen[i].$(`.klein-knopf:has-text("${E.unsicher}")`)).click();
+  }
+  await s.click('button:has-text(\"' + E.abschicken + '\")');
+  pruefe((await s.textContent('#uebung')).includes(E.danke1), 'Runde 1: Dank, keine Auflösung');
+  pruefe(!(await s.textContent('#uebung')).includes(E.fragen[0].erklaerung), 'Runde 1 verrät die Lösung nicht');
+  await s.click('button:has-text("← ' + E.rundeFrage + '")');
+  await s.click('button:has-text(\"' + E.runde2 + '\")');
+  const boxen2 = await s.$$('.frage');
+  for (let i = 0; i < E.fragen.length; i++) {
+    const f = E.fragen[i];
+    const richtig = f.optionen.find((o) => o.charAt(0) === f.richtig);
+    await (await boxen2[i].$(`.antwort:has-text("${richtig}")`)).click();
+    await (await boxen2[i].$(`.klein-knopf:has-text("${E.sicher}")`)).click();
+  }
+  await s.click('button:has-text(\"' + E.abschicken + '\")');
+  pruefe((await s.textContent('#uebung')).includes(E.fragen[0].erklaerung), 'Runde 2: Auflösung mit Erklärung');
+  pruefe((await s.$$('.falsch-text')).length === 5 && (await s.$$('.ok-text')).length === 5, 'eigene Antworten aus Runde 1 und 2 nebeneinander');
+  await s.screenshot({ path: path.join(ORDNER, 'entscheidung_aufloesung.png'), fullPage: true });
+  await s.close();
+
+  /* ---------- AA6 Raster ---------- */
+  console.log('AA6 Bewertungsraster');
+  s = await kontext.newPage();
+  beobachten(s, protokoll, 'raster');
+  await s.goto(basis + 'w2-raster.html');
+  const kr = await s.$$('.kriterium input');
+  for (const c of kr.slice(0, 9)) await c.check();      // alle 9 Sofortmaßnahmen → max 5
+  pruefe((await s.textContent('.gesamtpunkte')).includes('5 von 10'), 'Obergrenze 5 Punkte bei Sofortmaßnahmen', await s.textContent('.gesamtpunkte'));
+  await kr[9].check();   // Begründung
+  pruefe((await s.textContent('.gesamtpunkte')).includes('6 von 10'), 'Begründung zählt');
+  await s.check('.fehlerbox .kriterium:has-text("Schocklage") input');
+  pruefe((await s.textContent('.gesamtpunkte')).includes('5 von 10'), 'Fehler „Schocklage“ sperrt Lagerung und Begründung', await s.textContent('.gesamtpunkte'));
+  await s.screenshot({ path: path.join(ORDNER, 'raster.png'), fullPage: true });
+  await s.close();
+
+  /* ---------- Hausaufgabe ---------- */
+  console.log('Hausaufgabe Selbstkontrolle');
+  s = await kontext.newPage();
+  beobachten(s, protokoll, 'transfer');
+  await s.goto(basis + 'w2-transfer.html');
+  pruefe(await s.$('.muster') === null, 'Musterlösung zunächst verborgen');
+  const knopfText = INHALTE.transfer.erstSchreiben;
+  for (let i = 0; i < INHALTE.transfer.aufgaben.length; i++) await s.click(`button:has-text("${knopfText}") >> nth=0`);
+  pruefe((await s.$$('.muster')).length === 5, 'alle Musterlösungen aufgedeckt');
+  for (const c of await s.$$('.kriterium input')) await c.check();
+  pruefe((await s.textContent('.gesamtpunkte')).includes('20 von 20'), 'volle Punktzahl 20', await s.textContent('.gesamtpunkte'));
+  await s.close();
+
+  pruefe(protokoll.konsole.length === 0, 'keine Fehler in der Konsole', protokoll.konsole);
+  pruefe(protokoll.extern.length === 0, 'keine Anfragen an fremde Adressen', protokoll.extern);
+
+  await browser.close();
+  server.close();
+  const ok = ergebnis();
+  fs.writeFileSync(path.join(ORDNER, 'uebungen.txt'), `Stand: ${new Date().toISOString()}\nErgebnis: ${ok ? 'bestanden' : 'FEHLER'}\n`);
+  process.exit(ok ? 0 : 1);
+})().catch((e) => { console.error(e); process.exit(1); });

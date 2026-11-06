@@ -1,0 +1,11 @@
+{
+  "name": "kb1-notfall-tests",
+  "private": true,
+  "description": "Automatische Tests für die Web-App zu KB I Notfallsituationen (Themenblock 2) (nur zum Testen, nicht Teil der Website)",
+  "scripts": {
+    "test": "node inhalte.test.js && node uebungen.test.js && node simulation.test.js && node fortschritt.test.js"
+  },
+  "devDependencies": {
+    "playwright": "1.56.1"
+  }
+}
