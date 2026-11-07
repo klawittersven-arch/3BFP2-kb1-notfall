@@ -288,7 +288,7 @@ var STUNDE = {
     {
       id: 'aa3', abschnitt: 'Lagerung', kurz: 'Lagerungs-Quiz (AA3)', typ: 'fortschritt', seite: 'w2-lagerung',
       titel: 'AA3 a) · Lagerungs-Quiz',
-      punkte: ['Jede Person für sich am Handy: **kurze Situationen**.', 'Was ist das **Leitsymptom**? Tippen Sie an, wie Sie lagern – dann **Aufdecken** und die Begründung lesen.', 'Hilfe: die **Bilder der vier Lagerungen** auf dem Arbeitsblatt (S. 3) und am Handy.', 'Am Ende zeigt das Handy den **Merksatz AA3** – er steht auch auf dem Arbeitsblatt.'],
+      punkte: ['Jede Person für sich am Handy: **kurze Situationen**.', 'Was ist das **Leitsymptom**? Tippen Sie an, wie Sie lagern – dann **Aufdecken** und die Begründung lesen.', 'Hilfe: die **Bilder der vier Lagerungen** auf dem Arbeitsblatt (S. 3) und am Handy.', 'Zuerst zeigt das Handy den **Merksatz AA3** – er hilft beim Quiz.'],
       handy: { typ: 'modul', modul: 'lagerung' }
     },
     {

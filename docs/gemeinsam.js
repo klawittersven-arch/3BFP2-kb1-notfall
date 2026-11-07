@@ -170,10 +170,11 @@
   }
 
   // Merksatz aus INHALTE.merksaetze[key]: Teile sind Strings oder { l: 'Lösungswort' }
-  function merksatzElement(key, titel) {
+  // hinweis (optional): eigener Satz über dem Merksatz, sonst „Geschafft! … auf Ihrem Arbeitsblatt“
+  function merksatzElement(key, titel, hinweis) {
     var box = element('section', 'merksatz');
     box.setAttribute('aria-live', 'polite');
-    box.appendChild(element('p', 'merksatz-hinweis', ersetzen(A.merksatzHinweis, { titel: titel })));
+    box.appendChild(element('p', 'merksatz-hinweis', hinweis || ersetzen(A.merksatzHinweis, { titel: titel })));
     box.appendChild(element('h2', null, A.merksatzUeberschrift + ' · ' + titel));
     var p = element('p', 'merksatz-text');
     (INHALTE.merksaetze[key] || []).forEach(function (teil) {

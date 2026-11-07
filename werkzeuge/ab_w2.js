@@ -176,7 +176,7 @@ function schuelerTeil(B, { lsg }) {
     new Paragraph({ spacing: { before: 60, after: 60 }, children: [B.emoji('⚠️ '), ...B.runs('**Bei Anaphylaxie:** nicht aufsetzen oder aufstehen lassen. **Atmet die Person nicht normal → Reanimation** (KB III).', { size: 19 })] }),
     lsg ? new Paragraph({ spacing: { after: 80 }, children: [B.i('Quelle: nach S2k-Leitlinie Akuttherapie und Management der Anaphylaxie (AWMF 061-025, 2021); sprachlich vereinfacht.', { size: 15, color: F.GRAU_T })] }) : null,
     teil([IC.handy], '**a) Lagerungs-Quiz** (allein am Handy):'),
-    B.app([B.p('Was ist das **Leitsymptom**? Tippen Sie an, wie Sie lagern, und decken Sie auf. Hilfe: die **Bilder oben**.', { spacing: { after: 0, line: 264 } })]),
+    B.app([B.p('Was ist das **Leitsymptom**? Tippen Sie an, wie Sie lagern, und decken Sie auf. Hilfe: die **Bilder oben** und der **Merksatz AA3**.', { spacing: { after: 0, line: 264 } })]),
     B.leer(60),
     merk('Merksatz AA3', 'aa3'),
     teil([IC.schreiben], '**b) Schreibaufgaben:**'),
