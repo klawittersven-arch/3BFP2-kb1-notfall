@@ -236,7 +236,7 @@ const textDa = (h, text) => bis(h, (t) => document.body.innerText.includes(t), t
     H.pruefe(await folieIst(lap, 'blatt2') && (await lap.textContent('.folie')).includes('Lagerung nach Leitsymptom'), 'nach dem Detektiv: „Sie erhalten jetzt Blatt 2“ (kein Merksatz AA2)');
     H.pruefe(await textDa(handys[0], 'Blatt 2'), 'Handy: Blatt 2 kommt');
     await weiter();
-    H.pruefe(await folieIst(lap, 'aa2c'), 'dann Klausurtraining 2.1/2.2');
+    H.pruefe(await folieIst(lap, 'aa2c'), 'dann Schreibaufgaben 2.1/2.2');
     H.pruefe((await lap.$$('.a-tabelle .a-nr')).length === 2 && !(await lap.$('.aufgabe-los')), 'Aufgabenfolie: erst die Aufgaben wie im AB, noch ohne Auftrag');
     H.pruefe(await textDa(handys[0], 'erklärt gleich die Aufgabe'), 'Handy: nach vorne schauen, die Lehrkraft erklärt');
     H.pruefe((await lap.textContent('#weiter')).includes('Jetzt bearbeiten'), 'Weiter-Knopf heißt „Jetzt bearbeiten“');

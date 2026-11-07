@@ -392,7 +392,7 @@
     box.appendChild(uhrZeile());
   }
 
-  // Klausurtraining 2.1/2.2: Aufgaben mit den Fällen zum Nachlesen (alle drei, auch die fremden)
+  // Schreibaufgaben 2.1/2.2: Aufgaben mit den Fällen zum Nachlesen (alle drei, auch die fremden)
   function fallText(fall) {
     return INHALTE.markieren.faelle[fall].teile.map(function (t) { return typeof t === 'string' ? t : t.t; }).join('');
   }

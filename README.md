@@ -40,16 +40,16 @@ geben ihren Vornamen ein – und ihr Handy zeigt ab dann automatisch, was zur ak
 | 12–14 | Vergleichstabelle sichern (A, B, C) | **je Folie eine Spalte groß** – Zelle anklicken = Lösung aufdecken, noch einmal = groß; bei C dazu die Gemeinsamkeit | „Vergleichen Sie die Spalte …“ |
 | 15–16 | Schockform-Detektiv | Erklärfolie (was und warum), dann Fortschritt je Stammgruppe | Detektiv: 4 Fälle (Befunde antippen und Form wählen, „Prüfen“; 2 Versuche), am Ende „Geschafft!“ |
 | 17 | Sie erhalten jetzt Blatt 2 | **Austeilen:** Blatt mit Nummer, Überschrift wie auf dem AB, was darauf steht | „Sie erhalten jetzt Blatt 2 …“ |
-| 18–19 | Klausurtraining 2.1/2.2 | **Aufgabenfolie** wie im AB → „Jetzt bearbeiten“ (Auftrag + Uhr 5 min) → Musterlösung zum Aufdecken | erst „Schauen Sie nach vorne“, dann die Fälle Mia, Weber, Albrecht zum Nachlesen |
+| 18–19 | Schreibaufgaben 2.1/2.2 | **Aufgabenfolie** wie im AB → „Jetzt bearbeiten“ (Auftrag + Uhr 5 min) → Musterlösung zum Aufdecken | erst „Schauen Sie nach vorne“, dann die Fälle Mia, Weber, Albrecht zum Nachlesen |
 | 20–24 | Lagerung | Impuls „immer Beine hoch?“, dann **4 Lagerungsfolien** (Bild, Wann? Warum? So geht’s) | dasselbe Bild |
 | 25 | Lagerungs-Quiz (AA3) | Fortschritt | Quiz allein am Handy (ohne Matte, ohne Timer), Bilder der vier Lagerungen als Hilfe |
 | 26 | Merksatz AA3 lesen | Lesefolie | „Lesen Sie mit …“ |
-| 27–28 | Klausurtraining 3.1/3.2 (AA3 b) | Aufgabenfolie → „Jetzt bearbeiten“ (Uhr 5 min) → Musterlösung | „Auf Papier“ |
+| 27–28 | Schreibaufgaben 3.1/3.2 (AA3 b) | Aufgabenfolie → „Jetzt bearbeiten“ (Uhr 5 min) → Musterlösung | „Auf Papier“ |
 | 29 | Wer darf was? (AA4a) | jeder Klick: nächste Maßnahme (6), „x von y haben abgestimmt“, dann Lösung **mit der Verteilung der Stimmen** und „Das hatten X von Y richtig!“ | 🟢 / 🟡 / 🔴 antippen, nach der Lösung: richtig oder falsch |
 | 30 | Merksatz AA4 lesen | Lesefolie | „Lesen Sie mit …“ |
 | 31 | Sie erhalten jetzt Blatt 3 | **Austeilen:** Blatt mit Nummer, Überschrift wie auf dem AB, was darauf steht | „Sie erhalten jetzt Blatt 3 …“ |
 | 32–33 | Wer hat recht? (AA4b) | Aufgabenfolie mit Dialog und 4.1 → Think/Pair-Uhr → Musterlösung | „Auf Papier“ |
-| 34–35 | Klausurtraining (AA5) | Transferfall wie im AB → Countdown 8 min → Peer-Korrektur (4 min) mit Musterlösung zum Aufdecken | „Handy umgedreht“, dann Bewertungsraster |
+| 34–35 | Transferfall: Wissen anwenden (AA5) | Transferfall wie im AB → Countdown 8 min → Peer-Korrektur (4 min) mit Musterlösung zum Aufdecken | „Handy umgedreht“, dann Bewertungsraster |
 | 36 | Frau Maler (AA6) | Kausalkette Schritt für Schritt (aufgedecktes Glied anklicken = groß), dann Antwort auf die Leitfrage | „Ergänzen Sie die Kausalkette auf Seite 1 …“ |
 | 37 | Was haben wir heute gelernt? | Erklärfolie: was wir gelernt haben, gleich dieselben Notfälle mit neuem Fachwissen | „Schauen Sie nach vorne“ |
 | 38 | Hätten Sie richtig gehandelt? | Notfall für Notfall: abstimmen → „Auflösung zeigen“ (richtige Antwort, Erklärung, **Beginn und jetzt** nebeneinander) | derselbe Notfall; danach Auflösung mit eigener Vermutung und Entscheidung |
@@ -68,7 +68,7 @@ Lange Folien werden automatisch etwas kleiner gesetzt, damit alles auf die Bühn
 Gerafft für langsam lesende Klassen: Das Arbeitsblatt hat **6 Seiten** (3 Blätter, beidseitig); alle Aufgaben
 im KA-Format bleiben. Eine Pausenfolie gibt es nicht.
 
-**Blätter nacheinander austeilen:** Blatt 1 (S. 1–2) zu Beginn, Blatt 2 (S. 3–4) vor dem Klausurtraining 2.1/2.2,
+**Blätter nacheinander austeilen:** Blatt 1 (S. 1–2) zu Beginn, Blatt 2 (S. 3–4) vor den Schreibaufgaben 2.1/2.2,
 Blatt 3 (S. 5–6) vor „Wer hat recht?“ (AA4 b). Jedes Blatt beginnt mit einer blauen Überschrift „Blatt … von 3“;
 dieselbe Überschrift und die Aufgaben des Blattes zeigt die Folie „Sie erhalten jetzt Blatt …“ (Texte in `docs/inhalte_stunde.js`,
 das Arbeitsblatt übernimmt die Überschrift von dort).

@@ -108,7 +108,7 @@ var STUNDE = {
         { emoji: '🧩', text: 'Gruppenpuzzle: drei Schockformen', zeit: '48 min' },
         { emoji: '🧘', text: 'Lagerung nach Leitsymptom', zeit: '18 min' },
         { emoji: '⚖️', text: 'Wer darf was? Adrenalin oder Antihistaminikum?', zeit: '13 min' },
-        { emoji: '📝', text: 'Klausurtraining wie in der KA', zeit: '13 min' },
+        { emoji: '📝', text: 'Transferfall: Wissen anwenden', zeit: '13 min' },
         { emoji: '🔎', text: 'Zurück zu Frau Maler', zeit: '5 min' },
         { emoji: '✅', text: 'Hätten Sie richtig gehandelt?', zeit: '10 min' }
       ],
@@ -202,22 +202,22 @@ var STUNDE = {
       titel: 'Sie erhalten jetzt Blatt 2',
       ueberschrift: 'Lagerung nach Leitsymptom – wer darf was?',
       punkte: [
-        '**Seite 3:** Klausurtraining 2.1 und 2.2 (AA2 c)',
+        '**Seite 3:** Schreibaufgaben 2.1 und 2.2 (AA2 c)',
         'Lagerung nach Leitsymptom (AA3): Bilder der vier Lagerungen, Lagerungs-Quiz, Merksatz AA3',
-        '**Seite 4:** Klausurtraining 3.1 und 3.2',
+        '**Seite 4:** Schreibaufgaben 3.1 und 3.2',
         'Wer darf was? (AA4 a) und Merksatz AA4'
       ],
       handy: { typ: 'vorne', titel: 'Blatt 2 von 3', text: 'Sie erhalten jetzt **Blatt 2: Lagerung nach Leitsymptom – wer darf was?** Schauen Sie nach vorne.' }
     },
     {
-      id: 'aa2c', abschnitt: 'Gruppenpuzzle', kurz: 'Klausurtraining 2.1/2.2', typ: 'aufgabe',
-      titel: 'AA2c · Klausurtraining',
+      id: 'aa2c', abschnitt: 'Gruppenpuzzle', kurz: 'Schreibaufgaben 2.1/2.2', typ: 'aufgabe',
+      titel: 'AA2c · Schreibaufgaben',
       bloecke: [{ art: 'aufgaben', nrs: ['2.1', '2.2'] }],
       los: '✍️ Bearbeiten Sie jetzt **2.1 und 2.2** allein auf dem Arbeitsblatt.',
       losPunkte: ['📱 Die Fälle von **Mia**, **Herrn Weber** und **Herrn Albrecht** können Sie auf Ihrem Handy nachlesen.', 'Danach vergleichen wir mit der Musterlösung.'],
       uhr: [{ label: 'Schreiben', sek: 300 }],
       handy: {
-        typ: 'faelle', titel: 'Klausurtraining 2.1 und 2.2', text: 'Schreiben Sie allein auf dem Arbeitsblatt. Hier können Sie die Fälle nachlesen:',
+        typ: 'faelle', titel: 'Schreibaufgaben 2.1 und 2.2', text: 'Schreiben Sie allein auf dem Arbeitsblatt. Hier können Sie die Fälle nachlesen:',
         aufgaben: [
           { nr: '2.1', text: 'Erläutern Sie, wie es bei Mia zum Schock kommt.', faelle: ['b'] },
           { nr: '2.2', text: 'Nennen Sie 1 Befund, der bei Herrn Weber anders ist als bei Herrn Albrecht. Begründen Sie den Unterschied.', faelle: ['c', 'a'] }
@@ -226,7 +226,7 @@ var STUNDE = {
     },
     {
       id: 'aa2c-loesung', abschnitt: 'Gruppenpuzzle', kurz: 'Musterlösung 2.1/2.2', typ: 'loesung',
-      titel: 'Klausurtraining 2.1 und 2.2 – Musterlösung',
+      titel: 'Musterlösung 2.1 und 2.2',
       aufgaben: ['2.1', '2.2'],
       tipp: 'Zeile anklicken = aufdecken · noch einmal = groß',
       handy: { typ: 'papier', titel: 'Musterlösung vorne', text: 'Vergleichen Sie Ihre Antworten mit der Musterlösung am Beamer. Verbessern oder ergänzen Sie auf dem Arbeitsblatt – am besten in einer anderen Farbe.' }
@@ -291,17 +291,17 @@ var STUNDE = {
       handy: { typ: 'vorne', titel: 'Merksatz AA3', text: 'Lesen Sie mit: **Merksatz AA3** auf Ihrem Arbeitsblatt (Seite 3).' }
     },
     {
-      id: 'aa3b', abschnitt: 'Lagerung', kurz: 'Klausurtraining 3.1/3.2', typ: 'aufgabe',
-      titel: 'AA3 b) · Klausurtraining',
+      id: 'aa3b', abschnitt: 'Lagerung', kurz: 'Schreibaufgaben 3.1/3.2', typ: 'aufgabe',
+      titel: 'AA3 b) · Schreibaufgaben',
       bloecke: [{ art: 'aufgaben', nrs: ['3.1', '3.2'] }],
       los: '✍️ Bearbeiten Sie jetzt **3.1 und 3.2** allein auf dem Arbeitsblatt.',
       losPunkte: ['Hilfe: die Bilder der vier Lagerungen und der **Merksatz AA3**.', 'Danach vergleichen wir mit der Musterlösung.'],
       uhr: [{ label: 'Schreiben', sek: 300 }],
-      handy: { typ: 'papier', titel: 'Klausurtraining 3.1 und 3.2', text: 'Bearbeiten Sie jetzt die Aufgaben **3.1 und 3.2** allein auf dem Arbeitsblatt. Die Zeit läuft vorne.' }
+      handy: { typ: 'papier', titel: 'Schreibaufgaben 3.1 und 3.2', text: 'Bearbeiten Sie jetzt die Aufgaben **3.1 und 3.2** allein auf dem Arbeitsblatt. Die Zeit läuft vorne.' }
     },
     {
       id: 'aa3b-loesung', abschnitt: 'Lagerung', kurz: 'Musterlösung 3.1/3.2', typ: 'loesung',
-      titel: 'Klausurtraining 3.1 und 3.2 – Musterlösung',
+      titel: 'Musterlösung 3.1 und 3.2',
       aufgaben: ['3.1', '3.2'],
       tipp: 'Zeile anklicken = aufdecken · noch einmal = groß',
       handy: { typ: 'papier', titel: 'Musterlösung vorne', text: 'Vergleichen Sie Ihre Antworten mit der Musterlösung am Beamer. Verbessern oder ergänzen Sie auf dem Arbeitsblatt – am besten in einer anderen Farbe.' }
@@ -335,16 +335,16 @@ var STUNDE = {
       handy: { typ: 'vorne', titel: 'Merksatz AA4', text: 'Lesen Sie mit: **Merksatz AA4** auf Ihrem Arbeitsblatt (Seite 4).' }
     },
     {
-      id: 'blatt3', abschnitt: 'Klausurtraining', kurz: 'Blatt 3 austeilen', typ: 'blatt', nr: 3, von: 3, seiten: 'Seite 5 und 6',
+      id: 'blatt3', abschnitt: 'Anwenden', kurz: 'Blatt 3 austeilen', typ: 'blatt', nr: 3, von: 3, seiten: 'Seite 5 und 6',
       titel: 'Sie erhalten jetzt Blatt 3',
-      ueberschrift: 'Klausurtraining wie in der KA',
+      ueberschrift: 'Wissen anwenden',
       punkte: [
-        '**Seite 5:** Adrenalin oder Antihistaminikum? – Klausurtraining 4.1 (AA4 b)',
-        'Transferfall wie in der KA: 5.1 und 5.2 (AA5)',
+        '**Seite 5:** Adrenalin oder Antihistaminikum? – Schreibaufgabe 4.1 (AA4 b)',
+        'Transferfall: ein neuer Fall – 5.1 und 5.2 (AA5)',
         '**Seite 6:** Hausaufgabe mit QR-Code zur Selbstkontrolle',
         'QR-Code zum Nachlesen – erst nach der Stunde'
       ],
-      handy: { typ: 'vorne', titel: 'Blatt 3 von 3', text: 'Sie erhalten jetzt **Blatt 3: Klausurtraining wie in der KA**. Schauen Sie nach vorne.' }
+      handy: { typ: 'vorne', titel: 'Blatt 3 von 3', text: 'Sie erhalten jetzt **Blatt 3: Wissen anwenden**. Schauen Sie nach vorne.' }
     },
     {
       id: 'aa4b', abschnitt: 'Verantwortung', kurz: 'Adrenalin oder Antihistaminikum? (AA4b)', typ: 'aufgabe',
@@ -361,22 +361,22 @@ var STUNDE = {
     },
     {
       id: 'aa4b-loesung', abschnitt: 'Verantwortung', kurz: 'Musterlösung 4.1', typ: 'loesung',
-      titel: 'Klausurtraining 4.1 – Musterlösung',
+      titel: 'Musterlösung 4.1',
       aufgaben: ['4.1'],
       tipp: 'Zeile anklicken = aufdecken · noch einmal = groß',
       handy: { typ: 'papier', titel: 'Musterlösung vorne', text: 'Vergleichen Sie Ihre Antwort mit der Musterlösung am Beamer. Verbessern oder ergänzen Sie auf dem Arbeitsblatt – am besten in einer anderen Farbe.' }
     },
     {
-      id: 'aa5', abschnitt: 'Klausurtraining', kurz: 'Transferfall (AA5)', typ: 'aufgabe',
-      titel: 'AA5 · Klausurtraining wie in der KA',
+      id: 'aa5', abschnitt: 'Anwenden', kurz: 'Transferfall (AA5)', typ: 'aufgabe',
+      titel: 'AA5 · Transferfall: Wissen anwenden',
       bloecke: [{ art: 'fall', schluessel: 'transferfall', titel: 'Fallsituation' }, { art: 'aufgaben', nrs: ['5.1', '5.2'] }],
       los: '✍️ Bearbeiten Sie jetzt **5.1 und 5.2** – **allein und ohne Unterlagen**.',
       losPunkte: ['Legen Sie das Handy umgedreht hin – die Zeit läuft vorne.', 'Danach: Peer-Korrektur mit einer Person aus einer **anderen Stammgruppe**.'],
-      uhr: [{ label: 'Klausurtraining', sek: 480 }],
-      handy: { typ: 'papier', titel: 'Klausurtraining: 5.1 und 5.2', text: 'Allein und ohne Unterlagen. Legen Sie das Handy umgedreht hin – die Zeit läuft vorne.' }
+      uhr: [{ label: 'Schreiben', sek: 480 }],
+      handy: { typ: 'papier', titel: 'Transferfall: 5.1 und 5.2', text: 'Allein und ohne Unterlagen. Legen Sie das Handy umgedreht hin – die Zeit läuft vorne.' }
     },
     {
-      id: 'aa5-peer', abschnitt: 'Klausurtraining', kurz: 'Peer-Korrektur (AA5)', typ: 'loesung',
+      id: 'aa5-peer', abschnitt: 'Anwenden', kurz: 'Peer-Korrektur (AA5)', typ: 'loesung',
       titel: 'AA5 · Peer-Korrektur mit Musterlösung',
       punkte: ['Tauschen Sie mit einer Person aus einer **anderen Stammgruppe**.', 'Haken Sie im **Bewertungsraster am Handy** ab – die App zählt die Punkte.', 'Rückmeldung in **einem Satz**.'],
       aufgaben: [{ nrs: ['5.1', '5.2'], loesung: '5.1 und 5.2' }],
@@ -435,9 +435,9 @@ var STUNDE = {
     {
       id: 'ende', abschnitt: 'Abschluss', kurz: 'Hausaufgabe und Nachlesen', typ: 'ende',
       titel: 'Hausaufgabe und Nachlesen',
-      punkte: ['**Hausaufgabe:** Klausurtraining (13 Punkte) – Selbstkontrolle über den QR-Code im Arbeitsblatt.', '**Nachlesen:** Alles aus dieser Stunde über den QR-Code auf der letzten Seite des Arbeitsblatts.'],
+      punkte: ['**Hausaufgabe:** ein neuer Fall mit Schreibaufgaben (13 Punkte) – Selbstkontrolle über den QR-Code im Arbeitsblatt.', '**Nachlesen:** Alles aus dieser Stunde über den QR-Code auf der letzten Seite des Arbeitsblatts.'],
       frei: '📖 Die Nachlese-Seite ist jetzt freigeschaltet.',
-      handy: { typ: 'ende', titel: 'Die Stunde ist beendet', text: '**Hausaufgabe:** Klausurtraining – Selbstkontrolle über den QR-Code im Arbeitsblatt. Alles aus dieser Stunde können Sie jetzt nachlesen: QR-Code auf der letzten Seite des Arbeitsblatts.' }
+      handy: { typ: 'ende', titel: 'Die Stunde ist beendet', text: '**Hausaufgabe:** ein neuer Fall – Selbstkontrolle über den QR-Code im Arbeitsblatt. Alles aus dieser Stunde können Sie jetzt nachlesen: QR-Code auf der letzten Seite des Arbeitsblatts.' }
     }
   ],
 

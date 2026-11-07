@@ -943,7 +943,7 @@
     return kopf;
   }
 
-  // Musterlösung zu Klausuraufgaben; jede Zeile einzeln aufdecken.
+  // Musterlösung zu den Schreibaufgaben; jede Zeile einzeln aufdecken.
   // aufgaben: ['2.1', …] oder [{ nrs: ['5.1', '5.2'], loesung: '5.1 und 5.2' }]
   function folieLoesung(f, w) {
     var NL = window.NACHLESEN || {};
