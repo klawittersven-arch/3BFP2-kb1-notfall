@@ -15,14 +15,14 @@ const T = require('./ab_w2_texte');
 const STUNDE = (() => { const k = {}; require('vm').runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'docs', 'inhalte_stunde.js'), 'utf8') + ';this.S = STUNDE;', k); return k.S; })();
 const FN = (id) => { const i = STUNDE.folien.findIndex((f) => f.id === id); if (i < 0) throw new Error('Folie fehlt: ' + id); return i + 1; };
 const FOLIE = (id) => `**Folie ${FN(id)}:**`;
-// Die drei Blätter werden nacheinander ausgeteilt: Überschrift wie auf der Folie „Sie erhalten jetzt Blatt …“
+// Die drei Blätter werden nacheinander ausgeteilt: Überschrift wie auf der Folie „Weiter mit Arbeitsblatt …“
 const BLATT = (nr) => { const f = STUNDE.folien.find((x) => x.typ === 'blatt' && x.nr === nr); if (!f) throw new Error('Blatt-Folie fehlt: ' + nr); return f; };
 function blattKopf(B, nr, o = {}) {
   const f = BLATT(nr);
   return new Paragraph({
     keepNext: true, spacing: { before: 0, after: 100 },
     shading: { type: ShadingType.CLEAR, color: 'auto', fill: '2E75B6' },
-    children: [B.emoji(' 📄 ', { size: 24 }), B.b(`Blatt ${nr} von ${f.von} · ${f.ueberschrift}`, { size: 25, color: 'FFFFFF' })],
+    children: [B.emoji(' 📄 ', { size: 24 }), B.b(`Arbeitsblatt ${nr} von ${f.von} · ${f.ueberschrift}`, { size: 25, color: 'FFFFFF' })],
     ...o
   });
 }
@@ -396,7 +396,7 @@ function hinweise(B) {
     punkt(`**Per Knopfdruck am Beamer (Folie ${FN('puzzle')}):** Stammgruppen zu 3 (A, B, C); geht es nicht auf, Vierergruppen mit doppeltem B (Anaphylaxie ist Klausurschwerpunkt). Expertenteams zu 3, Rest zu 4; zwei B-Expertinnen derselben Stammgruppe kommen in verschiedene Teams. Wer später kommt, wird automatisch eingeteilt; Personen ohne Handy trägt die Lehrkraft vorher mit „+ Person ohne Handy“ ein.`),
     punkt('**3BFP2.1 (23 SuS):** 7 Stammgruppen (5 × 3, 2 × 4) · Expertenteams A1–A2, B1–B3, C1–C2. **3BFP2.2 (20 SuS):** 6 Stammgruppen (4 × 3, 2 × 4) · Expertenteams A1–A2, B1–B2, C1–C2.'),
     B.zwischen('Material und Technik'),
-    punkt(`Kopien: AB (SV) für alle als **drei einzelne Blätter**, je beidseitig (Blatt 1 = S. 1–2, Blatt 2 = S. 3–4, Blatt 3 = S. 5–6), getrennt bereitlegen. Sie werden **nacheinander** ausgeteilt – jeweils mit einer Folie „Sie erhalten jetzt Blatt …“ (Folien ${FN('blatt1')}, ${FN('blatt2')} und ${FN('blatt3')}), die Überschrift und Aufgaben des Blattes zeigt. Die Expertenblätter (Anlagen) müssen **nicht** gedruckt werden – die SuS arbeiten am Handy; sie sind nur Reserve, falls Handys oder WLAN ausfallen.`),
+    punkt(`Kopien: AB (SV) für alle als **drei einzelne Blätter**, je beidseitig (Blatt 1 = S. 1–2, Blatt 2 = S. 3–4, Blatt 3 = S. 5–6), getrennt bereitlegen. Sie werden **nacheinander** ausgeteilt – jeweils mit einer Folie „Weiter mit Arbeitsblatt …“ (Folien ${FN('blatt1')}, ${FN('blatt2')} und ${FN('blatt3')}), die Überschrift und Aufgaben des Blattes zeigt. Die Expertenblätter (Anlagen) müssen **nicht** gedruckt werden – die SuS arbeiten am Handy; sie sind nur Reserve, falls Handys oder WLAN ausfallen.`),
     punkt('**Beamer:** **beamer.html** öffnen → „Neuen Raum starten“. Unten rechts **Weiter**, links **Zurück** (auch Pfeiltasten, Presenter); Menü ⚙ unten links: zu jeder Folie springen, Vollbild, Namen verbergen, Angemeldete verwalten, neuer Raum für die Parallelklasse. Die Handys wechseln automatisch mit; ein QR-Code unten auf jeder Folie lässt Nachzügler einsteigen. Probeansicht ohne Internet: beamer.html?demo=1.'),
     punkt(`**Nachlese-Seite** (QR-Code auf der letzten AB-Seite): alle Inhalte und Lösungen der Stunde zum Wiederholen. Sie ist gesperrt, solange irgendwo eine Beamer-Stunde läuft – bis Folie ${FN('ende')} erreicht ist oder 10 Minuten nach dem Schließen des Beamers.`),
     punkt('**Zeitplan und Puffer:** Für langsam lesende Klassen gerafft – 4 statt 6 Einstiegsnotfälle, kürzere Infotexte mit kurzen Sätzen, nur 3 Ablenker im Expertenfall, Detektiv mit 4 Fällen, Lagerungs-Quiz allein am Handy (keine Matten), kein Entscheidungsweg, kein Check-out und keine Zusatzaufgaben auf dem AB. Alle Aufgaben im KA-Format (2.1–5.2, Hausaufgabe) bleiben. Dadurch bleiben rund **18 Minuten Puffer** (107–125) für langsames Lesen und die Sicherungsfolien.'),

@@ -76,8 +76,9 @@ const textDa = (h, text) => bis(h, (t) => document.body.innerText.includes(t), t
 
     console.log('\n== Blatt 1 austeilen, Einstieg');
     await weiter();
-    H.pruefe(await folieIst(lap, 'blatt1') && (await lap.textContent('.blatt-nr')) === '1', 'Weiter → „Sie erhalten jetzt Blatt 1“');
-    H.pruefe(await textDa(handys[0], 'Blatt 1'), 'Handy: Blatt 1 kommt');
+    H.pruefe(await folieIst(lap, 'blatt1') && (await lap.textContent('.blatt-nr')) === 'AB1' && (await lap.textContent('.folie h1')) === 'Weiter mit Arbeitsblatt 1', 'Weiter → „Weiter mit Arbeitsblatt 1“, Karte „AB1“');
+    H.pruefe(await lap.$eval('.blatt-titel', (e) => parseFloat(getComputedStyle(e).fontSize) >= 40), 'Titel des Arbeitsblatts groß');
+    H.pruefe(await textDa(handys[0], 'Arbeitsblatt 1'), 'Handy: Weiter mit Arbeitsblatt 1');
     await lap.screenshot({ path: path.join(ORDNER, 'stunde_02_blatt1.png') });
     await weiter();
     H.pruefe(await folieIst(lap, 'fall'), 'Weiter → Frau Maler');
@@ -233,8 +234,8 @@ const textDa = (h, text) => bis(h, (t) => document.body.innerText.includes(t), t
     H.pruefe(await titelIst(handys[0], 'Detektiv'), 'Handy lädt den Schockform-Detektiv');
     H.pruefe(await bis(handys[0], () => !!document.querySelector('.gruppe-mini')), 'Handy zeigt dazu die Stammgruppe');
     await weiter();
-    H.pruefe(await folieIst(lap, 'blatt2') && (await lap.textContent('.folie')).includes('Lagerung nach Leitsymptom'), 'nach dem Detektiv: „Sie erhalten jetzt Blatt 2“ (kein Merksatz AA2)');
-    H.pruefe(await textDa(handys[0], 'Blatt 2'), 'Handy: Blatt 2 kommt');
+    H.pruefe(await folieIst(lap, 'blatt2') && (await lap.textContent('.folie')).includes('Lagerung nach Leitsymptom'), 'nach dem Detektiv: „Weiter mit Arbeitsblatt 2“ (kein Merksatz AA2)');
+    H.pruefe(await textDa(handys[0], 'Arbeitsblatt 2'), 'Handy: Weiter mit Arbeitsblatt 2');
     await weiter();
     H.pruefe(await folieIst(lap, 'aa2c'), 'dann Schreibaufgaben 2.1/2.2');
     // im Browser prüfen (die Folie kann gerade neu gezeichnet werden – dann wären gemerkte Elemente veraltet)

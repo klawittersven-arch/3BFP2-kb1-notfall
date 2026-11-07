@@ -1105,13 +1105,13 @@
   function folieBlatt(f, w) {
     var box = el('div', 'blatt-folie');
     var papier = el('div', 'blatt-papier');
-    papier.appendChild(el('div', 'blatt-wort', T.blattWort));
-    papier.appendChild(el('div', 'blatt-nr', String(f.nr)));
+    papier.appendChild(el('div', 'blatt-nr', K.ersetzen(T.blattKurz, { n: f.nr })));
     papier.appendChild(el('div', 'blatt-von', K.ersetzen(T.blattVon, { y: f.von })));
     papier.appendChild(el('div', 'blatt-seiten', f.seiten));
     box.appendChild(papier);
     var rechts = el('div', 'blatt-rechts');
-    rechts.appendChild(titel(f, f.ueberschrift));
+    rechts.appendChild(fmt('h1', 'f-titel', f.titel));
+    rechts.appendChild(fmt('p', 'blatt-titel', f.ueberschrift));
     rechts.appendChild(el('p', 'blatt-darauf', T.blattDarauf));
     rechts.appendChild(punkteListe(f.punkte));
     box.appendChild(rechts);

@@ -133,7 +133,8 @@ pruefe(!/Klausurtraining|wie in der KA/.test(fs.readFileSync(path.join(WURZEL, '
 pruefe(!/Klausur|Klassenarbeit|Erwartungshorizont|\bKA\b/.test(JSON.stringify(I) + JSON.stringify(S) + fs.readFileSync(path.join(DOCS, 'inhalte_nachlesen.js'), 'utf8')), 'App, Folien und Nachlese: kein Verweis auf Klausur oder Klassenarbeit');
 const tab = S.folien.filter((f) => f.typ === 'tabelle');
 pruefe(tab.map((f) => f.spalte).join('') === 'ABC' && tab.filter((f) => f.gemeinsamkeit).length === 1 && tab[2].gemeinsamkeit && ids.indexOf(tab[0].id) === ids.indexOf('aa2a') + 1 && ids.indexOf(tab[2].id) === ids.indexOf(tab[0].id) + 2, 'Tabelle sichern: drei Folien nacheinander (A, B, C – Gemeinsamkeit bei C)');
-// Die drei Blätter werden nacheinander ausgeteilt – je eine Folie „Sie erhalten jetzt Blatt …“
+// Die drei Blätter werden nacheinander ausgeteilt – je eine Folie „Weiter mit Arbeitsblatt …“
+pruefe(S.folien.filter((f) => f.typ === 'blatt').every((f) => f.titel === 'Weiter mit Arbeitsblatt ' + f.nr) && S.beamer.blattKurz === 'AB{n}' && !/Sie erhalten jetzt Blatt/.test(JSON.stringify(S)), 'Austeil-Folien: „Weiter mit Arbeitsblatt N“, Karte „ABN“');
 const blaetter = S.folien.filter((f) => f.typ === 'blatt');
 pruefe(blaetter.length === 3 && blaetter.every((f, i) => f.nr === i + 1 && f.von === 3 && f.ueberschrift && f.punkte.length >= 3 && f.handy.typ === 'vorne'), 'drei Austeil-Folien Blatt 1–3 mit Überschrift und Aufgaben');
 pruefe(ids.indexOf('blatt1') === ids.indexOf('start') + 1, 'Blatt 1 gleich nach „Willkommen“');

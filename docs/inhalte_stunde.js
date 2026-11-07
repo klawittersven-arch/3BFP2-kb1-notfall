@@ -47,7 +47,7 @@ var STUNDE = {
                    merksatz (Lesefolie: ganzer Merksatz wie auf dem AB, Schlüsselwörter hervorgehoben), lagerung (Bild + Wann/Warum/So geht’s),
                    loesung (je Aufgabe eine Folie; aufgaben: [{ nrs, loesung, zeilen: [von, bis] }] teilt lange Lösungen; uhrVon = Uhr einer anderen Folie weiterzeigen),
                    aufgabe (Aufgabe wie im AB; „Weiter“ blendet „Bearbeiten Sie jetzt …“ und die Uhr ein),
-                   blatt (Austeilen: „Sie erhalten jetzt Blatt …“ – Überschrift und Punkte wie im Arbeitsblatt)
+                   blatt (Austeilen: „Weiter mit Arbeitsblatt …“, Karte „AB1/AB2/AB3“ – Überschrift und Punkte wie im Arbeitsblatt)
                    (tabelle, loesung, aufgabe: Inhalte aus inhalte_nachlesen.js, also wie im Arbeitsblatt)
      handy.typ:    vorne, bild, entscheidung, murmeln, gruppe, experte, stamm, modul, papier, faelle, aufstellung, ende
                    (bei typ aufgabe zeigt das Handy erst „Schauen Sie nach vorne“, nach „Weiter“ den handy-Bildschirm)
@@ -61,7 +61,7 @@ var STUNDE = {
     },
     {
       id: 'blatt1', abschnitt: 'Ankommen', kurz: 'Blatt 1 austeilen', typ: 'blatt', nr: 1, von: 3, seiten: 'Seite 1 und 2',
-      titel: 'Sie erhalten jetzt Blatt 1',
+      titel: 'Weiter mit Arbeitsblatt 1',
       ueberschrift: 'Einstieg und Gruppenpuzzle',
       punkte: [
         '**Seite 1:** Frau Maler und die Leitfrage – die Antwort ergänzen Sie am Ende der Stunde',
@@ -69,7 +69,7 @@ var STUNDE = {
         '**Seite 2:** Gruppenpuzzle – Expertenteam (AA1), Merksatz AA1, Vergleichstabelle',
         'Stammgruppe (AA2 a) und Schockform-Detektiv (AA2 b)'
       ],
-      handy: { typ: 'vorne', titel: 'Blatt 1 von 3', text: 'Sie erhalten jetzt **Blatt 1: Einstieg und Gruppenpuzzle**. Schauen Sie nach vorne.' }
+      handy: { typ: 'vorne', titel: 'Weiter mit Arbeitsblatt 1', text: 'Weiter mit **Arbeitsblatt 1: Einstieg und Gruppenpuzzle**. Schauen Sie nach vorne.' }
     },
     {
       id: 'fall', abschnitt: 'Einstieg', kurz: 'Frau Maler', typ: 'fall',
@@ -200,7 +200,7 @@ var STUNDE = {
     },
     {
       id: 'blatt2', abschnitt: 'Gruppenpuzzle', kurz: 'Blatt 2 austeilen', typ: 'blatt', nr: 2, von: 3, seiten: 'Seite 3 und 4',
-      titel: 'Sie erhalten jetzt Blatt 2',
+      titel: 'Weiter mit Arbeitsblatt 2',
       ueberschrift: 'Lagerung nach Leitsymptom – wer darf was?',
       punkte: [
         '**Seite 3:** Schreibaufgaben 2.1 und 2.2 (AA2 c)',
@@ -208,7 +208,7 @@ var STUNDE = {
         '**Seite 4:** Schreibaufgaben 3.1 und 3.2',
         'Wer darf was? (AA4 a) und Merksatz AA4'
       ],
-      handy: { typ: 'vorne', titel: 'Blatt 2 von 3', text: 'Sie erhalten jetzt **Blatt 2: Lagerung nach Leitsymptom – wer darf was?** Schauen Sie nach vorne.' }
+      handy: { typ: 'vorne', titel: 'Weiter mit Arbeitsblatt 2', text: 'Weiter mit **Arbeitsblatt 2: Lagerung nach Leitsymptom – wer darf was?** Schauen Sie nach vorne.' }
     },
     {
       id: 'aa2c', abschnitt: 'Gruppenpuzzle', kurz: 'Schreibaufgaben 2.1/2.2', typ: 'aufgabe',
@@ -351,7 +351,7 @@ var STUNDE = {
     },
     {
       id: 'blatt3', abschnitt: 'Anwenden', kurz: 'Blatt 3 austeilen', typ: 'blatt', nr: 3, von: 3, seiten: 'Seite 5 und 6',
-      titel: 'Sie erhalten jetzt Blatt 3',
+      titel: 'Weiter mit Arbeitsblatt 3',
       ueberschrift: 'Wissen anwenden',
       punkte: [
         '**Seite 5:** Adrenalin oder Antihistaminikum? – Schreibaufgabe 4.1 (AA4 b)',
@@ -359,7 +359,7 @@ var STUNDE = {
         '**Seite 6:** Hausaufgabe mit QR-Code zur Selbstkontrolle',
         'QR-Code zum Nachlesen – erst nach der Stunde'
       ],
-      handy: { typ: 'vorne', titel: 'Blatt 3 von 3', text: 'Sie erhalten jetzt **Blatt 3: Wissen anwenden**. Schauen Sie nach vorne.' }
+      handy: { typ: 'vorne', titel: 'Weiter mit Arbeitsblatt 3', text: 'Weiter mit **Arbeitsblatt 3: Wissen anwenden**. Schauen Sie nach vorne.' }
     },
     {
       id: 'aa4b', abschnitt: 'Verantwortung', kurz: 'Adrenalin oder Antihistaminikum? (AA4b)', typ: 'aufgabe',
@@ -521,7 +521,7 @@ var STUNDE = {
     warumTitel: 'Warum?',
     soTitel: 'So geht’s',
     lagerungNr: '{n} von 4',
-    blattWort: 'Blatt',
+    blattKurz: 'AB{n}',
     blattVon: 'von {y}',
     blattDarauf: 'Darauf finden Sie:',
     gruppeFertig: 'Tabelle vollständig!',
