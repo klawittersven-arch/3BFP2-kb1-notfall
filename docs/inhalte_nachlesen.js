@@ -36,9 +36,9 @@ var NACHLESEN = {
   ],
   [
    "Entstehung (kurz)",
-   "Volumen ↓ → Rückstrom zum Herzen ↓ → Schlagvolumen ↓ → Blutdruck ↓",
+   "Volumen ↓ → Rückstrom zum Herzen ↓ → Blutdruck ↓; Sympathikus gleicht aus: Puls ↑, Zentralisation",
    "Histamin → Gefäße weit und durchlässig → relativer Volumenmangel → Blutdruck ↓; Bronchien eng",
-   "Sympathikus fällt aus → Gefäße weit, Blut versackt → Blutdruck ↓; keine Gegenregulation"
+   "Sympathikus fällt aus → Gefäße weit, Blut versackt → Blutdruck ↓; keine Gegenregulation (Puls steigt nicht)"
   ],
   [
    "Puls",
@@ -103,8 +103,8 @@ var NACHLESEN = {
   "**Als Auszubildende/r:** unter Anleitung handeln und sofort eine Pflegefachperson holen."
  ],
  "adrenalinText": [
-  "**Adrenalin i. m.** ist bei Anaphylaxie das Mittel der ersten Wahl: Es wirkt am schnellsten, stellt die Gefäße eng (Blutdruck ↑), lässt die Schleimhäute abschwellen und weitet die Bronchien.",
-  "**Antihistaminika** und **Kortison** wirken langsamer und nicht ausreichend auf Kreislauf und Atmung – sie kommen erst **nach** Adrenalin."
+  "**Adrenalin i. m.** ist das Mittel der ersten Wahl: Es wirkt am schnellsten, stellt die Gefäße eng (Blutdruck ↑), lässt Schleimhäute abschwellen, weitet die Bronchien.",
+  "**Antihistaminika** und **Kortison** wirken langsamer und zu schwach – sie kommen erst **nach** Adrenalin."
  ],
  "transferfall": [
   "Sie sind in der Tagespflege „Sonnenhof“ eingesetzt. Herr Klaus Martens (74) hat einen Diabetes mellitus Typ 2 und eine Herzinsuffizienz. Gegen 14:15 Uhr sitzt er mit anderen Gästen auf der Terrasse beim Kaffee. Plötzlich schreit er auf: Eine Wespe hat ihn in die Oberlippe gestochen.",
@@ -113,12 +113,12 @@ var NACHLESEN = {
  "aufgaben": {
   "2.1": {
    "nr": "2.1",
-   "text": "Erläutern Sie, wie es bei Mia zum Schock kommt. – Tipp: Denken Sie in einer Pfeilkette – Auslöser → Botenstoff → Gefäße → Blutdruck; die Atemwege extra.",
+   "text": "Erläutern Sie, wie es bei Mia zum Schock kommt. Nutzen Sie die Vergleichstabelle (Seite 2, Spalte B, Zeile „Entstehung“). Nennen Sie dazu passende Befunde aus Mias Fall.",
    "punkte": 3
   },
   "2.2": {
    "nr": "2.2",
-   "text": "Nennen Sie 1 Befund, der bei Herrn Weber anders ist als bei Herrn Albrecht. Begründen Sie den Unterschied.",
+   "text": "Herr Albrecht hat einen schnellen Puls (116/min), Herr Weber einen langsamen Puls (52/min). Erklären Sie diesen Unterschied.",
    "punkte": 2
   },
   "3.1": {
@@ -162,8 +162,8 @@ var NACHLESEN = {
    "(je schlüssiger Schritt 1 P.)"
   ],
   "2.2": [
-   "Befund: Herr Weber hat einen langsamen Puls (52/min), Herr Albrecht einen schnellen (116/min). – oder: Herr Webers Haut ist warm, trocken, rosig, Herrn Albrechts Haut blass, kalt, schweißig.",
-   "Begründung: Bei Herrn Weber ist das Rückenmark verletzt, der Sympathikus fällt aus. Der Körper kann nicht gegenregulieren: kein Pulsanstieg, keine Zentralisation. (Befund 1 P., Begründung 1 P.)"
+   "Herr Albrecht verliert Blut (Volumenmangel). Der Sympathikus wird aktiviert und steigert den Puls, um den Blutdruck zu halten (Ausgleich). (1 P.)",
+   "Bei Herrn Weber ist das Rückenmark verletzt, der Sympathikus fällt aus. Der Körper kann nicht gegensteuern: Der Puls steigt nicht, er ist sogar langsam. (1 P.)"
   ],
   "3.1": [
    "Bei Frau Yıldız steht die Atemnot im Vordergrund (Heiserkeit, pfeifende Atmung, 30/min). Mit erhöhtem Oberkörper kann sie die Atemhilfsmuskulatur einsetzen, die Bauchorgane drücken nicht gegen das Zwerchfell.",

@@ -120,7 +120,7 @@
       w.appendChild(box('zeile-karte', [el('h4', null, 'Fall ' + (i + 1)), text,
         el('p', 'richtig-antwort', '✓ ' + formen[f.form] + 'er Schock'), '**Belege:** ' + belege.join(' · '), f.erklaerung]));
     });
-    w.appendChild(el('h3', null, 'Klausurtraining'));
+    w.appendChild(el('h3', null, 'Schreibaufgaben'));
     ['2.1', '2.2'].forEach(function (nr) { w.appendChild(aufgabe(nr)); w.appendChild(loesung(nr)); });
   });
 
@@ -138,7 +138,7 @@
     I.lagerung.karten.forEach(function (c) {
       w.appendChild(box('zeile-karte', [el('h4', null, c.titel), c.text, el('p', 'richtig-antwort', '✓ ' + c.loesung), c.warum]));
     });
-    w.appendChild(el('h3', null, 'Klausurtraining'));
+    w.appendChild(el('h3', null, 'Schreibaufgaben'));
     ['3.1', '3.2'].forEach(function (nr) { w.appendChild(aufgabe(nr)); w.appendChild(loesung(nr)); });
   });
 
@@ -153,7 +153,7 @@
     w.appendChild(loesung('4.1'));
   });
 
-  abschnitt('Klausurtraining wie in der KA (AA5)', function (w) {
+  abschnitt('Transferfall: Wissen anwenden (AA5)', function (w) {
     w.appendChild(box('box', N.transferfall));
     ['5.1', '5.2'].forEach(function (nr) { w.appendChild(aufgabe(nr)); });
     w.appendChild(loesung('5.1 und 5.2'));

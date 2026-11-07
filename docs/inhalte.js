@@ -28,8 +28,8 @@ var INHALTE = {
   allgemein: {
     kopfzeile: 'KB I – Notfallsituationen · Woche 2 · 3BFP2',
     merksatzUeberschrift: 'Ihr Merksatz',
-    // {titel} = Name des Kastens auf dem Arbeitsblatt, z. B. „Merksatz AA1“
-    merksatzHinweis: 'Jetzt aufs Arbeitsblatt: Ergänzen Sie die Lücken im Kasten „{titel}“!',
+    // {titel} = Name des Kastens auf dem Arbeitsblatt, z. B. „Merksatz AA1“ (dort steht der Merksatz fertig)
+    merksatzHinweis: 'Geschafft! Diesen Merksatz finden Sie auch auf Ihrem Arbeitsblatt im Kasten „{titel}“.',
     fortschritt: '{x} von {y} gelöst',
     ersterVersuch: 'Beim ersten Versuch richtig: {x} von {y}',
     nochEinmal: 'Noch einmal üben',
@@ -55,7 +55,7 @@ var INHALTE = {
   },
 
   /* ------------------------------------------------------------------------
-     MERKSÄTZE – erscheinen am Ende einer Übung. { l: '…' } = Lücke auf dem AB
+     MERKSÄTZE – erscheinen am Ende einer Übung. { l: '…' } = Schlüsselwort (auf dem AB fett, am Beamer hervorgehoben)
      ------------------------------------------------------------------------ */
   merksaetze: {
     aa1: ['Ein Schock zeigt sich an den Zeichen des ', { l: 'Kreislaufs' }, ': Puls, Blutdruck, Haut und Bewusstsein. Die Schockform erkenne ich an der ', { l: 'Ursache' }, ' und an den ', { l: 'Begleitzeichen' }, ', z. B. Quaddeln oder Lähmungen.'],
@@ -100,7 +100,7 @@ var INHALTE = {
        w            = Erklärung nach dem Prüfen
      ------------------------------------------------------------------------ */
   markieren: {
-    titel: 'AA1 · Befunde markieren',
+    titel: 'AA1 · Expertenteam: Infotext und Fall',
     anweisung: 'Tippen Sie im Fall **alle Stellen** an, die auf einen Schock oder seine Ursache hinweisen. Tippen Sie noch einmal, um eine Markierung zu entfernen. Dann: „Prüfen“.',
     // Der Fall kommt nur aus dem QR-Code des Expertenblatts (?fall=a, ?fall=b, ?fall=c)
     ohneQr: 'Bitte scannen Sie den QR-Code auf Ihrem Expertenblatt (A, B oder C).',
@@ -237,7 +237,7 @@ var INHALTE = {
       ], erklaerung: 'Lähmung nach Unfall, langsamer Puls und warme Haut trotz niedrigem Blutdruck → neurogener Schock.' },
       { form: 'H', tipp: 'Wie viel Flüssigkeit hat Frau Kaya verloren – und wie viel getrunken?', teile: [
         { t: 'Frau Kaya (78) hat seit drei Tagen Brechdurchfall und trinkt kaum.', b: 'beleg' }, ' ',
-        { t: 'Ihre Mundschleimhaut ist trocken, eine Hautfalte am Handrücken bleibt stehen.', b: 'beleg' }, ' ',
+        { t: 'Sie hat großen Durst, ihre Mundschleimhaut ist trocken.', b: 'beleg' }, ' ',
         { t: 'Sie strickt gern für ihre Enkel.', b: '' }, ' ',
         { t: 'Sie ist verwirrt.', b: 'schock' }, ' ',
         { t: 'Puls 110/min, Blutdruck 100/65 mmHg.', b: 'schock' }
@@ -298,7 +298,7 @@ var INHALTE = {
      ------------------------------------------------------------------------ */
   raster: {
     titel: 'AA5 · Bewertungsraster',
-    anweisung: 'Lesen Sie die Lösung Ihrer Partnerin oder Ihres Partners. **Haken Sie an, was dort steht.** Die App zählt die Punkte wie im Erwartungshorizont.',
+    anweisung: 'Lesen Sie die Lösung Ihrer Partnerin oder Ihres Partners. **Haken Sie an, was dort steht.** Die App zählt die Punkte.',
     gesamt: 'Punkte: {x} von {y}',
     rueckmeldung: 'Geben Sie jetzt eine Rückmeldung in einem Satz: Was ist gut gelungen – was fehlt noch?',
     fehlerTitel: 'Fehler, die Punkte kosten:',
@@ -341,7 +341,7 @@ var INHALTE = {
       { nr: '1.1', titel: 'Anaphylaktischen Schock begründen (4 P.)', max: 4,
         // pflicht: ohne dieses Kriterium höchstens max − 1 Punkte (wie im Erwartungshorizont der KA)
         pflicht: 'kreislauf',
-        pflichtHinweis: 'Ohne Kreislaufzeichen höchstens 3 Punkte – wie in der Klassenarbeit.',
+        pflichtHinweis: 'Ohne Kreislaufzeichen höchstens 3 Punkte – ein Schock zeigt sich immer am Kreislauf.',
         muster: 'z. B. (je Symptom mit Zuordnung 1 P.):\nzeitlicher Zusammenhang – Beginn 15 Min. nach dem Essen mit Fischsauce bei bekannter Fischallergie\nHaut – Juckreiz an Händen und Kopfhaut, Quaddeln am Bauch\nKreislauf – Puls 124/min, Blutdruckabfall von 128/78 auf 86/52 mmHg, Blässe, Schwindel\nMagen-Darm – Übelkeit\nGehirn – Unruhe (Minderdurchblutung)\nFür die volle Punktzahl muss die Kreislaufbeteiligung genannt sein.',
         kriterien: [
           { id: 'zeit', text: 'Zeitlicher Zusammenhang mit dem Allergen (Fischsauce, bekannte Allergie)', punkte: 1 },

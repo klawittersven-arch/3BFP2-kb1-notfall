@@ -115,6 +115,30 @@ const aa4 = S.folien.find((f) => f.id === 'aa4a');
 pruefe(aa4.massnahmen.length === 6 && aa4.massnahmen.every((m) => m.ecke >= 0 && m.ecke < aa4.ecken.length), 'AA4a: 6 Maßnahmen mit gültiger Ecke');
 pruefe(aa4.runde === 3 && aa4.ecken.length === 3 && aa4.massnahmen.length <= 9, 'AA4a: Abstimmung am Handy (Runde 3, höchstens 9 Maßnahmen)');
 pruefe(!ids.includes('pause'), 'keine Pausenfolie');
+// Hausaufgabe: Tipp, vorher die Merksätze zu lesen (sonst fehlen die Sofortmaßnahmen für 2.1)
+pruefe(/Merksätze AA1, AA3 und AA4/.test(JSON.stringify(S.folien.find((f) => f.id === 'ende'))) && /Merksätze AA1, AA3 und AA4/.test(fs.readFileSync(path.join(WURZEL, 'werkzeuge', 'ab_w2.js'), 'utf8')), 'Hausaufgabe: Hinweis auf die Merksätze (Folie, Handy, AB)');
+// Transferfall: nur mit vorher Gelerntem lösbar – Merksätze AA3/AA4 sind als Hilfe erlaubt
+pruefe(/Merksatz AA3/.test(S.folien.find((f) => f.id === 'aa5').los) && /Merksatz AA4/.test(S.folien.find((f) => f.id === 'aa5').los), 'AA5: Merksätze AA3 und AA4 als Hilfe genannt');
+pruefe(I.merksaetze.aa4.filter((t) => typeof t === 'object').length >= 4 && I.merksaetze.aa4.map((t) => (typeof t === 'string' ? t : t.l)).join('').split(',').length >= 5, 'Merksatz AA4 nennt mindestens 5 Sofortmaßnahmen');
+// Musterlösungen groß: je Folie höchstens eine Aufgabe (5.1/5.2 gehören zusammen und stehen auf zwei Folien)
+S.folien.filter((f) => f.typ === 'loesung').forEach((f) => pruefe((f.aufgaben || []).length === 1 && (typeof f.aufgaben[0] === 'string' || f.aufgaben[0].zeilen), `Musterlösung ${f.id}: eine Aufgabe je Folie`));
+pruefe(['aa2c-loesung-21', 'aa2c-loesung-22', 'aa3b-loesung-31', 'aa3b-loesung-32', 'aa5-peer', 'aa5-peer-2'].every((id) => ids.includes(id)) && S.folien.find((f) => f.id === 'aa5-peer-2').uhrVon === 'aa5-peer', 'Musterlösungen 2.1/2.2/3.1/3.2 einzeln, AA5 auf zwei Folien mit derselben Uhr');
+pruefe(!/Nennen Sie 1 Befund/.test(fs.readFileSync(path.join(WURZEL, 'werkzeuge', 'ab_w2.js'), 'utf8')) && /Erklären Sie diesen Unterschied/.test(fs.readFileSync(path.join(WURZEL, 'werkzeuge', 'ab_w2.js'), 'utf8')), '2.2: Befund vorgegeben (Puls), nur noch die Erklärung gefragt');
+// Keine Bezeichnung „Klausurtraining“: Sonst wirken die anderen Aufgaben weniger wichtig
+for (const d of ['inhalte.js', 'inhalte_stunde.js', 'nachlesen.js', 'stunde.js']) pruefe(!/Klausurtraining/.test(fs.readFileSync(path.join(DOCS, d), 'utf8')), `${d}: keine Bezeichnung „Klausurtraining“`);
+pruefe(!/Klausurtraining|wie in der KA/.test(fs.readFileSync(path.join(WURZEL, 'werkzeuge', 'ab_w2.js'), 'utf8')), 'Arbeitsblatt: keine Bezeichnung „Klausurtraining“');
+// Was die SuS sehen (Texte in App, Folien, Nachlese), verweist nicht auf Klausur/Klassenarbeit – sonst wirken andere Aufgaben unwichtiger
+pruefe(!/Klausur|Klassenarbeit|Erwartungshorizont|\bKA\b/.test(JSON.stringify(I) + JSON.stringify(S) + fs.readFileSync(path.join(DOCS, 'inhalte_nachlesen.js'), 'utf8')), 'App, Folien und Nachlese: kein Verweis auf Klausur oder Klassenarbeit');
+const tab = S.folien.filter((f) => f.typ === 'tabelle');
+pruefe(tab.map((f) => f.spalte).join('') === 'ABC' && tab.filter((f) => f.gemeinsamkeit).length === 1 && tab[2].gemeinsamkeit && ids.indexOf(tab[0].id) === ids.indexOf('aa2a') + 1 && ids.indexOf(tab[2].id) === ids.indexOf(tab[0].id) + 2, 'Tabelle sichern: drei Folien nacheinander (A, B, C – Gemeinsamkeit bei C)');
+// Die drei Blätter werden nacheinander ausgeteilt – je eine Folie „Sie erhalten jetzt Blatt …“
+const blaetter = S.folien.filter((f) => f.typ === 'blatt');
+pruefe(blaetter.length === 3 && blaetter.every((f, i) => f.nr === i + 1 && f.von === 3 && f.ueberschrift && f.punkte.length >= 3 && f.handy.typ === 'vorne'), 'drei Austeil-Folien Blatt 1–3 mit Überschrift und Aufgaben');
+pruefe(ids.indexOf('blatt1') === ids.indexOf('start') + 1, 'Blatt 1 gleich nach „Willkommen“');
+pruefe(ids.indexOf('blatt2') === ids.indexOf('aa2c') - 1, 'Blatt 2 vor den Schreibaufgaben 2.1/2.2');
+pruefe(ids.indexOf('blatt3') === ids.indexOf('aa4b') - 1 && ids.indexOf('aa4-merksatz') === ids.indexOf('aa4a') + 1, 'Merksatz AA4 nach „Wer darf was?“ (Blatt 2), dann Blatt 3 vor AA4 b');
+const abQuelle = fs.readFileSync(path.join(WURZEL, 'werkzeuge', 'ab_w2.js'), 'utf8');
+pruefe([1, 2, 3].every((n) => abQuelle.includes('blattKopf(B, ' + n)), 'Arbeitsblatt: Überschrift für Blatt 1, 2 und 3 (aus den Austeil-Folien)');
 for (const d of fs.readdirSync(DOCS).filter((x) => /\.(js|html)$/.test(x))) {
   pruefe(!/Woche [3-9]/.test(fs.readFileSync(path.join(DOCS, d), 'utf8')), `${d}: kein Hinweis auf spätere Wochen`);
 }
@@ -134,7 +158,7 @@ pruefe(S.folien.indexOf(S.folien.find((f) => f.id === 'aa1-merksatz')) === S.fol
 pruefe(!S.folien.some((f) => (f.handy || {}).modul === 'simulation') && !fs.existsSync(path.join(DOCS, 'simulation.js')), 'keine Notfall-Simulation mehr');
 ['aa1', 'aa3', 'aa4'].forEach((k) => {
   const m = S.folien.filter((f) => f.typ === 'merksatz' && f.merksatz === k);
-  pruefe(m.length === 1 && I.merksaetze[k].some((t) => typeof t === 'object'), 'Merksatz ' + k.toUpperCase() + ': genau eine Folie zum Aufdecken');
+  pruefe(m.length === 1 && I.merksaetze[k].some((t) => typeof t === 'object') && m[0].handy.typ === 'vorne' && /Lesen Sie mit/.test(m[0].text), 'Merksatz ' + k.toUpperCase() + ': genau eine Lesefolie');
 });
 const lagFolien = S.folien.filter((f) => f.typ === 'lagerung');
 pruefe(lagFolien.length === 4 && lagFolien.every((f, i) => f.nr === i + 1), 'vier Lagerungsfolien, nummeriert 1–4');
@@ -144,6 +168,11 @@ lagFolien.forEach((f) => {
 });
 pruefe(lagFolien.map((f) => f.id).join() === S.folien.slice(S.folien.findIndex((f) => f.id === 'aa3-impuls') + 1).slice(0, 4).map((f) => f.id).join(), 'Lagerungsfolien direkt nach „Beine hoch?“');
 pruefe(!S.folien.some((f) => f.typ === 'merksatz' && f.merksatz === 'aa2'), 'keine Folie zum Merksatz AA2');
+// Merksätze stehen fertig auf dem AB: nirgends die Aufforderung, Lücken zu ergänzen
+const alleTexte = ['inhalte.js', 'inhalte_stunde.js'].map((d) => fs.readFileSync(path.join(DOCS, d), 'utf8')).join('\n') + fs.readFileSync(path.join(WURZEL, 'werkzeuge', 'ab_w2.js'), 'utf8');
+pruefe(!/Merksatz[^.'\n]{0,40}ergänz|Lücken im Kasten|richtig notiert|Lücke anklicken/i.test(alleTexte), 'keine Aufforderung mehr, Merksatz-Lücken zu ergänzen');
+pruefe(/B\.b\(x\.l\)/.test(fs.readFileSync(path.join(WURZEL, 'werkzeuge', 'ab_bausteine.js'), 'utf8')), 'Arbeitsblatt: Merksätze fertig ausgefüllt, Schlüsselwörter fett');
+pruefe(/^\*\*a\)\*\* Infotext/.test(S.handy.expAuftraege[0]) && /^\*\*b\)\*\* Fall markieren/.test(S.handy.expAuftraege[1]) && /^a\)/.test(S.handy.expInfo) && /^b\)/.test(S.handy.expFall), 'Expertenrunde: a) Infotext, b) Fall markieren');
 pruefe(I.lagerung.bilder.length === 4 && I.lagerung.bilder.every((b) => fs.existsSync(path.join(DOCS, b.bild))), 'Lagerungs-Quiz: Bilder der vier Lagerungen am Handy');
 pruefe(!/timer|Rollen tauschen|Rollentausch|Matte/i.test(JSON.stringify(I.lagerung) + fs.readFileSync(path.join(DOCS, 'lagerung.js'), 'utf8')), 'Lagerungs-Quiz: allein am Handy – kein Timer, keine Matte, kein Rollentausch');
 pruefe(!ids.includes('aa3bc') && !ids.includes('aa3c-loesung') && !/Entscheidungsweg|Parcours|Yogamatte/.test(JSON.stringify(S.folien)), 'kein Entscheidungsweg und kein Parcours mehr');

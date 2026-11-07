@@ -348,20 +348,31 @@ b, strong { font-weight: 800; }
 .aufdeck:hover { border-color: var(--petrol); background: var(--hell); }
 .aufdeck.offen { border: 2px solid var(--gruen); background: var(--gruen-hell); cursor: default; }
 .aufdeck .verdeckt { display: block; text-align: center; font-size: 22px; font-weight: 900; color: var(--petrol-hell); }
-.vergleich { display: grid; grid-template-columns: 200px repeat(3, minmax(0, 1fr)); gap: 6px; }
-.v-kopf { font-weight: 900; font-size: 18px; padding: 6px 10px; border-radius: 8px; color: #fff; background: var(--leise); }
-.v-kopf:first-child { background: transparent; }
-.v-kopf.A { background: var(--a); } .v-kopf.B { background: var(--b); } .v-kopf.C { background: var(--c); }
-.v-zeilenkopf { font-weight: 800; font-size: 16px; padding: 8px 10px; background: var(--akzent-hell); border-radius: 8px; display: flex; align-items: center; }
-.v-zelle { font-size: 15px; line-height: 1.3; }
-.v-breit { grid-column: span 3; }
 .aufdeck-knoepfe { margin-top: 12px; justify-content: flex-end; }
+/* Vergleichstabelle sichern: eine Spalte je Folie, große Schrift (bei C mit Gemeinsamkeit etwas kleiner) */
+.tabelle-spalte-kopf { display: flex; align-items: center; gap: 22px; margin-bottom: 14px; }
+.tabelle-spalte-kopf .f-titel { font-size: 40px; margin: 0; }
+.spalte-marke { color: #fff; font-weight: 900; font-size: 32px; padding: 6px 24px; border-radius: 14px; }
+.spalte-marke.A { background: var(--a); } .spalte-marke.B { background: var(--b); } .spalte-marke.C { background: var(--c); }
+.tabelle-unter { margin: 0 0 0 auto; max-width: 560px; font-size: 21px; font-weight: 700; line-height: 1.3; color: var(--petrol); text-align: right; }
+.tabelle-spalte { display: grid; grid-template-columns: 320px minmax(0, 1fr); gap: 10px; border-left: 12px solid var(--leise); padding-left: 14px; }
+.tabelle-spalte.A { border-left-color: var(--a); } .tabelle-spalte.B { border-left-color: var(--b); } .tabelle-spalte.C { border-left-color: var(--c); }
+.ts-kopf { font-weight: 800; font-size: 26px; line-height: 1.15; padding: 8px 16px; background: var(--akzent-hell); border-radius: 10px; display: flex; align-items: center; }
+.ts-zelle { font-size: 32px; line-height: 1.25; min-height: 66px; padding: 8px 18px; }
+.ts-zelle .verdeckt { font-size: 32px; }
+.tabelle-spalte.mit-gemeinsamkeit { grid-template-columns: 300px minmax(0, 1fr); gap: 6px; }
+.mit-gemeinsamkeit .ts-kopf { font-size: 24px; padding: 6px 14px; }
+.mit-gemeinsamkeit .ts-zelle { font-size: 29px; min-height: 52px; padding: 6px 16px; }
+.ts-gemeinsam { margin-top: 8px; }
+.ts-kopf.ts-gemeinsam { background: #E6EEF0; }
+.mit-gemeinsamkeit .ts-zelle.ts-gemeinsam { font-size: 23px; }
 .aufdeck-knoepfe .tipp { margin-right: auto; }
-.loesungen { display: grid; gap: 18px; }
-.loesung-teil { display: grid; gap: 8px; }
-.loesung-aufgabe { margin: 0; font-size: 22px; line-height: 1.35; }
-.loesung-punkte { color: var(--leise); font-size: 18px; }
-.l-zeile { font-size: 20px; line-height: 1.35; }
+.loesungen { display: grid; gap: 20px; }
+.loesung-teil { display: grid; gap: 10px; }
+.loesung-aufgabe { margin: 0; font-size: 27px; line-height: 1.3; }
+.loesung-punkte { color: var(--leise); font-size: 22px; }
+.loesung-weiter { margin: 0; font-size: 22px; font-weight: 800; color: var(--leise); }
+.l-zeile { font-size: 29px; line-height: 1.3; padding: 10px 18px; }
 
 /* Erklärfolie */
 .info-folie { display: grid; grid-template-columns: 1fr 520px; gap: 40px; height: 100%; }
@@ -372,13 +383,23 @@ b, strong { font-weight: 800; }
 .warum-box ul { margin: 0; padding-left: 22px; display: grid; gap: 10px; }
 .warum-box li { font-size: 20px; line-height: 1.4; }
 .info-folie .punkte li { font-size: 25px; }
+/* Austeilen: „Sie erhalten jetzt Blatt …“ */
+.blatt-folie { display: grid; grid-template-columns: 330px 1fr; gap: 60px; align-items: center; height: 100%; }
+.blatt-papier { width: 330px; aspect-ratio: 210 / 297; background: #fff; border-radius: 10px; box-shadow: var(--schatten);
+  border-top: 16px solid var(--akzent); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+.blatt-wort { font-size: 34px; font-weight: 800; color: var(--dunkelpetrol); letter-spacing: 1px; }
+.blatt-nr { font-size: 170px; font-weight: 900; line-height: 1; color: var(--dunkelpetrol); }
+.blatt-von { font-size: 26px; color: #4A5A60; }
+.blatt-seiten { margin-top: 18px; font-size: 21px; font-weight: 700; background: var(--akzent-hell); border-radius: 999px; padding: 6px 16px; }
+.blatt-darauf { margin: 18px 0 8px; font-size: 24px; font-weight: 800; color: var(--dunkelpetrol); }
+.blatt-folie .punkte li { font-size: 26px; }
 
 /* Merksatz prüfen: Lücken per Klick aufdecken */
-.merksatz-folie { margin-top: 18px; background: #fff; border-radius: 24px; box-shadow: var(--schatten); border-left: 12px solid var(--petrol); padding: 26px 34px 30px; }
+.merksatz-folie { cursor: pointer; margin-top: 18px; background: #fff; border-radius: 24px; box-shadow: var(--schatten); border-left: 12px solid var(--petrol); padding: 26px 34px 30px; }
 .merksatz-kopf { font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: .06em; color: var(--petrol); margin-bottom: 12px; }
-.merksatz-satz { margin: 0; font-size: 34px; line-height: 2.05; }
-.aufdeck.luecke { display: inline-block; min-width: 220px; min-height: 0; padding: 0 16px; margin: 0 4px; font-size: 32px; line-height: 1.5; text-align: center; vertical-align: baseline; font-weight: 800; }
-.aufdeck.luecke .verdeckt { display: inline; font-size: 28px; }
+.merksatz-satz { margin: 0; font-size: 36px; line-height: 1.7; }
+.merksatz-wort { background: var(--gruen-hell); color: #1E5A36; font-weight: 900; padding: 0 8px; border-radius: 8px; }
+.merksatz-tipp { margin-top: 14px; }
 
 /* Lagerung: Bild + Wann / Warum / So geht's */
 .lagerung-ueber { display: flex; justify-content: space-between; font-size: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--akzent); margin-bottom: 4px; }
@@ -420,7 +441,7 @@ b, strong { font-weight: 800; }
 .aufgabe-blatt .sprechblase { padding: 14px 20px; }
 .aufgabe-blatt .sprechblase .was { font-size: 24px; }
 .a-vorsatz + p, .loesung-aufgabe p { margin: 0; }
-.loesung-aufgabe .a-vorsatz { font-size: 18px; }
+.loesung-aufgabe .a-vorsatz { font-size: 23px; }
 .loesung-mit-uhr { grid-template-columns: 1fr 360px; }
 .loesung-rechts { display: grid; gap: 14px; align-content: start; }
 .loesung-rechts .punkte li { font-size: 20px; padding-left: 34px; }
@@ -437,8 +458,6 @@ b, strong { font-weight: 800; }
 .abgestimmt.ergebnis { color: var(--gruen); font-size: 34px; }
 
 /* Großansicht: aufgedeckte Lösungen zum Abschreiben (2. Klick), ganze Tabellenspalte, Kettenglied */
-button.v-kopf { font-family: inherit; border: 0; text-align: left; cursor: zoom-in; }
-button.v-kopf:hover { filter: brightness(1.12); }
 .aufdeck.offen { cursor: zoom-in; }
 button.glied { font: inherit; text-align: left; border: 0; cursor: zoom-in; color: inherit; }
 button.glied:hover { box-shadow: 0 0 0 4px var(--petrol-hell); }
@@ -449,13 +468,7 @@ button.antwort-karte { font: inherit; font-size: 27px; text-align: left; border:
 .gross-zu { position: absolute; top: 18px; right: 18px; width: 54px; height: 54px; border-radius: 50%; border: 0; background: var(--hell); font-size: 26px; font-weight: 900; cursor: pointer; color: var(--dunkelpetrol); }
 .gross-text { font-size: 46px; line-height: 1.4; font-weight: 700; color: var(--text); }
 .gross-merksatz { margin: 0; font-weight: 600; line-height: 1.6; }
-.gross-luecke { background: var(--gruen-hell); color: #1E5A36; font-weight: 900; padding: 0 10px; border-radius: 8px; }
 .gross-schritt { margin: 0 0 6px; font-size: 22px; font-weight: 800; color: var(--akzent); text-transform: uppercase; letter-spacing: .06em; }
-.gross-spalte-titel { display: inline-block; color: #fff; padding: 6px 18px; border-radius: 12px; }
-.gross-spalte-titel.A { background: var(--a); } .gross-spalte-titel.B { background: var(--b); } .gross-spalte-titel.C { background: var(--c); }
-.gross-spalte { display: grid; grid-template-columns: 260px 1fr; gap: 10px; }
-.gross-spalte .v-zeilenkopf { font-size: 24px; }
-.g-zelle { font-size: 28px; line-height: 1.3; }
 
 /* Einstieg und Check-out: Notfall für Notfall */
 .notfall-kopf { display: flex; justify-content: space-between; align-items: baseline; font-size: 22px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: var(--akzent); margin-bottom: 10px; }

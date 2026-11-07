@@ -44,8 +44,10 @@ var STUNDE = {
   /* ---------- Folien ----------
      typ (Beamer): start, fall, abstimmung, ergebnis, murmeln, fahrplan, puzzle, experten, stamm, tabelle,
                    info, fortschritt, papier, loesung, impuls, aufstellung, dialog, kausalkette, ende,
-                   merksatz (Lücken per Klick aufdecken), lagerung (Bild + Wann/Warum/So geht’s),
-                   aufgabe (Aufgabe wie im AB; „Weiter“ blendet „Bearbeiten Sie jetzt …“ und die Uhr ein)
+                   merksatz (Lesefolie: ganzer Merksatz wie auf dem AB, Schlüsselwörter hervorgehoben), lagerung (Bild + Wann/Warum/So geht’s),
+                   loesung (je Aufgabe eine Folie; aufgaben: [{ nrs, loesung, zeilen: [von, bis] }] teilt lange Lösungen; uhrVon = Uhr einer anderen Folie weiterzeigen),
+                   aufgabe (Aufgabe wie im AB; „Weiter“ blendet „Bearbeiten Sie jetzt …“ und die Uhr ein),
+                   blatt (Austeilen: „Sie erhalten jetzt Blatt …“ – Überschrift und Punkte wie im Arbeitsblatt)
                    (tabelle, loesung, aufgabe: Inhalte aus inhalte_nachlesen.js, also wie im Arbeitsblatt)
      handy.typ:    vorne, bild, entscheidung, murmeln, gruppe, experte, stamm, modul, papier, faelle, aufstellung, ende
                    (bei typ aufgabe zeigt das Handy erst „Schauen Sie nach vorne“, nach „Weiter“ den handy-Bildschirm)
@@ -56,6 +58,18 @@ var STUNDE = {
       titel: 'Willkommen!',
       schritte: ['Scannen Sie den QR-Code.', 'Geben Sie Ihren **Vornamen** ein.', 'Fertig – Ihr Handy wechselt ab jetzt **automatisch mit dem Beamer**.'],
       handy: { typ: 'vorne', titel: 'Sie sind dabei, {name}!', text: 'Ihr Handy wechselt ab jetzt automatisch mit dem Beamer. Schauen Sie nach vorne.' }
+    },
+    {
+      id: 'blatt1', abschnitt: 'Ankommen', kurz: 'Blatt 1 austeilen', typ: 'blatt', nr: 1, von: 3, seiten: 'Seite 1 und 2',
+      titel: 'Sie erhalten jetzt Blatt 1',
+      ueberschrift: 'Einstieg und Gruppenpuzzle',
+      punkte: [
+        '**Seite 1:** Frau Maler und die Leitfrage – die Antwort ergänzen Sie am Ende der Stunde',
+        '**Einstieg:** Wie hätten Sie gehandelt? (am Handy)',
+        '**Seite 2:** Gruppenpuzzle – Expertenteam (AA1), Merksatz AA1, Vergleichstabelle',
+        'Stammgruppe (AA2 a) und Schockform-Detektiv (AA2 b)'
+      ],
+      handy: { typ: 'vorne', titel: 'Blatt 1 von 3', text: 'Sie erhalten jetzt **Blatt 1: Einstieg und Gruppenpuzzle**. Schauen Sie nach vorne.' }
     },
     {
       id: 'fall', abschnitt: 'Einstieg', kurz: 'Frau Maler', typ: 'fall',
@@ -95,7 +109,7 @@ var STUNDE = {
         { emoji: '🧩', text: 'Gruppenpuzzle: drei Schockformen', zeit: '48 min' },
         { emoji: '🧘', text: 'Lagerung nach Leitsymptom', zeit: '18 min' },
         { emoji: '⚖️', text: 'Wer darf was? Adrenalin oder Antihistaminikum?', zeit: '13 min' },
-        { emoji: '📝', text: 'Klausurtraining wie in der KA', zeit: '13 min' },
+        { emoji: '📝', text: 'Transferfall: Wissen anwenden', zeit: '13 min' },
         { emoji: '🔎', text: 'Zurück zu Frau Maler', zeit: '5 min' },
         { emoji: '✅', text: 'Hätten Sie richtig gehandelt?', zeit: '10 min' }
       ],
@@ -105,7 +119,7 @@ var STUNDE = {
       id: 'puzzle', abschnitt: 'Gruppenpuzzle', kurz: 'Gruppen einteilen', typ: 'puzzle',
       titel: 'Gruppenpuzzle: Drei Wege in den Schock',
       schritte: [
-        { emoji: '👥', titel: '1 · Expertenteam', text: 'Alle mit **demselben Buchstaben**: Fall markieren, Infotext lesen, **Ihre Spalte** der Tabelle ausfüllen.', zeit: '15 min' },
+        { emoji: '👥', titel: '1 · Expertenteam', text: 'Alle mit **demselben Buchstaben**: Infotext lesen, Fall markieren, **Ihre Spalte** der Tabelle ausfüllen.', zeit: '15 min' },
         { emoji: '🚶', titel: 'Umsetzen!', text: 'Ab in die Stammgruppe – die Namen stehen auf dem Handy.', zeit: '' },
         { emoji: '🧩', titel: '2 · Stammgruppe', text: '**A + B + C** an einem Tisch: reihum erklären, Tabelle vollständig ausfüllen.', zeit: '12 min' }
       ],
@@ -121,17 +135,17 @@ var STUNDE = {
       id: 'aa1', abschnitt: 'Gruppenpuzzle', kurz: 'Expertenrunde (AA1)', typ: 'experten',
       titel: 'AA1 · Expertenteams',
       text: '🚶 **Setzen Sie sich mit Ihrem Expertenteam zusammen** – die Namen stehen auf Ihrem Handy.',
-      auftraege: ['Fall markieren (Handy) → **Merksatz AA1** (AB)', 'Infotext lesen (Handy oder Papier am Pult)', 'Experten-Check (Handy)', 'Gemeinsam die **Spalte** der Tabelle (AB) → „Unsere Spalte ist fertig“'],
+      auftraege: ['**Infotext** lesen (Handy oder Papier am Pult)', '**Fall markieren** (Handy) – der Infotext hilft', 'Experten-Check (Handy)', 'Gemeinsam die **Spalte** der Tabelle (AB) → „Unsere Spalte ist fertig“'],
       uhr: [{ label: 'Expertenrunde', sek: 900 }],
-      alleFertig: 'Alle Expertenteams fertig – gleich prüfen wir den Merksatz AA1, dann geht es in die Stammgruppen.',
+      alleFertig: 'Alle Expertenteams fertig – gleich lesen wir den Merksatz AA1, dann geht es in die Stammgruppen.',
       handy: { typ: 'experte' }
     },
     {
-      id: 'aa1-merksatz', abschnitt: 'Gruppenpuzzle', kurz: 'Merksatz AA1 prüfen', typ: 'merksatz', merksatz: 'aa1',
-      titel: 'Merksatz AA1 – richtig notiert?',
-      text: 'Was haben Sie in die Lücken geschrieben?',
-      tipp: 'Lücke anklicken = aufdecken · noch einmal = ganzer Merksatz groß',
-      handy: { typ: 'vorne', titel: 'Merksatz AA1 prüfen', text: 'Überprüfen Sie am Beamer, ob Sie den **Merksatz AA1** richtig notiert haben. Verbessern Sie, falls nötig – am besten in einer anderen Farbe.' }
+      id: 'aa1-merksatz', abschnitt: 'Gruppenpuzzle', kurz: 'Merksatz AA1 lesen', typ: 'merksatz', merksatz: 'aa1',
+      titel: 'Merksatz AA1',
+      text: 'Lesen Sie mit – der Merksatz steht auf Ihrem Arbeitsblatt (Seite 2).',
+      tipp: 'Merksatz anklicken = groß',
+      handy: { typ: 'vorne', titel: 'Merksatz AA1', text: 'Lesen Sie mit: **Merksatz AA1** auf Ihrem Arbeitsblatt (Seite 2).' }
     },
     {
       id: 'aa2a', abschnitt: 'Gruppenpuzzle', kurz: 'Stammgruppen (AA2a)', typ: 'stamm',
@@ -142,11 +156,25 @@ var STUNDE = {
       handy: { typ: 'stamm' }
     },
     {
-      id: 'aa2a-sichern', abschnitt: 'Gruppenpuzzle', kurz: 'Tabelle sichern', typ: 'tabelle',
+      id: 'aa2a-sichern-a', abschnitt: 'Gruppenpuzzle', kurz: 'Tabelle sichern: A hypovolämisch', typ: 'tabelle', spalte: 'A',
       titel: 'Vergleichstabelle sichern',
-      text: 'Vergleichen Sie Ihre Tabelle mit der Musterlösung – ergänzen und verbessern Sie Ihre Einträge.',
-      tipp: 'Zelle anklicken = aufdecken · noch einmal = groß · Spaltenkopf (A, B, C) = ganze Spalte groß',
-      handy: { typ: 'papier', titel: 'Tabelle vergleichen', text: 'Vergleichen Sie Ihre Tabelle auf dem Arbeitsblatt mit der Musterlösung vorne am Beamer. Ergänzen und verbessern Sie Ihre Einträge.' }
+      text: 'Vergleichen Sie mit Ihrer Tabelle – ergänzen und verbessern Sie Ihre Einträge.',
+      tipp: 'Zelle anklicken = aufdecken · noch einmal = groß',
+      handy: { typ: 'papier', titel: 'Tabelle vergleichen: Spalte A', text: 'Vergleichen Sie die Spalte **A – hypovolämisch** auf Ihrem Arbeitsblatt mit der Musterlösung vorne am Beamer. Ergänzen und verbessern Sie Ihre Einträge.' }
+    },
+    {
+      id: 'aa2a-sichern-b', abschnitt: 'Gruppenpuzzle', kurz: 'Tabelle sichern: B anaphylaktisch', typ: 'tabelle', spalte: 'B',
+      titel: 'Vergleichstabelle sichern',
+      text: 'Vergleichen Sie mit Ihrer Tabelle – ergänzen und verbessern Sie Ihre Einträge.',
+      tipp: 'Zelle anklicken = aufdecken · noch einmal = groß',
+      handy: { typ: 'papier', titel: 'Tabelle vergleichen: Spalte B', text: 'Vergleichen Sie die Spalte **B – anaphylaktisch** auf Ihrem Arbeitsblatt mit der Musterlösung vorne am Beamer. Ergänzen und verbessern Sie Ihre Einträge.' }
+    },
+    {
+      id: 'aa2a-sichern-c', abschnitt: 'Gruppenpuzzle', kurz: 'Tabelle sichern: C neurogen', typ: 'tabelle', spalte: 'C', gemeinsamkeit: true,
+      titel: 'Vergleichstabelle sichern',
+      text: 'Vergleichen Sie mit Ihrer Tabelle – ergänzen und verbessern Sie Ihre Einträge.',
+      tipp: 'Zelle anklicken = aufdecken · noch einmal = groß',
+      handy: { typ: 'papier', titel: 'Tabelle vergleichen: Spalte C', text: 'Vergleichen Sie die Spalte **C – neurogen** auf Ihrem Arbeitsblatt mit der Musterlösung vorne am Beamer. Ergänzen und verbessern Sie Ihre Einträge.' }
     },
     {
       id: 'aa2b-intro', abschnitt: 'Gruppenpuzzle', kurz: 'Was ist der Schockform-Detektiv?', typ: 'info', emoji: '🔍',
@@ -171,26 +199,45 @@ var STUNDE = {
       handy: { typ: 'modul', modul: 'detektiv', gruppeZeigen: true }
     },
     {
-      id: 'aa2c', abschnitt: 'Gruppenpuzzle', kurz: 'Klausurtraining 2.1/2.2', typ: 'aufgabe',
-      titel: 'AA2c · Klausurtraining',
+      id: 'blatt2', abschnitt: 'Gruppenpuzzle', kurz: 'Blatt 2 austeilen', typ: 'blatt', nr: 2, von: 3, seiten: 'Seite 3 und 4',
+      titel: 'Sie erhalten jetzt Blatt 2',
+      ueberschrift: 'Lagerung nach Leitsymptom – wer darf was?',
+      punkte: [
+        '**Seite 3:** Schreibaufgaben 2.1 und 2.2 (AA2 c)',
+        'Lagerung nach Leitsymptom (AA3): Bilder der vier Lagerungen, Lagerungs-Quiz, Merksatz AA3',
+        '**Seite 4:** Schreibaufgaben 3.1 und 3.2',
+        'Wer darf was? (AA4 a) und Merksatz AA4'
+      ],
+      handy: { typ: 'vorne', titel: 'Blatt 2 von 3', text: 'Sie erhalten jetzt **Blatt 2: Lagerung nach Leitsymptom – wer darf was?** Schauen Sie nach vorne.' }
+    },
+    {
+      id: 'aa2c', abschnitt: 'Gruppenpuzzle', kurz: 'Schreibaufgaben 2.1/2.2', typ: 'aufgabe',
+      titel: 'AA2c · Schreibaufgaben',
       bloecke: [{ art: 'aufgaben', nrs: ['2.1', '2.2'] }],
       los: '✍️ Bearbeiten Sie jetzt **2.1 und 2.2** allein auf dem Arbeitsblatt.',
       losPunkte: ['📱 Die Fälle von **Mia**, **Herrn Weber** und **Herrn Albrecht** können Sie auf Ihrem Handy nachlesen.', 'Danach vergleichen wir mit der Musterlösung.'],
       uhr: [{ label: 'Schreiben', sek: 300 }],
       handy: {
-        typ: 'faelle', titel: 'Klausurtraining 2.1 und 2.2', text: 'Schreiben Sie allein auf dem Arbeitsblatt. Hier können Sie die Fälle nachlesen:',
+        typ: 'faelle', titel: 'Schreibaufgaben 2.1 und 2.2', text: 'Schreiben Sie allein auf dem Arbeitsblatt. Hier können Sie die Fälle nachlesen:',
         aufgaben: [
           { nr: '2.1', text: 'Erläutern Sie, wie es bei Mia zum Schock kommt.', faelle: ['b'] },
-          { nr: '2.2', text: 'Nennen Sie 1 Befund, der bei Herrn Weber anders ist als bei Herrn Albrecht. Begründen Sie den Unterschied.', faelle: ['c', 'a'] }
+          { nr: '2.2', text: 'Herr Albrecht hat einen schnellen Puls (116/min), Herr Weber einen langsamen Puls (52/min). Erklären Sie diesen Unterschied.', faelle: ['a', 'c'] }
         ]
       }
     },
     {
-      id: 'aa2c-loesung', abschnitt: 'Gruppenpuzzle', kurz: 'Musterlösung 2.1/2.2', typ: 'loesung',
-      titel: 'Klausurtraining 2.1 und 2.2 – Musterlösung',
-      aufgaben: ['2.1', '2.2'],
+      id: 'aa2c-loesung-21', abschnitt: 'Gruppenpuzzle', kurz: 'Musterlösung 2.1', typ: 'loesung',
+      titel: 'Musterlösung 2.1',
+      aufgaben: ['2.1'],
       tipp: 'Zeile anklicken = aufdecken · noch einmal = groß',
-      handy: { typ: 'papier', titel: 'Musterlösung vorne', text: 'Vergleichen Sie Ihre Antworten mit der Musterlösung am Beamer. Verbessern oder ergänzen Sie auf dem Arbeitsblatt – am besten in einer anderen Farbe.' }
+      handy: { typ: 'papier', titel: 'Musterlösung vorne', text: 'Vergleichen Sie Ihre Antwort mit der Musterlösung am Beamer. Verbessern oder ergänzen Sie auf dem Arbeitsblatt – am besten in einer anderen Farbe.' }
+    },
+    {
+      id: 'aa2c-loesung-22', abschnitt: 'Gruppenpuzzle', kurz: 'Musterlösung 2.2', typ: 'loesung',
+      titel: 'Musterlösung 2.2',
+      aufgaben: ['2.2'],
+      tipp: 'Zeile anklicken = aufdecken · noch einmal = groß',
+      handy: { typ: 'papier', titel: 'Musterlösung vorne', text: 'Vergleichen Sie Ihre Antwort mit der Musterlösung am Beamer. Verbessern oder ergänzen Sie auf dem Arbeitsblatt – am besten in einer anderen Farbe.' }
     },
     {
       id: 'aa3-impuls', abschnitt: 'Lagerung', kurz: 'Schock → Beine hoch?', typ: 'impuls',
@@ -241,31 +288,38 @@ var STUNDE = {
     {
       id: 'aa3', abschnitt: 'Lagerung', kurz: 'Lagerungs-Quiz (AA3)', typ: 'fortschritt', seite: 'w2-lagerung',
       titel: 'AA3 a) · Lagerungs-Quiz',
-      punkte: ['Jede Person für sich am Handy: **kurze Situationen**.', 'Was ist das **Leitsymptom**? Tippen Sie an, wie Sie lagern – dann **Aufdecken** und die Begründung lesen.', 'Hilfe: die **Bilder der vier Lagerungen** auf dem Arbeitsblatt (S. 3) und am Handy.', 'Am Ende: **Merksatz AA3** auf dem Arbeitsblatt ergänzen.'],
+      punkte: ['Jede Person für sich am Handy: **kurze Situationen**.', 'Was ist das **Leitsymptom**? Tippen Sie an, wie Sie lagern – dann **Aufdecken** und die Begründung lesen.', 'Hilfe: die **Bilder der vier Lagerungen** auf dem Arbeitsblatt (S. 3) und am Handy.', 'Am Ende zeigt das Handy den **Merksatz AA3** – er steht auch auf dem Arbeitsblatt.'],
       handy: { typ: 'modul', modul: 'lagerung' }
     },
     {
-      id: 'aa3-merksatz', abschnitt: 'Lagerung', kurz: 'Merksatz AA3 prüfen', typ: 'merksatz', merksatz: 'aa3',
-      titel: 'Merksatz AA3 – richtig notiert?',
-      text: 'Was haben Sie in die Lücken geschrieben?',
-      tipp: 'Lücke anklicken = aufdecken · noch einmal = ganzer Merksatz groß',
-      handy: { typ: 'vorne', titel: 'Merksatz AA3 prüfen', text: 'Überprüfen Sie am Beamer, ob Sie den **Merksatz AA3** richtig notiert haben. Verbessern Sie, falls nötig – am besten in einer anderen Farbe.' }
+      id: 'aa3-merksatz', abschnitt: 'Lagerung', kurz: 'Merksatz AA3 lesen', typ: 'merksatz', merksatz: 'aa3',
+      titel: 'Merksatz AA3',
+      text: 'Lesen Sie mit – der Merksatz steht auf Ihrem Arbeitsblatt (Seite 3).',
+      tipp: 'Merksatz anklicken = groß',
+      handy: { typ: 'vorne', titel: 'Merksatz AA3', text: 'Lesen Sie mit: **Merksatz AA3** auf Ihrem Arbeitsblatt (Seite 3).' }
     },
     {
-      id: 'aa3b', abschnitt: 'Lagerung', kurz: 'Klausurtraining 3.1/3.2', typ: 'aufgabe',
-      titel: 'AA3 b) · Klausurtraining',
+      id: 'aa3b', abschnitt: 'Lagerung', kurz: 'Schreibaufgaben 3.1/3.2', typ: 'aufgabe',
+      titel: 'AA3 b) · Schreibaufgaben',
       bloecke: [{ art: 'aufgaben', nrs: ['3.1', '3.2'] }],
       los: '✍️ Bearbeiten Sie jetzt **3.1 und 3.2** allein auf dem Arbeitsblatt.',
       losPunkte: ['Hilfe: die Bilder der vier Lagerungen und der **Merksatz AA3**.', 'Danach vergleichen wir mit der Musterlösung.'],
       uhr: [{ label: 'Schreiben', sek: 300 }],
-      handy: { typ: 'papier', titel: 'Klausurtraining 3.1 und 3.2', text: 'Bearbeiten Sie jetzt die Aufgaben **3.1 und 3.2** allein auf dem Arbeitsblatt. Die Zeit läuft vorne.' }
+      handy: { typ: 'papier', titel: 'Schreibaufgaben 3.1 und 3.2', text: 'Bearbeiten Sie jetzt die Aufgaben **3.1 und 3.2** allein auf dem Arbeitsblatt. Die Zeit läuft vorne.' }
     },
     {
-      id: 'aa3b-loesung', abschnitt: 'Lagerung', kurz: 'Musterlösung 3.1/3.2', typ: 'loesung',
-      titel: 'Klausurtraining 3.1 und 3.2 – Musterlösung',
-      aufgaben: ['3.1', '3.2'],
+      id: 'aa3b-loesung-31', abschnitt: 'Lagerung', kurz: 'Musterlösung 3.1', typ: 'loesung',
+      titel: 'Musterlösung 3.1',
+      aufgaben: ['3.1'],
       tipp: 'Zeile anklicken = aufdecken · noch einmal = groß',
-      handy: { typ: 'papier', titel: 'Musterlösung vorne', text: 'Vergleichen Sie Ihre Antworten mit der Musterlösung am Beamer. Verbessern oder ergänzen Sie auf dem Arbeitsblatt – am besten in einer anderen Farbe.' }
+      handy: { typ: 'papier', titel: 'Musterlösung vorne', text: 'Vergleichen Sie Ihre Antwort mit der Musterlösung am Beamer. Verbessern oder ergänzen Sie auf dem Arbeitsblatt – am besten in einer anderen Farbe.' }
+    },
+    {
+      id: 'aa3b-loesung-32', abschnitt: 'Lagerung', kurz: 'Musterlösung 3.2', typ: 'loesung',
+      titel: 'Musterlösung 3.2',
+      aufgaben: ['3.2'],
+      tipp: 'Zeile anklicken = aufdecken · noch einmal = groß',
+      handy: { typ: 'papier', titel: 'Musterlösung vorne', text: 'Vergleichen Sie Ihre Antwort mit der Musterlösung am Beamer. Verbessern oder ergänzen Sie auf dem Arbeitsblatt – am besten in einer anderen Farbe.' }
     },
     {
       id: 'aa4a', abschnitt: 'Verantwortung', kurz: 'Wer darf was? (AA4a)', typ: 'aufstellung', runde: 3,
@@ -289,6 +343,25 @@ var STUNDE = {
       handy: { typ: 'aufstellung', titel: 'Wer darf was?', start: 'Gleich zeigt Ihre Lehrkraft Maßnahmen am Beamer. Tippen Sie dann hier an, wer sie durchführen darf. Nach jeder Lösung: Maßnahme in die Tabelle auf dem Arbeitsblatt eintragen.' }
     },
     {
+      id: 'aa4-merksatz', abschnitt: 'Verantwortung', kurz: 'Merksatz AA4 lesen', typ: 'merksatz', merksatz: 'aa4',
+      titel: 'Merksatz AA4 – Sofortmaßnahmen bei Anaphylaxie',
+      text: 'Lesen Sie mit – der Merksatz steht auf Ihrem Arbeitsblatt (Seite 4).',
+      tipp: 'Merksatz anklicken = groß',
+      handy: { typ: 'vorne', titel: 'Merksatz AA4', text: 'Lesen Sie mit: **Merksatz AA4** auf Ihrem Arbeitsblatt (Seite 4).' }
+    },
+    {
+      id: 'blatt3', abschnitt: 'Anwenden', kurz: 'Blatt 3 austeilen', typ: 'blatt', nr: 3, von: 3, seiten: 'Seite 5 und 6',
+      titel: 'Sie erhalten jetzt Blatt 3',
+      ueberschrift: 'Wissen anwenden',
+      punkte: [
+        '**Seite 5:** Adrenalin oder Antihistaminikum? – Schreibaufgabe 4.1 (AA4 b)',
+        'Transferfall: ein neuer Fall – 5.1 und 5.2 (AA5)',
+        '**Seite 6:** Hausaufgabe mit QR-Code zur Selbstkontrolle',
+        'QR-Code zum Nachlesen – erst nach der Stunde'
+      ],
+      handy: { typ: 'vorne', titel: 'Blatt 3 von 3', text: 'Sie erhalten jetzt **Blatt 3: Wissen anwenden**. Schauen Sie nach vorne.' }
+    },
+    {
       id: 'aa4b', abschnitt: 'Verantwortung', kurz: 'Adrenalin oder Antihistaminikum? (AA4b)', typ: 'aufgabe',
       titel: 'AA4b · Wer hat recht?',
       bloecke: [{ art: 'dialog' }, { art: 'aufgaben', nrs: ['4.1'] }],
@@ -303,34 +376,35 @@ var STUNDE = {
     },
     {
       id: 'aa4b-loesung', abschnitt: 'Verantwortung', kurz: 'Musterlösung 4.1', typ: 'loesung',
-      titel: 'Klausurtraining 4.1 – Musterlösung',
+      titel: 'Musterlösung 4.1',
       aufgaben: ['4.1'],
       tipp: 'Zeile anklicken = aufdecken · noch einmal = groß',
       handy: { typ: 'papier', titel: 'Musterlösung vorne', text: 'Vergleichen Sie Ihre Antwort mit der Musterlösung am Beamer. Verbessern oder ergänzen Sie auf dem Arbeitsblatt – am besten in einer anderen Farbe.' }
     },
     {
-      id: 'aa4-merksatz', abschnitt: 'Verantwortung', kurz: 'Merksatz AA4', typ: 'merksatz', merksatz: 'aa4',
-      titel: 'Merksatz AA4 – Sofortmaßnahmen bei Anaphylaxie',
-      text: 'Ergänzen Sie zuerst allein die Lücken auf dem Arbeitsblatt – dann decken wir gemeinsam auf.',
-      tipp: 'Lücke anklicken = aufdecken · noch einmal = ganzer Merksatz groß',
-      handy: { typ: 'papier', titel: 'Merksatz AA4', text: 'Ergänzen Sie den **Merksatz AA4** auf dem Arbeitsblatt. Danach überprüfen Sie am Beamer, ob Sie ihn richtig notiert haben.' }
-    },
-    {
-      id: 'aa5', abschnitt: 'Klausurtraining', kurz: 'Transferfall (AA5)', typ: 'aufgabe',
-      titel: 'AA5 · Klausurtraining wie in der KA',
+      id: 'aa5', abschnitt: 'Anwenden', kurz: 'Transferfall (AA5)', typ: 'aufgabe',
+      titel: 'AA5 · Transferfall: Wissen anwenden',
       bloecke: [{ art: 'fall', schluessel: 'transferfall', titel: 'Fallsituation' }, { art: 'aufgaben', nrs: ['5.1', '5.2'] }],
-      los: '✍️ Bearbeiten Sie jetzt **5.1 und 5.2** – **allein und ohne Unterlagen**.',
+      los: '✍️ Bearbeiten Sie jetzt **5.1 und 5.2** – **allein**. Hilfe: nur **Merksatz AA3** (Lagerung) und **Merksatz AA4** (Sofortmaßnahmen).',
       losPunkte: ['Legen Sie das Handy umgedreht hin – die Zeit läuft vorne.', 'Danach: Peer-Korrektur mit einer Person aus einer **anderen Stammgruppe**.'],
-      uhr: [{ label: 'Klausurtraining', sek: 480 }],
-      handy: { typ: 'papier', titel: 'Klausurtraining: 5.1 und 5.2', text: 'Allein und ohne Unterlagen. Legen Sie das Handy umgedreht hin – die Zeit läuft vorne.' }
+      uhr: [{ label: 'Schreiben', sek: 480 }],
+      handy: { typ: 'papier', titel: 'Transferfall: 5.1 und 5.2', text: 'Allein. Hilfe: nur **Merksatz AA3** und **Merksatz AA4** auf dem Arbeitsblatt. Legen Sie das Handy umgedreht hin – die Zeit läuft vorne.' }
     },
     {
-      id: 'aa5-peer', abschnitt: 'Klausurtraining', kurz: 'Peer-Korrektur (AA5)', typ: 'loesung',
-      titel: 'AA5 · Peer-Korrektur mit Musterlösung',
+      id: 'aa5-peer', abschnitt: 'Anwenden', kurz: 'Peer-Korrektur (AA5) – Teil 1', typ: 'loesung',
+      titel: 'AA5 · Peer-Korrektur mit Musterlösung (1/2)',
       punkte: ['Tauschen Sie mit einer Person aus einer **anderen Stammgruppe**.', 'Haken Sie im **Bewertungsraster am Handy** ab – die App zählt die Punkte.', 'Rückmeldung in **einem Satz**.'],
-      aufgaben: [{ nrs: ['5.1', '5.2'], loesung: '5.1 und 5.2' }],
+      aufgaben: [{ nrs: ['5.1', '5.2'], loesung: '5.1 und 5.2', zeilen: [0, 4] }],
       uhr: [{ label: 'Peer-Korrektur', sek: 240 }],
       tipp: 'Zeile anklicken = aufdecken · noch einmal = groß',
+      handy: { typ: 'modul', modul: 'raster' }
+    },
+    {
+      id: 'aa5-peer-2', abschnitt: 'Anwenden', kurz: 'Peer-Korrektur (AA5) – Teil 2', typ: 'loesung',
+      titel: 'AA5 · Peer-Korrektur mit Musterlösung (2/2)',
+      aufgaben: [{ nrs: [], loesung: '5.1 und 5.2', zeilen: [4, 99], weiter: true }],
+      uhr: [{ label: 'Peer-Korrektur', sek: 240 }], uhrVon: 'aa5-peer',
+      tipp: 'Zeile anklicken = aufdecken · noch einmal = groß · die Uhr läuft weiter',
       handy: { typ: 'modul', modul: 'raster' }
     },
     {
@@ -384,9 +458,9 @@ var STUNDE = {
     {
       id: 'ende', abschnitt: 'Abschluss', kurz: 'Hausaufgabe und Nachlesen', typ: 'ende',
       titel: 'Hausaufgabe und Nachlesen',
-      punkte: ['**Hausaufgabe:** Klausurtraining (13 Punkte) – Selbstkontrolle über den QR-Code im Arbeitsblatt.', '**Nachlesen:** Alles aus dieser Stunde über den QR-Code auf der letzten Seite des Arbeitsblatts.'],
+      punkte: ['**Hausaufgabe:** ein neuer Fall mit Schreibaufgaben (13 Punkte) – Selbstkontrolle über den QR-Code im Arbeitsblatt. Tipp: Lesen Sie vorher die Merksätze AA1, AA3 und AA4.', '**Nachlesen:** Alles aus dieser Stunde über den QR-Code auf der letzten Seite des Arbeitsblatts.'],
       frei: '📖 Die Nachlese-Seite ist jetzt freigeschaltet.',
-      handy: { typ: 'ende', titel: 'Die Stunde ist beendet', text: '**Hausaufgabe:** Klausurtraining – Selbstkontrolle über den QR-Code im Arbeitsblatt. Alles aus dieser Stunde können Sie jetzt nachlesen: QR-Code auf der letzten Seite des Arbeitsblatts.' }
+      handy: { typ: 'ende', titel: 'Die Stunde ist beendet', text: '**Hausaufgabe:** ein neuer Fall – Selbstkontrolle über den QR-Code im Arbeitsblatt. Tipp: Lesen Sie vorher die Merksätze AA1, AA3 und AA4. Alles aus dieser Stunde können Sie jetzt nachlesen: QR-Code auf der letzten Seite des Arbeitsblatts.' }
     }
   ],
 
@@ -439,13 +513,17 @@ var STUNDE = {
     aufloesungZeigen: 'Auflösung zeigen',
     notfallNr: 'Notfall {n} von {y}',
     aufloesungSpaeter: 'Die Auflösung gibt es am Ende der Stunde.',
-    spalteGross: 'Ganze Spalte groß zeigen',
+    gemeinsamkeitTitel: 'Gemeinsamkeit aller drei',
     loesungZu: 'Musterlösung {nr}',
+    loesungWeiter: 'Fortsetzung',
     gliedNr: 'Glied {n} von {y}',
     wannTitel: 'Wann?',
     warumTitel: 'Warum?',
     soTitel: 'So geht’s',
     lagerungNr: '{n} von 4',
+    blattWort: 'Blatt',
+    blattVon: 'von {y}',
+    blattDarauf: 'Darauf finden Sie:',
     gruppeFertig: 'Tabelle vollständig!',
     ohneHandyKurz: 'ohne Handy',
     jetztErklaert: 'Jetzt: {label}',
@@ -503,13 +581,14 @@ var STUNDE = {
     expTitel: 'Ihr Expertenteam {team}',
     expSetzen: '🚶 **Setzen Sie sich mit {namen} an einen Tisch.**',
     expAllein: '🚶 Sie sind allein in Ihrem Team – arbeiten Sie die Aufträge allein durch.',
-    expAuftraege: ['**a)** Fall unten markieren – danach den **Merksatz AA1** auf dem Arbeitsblatt ergänzen.', '**b)** Infotext lesen.', '**c)** Experten-Check.', '**d)** Gemeinsam **Ihre Spalte {b}** der Vergleichstabelle ausfüllen – dann „Unsere Spalte ist fertig“.'],
-    expWeiter: '⬇ **Merksatz AA1** auf dem Arbeitsblatt ergänzt? Dann geht es hier weiter: **b)** den Infotext lesen. Lieber auf Papier? Bitten Sie Ihre Lehrkraft am Pult um das Expertenblatt „{b} · {form}“.',
+    expAuftraege: ['**a)** Infotext lesen.', '**b)** Fall markieren – der Infotext hilft Ihnen.', '**c)** Experten-Check.', '**d)** Gemeinsam **Ihre Spalte {b}** der Vergleichstabelle ausfüllen – dann „Unsere Spalte ist fertig“.'],
+    expWeiter: '⬇ Fall fertig markiert? Dann geht es hier weiter: **c)** Experten-Check.',
+    expFallHilfe: 'Lesen Sie zuerst oben den Infotext. Dann markieren Sie im Fall alle Hinweise – den Infotext können Sie dabei jederzeit aufklappen.',
     expTabelleTitel: 'd) Jetzt gemeinsam: Ihre Spalte der Vergleichstabelle',
     expTabelleText: 'Füllen Sie mit Ihrem Expertenteam die Spalte **{b} – {kurz}** der Vergleichstabelle auf dem Arbeitsblatt aus, alle sechs Zeilen: **Ursache · Entstehung (kurz) · Puls · Haut · weitere typische Zeichen · Darauf achte ich besonders**. Die Informationen stehen alle im Infotext!',
     expTabelleFertig: 'Wenn die Spalte bei allen im Team fertig ausgefüllt ist: „Unsere Spalte ist fertig“ drücken.',
-    expFall: 'a) Fall: {person}',
-    expInfo: 'b) Infotext: {form}',
+    expFall: 'b) Fall: {person}',
+    expInfo: 'a) Infotext: {form}',
     expWoerter: 'Wörterhilfe',
     expPapier: 'Lieber auf Papier? Bitten Sie Ihre Lehrkraft am Pult um das Expertenblatt „{b} · {form}“.',
     checkTitel: 'c) Experten-Check',

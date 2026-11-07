@@ -143,7 +143,7 @@
   }
 
   function uhrStarten(f) {
-    lehrer('uhr', { uhr: { folie: f.id, segmente: f.uhr } });
+    lehrer('uhr', { uhr: { folie: f.uhrVon || f.id, segmente: f.uhr } });
   }
 
   /* ---------- Abstimmung: umstrittenste Frage ---------- */
@@ -172,7 +172,7 @@
       fahrplan: folieFahrplan, puzzle: foliePuzzle, experten: folieExperten, stamm: folieStamm, fortschritt: folieFortschritt,
       papier: foliePapier, impuls: folieImpuls, aufstellung: folieAufstellung, dialog: folieDialog, kausalkette: folieKausalkette, ende: folieEnde,
       tabelle: folieTabelle, loesung: folieLoesung, info: folieInfo,
-      merksatz: folieMerksatz, lagerung: folieLagerung, aufgabe: folieAufgabe
+      merksatz: folieMerksatz, lagerung: folieLagerung, aufgabe: folieAufgabe, blatt: folieBlatt
     }[f.typ] || folieImpuls;
     var wurzel = el('section', 'folie folie-' + f.typ);
     wurzel.setAttribute('data-folie', f.id);
@@ -225,7 +225,7 @@
   // Textreiche Folien (Aufgabe wie im AB, Musterlösungen): wird es zu lang, wird der Inhalt
   // unter dem Titel stufenweise kleiner, bis alles auf die Bühne passt (höchstens auf 64 %).
   function einpassen(wurzel) {
-    var ziel = wurzel.querySelector('.aufgabe-folie, .loesung-mit-uhr, .loesungen');
+    var ziel = wurzel.querySelector('.aufgabe-folie, .loesung-mit-uhr, .loesungen, .tabelle-spalte');
     if (!ziel) return;
     var grenze = $('inhalt').getBoundingClientRect().bottom + 1;
     function unten() {
@@ -257,7 +257,7 @@
   function uhrZustand(f) {
     var u = stand && stand.stunde && stand.stunde.uhr;
     var seg = f.uhr || [];
-    if (!u || u.folie !== f.id) return { laeuft: false, segmente: seg, nr: 0, rest: seg.length ? seg[0].sek : 0 };
+    if (!u || u.folie !== (f.uhrVon || f.id)) return { laeuft: false, segmente: seg, nr: 0, rest: seg.length ? seg[0].sek : 0 };
     var vergangen = (jetzt() - u.start) / 1000;
     var summe = 0;
     for (var i = 0; i < u.segmente.length; i++) {
@@ -904,49 +904,33 @@
   }
 
   // Vergleichstabelle wie auf dem Arbeitsblatt; Zelle anklicken = Lösung aufdecken
+  // Vergleichstabelle sichern: je Folie eine Spalte (A, B oder C) groß; Zelle anklicken = aufdecken, noch einmal = groß.
+  // Auf der Folie zu C steht zusätzlich die Gemeinsamkeit aller drei Schockformen.
   function folieTabelle(f, w) {
     var NL = window.NACHLESEN || {};
-    var kopf = el('div', 'ergebnis-kopf');
+    var c = 'ABC'.indexOf(f.spalte) + 1;
+    var name = f.spalte + ' ' + S.rollen[f.spalte].kurz;
+    var kopf = el('div', 'tabelle-spalte-kopf');
     kopf.appendChild(fmt('h1', 'f-titel', f.titel));
-    kopf.appendChild(fmt('p', 'f-unter', f.text));
+    kopf.appendChild(el('span', 'spalte-marke ' + f.spalte, name));
+    kopf.appendChild(fmt('p', 'tabelle-unter', f.text));
     w.appendChild(kopf);
     var alle = [];
-    var tab = el('div', 'vergleich');
-    var SPALTEN = ['A hypovolämisch', 'B anaphylaktisch', 'C neurogen'];
-    tab.appendChild(el('div', 'v-kopf', ''));
-    SPALTEN.forEach(function (t, i) {
-      var z = knopf(t, 'v-kopf ' + 'ABC'.charAt(i), function () { spalteGross(i + 1); });
-      z.title = T.spalteGross;
-      tab.appendChild(z);
-    });
-    // ganze Spalte groß: verdeckte Zellen lassen sich auch dort aufdecken
-    function spalteGross(c) {
-      grossZeigen(function (k) {
-        k.appendChild(el('h2', 'gross-spalte-titel ' + 'ABC'.charAt(c - 1), SPALTEN[c - 1]));
-        var g2 = el('div', 'gross-spalte');
-        (NL.vergleich || []).forEach(function (zeile, r) {
-          g2.appendChild(el('div', 'v-zeilenkopf', zeile[0]));
-          g2.appendChild(aufdeckZelle(f.id + ':' + r + ':' + c, zeile[c], 'g-zelle', zeile[0] + ' · ' + SPALTEN[c - 1]));
-        });
-        k.appendChild(g2);
-      });
-    }
+    var tab = el('div', 'tabelle-spalte ' + f.spalte + (f.gemeinsamkeit ? ' mit-gemeinsamkeit' : ''));
     (NL.vergleich || []).forEach(function (zeile, r) {
-      tab.appendChild(el('div', 'v-zeilenkopf', zeile[0]));
-      for (var c = 1; c <= 3; c++) {
-        var schl = f.id + ':' + r + ':' + c;
-        alle.push(schl);
-        tab.appendChild(aufdeckZelle(schl, zeile[c], 'v-zelle', zeile[0] + ' · ' + SPALTEN[c - 1]));
-      }
+      var schl = f.id + ':' + r;
+      alle.push(schl);
+      tab.appendChild(el('div', 'ts-kopf', zeile[0]));
+      tab.appendChild(aufdeckZelle(schl, zeile[c], 'ts-zelle', zeile[0] + ' · ' + name));
     });
-    tab.appendChild(el('div', 'v-zeilenkopf', 'Gemeinsamkeit'));
-    var g = aufdeckZelle(f.id + ':gemeinsam', NL.gemeinsamkeit || '', 'v-zelle v-breit', 'Gemeinsamkeit');
-    alle.push(f.id + ':gemeinsam');
-    tab.appendChild(g);
+    if (f.gemeinsamkeit) {
+      alle.push(f.id + ':gemeinsam');
+      tab.appendChild(el('div', 'ts-kopf ts-gemeinsam', T.gemeinsamkeitTitel));
+      tab.appendChild(aufdeckZelle(f.id + ':gemeinsam', NL.gemeinsamkeit || '', 'ts-zelle ts-gemeinsam', T.gemeinsamkeitTitel));
+    }
     w.appendChild(tab);
     w.appendChild(aufdeckKnoepfe(f, alle));
   }
-
 
   function aufgabeKopf(nr, a, klasse) {
     var kopf = el('div', klasse || 'loesung-aufgabe');
@@ -959,7 +943,7 @@
     return kopf;
   }
 
-  // Musterlösung zu Klausuraufgaben; jede Zeile einzeln aufdecken.
+  // Musterlösung zu den Schreibaufgaben; jede Zeile einzeln aufdecken.
   // aufgaben: ['2.1', …] oder [{ nrs: ['5.1', '5.2'], loesung: '5.1 und 5.2' }]
   function folieLoesung(f, w) {
     var NL = window.NACHLESEN || {};
@@ -971,7 +955,10 @@
       var lsg = typeof eintrag === 'string' ? eintrag : eintrag.loesung;
       var teil = el('section', 'loesung-teil');
       nrs.forEach(function (nr) { teil.appendChild(aufgabeKopf(nr, (NL.aufgaben || {})[nr] || {})); });
+      if (eintrag.weiter) teil.appendChild(el('p', 'loesung-weiter', K.ersetzen(T.loesungZu, { nr: lsg }) + ' · ' + T.loesungWeiter));
+      var bereich = eintrag.zeilen || [0, 99];   // lange Lösungen auf zwei Folien: Zeilen von … bis (ohne)
       ((NL.loesungen || {})[lsg] || []).forEach(function (zeile, i) {
+        if (i < bereich[0] || i >= bereich[1]) return;
         var schl = f.id + ':' + lsg + ':' + i;
         alle.push(schl);
         teil.appendChild(aufdeckZelle(schl, zeile, 'l-zeile', K.ersetzen(T.loesungZu, { nr: lsg })));
@@ -991,33 +978,27 @@
   }
 
   // Merksatz prüfen: Lücken einzeln aufdecken (Text aus inhalte.js → merksaetze, wie im AB)
+  // Merksatz zum gemeinsamen Lesen: ganzer Satz wie auf dem AB, Schlüsselwörter hervorgehoben; anklicken = groß
   function folieMerksatz(f, w) {
     w.appendChild(titel(f, f.text));
-    var alle = [];
     var name = 'Merksatz ' + f.merksatz.toUpperCase();
     var teile = (INHALTE.merksaetze || {})[f.merksatz] || [];
+    function satz(klasse) {
+      var p = el('p', klasse);
+      teile.forEach(function (t) {
+        if (typeof t === 'string') p.appendChild(document.createTextNode(t));
+        else p.appendChild(el('strong', 'merksatz-wort', t.l));
+      });
+      return p;
+    }
     var box = el('section', 'merksatz-folie');
     box.appendChild(el('div', 'merksatz-kopf', name));
-    var p = el('p', 'merksatz-satz');
-    function merksatzGross(k) {
-      k.appendChild(el('h2', null, name));
-      var q = el('p', 'gross-text gross-merksatz');
-      var offen = aufgedeckt().zellen;
-      teile.forEach(function (t, i) {
-        if (typeof t === 'string') q.appendChild(document.createTextNode(t));
-        else q.appendChild(el('mark', 'gross-luecke', offen[f.id + ':' + i] ? t.l : '______'));
-      });
-      k.appendChild(q);
-    }
-    teile.forEach(function (t, i) {
-      if (typeof t === 'string') { p.appendChild(document.createTextNode(t)); return; }
-      var schl = f.id + ':' + i;
-      alle.push(schl);
-      p.appendChild(aufdeckZelle(schl, t.l, 'luecke', merksatzGross));
+    box.appendChild(satz('merksatz-satz'));
+    box.addEventListener('click', function () {
+      grossZeigen(function (k) { k.appendChild(el('h2', null, name)); k.appendChild(satz('gross-text gross-merksatz')); });
     });
-    box.appendChild(p);
     w.appendChild(box);
-    w.appendChild(aufdeckKnoepfe(f, alle));
+    if (f.tipp) w.appendChild(el('p', 'tipp merksatz-tipp', f.tipp));
   }
 
   // Lagerung: großes Bild, daneben Wann? / Warum? / So geht’s
@@ -1116,6 +1097,23 @@
       wb.appendChild(ul);
       rechts.appendChild(wb);
     }
+    box.appendChild(rechts);
+    w.appendChild(box);
+  }
+
+  // Austeilen: links das Blatt mit seiner Nummer, rechts Überschrift (wie im AB) und was darauf steht
+  function folieBlatt(f, w) {
+    var box = el('div', 'blatt-folie');
+    var papier = el('div', 'blatt-papier');
+    papier.appendChild(el('div', 'blatt-wort', T.blattWort));
+    papier.appendChild(el('div', 'blatt-nr', String(f.nr)));
+    papier.appendChild(el('div', 'blatt-von', K.ersetzen(T.blattVon, { y: f.von })));
+    papier.appendChild(el('div', 'blatt-seiten', f.seiten));
+    box.appendChild(papier);
+    var rechts = el('div', 'blatt-rechts');
+    rechts.appendChild(titel(f, f.ueberschrift));
+    rechts.appendChild(el('p', 'blatt-darauf', T.blattDarauf));
+    rechts.appendChild(punkteListe(f.punkte));
     box.appendChild(rechts);
     w.appendChild(box);
   }

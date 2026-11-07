@@ -166,7 +166,10 @@ fs.mkdirSync(ORDNER, { recursive: true });
       pruefe(await s.$('.timer') === null && !/Sekunden|Rollen tauschen/.test(await s.textContent('#uebung')), 'Quiz allein: kein Timer, kein Rollentausch');
       pruefe(!(await s.textContent('#uebung')).includes('Etwas anderes') && (await s.textContent('#uebung')).includes('Reanimation beginnen'), 'Auswahl wie im Entscheidungsweg (Reanimation statt „Etwas anderes“)');
       await s.click('.lager-bilder summary');
-      pruefe(await s.$$eval('.lager-bild img', (b) => b.length === 4 && b.every((x) => x.complete && x.naturalWidth > 0)), 'Hilfe: die vier Lagerungen mit Bildern am Handy');
+      // Die Bilder laden „lazy“: erst sichtbar machen, dann warten, bis alle vier geladen sind
+      for (const img of await s.$$('.lager-bild img')) await img.scrollIntoViewIfNeeded();
+      const bilderDa = await s.waitForFunction(() => { const b = [...document.querySelectorAll('.lager-bild img')]; return b.length === 4 && b.every((x) => x.complete && x.naturalWidth > 0); }, null, { timeout: 8000 }).then(() => true, () => false);
+      pruefe(bilderDa, 'Hilfe: die vier Lagerungen mit Bildern am Handy');
       await s.screenshot({ path: path.join(ORDNER, 'lagerung_karte.png'), fullPage: true });
     }
     const opt = L.optionen.find((o) => o.kuerzel === k.richtig).text;

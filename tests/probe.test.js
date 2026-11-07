@@ -39,9 +39,8 @@ const folieIst = (lap, id, ms) => bis(lap, (x) => { const f = document.querySele
     H.pruefe(await bis(lap, () => /^1 Handy \+ 20 erfundene$/.test(document.getElementById('kopf-handys').textContent)), 'Kopfzeile: „1 Handy + 20 erfundene“');
 
     console.log('\n== Erfundene Klasse stimmt ab');
-    await lap.click('#weiter');
-    await lap.click('#weiter');
-    H.pruefe(await folieIst(lap, 'einstieg'), 'Folie 3: Abstimmung');
+    for (let i = 0; i < 3; i++) await lap.click('#weiter');   // Blatt 1, Frau Maler, Abstimmung
+    H.pruefe(await folieIst(lap, 'einstieg'), 'Folie 4: Abstimmung');
     for (let j = 0; j < 4; j++) {   // vier Notfälle
       await lap.click('#weiter');
       const ok = await bis(lap, () => /^(1[5-9]|20) von/.test((document.querySelector('.abgestimmt') || {}).textContent || ''));
@@ -76,7 +75,7 @@ const folieIst = (lap, id, ms) => bis(lap, (x) => { const f = document.querySele
     }
     await bis(h, () => { const b = document.getElementById('fertig-team'); return b && !b.disabled; });
     await h.click('#fertig-team');
-    H.pruefe(await folieIst(lap, 'aa1-merksatz', 60000), 'alle fertig → automatisch „Merksatz AA1 prüfen“');
+    H.pruefe(await folieIst(lap, 'aa1-merksatz', 60000), 'alle fertig → automatisch „Merksatz AA1 lesen“');
     await lap.click('#weiter');
     H.pruefe(await folieIst(lap, 'aa2a'), 'Weiter: Stammgruppen');
     H.pruefe(await bis(h, () => !!document.querySelector('.stamm-kopf')), 'Handy der Lehrkraft: Stammgruppe mit erfundenen Namen');
