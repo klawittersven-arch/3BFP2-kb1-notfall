@@ -109,7 +109,7 @@ var NACHLESEN = {
  "aufgaben": {
   "2.1": {
    "nr": "2.1",
-   "text": "Erläutern Sie, wie es bei Mia zum Schock kommt. Nutzen Sie die Vergleichstabelle (Seite 2, Spalte B, Zeile „Entstehung“). Nennen Sie dazu passende Befunde aus Mias Fall.",
+   "text": "Erläutern Sie, wie es bei Mia zum Schock kommt. Nutzen Sie die Vergleichstabelle (Seite 2, Spalte ?, Zeile „Entstehung“). Nennen Sie dazu passende Befunde aus Mias Fall.",
    "punkte": 3
   },
   "2.2": {

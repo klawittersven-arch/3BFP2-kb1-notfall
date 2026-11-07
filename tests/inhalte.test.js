@@ -203,6 +203,11 @@ pruefe(Object.keys(NL.aufgaben).length === 7 && !NL.aufgaben['6.1'] && !NL.aufga
 pruefe(!Object.keys(NL.loesungen).some((k) => /^Aufgabe/.test(k)), 'keine Hausaufgaben-Lösungen auf der Nachlese-Seite');
 pruefe(!JSON.stringify(NL.loesungen).match(/\d\s*P\.|Punkt/), 'Musterlösungen (Folien, Nachlese) ohne Hinweise zur Punktevergabe', JSON.stringify(NL.loesungen).match(/.{40}\d\s*P\..{10}/));
 pruefe(/\(Beurteilung 1 P\./.test(fs.readFileSync(path.join(WURZEL, 'werkzeuge', 'ab_w2.js'), 'utf8')), 'Lehrerversion behält die Punktevergabe');
+// 2.1 gibt die Spalte der Vergleichstabelle nicht vor (AB, Beamer und Handy gleich)
+{
+  const h21 = S.folien.find((f) => f.id === 'aa2c').handy.aufgaben.find((a) => a.nr === '2.1');
+  pruefe(/Spalte \?, Zeile/.test(NL.aufgaben['2.1'].text) && !/Spalte [ABC]\b/.test(NL.aufgaben['2.1'].text) && h21.text === NL.aufgaben['2.1'].text, '2.1: Spalte nicht vorgegeben, Beamer und Handy wie das AB');
+}
 pruefe(NL.vergleich.length === 6 && NL.pikto.length === 4 && NL.werDarfWas.length === 3, 'Tabelle, Lagerung und Verantwortung vollständig');
 pruefe(!NL.weg && !NL.adrenalin && !NL.verantwortung && NL.adrenalinText.length === 2, 'kein Entscheidungsweg, kein Info-Kasten Verantwortung; Adrenalin in 2 Sätzen');
 pruefe(/Gefahr erkennen/.test(NL.werDarfWas[0]) && /dokumentieren/.test(NL.werDarfWas[0]) && /Adrenalin/.test(NL.werDarfWas[1]) && /SOP/.test(NL.werDarfWas[1]) && /Diagnose/.test(NL.werDarfWas[2]) && /Auszubildende/.test(NL.werDarfWasAzubi), 'Wer darf was?: Tabelle vorausgefüllt, mit allen Punkten des früheren Info-Kastens');
