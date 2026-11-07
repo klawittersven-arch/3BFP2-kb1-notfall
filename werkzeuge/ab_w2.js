@@ -22,7 +22,7 @@ function blattKopf(B, nr, o = {}) {
   return new Paragraph({
     keepNext: true, spacing: { before: 0, after: 100 },
     shading: { type: ShadingType.CLEAR, color: 'auto', fill: '2E75B6' },
-    children: [B.emoji(' 📄 ', { size: 24 }), B.b(`Arbeitsblatt ${nr} von ${f.von} · ${f.ueberschrift}`, { size: 25, color: 'FFFFFF' })],
+    children: [B.emoji(' 📄 ', { size: 24 }), B.b(`Schockformen: ${f.ueberschrift}`, { size: 25, color: 'FFFFFF' })],
     ...o
   });
 }

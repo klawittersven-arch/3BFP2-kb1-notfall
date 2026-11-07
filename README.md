@@ -69,7 +69,7 @@ Gerafft für langsam lesende Klassen: Das Arbeitsblatt hat **6 Seiten** (3 Blät
 im KA-Format bleiben. Eine Pausenfolie gibt es nicht.
 
 **Blätter nacheinander austeilen:** Blatt 1 (S. 1–2) zu Beginn, Blatt 2 (S. 3–4) vor den Schreibaufgaben 2.1/2.2,
-Blatt 3 (S. 5–6) vor „Wer hat recht?“ (AA4 b). Jedes Blatt beginnt mit einer blauen Überschrift „Blatt … von 3“;
+Blatt 3 (S. 5–6) vor „Wer hat recht?“ (AA4 b). Jedes Blatt beginnt mit einer blauen Überschrift „Schockformen: …“;
 dieselbe Überschrift und die Aufgaben des Blattes zeigt die Folie „Weiter mit Arbeitsblatt …“ (Texte in `docs/inhalte_stunde.js`,
 das Arbeitsblatt übernimmt die Überschrift von dort).
 
