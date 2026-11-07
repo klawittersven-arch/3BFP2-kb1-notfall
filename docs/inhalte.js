@@ -75,37 +75,13 @@ var INHALTE = {
   },
 
   /* ------------------------------------------------------------------------
-     EINSTIEG & CHECK-OUT: „Wie hätten Sie gehandelt?“ (w2-entscheidung.html)
-     Runde 1 (Einstieg, ?runde=1): Vermutungen – keine Auflösung.
-     Runde 2 (Check-out, ?runde=2): dieselben Fragen noch einmal, danach Auflösung.
+     EINSTIEG & CHECK-OUT: „Wie hätten Sie gehandelt?“
+     Die Lehrkraft zeigt die Notfälle nacheinander am Beamer, die Klasse stimmt am Handy ab
+     (Texte der Folien und Handy-Bildschirme: inhalte_stunde.js). Runde 1 (Einstieg): nur das
+     Ergebnis; Runde 2 (Check-out): Auflösung mit Erklärung.
      Gleiche Fragen wie im Arbeitsblatt (werkzeuge/ab_w2_texte.js → ENTSCHEIDUNG)
      ------------------------------------------------------------------------ */
   entscheidung: {
-    titel: 'Wie hätten Sie gehandelt?',
-    titel2: 'Hätten Sie richtig gehandelt?',
-    anweisung: 'Sechs kurze Notfälle – wie würden Sie handeln? Tippen Sie Ihre **Vermutung** an und geben Sie an, ob Sie sich sicher sind oder nur vermuten. **Falsch liegen ist jetzt ausdrücklich erlaubt:** Genau diese Entscheidungen lernen Sie heute. Am Beamer erscheint nur, wie die Klasse vermutet – ohne Namen.',
-    anweisung2: 'Jetzt wissen Sie mehr. Entscheiden Sie **dieselben sechs Notfälle** noch einmal. Danach sehen Sie die Auflösung – und Ihre Vermutungen vom Stundenbeginn daneben.',
-    // Die Runde kommt nur aus dem QR-Code: Einstieg → w2-entscheidung.html?runde=1, Check-out → ?runde=2
-    runde1: 'Einstieg · Ihre Vermutungen, bitte!',
-    runde2: 'Check-out · Prüfen Sie Ihre Vermutungen',
-    ohneQr: 'Bitte scannen Sie den QR-Code auf Ihrem Arbeitsblatt: beim Einstieg oder beim Check-out.',
-    sicherFrage: 'Wie sicher sind Sie?',
-    sicher: 'Ich bin mir sicher',
-    unsicher: 'Ich vermute nur',
-    sicherKurz: 'sicher',
-    unsicherKurz: 'nur vermutet',
-    abschicken1: 'Vermutungen abschicken',
-    abschicken2: 'Abschicken und Auflösung ansehen',
-    nochOffen: 'Bitte beantworten Sie alle sechs Fragen – jeweils eine Antwort und „sicher“ oder „vermute nur“.',
-    danke1: 'Danke! Ihre Vermutungen sind am Beamer – ohne Namen. Ob Sie richtig lagen, prüfen Sie am Ende der Stunde.',
-    danke2: 'Hier ist die Auflösung. Vergleichen Sie: Wie haben Sie am Stundenbeginn vermutet – und wie entscheiden Sie jetzt?',
-    ohneRaum: 'Hinweis: Sie sind nicht mit einem Raumcode angemeldet – Ihre Antworten erscheinen deshalb nicht am Beamer.',
-    gesendet: '✓ am Beamer angekommen',
-    nichtGesendet: 'Gerade keine Verbindung – Ihre Antworten werden nachgereicht.',
-    ihreRunde1: 'Ihre Vermutung (Beginn): {a}',
-    ihreRunde2: 'Ihre Entscheidung (Ende): {a}',
-    richtig: 'richtig',
-    neu: 'Antworten ändern',
     fragen: [
       { nr: 'E1', frage: 'Frau K. hat nach einer Infusion Quaddeln, ringt nach Luft und hat einen Blutdruck von 85/50 mmHg. Wie lagern Sie sie?', optionen: ['A flach, Beine hoch', 'B Oberkörper hoch', 'C stabile Seitenlage'], richtig: 'B', erklaerung: 'Atemnot ist das Leitsymptom → Oberkörper hoch. Beine hoch würde die Atmung erschweren.' },
       { nr: 'E2', frage: 'Welches Medikament ist beim anaphylaktischen Schock das Mittel der ersten Wahl?', optionen: ['A Antihistaminikum', 'B Adrenalin i. m.', 'C Kortison i. v.'], richtig: 'B', erklaerung: 'Adrenalin wirkt am schnellsten auf Kreislauf, Schleimhäute und Bronchien. Antihistaminikum und Kortison kommen danach.' },

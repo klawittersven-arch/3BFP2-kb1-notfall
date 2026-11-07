@@ -28,8 +28,8 @@ geben ihren Vornamen ein – und ihr Handy zeigt ab dann automatisch, was zur ak
 |---|---|---|---|
 | 1 | Willkommen | großer QR-Code, Namen der Angemeldeten | Vorname eingeben → „Sie sind dabei“ |
 | 2 | Frau Maler | Fallauszug, Leitfrage | Leitfrage |
-| 3 | Wie hätten Sie gehandelt? | Auftrag, „x von y haben abgestimmt“ | 6 Notfälle, sicher / vermute nur |
-| 4 | Ergebnis | 6 Karten, ★ = größte Uneinigkeit, Karte anklicken = groß | „Ergebnis vorne“ |
+| 3 | Wie hätten Sie gehandelt? | Auftrag, dann **Notfall für Notfall**: Notfall groß, „x von y haben abgestimmt“ → „Ergebnisse anzeigen“ (Verteilung, **keine Auflösung**) | derselbe Notfall: Vermutung antippen, sicher / vermute nur; danach „Ergebnis vorne“ |
+| 4 | Ergebnis | Übersicht: 6 Karten, ★ = größte Uneinigkeit, Karte anklicken = groß | „Ergebnis vorne“ |
 | 5 | Murmeln | umstrittenste Frage groß, 1-Minuten-Uhr (startet selbst) | Frage + eigene Vermutung |
 | 6 | Lernziel | Lernziel, Fahrplan der Stunde | – |
 | 7 | Gruppen einteilen | **„Gruppen zufällig einteilen“**, Gruppenkarten mit Emoji | eigene Stammgruppe in Gruppenfarbe, Buchstabe, Expertenteam |
@@ -48,8 +48,10 @@ geben ihren Vornamen ein – und ihr Handy zeigt ab dann automatisch, was zur ak
 | 28–30 | Wer hat recht? (AA4b) | Aufgabenfolie mit Dialog und 4.1 → Think/Pair-Uhr → Musterlösung → **Merksatz AA4** (erst ergänzen, dann aufdecken) | „Auf Papier“ |
 | 31–32 | Klausurtraining (AA5) | Transferfall wie im AB → Countdown 6 min → Peer-Korrektur (4 min) mit Musterlösung zum Aufdecken | „Handy umgedreht“, dann Bewertungsraster |
 | 33 | Frau Maler (AA6) | Kausalkette Schritt für Schritt (aufgedecktes Glied anklicken = groß), dann Antwort auf die Leitfrage | „Ergänzen Sie die Kausalkette …“ |
-| 34–35 | Hätten Sie richtig gehandelt? | Zähler, dann vorher – nachher mit Lösung | dieselben 6 Notfälle, danach Auflösung |
-| 36 | Hausaufgabe und Nachlesen | Hausaufgabe, Nachlesen – **gibt die Nachlese-Seite frei** | „Die Stunde ist beendet“, Hausaufgabe |
+| 34 | Was haben wir heute gelernt? | Erklärfolie: was wir gelernt haben, gleich dieselben Notfälle mit neuem Fachwissen | „Schauen Sie nach vorne“ |
+| 35 | Hätten Sie richtig gehandelt? | Notfall für Notfall: abstimmen → „Auflösung zeigen“ (richtige Antwort, Erklärung, **Beginn und jetzt** nebeneinander) | derselbe Notfall; danach Auflösung mit eigener Vermutung und Entscheidung |
+| 36 | Vorher – nachher | Übersicht aller 6 Notfälle mit Lösung | eigene Bilanz (richtig zu Beginn / jetzt) |
+| 37 | Hausaufgabe und Nachlesen | Hausaufgabe, Nachlesen – **gibt die Nachlese-Seite frei** | „Die Stunde ist beendet“, Hausaufgabe |
 
 **Sicherungsfolien:** Nach jedem Merksatz kommt eine Folie zum Aufdecken der Lücken, nach jeder Papieraufgabe
 eine Aufgabenfolie (erst erklären, dann „✍️ Jetzt bearbeiten“ – das startet die Uhr) und eine Musterlösung zum
@@ -59,7 +61,7 @@ Lösungszeilen bleiben aufgedeckt, auch wenn der Beamer neu geladen wird; „All
 Lange Folien werden automatisch etwas kleiner gesetzt, damit alles auf die Bühne passt.
 
 **Zeitplan:** 0–8 Einstieg · 8–60 Gruppenpuzzle · 60–83 Lagerung · (Pause) · 83–97 AA4 · 97–108 AA5 ·
-108–113 AA6 · **113–125 Puffer** · 125–135 Abschluss. Die Notfall-Simulation ist gestrichen; eine Pausenfolie gibt es nicht.
+108–113 AA6 · **113–123 Puffer** · 123–135 Abschluss. Die Notfall-Simulation ist gestrichen; eine Pausenfolie gibt es nicht.
 
 Aufgedeckte Zellen und Lösungszeilen bleiben aufgedeckt, auch wenn der Beamer neu geladen wird.
 
@@ -71,7 +73,7 @@ stimmen ab, bearbeiten die Übungen, melden „fertig“ – je nachdem, welche 
 Handy** den QR-Code am Beamer scannen und als Schülerin oder Schüler mitmachen: Das Handy wird wie alle anderen
 einer Stammgruppe und einem Expertenteam mit erfundenen Namen zugeteilt. Oben steht „Probestunde“ und
 „1 Handy + 20 erfundene“. Der Wechsel zum Merksatz AA1 (danach Stammgruppen) kommt, sobald auch das eigene Handy „fertig“ meldet.
-Hinweis: Wie eine echte Stunde sperrt auch die Probestunde die Nachlese-Seite, bis Folie 36 erreicht ist.
+Hinweis: Wie eine echte Stunde sperrt auch die Probestunde die Nachlese-Seite, bis Folie 37 erreicht ist.
 
 ### Bedienung
 
@@ -88,7 +90,7 @@ Hinweis: Wie eine echte Stunde sperrt auch die Probestunde die Nachlese-Seite, b
   Ton beim Wechsel. Die Handys zeigen die Restzeit mit.
 - **Beamer neu laden** oder Laptop kurz zu: Der Raum bleibt (6 Stunden) und die Folie auch.
 - **Nachlesen** (letzte AB-Seite): alle Inhalte und Lösungen der Stunde (ohne Hausaufgabe). Die Seite ist
-  **gesperrt, solange irgendwo eine Beamer-Stunde läuft** – bis Folie 36 erreicht ist oder 10 Minuten nach dem
+  **gesperrt, solange irgendwo eine Beamer-Stunde läuft** – bis Folie 37 erreicht ist oder 10 Minuten nach dem
   Schließen des Beamers. Hinweis: Die Lösungen stehen technisch auch in den Programmdateien der App; die Sperre
   verhindert den einfachen Weg, nicht jeden.
 
@@ -119,7 +121,7 @@ docs/                ← alles, was GitHub Pages veröffentlicht
   inhalte_nachlesen.js Lösungstexte für die Nachlese (automatisch aus dem Arbeitsblatt erzeugt)
   w2-nachlesen.html, nachlesen.js/css   Nachlese-Seite
   w2-transfer.html     Hausaufgabe (Selbstkontrolle)
-  entscheidung.js, markieren.js, detektiv.js, lagerung.js, raster.js   Übungen
+  markieren.js, detektiv.js, lagerung.js, raster.js   Übungen (Einstieg/Check-out stecken in stunde.js)
   bilder/lagerung_*.svg  Lagerungsbilder (Beamer, Handy, Nachlese)
   config.js            Adresse des Workers, Sperrwörter für Vornamen
 worker/src/          ← Cloudflare-Worker: index.js (Räume, Live-Verbindung, Nachlese-Sperre), stunde.js (Gruppenpuzzle)

@@ -7,7 +7,7 @@
  * Nach größeren Änderungen VERSION erhöhen – dann wird der Speicher erneuert. */
 'use strict';
 
-var VERSION = 'v9';
+var VERSION = 'v10';
 var CACHE = 'kb1-notfall-' + VERSION;
 var ZEITLIMIT_MS = 4000;
 
@@ -31,7 +31,6 @@ var DATEIEN = [
   'stunde.js',
   'beamer.js',
   'nachlesen.js',
-  'entscheidung.js',
   'markieren.js',
   'detektiv.js',
   'lagerung.js',

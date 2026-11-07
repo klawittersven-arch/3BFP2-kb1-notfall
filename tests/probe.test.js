@@ -42,7 +42,12 @@ const folieIst = (lap, id, ms) => bis(lap, (x) => { const f = document.querySele
     await lap.click('#weiter');
     await lap.click('#weiter');
     H.pruefe(await folieIst(lap, 'einstieg'), 'Folie 3: Abstimmung');
-    H.pruefe(await bis(lap, () => /^(1[5-9]|20) von 21/.test((document.querySelector('.zaehl-gross') || {}).textContent || '')), 'erfundene Stimmen laufen ein');
+    for (let j = 0; j < 6; j++) {
+      await lap.click('#weiter');
+      const ok = await bis(lap, () => /^(1[5-9]|20) von/.test((document.querySelector('.abgestimmt') || {}).textContent || ''));
+      if (j === 0) H.pruefe(ok, 'erfundene Stimmen zum ersten Notfall laufen ein');
+      await lap.click('#weiter');
+    }
     await lap.click('#weiter');
     H.pruefe(await bis(lap, () => document.querySelectorAll('.abst-frage.stern').length === 1), 'Ergebnis mit „größter Uneinigkeit“');
 
