@@ -216,6 +216,7 @@ pruefe(/\(Beurteilung 1 P\./.test(fs.readFileSync(path.join(WURZEL, 'werkzeuge',
 pruefe(NL.vergleich.length === 6 && NL.pikto.length === 4 && NL.werDarfWas.length === 3, 'Tabelle, Lagerung und Verantwortung vollständig');
 pruefe(!NL.weg && !NL.adrenalin && !NL.verantwortung && NL.adrenalinText.length === 2, 'kein Entscheidungsweg, kein Info-Kasten Verantwortung; Adrenalin in 2 Sätzen');
 pruefe(/Gefahr erkennen/.test(NL.werDarfWas[0]) && /dokumentieren/.test(NL.werDarfWas[0]) && /Adrenalin/.test(NL.werDarfWas[1]) && /SOP/.test(NL.werDarfWas[1]) && /Diagnose/.test(NL.werDarfWas[2]) && /Auszubildende/.test(NL.werDarfWasAzubi), 'Wer darf was?: Tabelle vorausgefüllt, mit allen Punkten des früheren Info-Kastens');
+pruefe(NL.werDarfWas[2].split(' · ').length >= 3 && /anordnen/.test(NL.werDarfWas[2]) && /SOP/.test(NL.werDarfWas[2]), 'Wer darf was?: auch die ärztliche Spalte mit mehreren Punkten (Diagnose, Anordnung, SOP …)');
 pruefe(!/eintragen/i.test(JSON.stringify(S.folien.find((f) => f.id === 'aa4a'))) && !S.handy.aufstellungEintragen, 'Wer darf was?: keine Aufforderung mehr, Maßnahmen einzutragen');
 S.folien.find((f) => f.id === 'aa2c').handy.aufgaben.forEach((a) => pruefe(NL.aufgaben[a.nr] && NL.aufgaben[a.nr].text.startsWith(a.text), 'Handy-Text zu ' + a.nr + ' wie im Arbeitsblatt'));
 S.folien.filter((f) => f.typ === 'loesung').forEach((f) => {

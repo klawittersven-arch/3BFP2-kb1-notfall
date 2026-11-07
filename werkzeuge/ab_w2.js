@@ -200,7 +200,7 @@ function schuelerTeil(B, { lsg }) {
   const WER_DARF_WAS = sammle('werDarfWas', [
     ['Gefahr erkennen', 'Hilfe holen', 'Allergen stoppen (z. B. Infusion stoppen, Zugang belassen)', 'nach Leitsymptom lagern', 'überwachen', 'dokumentieren'],
     ['Medikamente: **Adrenalin i. m.**, Antihistaminikum', 'Sauerstoff', 'Infusionen', '**SOP** = schriftliche, ärztlich freigegebene Notfall-Anweisung'],
-    ['Diagnose stellen, z. B. „anaphylaktischer Schock“']
+    ['Diagnose stellen, z. B. „anaphylaktischer Schock“', 'Medikamente anordnen (Wirkstoff, Dosis, Weg)', 'Notfall-SOP schriftlich freigeben', 'Weiterbehandlung festlegen, z. B. Intensivstation']
   ]);
   const AZUBI = sammle('werDarfWasAzubi', '**Als Auszubildende/r:** unter Anleitung handeln und sofort eine Pflegefachperson holen.');
   const vw = Math.floor(BREITE_HOCH / 3);
