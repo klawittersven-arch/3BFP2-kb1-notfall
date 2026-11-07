@@ -60,13 +60,13 @@ var STUNDE = {
       handy: { typ: 'vorne', titel: 'Sie sind dabei, {name}!', text: 'Ihr Handy wechselt ab jetzt automatisch mit dem Beamer. Schauen Sie nach vorne.' }
     },
     {
-      id: 'blatt1', abschnitt: 'Ankommen', kurz: 'Blatt 1 austeilen', typ: 'blatt', nr: 1, von: 3, seiten: 'Seite 1 und 2',
+      id: 'blatt1', abschnitt: 'Ankommen', kurz: 'Blatt 1 austeilen', typ: 'blatt', nr: 1, von: 3,
       titel: 'Weiter mit Arbeitsblatt 1',
       ueberschrift: 'Einstieg und Gruppenpuzzle',
       punkte: [
-        '**Seite 1:** Frau Maler und die Leitfrage – die Antwort ergänzen Sie am Ende der Stunde',
+        'Frau Maler und die Leitfrage – die Antwort ergänzen Sie am Ende der Stunde',
         '**Einstieg:** Wie hätten Sie gehandelt? (am Handy)',
-        '**Seite 2:** Gruppenpuzzle – Expertenteam (AA1), Merksatz AA1, Vergleichstabelle',
+        'Gruppenpuzzle – Expertenteam (AA1), Merksatz AA1, Vergleichstabelle',
         'Stammgruppe (AA2 a) und Schockform-Detektiv (AA2 b)'
       ],
       handy: { typ: 'vorne', titel: 'Weiter mit Arbeitsblatt 1', text: 'Weiter mit **Arbeitsblatt 1: Einstieg und Gruppenpuzzle**. Schauen Sie nach vorne.' }
@@ -143,9 +143,9 @@ var STUNDE = {
     {
       id: 'aa1-merksatz', abschnitt: 'Gruppenpuzzle', kurz: 'Merksatz AA1 lesen', typ: 'merksatz', merksatz: 'aa1',
       titel: 'Merksatz AA1',
-      text: 'Lesen Sie mit – der Merksatz steht auf Ihrem Arbeitsblatt (Seite 2).',
+      text: 'Lesen Sie mit – der Merksatz steht auf Ihrem Arbeitsblatt.',
       tipp: 'Merksatz anklicken = groß',
-      handy: { typ: 'vorne', titel: 'Merksatz AA1', text: 'Lesen Sie mit: **Merksatz AA1** auf Ihrem Arbeitsblatt (Seite 2).' }
+      handy: { typ: 'vorne', titel: 'Merksatz AA1', text: 'Lesen Sie mit: **Merksatz AA1** auf Ihrem Arbeitsblatt.' }
     },
     {
       id: 'aa2a', abschnitt: 'Gruppenpuzzle', kurz: 'Stammgruppen (AA2a)', typ: 'stamm',
@@ -199,13 +199,13 @@ var STUNDE = {
       handy: { typ: 'modul', modul: 'detektiv', gruppeZeigen: true }
     },
     {
-      id: 'blatt2', abschnitt: 'Gruppenpuzzle', kurz: 'Blatt 2 austeilen', typ: 'blatt', nr: 2, von: 3, seiten: 'Seite 3 und 4',
+      id: 'blatt2', abschnitt: 'Gruppenpuzzle', kurz: 'Blatt 2 austeilen', typ: 'blatt', nr: 2, von: 3,
       titel: 'Weiter mit Arbeitsblatt 2',
       ueberschrift: 'Lagerung nach Leitsymptom – wer darf was?',
       punkte: [
-        '**Seite 3:** Schreibaufgaben 2.1 und 2.2 (AA2 c)',
+        'Schreibaufgaben 2.1 und 2.2 (AA2 c)',
         'Lagerung nach Leitsymptom (AA3): Bilder der vier Lagerungen, Lagerungs-Quiz, Merksatz AA3',
-        '**Seite 4:** Schreibaufgaben 3.1 und 3.2',
+        'Schreibaufgaben 3.1 und 3.2',
         'Wer darf was? (AA4 a) und Merksatz AA4'
       ],
       handy: { typ: 'vorne', titel: 'Weiter mit Arbeitsblatt 2', text: 'Weiter mit **Arbeitsblatt 2: Lagerung nach Leitsymptom – wer darf was?** Schauen Sie nach vorne.' }
@@ -220,7 +220,7 @@ var STUNDE = {
       handy: {
         typ: 'faelle', titel: 'Schreibaufgaben 2.1 und 2.2', text: 'Schreiben Sie allein auf dem Arbeitsblatt. Hier können Sie die Fälle nachlesen:',
         aufgaben: [
-          { nr: '2.1', text: 'Erläutern Sie, wie es bei Mia zum Schock kommt. Nutzen Sie die Vergleichstabelle (Seite 2, Spalte ?, Zeile „Entstehung“). Nennen Sie dazu passende Befunde aus Mias Fall.', faelle: ['b'] },
+          { nr: '2.1', text: 'Erläutern Sie, wie es bei Mia zum Schock kommt. Nutzen Sie die Vergleichstabelle (Spalte ?, Zeile „Entstehung“). Nennen Sie dazu passende Befunde aus Mias Fall.', faelle: ['b'] },
           { nr: '2.2', text: 'Herr Albrecht hat einen schnellen Puls (116/min), Herr Weber einen langsamen Puls (52/min). Erklären Sie diesen Unterschied.', faelle: ['a', 'c'] }
         ]
       }
@@ -294,9 +294,9 @@ var STUNDE = {
     {
       id: 'aa3-merksatz', abschnitt: 'Lagerung', kurz: 'Merksatz AA3 lesen', typ: 'merksatz', merksatz: 'aa3',
       titel: 'Merksatz AA3',
-      text: 'Lesen Sie mit – der Merksatz steht auf Ihrem Arbeitsblatt (Seite 3).',
+      text: 'Lesen Sie mit – der Merksatz steht auf Ihrem Arbeitsblatt.',
       tipp: 'Merksatz anklicken = groß',
-      handy: { typ: 'vorne', titel: 'Merksatz AA3', text: 'Lesen Sie mit: **Merksatz AA3** auf Ihrem Arbeitsblatt (Seite 3).' }
+      handy: { typ: 'vorne', titel: 'Merksatz AA3', text: 'Lesen Sie mit: **Merksatz AA3** auf Ihrem Arbeitsblatt.' }
     },
     {
       id: 'aa3b', abschnitt: 'Lagerung', kurz: 'Schreibaufgaben 3.1/3.2', typ: 'aufgabe',
@@ -324,7 +324,7 @@ var STUNDE = {
     {
       id: 'aa4a', abschnitt: 'Verantwortung', kurz: 'Wer darf was? (AA4a)', typ: 'aufstellung', runde: 3,
       titel: 'AA4a · Wer darf was?',
-      text: 'Stimmen Sie **am Handy** ab: Wer darf die Maßnahme durchführen? Die **Tabelle** auf Ihrem Arbeitsblatt (Seite 4) hilft Ihnen.',
+      text: 'Stimmen Sie **am Handy** ab: Wer darf die Maßnahme durchführen? Die **Tabelle** auf Ihrem Arbeitsblatt hilft Ihnen.',
       ecken: [
         { emoji: '🟢', text: 'mache ich selbst' },
         { emoji: '🟡', text: 'nur n. ä. A. oder SOP' },
@@ -340,23 +340,23 @@ var STUNDE = {
       ],
       zeigen: 'Lösung zeigen',
       naechste: 'Nächste Maßnahme',
-      handy: { typ: 'aufstellung', titel: 'Wer darf was?', start: 'Gleich zeigt Ihre Lehrkraft Maßnahmen am Beamer. Tippen Sie dann hier an, wer sie durchführen darf. Die Tabelle auf Ihrem Arbeitsblatt (Seite 4) hilft Ihnen.' }
+      handy: { typ: 'aufstellung', titel: 'Wer darf was?', start: 'Gleich zeigt Ihre Lehrkraft Maßnahmen am Beamer. Tippen Sie dann hier an, wer sie durchführen darf. Die Tabelle auf Ihrem Arbeitsblatt hilft Ihnen.' }
     },
     {
       id: 'aa4-merksatz', abschnitt: 'Verantwortung', kurz: 'Merksatz AA4 lesen', typ: 'merksatz', merksatz: 'aa4',
       titel: 'Merksatz AA4 – Sofortmaßnahmen bei Anaphylaxie',
-      text: 'Lesen Sie mit – der Merksatz steht auf Ihrem Arbeitsblatt (Seite 4).',
+      text: 'Lesen Sie mit – der Merksatz steht auf Ihrem Arbeitsblatt.',
       tipp: 'Merksatz anklicken = groß',
-      handy: { typ: 'vorne', titel: 'Merksatz AA4', text: 'Lesen Sie mit: **Merksatz AA4** auf Ihrem Arbeitsblatt (Seite 4).' }
+      handy: { typ: 'vorne', titel: 'Merksatz AA4', text: 'Lesen Sie mit: **Merksatz AA4** auf Ihrem Arbeitsblatt.' }
     },
     {
-      id: 'blatt3', abschnitt: 'Anwenden', kurz: 'Blatt 3 austeilen', typ: 'blatt', nr: 3, von: 3, seiten: 'Seite 5 und 6',
+      id: 'blatt3', abschnitt: 'Anwenden', kurz: 'Blatt 3 austeilen', typ: 'blatt', nr: 3, von: 3,
       titel: 'Weiter mit Arbeitsblatt 3',
       ueberschrift: 'Wissen anwenden',
       punkte: [
-        '**Seite 5:** Adrenalin oder Antihistaminikum? – Schreibaufgabe 4.1 (AA4 b)',
+        'Adrenalin oder Antihistaminikum? – Schreibaufgabe 4.1 (AA4 b)',
         'Transferfall: ein neuer Fall – 5.1 und 5.2 (AA5)',
-        '**Seite 6:** Hausaufgabe mit QR-Code zur Selbstkontrolle',
+        'Hausaufgabe mit QR-Code zur Selbstkontrolle',
         'QR-Code zum Nachlesen – erst nach der Stunde'
       ],
       handy: { typ: 'vorne', titel: 'Weiter mit Arbeitsblatt 3', text: 'Weiter mit **Arbeitsblatt 3: Wissen anwenden**. Schauen Sie nach vorne.' }
@@ -410,7 +410,7 @@ var STUNDE = {
     {
       id: 'aufloesung', abschnitt: 'Frau Maler', kurz: 'Zurück zu Frau Maler (AA6)', typ: 'kausalkette',
       titel: 'AA6 · Woher kam Frau Malers Luftnot?',
-      text: 'Was kommt als Nächstes? Ergänzen Sie die Kausalkette auf **Seite 1** des Arbeitsblatts.',
+      text: 'Was kommt als Nächstes? Ergänzen Sie die Kausalkette auf **Arbeitsblatt 1**.',
       kette: [
         { titel: 'Immobilität', text: 'Nach der Hüft-TEP liegt sie aus Angst vor einer Luxation fast nur im Bett.' },
         { titel: 'Tiefe Beinvenenthrombose', text: 'Morgens: rechte Wade dick, Schmerz beim Auftreten.' },
@@ -422,7 +422,7 @@ var STUNDE = {
       antwort: 'Die Luftnot kam von einer **Lungenembolie**. Um 11 Uhr: **Oberkörper hoch** (Luftnot steht im Vordergrund), **nicht mobilisieren**, nicht allein lassen, **sofort Hilfe holen** und engmaschig überwachen.',
       aufdecken: 'Nächstes Glied',
       tipp: 'Aufgedecktes Glied anklicken = groß',
-      handy: { typ: 'vorne', titel: 'Zurück zu Frau Maler', text: 'Ergänzen Sie die **Kausalkette** und die Antwort auf die Leitfrage auf **Seite 1** des Arbeitsblatts, während vorne Schritt für Schritt aufgedeckt wird.' }
+      handy: { typ: 'vorne', titel: 'Zurück zu Frau Maler', text: 'Ergänzen Sie die **Kausalkette** und die Antwort auf die Leitfrage auf **Arbeitsblatt 1**, während vorne Schritt für Schritt aufgedeckt wird.' }
     },
     {
       id: 'checkout-intro', abschnitt: 'Abschluss', kurz: 'Was haben wir heute gelernt?', typ: 'info', emoji: '🎯',

@@ -50,7 +50,7 @@ geben ihren Vornamen ein – und ihr Handy zeigt ab dann automatisch, was zur ak
 | 33 | Weiter mit Arbeitsblatt 3 | **Austeilen:** Karte „AB3“, Überschrift wie auf dem AB (groß), was darauf steht | „Weiter mit Arbeitsblatt 3 …“ |
 | 34–35 | Wer hat recht? (AA4b) | Aufgabenfolie mit Dialog und 4.1 → Think/Pair-Uhr → Musterlösung | „Auf Papier“ |
 | 36–38 | Transferfall: Wissen anwenden (AA5) | Transferfall wie im AB → Countdown 8 min → Peer-Korrektur (4 min) mit Musterlösung auf **zwei Folien** (die Uhr läuft auf der zweiten weiter) | „Handy umgedreht“, dann Bewertungsraster |
-| 39 | Frau Maler (AA6) | Kausalkette Schritt für Schritt (aufgedecktes Glied anklicken = groß), dann Antwort auf die Leitfrage | „Ergänzen Sie die Kausalkette auf Seite 1 …“ |
+| 39 | Frau Maler (AA6) | Kausalkette Schritt für Schritt (aufgedecktes Glied anklicken = groß), dann Antwort auf die Leitfrage | „Ergänzen Sie die Kausalkette auf Arbeitsblatt 1 …“ |
 | 40 | Was haben wir heute gelernt? | Erklärfolie: was wir gelernt haben, gleich dieselben Notfälle mit neuem Fachwissen | „Schauen Sie nach vorne“ |
 | 41 | Hätten Sie richtig gehandelt? | Notfall für Notfall: abstimmen → „Auflösung zeigen“ (richtige Antwort, Erklärung, **Beginn und jetzt** nebeneinander) | derselbe Notfall; danach Auflösung mit eigener Vermutung und Entscheidung |
 | 42 | Vorher – nachher | Übersicht aller 4 Notfälle mit Lösung | eigene Bilanz (richtig zu Beginn / jetzt) |

@@ -390,7 +390,6 @@ b, strong { font-weight: 800; }
 .blatt-nr { font-size: 112px; font-weight: 900; line-height: 1; color: var(--dunkelpetrol); letter-spacing: -.02em; }
 .blatt-titel { margin: 4px 0 6px; font-size: 46px; font-weight: 900; line-height: 1.15; color: var(--akzent); }
 .blatt-von { font-size: 26px; color: #4A5A60; }
-.blatt-seiten { margin-top: 18px; font-size: 21px; font-weight: 700; background: var(--akzent-hell); border-radius: 999px; padding: 6px 16px; }
 .blatt-darauf { margin: 18px 0 8px; font-size: 24px; font-weight: 800; color: var(--dunkelpetrol); }
 .blatt-folie .punkte li { font-size: 26px; }
 

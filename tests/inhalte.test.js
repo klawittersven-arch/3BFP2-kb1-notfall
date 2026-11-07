@@ -208,6 +208,11 @@ pruefe(/\(Beurteilung 1 P\./.test(fs.readFileSync(path.join(WURZEL, 'werkzeuge',
   const h21 = S.folien.find((f) => f.id === 'aa2c').handy.aufgaben.find((a) => a.nr === '2.1');
   pruefe(/Spalte \?, Zeile/.test(NL.aufgaben['2.1'].text) && !/Spalte [ABC]\b/.test(NL.aufgaben['2.1'].text) && h21.text === NL.aufgaben['2.1'].text, '2.1: Spalte nicht vorgegeben, Beamer und Handy wie das AB');
 }
+// Keine Seitenzahlen des Arbeitsblatts auf Handy und Beamer (die Seiten können sich in Word verschieben)
+{
+  const quellen = ['inhalte.js', 'inhalte_stunde.js', 'inhalte_nachlesen.js'].map((d) => fs.readFileSync(path.join(WURZEL, 'docs', d), 'utf8')).join('\n');
+  pruefe(!/Seiten? [0-9]/.test(quellen.replace(/\/\*[\s\S]*?\*\/|\/\/.*$/gm, '')), 'Handy und Beamer: keine Seitenzahlen des Arbeitsblatts', quellen.match(/.{40}Seiten? [0-9].{20}/g));
+}
 pruefe(NL.vergleich.length === 6 && NL.pikto.length === 4 && NL.werDarfWas.length === 3, 'Tabelle, Lagerung und Verantwortung vollständig');
 pruefe(!NL.weg && !NL.adrenalin && !NL.verantwortung && NL.adrenalinText.length === 2, 'kein Entscheidungsweg, kein Info-Kasten Verantwortung; Adrenalin in 2 Sätzen');
 pruefe(/Gefahr erkennen/.test(NL.werDarfWas[0]) && /dokumentieren/.test(NL.werDarfWas[0]) && /Adrenalin/.test(NL.werDarfWas[1]) && /SOP/.test(NL.werDarfWas[1]) && /Diagnose/.test(NL.werDarfWas[2]) && /Auszubildende/.test(NL.werDarfWasAzubi), 'Wer darf was?: Tabelle vorausgefüllt, mit allen Punkten des früheren Info-Kastens');
