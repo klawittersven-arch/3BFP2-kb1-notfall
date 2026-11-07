@@ -95,7 +95,7 @@ var NACHLESEN = {
  "werDarfWas": [
   "Gefahr erkennen · Hilfe holen · Allergen stoppen (z. B. Infusion stoppen, Zugang belassen) · nach Leitsymptom lagern · überwachen · dokumentieren",
   "Medikamente: **Adrenalin i. m.**, Antihistaminikum · Sauerstoff · Infusionen · **SOP** = schriftliche, ärztlich freigegebene Notfall-Anweisung",
-  "Diagnose stellen, z. B. „anaphylaktischer Schock“ · Medikamente anordnen (Wirkstoff, Dosis, Weg) · Notfall-SOP schriftlich freigeben · Weiterbehandlung festlegen, z. B. Intensivstation"
+  "Medikamente anordnen (Wirkstoff, Dosis, Weg) · Notfall-SOP schriftlich freigeben · Weiterbehandlung festlegen, z. B. Intensivstation · Diagnose stellen, z. B. „anaphylaktischer Schock“"
  ],
  "werDarfWasAzubi": "**Als Auszubildende/r:** unter Anleitung handeln und sofort eine Pflegefachperson holen.",
  "adrenalinText": [
@@ -109,7 +109,7 @@ var NACHLESEN = {
  "aufgaben": {
   "2.1": {
    "nr": "2.1",
-   "text": "Erläutern Sie, wie es bei Mia zum Schock kommt. Nutzen Sie die Vergleichstabelle (Spalte ?, Zeile „Entstehung“). Nennen Sie dazu passende Befunde aus Mias Fall.",
+   "text": "Erläutern Sie, wie es bei Mia zum Schock kommt. Nutzen Sie die Vergleichstabelle (Seite 2, Spalte?, Zeile „Entstehung“). Nennen Sie dazu passende Befunde aus Mias Fall.",
    "punkte": 3
   },
   "2.2": {

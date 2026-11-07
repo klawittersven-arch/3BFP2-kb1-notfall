@@ -220,7 +220,7 @@ var STUNDE = {
       handy: {
         typ: 'faelle', titel: 'Schreibaufgaben 2.1 und 2.2', text: 'Schreiben Sie allein auf dem Arbeitsblatt. Hier können Sie die Fälle nachlesen:',
         aufgaben: [
-          { nr: '2.1', text: 'Erläutern Sie, wie es bei Mia zum Schock kommt. Nutzen Sie die Vergleichstabelle (Spalte ?, Zeile „Entstehung“). Nennen Sie dazu passende Befunde aus Mias Fall.', faelle: ['b'] },
+          { nr: '2.1', text: 'Erläutern Sie, wie es bei Mia zum Schock kommt. Nutzen Sie die Vergleichstabelle (Seite 2, Spalte?, Zeile „Entstehung“). Nennen Sie dazu passende Befunde aus Mias Fall.', faelle: ['b'] },
           { nr: '2.2', text: 'Herr Albrecht hat einen schnellen Puls (116/min), Herr Weber einen langsamen Puls (52/min). Erklären Sie diesen Unterschied.', faelle: ['a', 'c'] }
         ]
       }
