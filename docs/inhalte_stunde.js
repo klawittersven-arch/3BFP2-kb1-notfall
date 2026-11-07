@@ -526,7 +526,7 @@ var STUNDE = {
     expAuftraege: ['**a)** Fall unten markieren – danach den **Merksatz AA1** auf dem Arbeitsblatt ergänzen.', '**b)** Infotext lesen.', '**c)** Experten-Check.', '**d)** Gemeinsam **Ihre Spalte {b}** der Vergleichstabelle ausfüllen – dann „Unsere Spalte ist fertig“.'],
     expWeiter: '⬇ **Merksatz AA1** auf dem Arbeitsblatt ergänzt? Dann geht es hier weiter: **b)** den Infotext lesen. Lieber auf Papier? Bitten Sie Ihre Lehrkraft am Pult um das Expertenblatt „{b} · {form}“.',
     expTabelleTitel: 'd) Jetzt gemeinsam: Ihre Spalte der Vergleichstabelle',
-    expTabelleText: 'Füllen Sie mit Ihrem Expertenteam die Spalte **{b} – {kurz}** der Vergleichstabelle auf dem Arbeitsblatt aus, alle sechs Zeilen: **Ursache · Entstehung (kurz) · Puls · Haut · weitere typische Zeichen · Darauf achte ich besonders**. Die Informationen stehen im Infotext – aber ohne Überschriften und in anderer Reihenfolge.',
+    expTabelleText: 'Füllen Sie mit Ihrem Expertenteam die Spalte **{b} – {kurz}** der Vergleichstabelle auf dem Arbeitsblatt aus, alle sechs Zeilen: **Ursache · Entstehung (kurz) · Puls · Haut · weitere typische Zeichen · Darauf achte ich besonders**. Die Informationen stehen alle im Infotext!',
     expTabelleFertig: 'Wenn die Spalte bei allen im Team fertig ausgefüllt ist: „Unsere Spalte ist fertig“ drücken.',
     expFall: 'a) Fall: {person}',
     expInfo: 'b) Infotext: {form}',
