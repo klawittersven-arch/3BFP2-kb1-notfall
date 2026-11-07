@@ -345,11 +345,11 @@ var INHALTE = {
     rueckmeldung: 'Notieren Sie auf dem Arbeitsblatt: Das muss ich noch üben.',
     zuruecksetzen: 'Alles zurücksetzen',
     aufgaben: [
-      { nr: '1.1', titel: 'Anaphylaktischen Schock begründen (4 P.)', max: 4,
+      { nr: '1.1', titel: 'Schockform begründen (4 P.)', max: 4,
         // pflicht: ohne dieses Kriterium höchstens max − 1 Punkte (wie im Erwartungshorizont der KA)
         pflicht: 'kreislauf',
         pflichtHinweis: 'Ohne Kreislaufzeichen höchstens 3 Punkte – ein Schock zeigt sich immer am Kreislauf.',
-        muster: 'z. B. (je Symptom mit Zuordnung 1 P.):\nzeitlicher Zusammenhang – Beginn 15 Min. nach dem Essen mit Fischsauce bei bekannter Fischallergie\nHaut – Juckreiz an Händen und Kopfhaut, Quaddeln am Bauch\nKreislauf – Puls 124/min, Blutdruckabfall von 128/78 auf 86/52 mmHg, Blässe, Schwindel\nMagen-Darm – Übelkeit\nGehirn – Unruhe (Minderdurchblutung)\nFür die volle Punktzahl muss die Kreislaufbeteiligung genannt sein.',
+        muster: 'Anaphylaktischer Schock.\nBegründung z. B. (je Symptom mit Zuordnung 1 P.):\nzeitlicher Zusammenhang – Beginn 15 Min. nach dem Essen mit Fischsauce bei bekannter Fischallergie\nHaut – Juckreiz an Händen und Kopfhaut, Quaddeln am Bauch\nKreislauf – Puls 124/min, Blutdruckabfall von 128/78 auf 86/52 mmHg, Blässe, Schwindel\nMagen-Darm – Übelkeit\nGehirn – Unruhe (Minderdurchblutung)\nFür die volle Punktzahl muss die Kreislaufbeteiligung genannt sein.',
         kriterien: [
           { id: 'zeit', text: 'Zeitlicher Zusammenhang mit dem Allergen (Fischsauce, bekannte Allergie)', punkte: 1 },
           { id: 'haut', text: 'Haut: Juckreiz, Quaddeln – zugeordnet', punkte: 1 },

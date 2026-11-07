@@ -115,6 +115,8 @@ const aa4 = S.folien.find((f) => f.id === 'aa4a');
 pruefe(aa4.massnahmen.length === 6 && aa4.massnahmen.every((m) => m.ecke >= 0 && m.ecke < aa4.ecken.length), 'AA4a: 6 Maßnahmen mit gültiger Ecke');
 pruefe(aa4.runde === 3 && aa4.ecken.length === 3 && aa4.massnahmen.length <= 9, 'AA4a: Abstimmung am Handy (Runde 3, höchstens 9 Maßnahmen)');
 pruefe(!ids.includes('pause'), 'keine Pausenfolie');
+// Hausaufgabe 1.1 nimmt die Schockform nicht vorweg (Aufgabe im AB und Überschrift in der Selbstkontrolle)
+pruefe(/welche Schockform bei Frau Lorenz vorliegt/.test(fs.readFileSync(path.join(WURZEL, 'werkzeuge', 'ab_w2.js'), 'utf8')) && !/anaphyla/i.test(I.transfer.aufgaben[0].titel), 'Hausaufgabe 1.1: Schockform nicht vorgegeben');
 // Gruppenpuzzle nur am Handy – kein Hinweis auf Expertenblätter aus Papier
 pruefe(!/Papier am Pult|Lieber auf Papier|Expertenblatt „/.test(JSON.stringify(S) + fs.readFileSync(path.join(DOCS, 'stunde.js'), 'utf8')), 'Gruppenpuzzle: kein Hinweis „Lieber auf Papier?“ (Handy und Beamer)');
 // Hausaufgabe: Tipp, vorher die Merksätze zu lesen (sonst fehlen die Sofortmaßnahmen für 2.1)
