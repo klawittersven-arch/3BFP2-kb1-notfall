@@ -103,8 +103,8 @@ var NACHLESEN = {
   "**Als Auszubildende/r:** unter Anleitung handeln und sofort eine Pflegefachperson holen."
  ],
  "adrenalinText": [
-  "**Adrenalin i. m.** ist bei Anaphylaxie das Mittel der ersten Wahl: Es wirkt am schnellsten, stellt die Gefäße eng (Blutdruck ↑), lässt die Schleimhäute abschwellen und weitet die Bronchien.",
-  "**Antihistaminika** und **Kortison** wirken langsamer und nicht ausreichend auf Kreislauf und Atmung – sie kommen erst **nach** Adrenalin."
+  "**Adrenalin i. m.** ist das Mittel der ersten Wahl: Es wirkt am schnellsten, stellt die Gefäße eng (Blutdruck ↑), lässt Schleimhäute abschwellen, weitet die Bronchien.",
+  "**Antihistaminika** und **Kortison** wirken langsamer und zu schwach – sie kommen erst **nach** Adrenalin."
  ],
  "transferfall": [
   "Sie sind in der Tagespflege „Sonnenhof“ eingesetzt. Herr Klaus Martens (74) hat einen Diabetes mellitus Typ 2 und eine Herzinsuffizienz. Gegen 14:15 Uhr sitzt er mit anderen Gästen auf der Terrasse beim Kaffee. Plötzlich schreit er auf: Eine Wespe hat ihn in die Oberlippe gestochen.",

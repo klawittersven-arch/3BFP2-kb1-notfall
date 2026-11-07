@@ -15,6 +15,17 @@ const T = require('./ab_w2_texte');
 const STUNDE = (() => { const k = {}; require('vm').runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'docs', 'inhalte_stunde.js'), 'utf8') + ';this.S = STUNDE;', k); return k.S; })();
 const FN = (id) => { const i = STUNDE.folien.findIndex((f) => f.id === id); if (i < 0) throw new Error('Folie fehlt: ' + id); return i + 1; };
 const FOLIE = (id) => `**Folie ${FN(id)}:**`;
+// Die drei Blätter werden nacheinander ausgeteilt: Überschrift wie auf der Folie „Sie erhalten jetzt Blatt …“
+const BLATT = (nr) => { const f = STUNDE.folien.find((x) => x.typ === 'blatt' && x.nr === nr); if (!f) throw new Error('Blatt-Folie fehlt: ' + nr); return f; };
+function blattKopf(B, nr, o = {}) {
+  const f = BLATT(nr);
+  return new Paragraph({
+    keepNext: true, spacing: { before: 0, after: 100 },
+    shading: { type: ShadingType.CLEAR, color: 'auto', fill: '2E75B6' },
+    children: [B.emoji(' 📄 ', { size: 24 }), B.b(`Blatt ${nr} von ${f.von} · ${f.ueberschrift}`, { size: 25, color: 'FFFFFF' })],
+    ...o
+  });
+}
 
 const AUS = process.argv[2] || path.join(WURZEL, 'arbeitsblatt');
 // Dateiname des QR-Codes: w2.html → qr_w2_stunde.png, w2-transfer.html → qr_w2_transfer.png
@@ -55,12 +66,12 @@ function schuelerTeil(B, { lsg }) {
   const teil = (sym, text) => { aktuellerTeil = text; return B.teil(sym, text); };
   const aufg = (liste) => { if (liste.length === 1) aktuellerTeil = liste[0].nr; if (sammelnAn) liste.forEach((a) => { N.aufgaben[a.nr] = a; }); return B.aufgaben(liste); };
   const pS = (schl, text, o) => sammleText(B, schl, text, o);
-  const BH = bausteine({ lsg, breite: Math.floor(BREITE_HOCH / 2) - 120 });   // halbe Breite (QR-Kästen nebeneinander)
 
   /* ---------- Seite 1: Lernziel, Frau Maler, Leitfrage, Kausalkette (am Ende der Stunde), Einstieg ---------- */
   const kette = 'Immobilität → tiefe Beinvenenthrombose → Lungenembolie → obstruktiver Schock → Kreislaufstillstand';
   const luecke = '_'.repeat(12);
   push(
+    blattKopf(B, 1),
     B.titel('Schock ist nicht gleich Schock – vergleichen und nach Leitsymptom handeln', lsg ? '[LSG]' : null),
     new Paragraph({ spacing: { after: 120, line: 264 }, children: [B.emoji('🎯 '), B.b('Lernziel: '), ...B.runs('Sie vergleichen den hypovolämischen, den anaphylaktischen und den neurogenen Schock und begründen Sofortmaßnahmen und Lagerung (Positionierung) anhand des Leitsymptoms. Sie unterscheiden, was Sie selbst tun dürfen und was nur nach ärztlicher Anordnung.')] }),
     new Paragraph({ spacing: { after: 140 }, children: [bild(IC.handy, 0.5, 0.5), B.t(' = am Smartphone (Stunden-App)      ', { size: 19 }), bild(IC.stift, 0.5, 0.5), B.t(' = auf Papier', { size: 19 })] }),
@@ -131,7 +142,8 @@ function schuelerTeil(B, { lsg }) {
     B.meta(`31 min (a mit Sicherung 17 min, b und c mit Musterlösung 14 min) · Gruppenarbeit (Stammgruppe 3–4) → Plenum → Einzelarbeit · AFB II · KA-Bezug KB 1, Aufg. 3.2 und 5.5 · Folien ${FN('aa2a')}–${FN('aa2c-loesung')}`),
     teil([IC.handy], '**b) Schockform-Detektiv:**'),
     B.app([B.p('Bestimmen Sie bei **vier kurzen Fällen** die **Schockform** und tippen Sie die **zwei Befunde** an, die sie belegen – dann „Prüfen“.', { spacing: { after: 0, line: 264 } })]),
-    teil([IC.schreiben], '**c) Klausurtraining** (allein – die Fälle stehen am Handy):'),
+    blattKopf(B, 2, { pageBreakBefore: true }),
+    teil([IC.schreiben], '**AA2 c) Klausurtraining** (allein – die Fälle stehen am Handy):'),
     aufg([
       { nr: '2.1', text: 'Erläutern Sie, wie es bei Mia zum Schock kommt. – Tipp: Denken Sie in einer Pfeilkette – Auslöser → Botenstoff → Gefäße → Blutdruck; die Atemwege extra.', punkte: 3 },
       { nr: '2.2', text: 'Nennen Sie 1 Befund, der bei Herrn Weber anders ist als bei Herrn Albrecht. Begründen Sie den Unterschied.', punkte: 2 }
@@ -182,7 +194,7 @@ function schuelerTeil(B, { lsg }) {
   push(
     B.abschnitt('Teil B · Anaphylaxie – wer darf was?'),
     B.aa([IC.beurteilen, IC.handy], 'AA4: Unterscheiden – Wer darf was?', '**a) Abstimmung am Handy:** Ihre Lehrkraft zeigt Maßnahmen am Beamer. Tippen Sie an, wer sie durchführen darf. **Begründen** Sie Ihre Wahl, wenn Sie aufgerufen werden. Tragen Sie jede Maßnahme nach der Lösung in die Tabelle ein.'),
-    B.meta(`13 min (a, b mit Musterlösung, Merksatz) · Einzelarbeit (Abstimmung am Handy) → Plenum → Partnerarbeit → Plenum · AFB II–III · KA-Bezug KB 1, Aufg. 3.3 · Kompetenz III.2.b · Folien ${FN('aa4a')}–${FN('aa4-merksatz')}`)
+    B.meta(`13 min (a mit Merksatz AA4, Blatt 3 austeilen, b mit Musterlösung) · Einzelarbeit (Abstimmung am Handy) → Plenum → Partnerarbeit → Plenum · AFB II–III · KA-Bezug KB 1, Aufg. 3.3 · Kompetenz III.2.b · Folien ${FN('aa4a')}–${FN('aa4b-loesung')}`)
   );
   const vw = Math.floor(BREITE_HOCH / 3);
   push(B.tabelle([{ text: '🟢 mache ich selbst (eigenverantwortlich)', w: vw }, { text: '🟡 nur nach ärztlicher Anordnung (n. ä. A.) oder SOP', w: vw }, { text: '🔴 ärztliche Aufgabe', w: BREITE_HOCH - 2 * vw }], sammle('werDarfWas', [[
@@ -197,9 +209,12 @@ function schuelerTeil(B, { lsg }) {
       pS('verantwortung', '**Nur n. ä. A. oder SOP:** Medikamente – auch Adrenalin –, Sauerstoff, Infusionen. **SOP** = schriftliche, ärztlich freigegebene Notfall-Anweisung.'),
       pS('verantwortung', '**Als Auszubildende/r:** unter Anleitung handeln und sofort eine Pflegefachperson holen.', { spacing: { after: 0 } })
     ], { kopf: 'Info: Verantwortung im Notfall' }),
-    teil([IC.beurteilen], '**b) Adrenalin oder Antihistaminikum?**'),
-    pS('adrenalinText', '**Adrenalin i. m.** ist bei Anaphylaxie das Mittel der ersten Wahl: Es wirkt am schnellsten, stellt die Gefäße eng (Blutdruck ↑), lässt die Schleimhäute abschwellen und weitet die Bronchien.', { spacing: { after: 40, line: 264 } }),
-    pS('adrenalinText', '**Antihistaminika** und **Kortison** wirken langsamer und nicht ausreichend auf Kreislauf und Atmung – sie kommen erst **nach** Adrenalin.', { spacing: { after: 100, line: 264 } })
+    B.leer(100),
+    merk('Merksatz AA4 – mit Tabelle und Info ergänzen', 'aa4'),
+    blattKopf(B, 3, { pageBreakBefore: true }),
+    teil([IC.beurteilen], '**AA4 b) Wer hat recht?** **Think** (2,5 Min.): allein schreiben. **Pair** (1,5 Min.): zu zweit vergleichen.'),
+    pS('adrenalinText', '**Adrenalin i. m.** ist das Mittel der ersten Wahl: Es wirkt am schnellsten, stellt die Gefäße eng (Blutdruck ↑), lässt Schleimhäute abschwellen, weitet die Bronchien.', { spacing: { after: 40, line: 264 } }),
+    pS('adrenalinText', '**Antihistaminika** und **Kortison** wirken langsamer und zu schwach – sie kommen erst **nach** Adrenalin.', { spacing: { after: 100, line: 264 } })
   );
   const dw = Math.floor(BREITE_HOCH / 2) - 100;
   const blase = (wer, text) => B.zelle([new Paragraph({ spacing: { after: 40 }, children: [B.b(wer, { size: 19 })] }), new Paragraph({ spacing: { after: 0 }, children: [B.i(text)] })], dw, { borders: rahmen(F.ORANGE_D, 6), shading: { type: ShadingType.CLEAR, color: 'auto', fill: F.LACHS_HELL } });
@@ -209,27 +224,24 @@ function schuelerTeil(B, { lsg }) {
       new TableCell({ width: { size: 200, type: WidthType.DXA }, borders: { top: keinRand, bottom: keinRand, left: keinRand, right: keinRand }, children: [new Paragraph({ children: [] })] }),
       blase('💬 Lina, Auszubildende:', '„Aber in unserer Notfall-SOP steht Adrenalin ganz oben …“')
     ] })] }),
-    B.p('Wer hat recht? **Think** (2,5 Min.): allein schreiben. **Pair** (1,5 Min.): zu zweit vergleichen.', { spacing: { before: 80, after: 60 }, keepNext: true }),
     aufg([{ nr: '4.1', text: 'Nehmen Sie Stellung zu der Aussage von Herrn Brandt.', punkte: 3 }]),
-    B.linien(3, L(['Die Aussage ist fachlich falsch. Beim anaphylaktischen Schock ist Adrenalin i. m. das Mittel der ersten Wahl (nach SOP bzw. ärztlicher Anordnung): Es stellt die Gefäße eng und hebt den Blutdruck, lässt die Schleimhäute abschwellen, weitet die Bronchien und wirkt am schnellsten.', 'Ein Antihistaminikum blockiert nur Histamin, wirkt langsamer und hebt weder den Blutdruck noch weitet es die Bronchien. Es darf Adrenalin nicht verzögern und kann danach gegeben werden.', 'Lina sollte die SOP ansprechen und sofort das Notfallteam bzw. die Ärztin einbeziehen. (Beurteilung 1 P., je fachliches Argument 1 P., max. 3 P.)'])),
-    B.leer(60),
-    merk('Merksatz AA4 – zum Schluss ergänzen', 'aa4')
+    B.linien(3, L(['Die Aussage ist fachlich falsch. Beim anaphylaktischen Schock ist Adrenalin i. m. das Mittel der ersten Wahl (nach SOP bzw. ärztlicher Anordnung): Es stellt die Gefäße eng und hebt den Blutdruck, lässt die Schleimhäute abschwellen, weitet die Bronchien und wirkt am schnellsten.', 'Ein Antihistaminikum blockiert nur Histamin, wirkt langsamer und hebt weder den Blutdruck noch weitet es die Bronchien. Es darf Adrenalin nicht verzögern und kann danach gegeben werden.', 'Lina sollte die SOP ansprechen und sofort das Notfallteam bzw. die Ärztin einbeziehen. (Beurteilung 1 P., je fachliches Argument 1 P., max. 3 P.)']))
   );
 
   /* ---------- AA5 Klausurtraining ---------- */
   push(
-    B.aa([IC.schreiben], 'AA5: Klausurtraining – Transferfall:', '**Allein und ohne Unterlagen** (ca. 8 Minuten). Danach tauschen Sie mit einer Person aus einer **anderen** Stammgruppe und bewerten mit dem **Raster am Handy**.'),
+    B.aa([IC.schreiben], 'AA5: Klausurtraining – Transferfall:', '**Allein, ohne Unterlagen** (8 Min.). Dann Peer-Korrektur mit dem **Raster am Handy**.', { spacing: { before: 100, after: 60, line: 264 } }),
     B.meta('13 min (8 min schreiben, 4 min Peer-Korrektur) · Einzelarbeit → Peer-Korrektur mit App-Raster und Musterlösung am Beamer · AFB I–III · KA-Format (KB 1, Aufg. 3.3) · Examensvorbild: Mai 2024 Tag 3, Aufg. 8.2; Mai 2026 Tag 1, Aufg. 3.2'),
     B.kasten([
       pS('transferfall', 'Sie sind in der Tagespflege „Sonnenhof“ eingesetzt. Herr Klaus Martens (74) hat einen Diabetes mellitus Typ 2 und eine Herzinsuffizienz. Gegen 14:15 Uhr sitzt er mit anderen Gästen auf der Terrasse beim Kaffee. Plötzlich schreit er auf: Eine Wespe hat ihn in die Oberlippe gestochen.'),
       pS('transferfall', 'Nach etwa fünf Minuten ist seine Oberlippe stark geschwollen, am Hals bilden sich Quaddeln. Mit kloßiger Stimme sagt er: „Mir ist so eng im Hals.“ Beim Einatmen hören Sie ein pfeifendes Geräusch. Sie messen: Atemfrequenz 28/min, Puls 124/min, Blutdruck 92/60 mmHg (am Morgen: 150/85 mmHg). In der Tagespflege ist keine Ärztin anwesend. Ein Notfallset hat Herr Martens nicht dabei.', { spacing: { after: 0, line: 264 } })
     ], { kopf: 'Fallsituation', fill: F.GRAU_HELL, kopfFill: F.GRAU_HELL, rand: F.GRAU_R }),
-    new Paragraph({ spacing: { before: 80, after: 60 }, children: [B.i('Pflegefachpersonen treffen in lebensbedrohlichen Situationen erforderliche Interventionsentscheidungen und leiten lebenserhaltende Sofortmaßnahmen ein.')] }),
+    new Paragraph({ spacing: { before: 80, after: 60 }, children: [B.i('Pflegefachpersonen leiten in lebensbedrohlichen Situationen lebenserhaltende Sofortmaßnahmen ein.')] }),
     aufg([
       { nr: '5.1', text: 'Beschreiben Sie stichwortartig 5 Sofortmaßnahmen, die Sie bei Herrn Martens bis zum Eintreffen des Rettungsdienstes einleiten. Begründen Sie dabei die Positionierung von Herrn Martens.', punkte: 6 },
       { nr: '5.2', text: 'Kennzeichnen Sie in Ihrer Antwort zu 5.1 jede Maßnahme, die Sie nur nach ärztlicher Anordnung durchführen dürfen, mit „n. ä. A.“.', punkte: 1 }
     ]),
-    zw('5.1 und 5.2'),
+    (aktuellerTeil = '5.1 und 5.2', null),   // ohne Zwischenüberschrift: die Linien stehen direkt unter den Aufgaben
     B.linien(7, L([
       'z. B.: Hilfe holen: eine Kollegin setzt den Notruf 112 ab (Notärztin nötig); Herrn Martens nicht allein lassen.',
       'Oberkörper hoch (halbsitzend), weil Atemnot und Schwellung im Vordergrund stehen (Kloßgefühl, pfeifende Einatmung, 28/min): Die Atemhilfsmuskulatur kann arbeiten. Keine Schocklage – auch wegen der Herzinsuffizienz. Nicht aufstehen oder gehen lassen.',
@@ -268,14 +280,32 @@ function schuelerTeil(B, { lsg }) {
       '2.2 Jetzt Oberkörper hoch (halbsitzend), weil die Atemnot im Vordergrund steht (Heiserkeit = Schleimhautschwellung, SpO₂ 90 %): Die Atemhilfsmuskulatur kann arbeiten. Trotzdem nicht auf die Bettkante setzen oder aufstehen lassen; Kreislauf weiter überwachen und die Ärztin über die Verschlechterung informieren. (Positionierung 1 P., Begründung 1 P.)'
     ])),
     // Zwei QR-Kästen nebeneinander: Selbstkontrolle (mit Punktezeile) und Nachlesen
-    B.leer(80),
-    B.zweiSpaltig(
-      [BH.handy(T.SEITEN.transfer, [BH.p('✅ **Selbstkontrolle:** Erst schreiben, dann scannen – die App zeigt die Lösung und zählt die Punkte.'), BH.p('**Meine Punkte: ____ / 13**', { spacing: { after: 0 } })], { linkBasis: T.LINK_BASIS, qrDatei: QR(T.SEITEN.transfer), qrCm: 2.2 })],
-      [BH.handy(T.SEITEN.nachlesen, [BH.p('📖 **Nachlesen:** alles aus der Stunde. **Erst nach der Stunde** scannen – vorher gesperrt.', { spacing: { after: 0, line: 252 } })], { linkBasis: T.LINK_BASIS, qrDatei: QR(T.SEITEN.nachlesen), qrCm: 2.2 })],
-      Math.floor(BREITE_HOCH / 2)
-    )
+    B.leer(20),
+    qrZeile(B, [
+      { seite: T.SEITEN.transfer, absaetze: [B.p('✅ **Selbstkontrolle:** Erst schreiben, dann scannen – die App zeigt die Lösung und zählt die Punkte.'), B.p('**Meine Punkte: ____ / 13**', { spacing: { after: 0 } })] },
+      { seite: T.SEITEN.nachlesen, absaetze: [B.p('📖 **Nachlesen:** alles aus der Stunde. **Erst nach der Stunde** scannen – vorher gesperrt.', { spacing: { after: 0, line: 252 } })] }
+    ])
   );
   return k;
+}
+
+// Zwei QR-Kästen nebeneinander in EINER Tabelle (Text | QR | Abstand | Text | QR) – ohne verschachtelte Tabellen,
+// die LibreOffice am Seitenende unzuverlässig umbricht
+function qrZeile(B, eintraege) {
+  const abstand = 200, qrW = 1420;
+  const textW = Math.floor((BREITE_HOCH - abstand) / 2) - qrW;
+  const blau = linie('2E75B6', 6);
+  const fill = { type: ShadingType.CLEAR, color: 'auto', fill: F.BLAU_HELL };
+  const zellen = [];
+  eintraege.forEach((e, i) => {
+    if (i) zellen.push(new TableCell({ width: { size: abstand, type: WidthType.DXA }, borders: { top: keinRand, bottom: keinRand, left: keinRand, right: keinRand }, children: [new Paragraph({ children: [] })] }));
+    zellen.push(B.zelle([...e.absaetze, new Paragraph({ spacing: { before: 40, after: 0 }, children: [B.t('Kein QR-Scanner? Link: ', { size: 16, color: F.GRAU_T }), B.t(T.LINK_BASIS + e.seite, { size: 16, color: F.GRAU_T })] })], textW,
+      { borders: { top: blau, bottom: blau, left: blau, right: keinRand }, shading: fill, verticalAlign: VerticalAlign.CENTER }));
+    zellen.push(B.zelle([new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 0 }, children: [bild(QR(e.seite), 2.1, 2.1)] })], qrW,
+      { borders: { top: blau, bottom: blau, right: blau, left: keinRand }, shading: fill, verticalAlign: VerticalAlign.CENTER }));
+  });
+  const breiten = eintraege.flatMap((e, i) => (i ? [abstand, textW, qrW] : [textW, qrW]));
+  return new Table({ width: { size: breiten.reduce((x, y) => x + y, 0), type: WidthType.DXA }, columnWidths: breiten, layout: TableLayoutType.FIXED, rows: [new TableRow({ cantSplit: true, children: zellen })] });
 }
 
 // Ablauf des Gruppenpuzzles: ① Expertenteam → umsetzen → ② Stammgruppe
@@ -335,19 +365,19 @@ function verlaufsplan(B) {
   const z = (zeit, phase, l, s, soz, mat, fkt) => [zeit, `**${phase}**`, l, s, soz, mat, fkt];
   const ueber = (text) => [{ colSpan: 7, text, fill: F.GRAU_HELL, o: { italics: true } }];
   const zeilen = [
-    z('vor der Stunde', 'Vorbereitung', 'Wenige Expertenblätter A/B/C ans Pult; **beamer.html** öffnen → „Neuen Raum starten“.', '–', '–', 'Beamer', 'Ablauf ohne Umbaupausen'),
-    z('0–10', `Problemorientierter Einstieg: „Wie hätten Sie gehandelt?“ (Folien ${FN('start')}–${FN('ziel')})`, `${FOLIE('start')} QR-Code am Beamer, die Namen der Angemeldeten erscheinen. ${FOLIE('fall')} Fallauszug und Leitfrage; Vermutung aus W1 kurz abrufen. ${FOLIE('einstieg')} Auftrag zeigen („Falsch liegen ist erlaubt.“), dann Notfall für Notfall (4 Notfälle): „Weiter“ zeigt den Notfall, die SuS stimmen am Handy ab (sicher / vermute nur), „Ergebnisse anzeigen“ zeigt die Verteilung – ohne Auflösung (je ca. 45 s). ${FOLIE('einstieg-ergebnis')} Übersicht (★ = größte Uneinigkeit, Karte anklicken = groß). ${FOLIE('murmeln')} Murmeln – die Uhr (1 min) startet automatisch; 2–3 Begründungen hören, nicht auflösen. ${FOLIE('ziel')} Lernziel und Fahrplan.`, 'Mit Vornamen anmelden; Notfall für Notfall am Handy vermuten (sicher / vermute nur), auch zur Leitfrage (E4); Ergebnis der Klasse ansehen; die Nachbarin oder den Nachbarn von der eigenen Wahl überzeugen.', 'EA → PA (Murmeln) → Plenum', 'Beamer, Handy, AB S. 1', 'Vorwissen aktivieren, Vermutungen bilden, Fehlvorstellungen sichtbar machen; kognitiver Konflikt; die Vermutungen werden im Check-out überprüft (vorher/nachher). AFB I'),
+    z('vor der Stunde', 'Vorbereitung', 'AB als **drei einzelne Blätter** (je beidseitig) kopieren und getrennt bereitlegen; wenige Expertenblätter A/B/C ans Pult; **beamer.html** öffnen → „Neuen Raum starten“.', '–', '–', 'Beamer, Blatt 1–3', 'Ablauf ohne Umbaupausen; die Blätter kommen nacheinander – die SuS sehen immer nur, woran gerade gearbeitet wird'),
+    z('0–10', `Problemorientierter Einstieg: „Wie hätten Sie gehandelt?“ (Folien ${FN('start')}–${FN('ziel')})`, `${FOLIE('start')} QR-Code am Beamer, die Namen der Angemeldeten erscheinen. ${FOLIE('blatt1')} **Blatt 1 austeilen.** ${FOLIE('fall')} Fallauszug und Leitfrage; Vermutung aus W1 kurz abrufen. ${FOLIE('einstieg')} Auftrag zeigen („Falsch liegen ist erlaubt.“), dann Notfall für Notfall (4 Notfälle): „Weiter“ zeigt den Notfall, die SuS stimmen am Handy ab (sicher / vermute nur), „Ergebnisse anzeigen“ zeigt die Verteilung – ohne Auflösung (je ca. 45 s). ${FOLIE('einstieg-ergebnis')} Übersicht (★ = größte Uneinigkeit, Karte anklicken = groß). ${FOLIE('murmeln')} Murmeln – die Uhr (1 min) startet automatisch; 2–3 Begründungen hören, nicht auflösen. ${FOLIE('ziel')} Lernziel und Fahrplan.`, 'Mit Vornamen anmelden; Notfall für Notfall am Handy vermuten (sicher / vermute nur), auch zur Leitfrage (E4); Ergebnis der Klasse ansehen; die Nachbarin oder den Nachbarn von der eigenen Wahl überzeugen.', 'EA → PA (Murmeln) → Plenum', 'Beamer, Handy, Blatt 1', 'Vorwissen aktivieren, Vermutungen bilden, Fehlvorstellungen sichtbar machen; kognitiver Konflikt; die Vermutungen werden im Check-out überprüft (vorher/nachher). AFB I'),
     ueber('„Bei E… sind Sie geteilter Meinung – genau das klären wir heute. In Woche 1 haben Sie gesehen, wie der Körper einen Schock ausgleicht. Heute geht es um die Frage: Ist jeder Schock gleich – und muss ich deshalb immer gleich handeln? Am Ende der Stunde prüfen Sie Ihre Vermutungen.“'),
     z('10–27', `Erarbeitung I: Expertenteams (AA1, Folien ${FN('puzzle')}–${FN('aa1-merksatz')})`, `${FOLIE('puzzle')} Ablauf zeigen; Personen ohne Handy mit „+ Person ohne Handy“ eintragen; **„Gruppen zufällig einteilen“** (Name anklicken = in die nächste Gruppe). ${FOLIE('aa1')} Uhr starten (15 min); die Teams finden sich über die Namen am Handy und setzen sich selbstständig zusammen; Status je Team am Beamer („Tabelle fertig!“). Sind alle Teams fertig, wechseln Beamer und Handys **automatisch** zu Folie ${FN('aa1-merksatz')}: Merksatz AA1 prüfen – SuS aufrufen, Lücke anklicken = aufdecken.`, 'Fall am Handy markieren (3 Ablenker, Schutz gegen Raten), Merksatz AA1; Infotext lesen (kurze Sätze, ohne Überschriften – selbst zuordnen); Experten-Check; im Team die eigene Spalte der Vergleichstabelle ausfüllen; „Unsere Spalte ist fertig“; Merksatz mit dem Beamer vergleichen.', 'EA → GA (Expertenteam 3–4) → Plenum', 'Handy, AB S. 2, Expertenblätter (freiwillig)', 'Befunde im Fließtext identifizieren und Relevantes von Irrelevantem unterscheiden (KA 3.1); Informationen selbst den Tabellenzeilen zuordnen; der Experten-Check sichert, dass jede Person erklären kann. AFB I–II'),
     z('27–44', `Erarbeitung II: Stammgruppe (AA2 a, Folien ${FN('aa2a')}–${FN('aa2a-sichern')})`, `${FOLIE('aa2a')} „Umsetzen!“ – die Handys zeigen Stammgruppe und Namen; **Erklär-Uhr** starten (A → B → C je 3 min, Ton beim Wechsel, dazu 2 min Gemeinsamkeit); Status je Gruppe. ${FOLIE('aa2a-sichern')} Tabelle sichern: SuS aufrufen, bei richtiger Antwort die Zelle anklicken und aufdecken.`, 'Reihum erklären, die Spalten der anderen ausfüllen, „Unsere Tabelle ist vollständig“; Tabelle mit der Musterlösung vergleichen und verbessern.', 'GA (Stammgruppe 3–4) → Plenum', 'AB S. 2, Handy', 'Vergleichen; Ergebnissicherung im Plenum. AFB II'),
-    z('44–58', `Erarbeitung III: Schockform-Detektiv und Klausurtraining (AA2 b/c, Folien ${FN('aa2b-intro')}–${FN('aa2c-loesung')})`, `${FOLIE('aa2b-intro')} Erklärfolie: Was ist der Schockform-Detektiv – und warum braucht man das? ${FOLIE('aa2b')} Detektiv (4 Fälle), Fortschritt je Stammgruppe. ${FOLIE('aa2c')} 2.1/2.2 zeigen und erklären; „Jetzt bearbeiten“ blendet den Auftrag ein und startet die Uhr (5 min); die Fälle stehen am Handy. ${FOLIE('aa2c-loesung')} Musterlösung: SuS aufrufen, passende Zeilen aufdecken.`, 'Schockform-Detektiv allein am Handy; 2.1 und 2.2 allein schreiben, mit der Musterlösung vergleichen und verbessern.', 'EA (Handy) → EA → Plenum', 'AB S. 3, Handy', 'Aus Befunden auf die Schockform schließen; Pathophysiologie erläutern (KA 3.2), Unterschied neurogen (KA 5.5). AFB II'),
+    z('44–58', `Erarbeitung III: Schockform-Detektiv und Klausurtraining (AA2 b/c, Folien ${FN('aa2b-intro')}–${FN('aa2c-loesung')})`, `${FOLIE('aa2b-intro')} Erklärfolie: Was ist der Schockform-Detektiv – und warum braucht man das? ${FOLIE('aa2b')} Detektiv (4 Fälle), Fortschritt je Stammgruppe. ${FOLIE('blatt2')} **Blatt 2 austeilen.** ${FOLIE('aa2c')} 2.1/2.2 zeigen und erklären; „Jetzt bearbeiten“ blendet den Auftrag ein und startet die Uhr (5 min); die Fälle stehen am Handy. ${FOLIE('aa2c-loesung')} Musterlösung: SuS aufrufen, passende Zeilen aufdecken.`, 'Schockform-Detektiv allein am Handy; 2.1 und 2.2 allein schreiben, mit der Musterlösung vergleichen und verbessern.', 'EA (Handy) → EA → Plenum', 'Handy, Blatt 2 (S. 3)', 'Aus Befunden auf die Schockform schließen; Pathophysiologie erläutern (KA 3.2), Unterschied neurogen (KA 5.5). AFB II'),
     ueber('„Sie wissen jetzt, wie sich die Schockformen unterscheiden. Aber wie lagern Sie? Aus dem Erste-Hilfe-Kurs kennen Sie: ‚Beine hoch.‘ Prüfen wir, ob das immer stimmt.“'),
-    z('58–76', `Erarbeitung IV: Lagerung nach Leitsymptom (AA3, Folien ${FN('aa3-impuls')}–${FN('aa3b-loesung')})`, `${FOLIE('aa3-impuls')} Impuls „Bei einem Schock immer Beine hoch?“ – Meinungen sammeln. **Folien ${FN('lagerung-1')}–${FN('lagerung-4')}:** die vier Lagerungen mit Bild, Wann? Warum? So geht’s (je ca. 1 min). ${FOLIE('aa3')} Lagerungs-Quiz allein am Handy (ca. 4 min), Fortschritt am Beamer. ${FOLIE('aa3-merksatz')} Merksatz AA3 prüfen. ${FOLIE('aa3b')} 3.1/3.2 zeigen und erklären, „Jetzt bearbeiten“ (Uhr 5 min). ${FOLIE('aa3b-loesung')} Musterlösung aufdecken.`, 'Lagerungen ansehen; Quiz am Handy: Leitsymptom erkennen, Lagerung wählen, aufdecken (Bilder auf dem AB und am Handy); Merksatz AA3; 3.1/3.2 allein, mit der Musterlösung vergleichen und verbessern.', 'Plenum → EA (Handy) → EA → Plenum', 'Handy, AB S. 3–4', 'Fehlvorstellung „immer Beine hoch“ korrigieren; Lagerungsbegründung als K.-o.-Kriterium in KA 3.3; 3.2 übt das Korrigieren falscher Aussagen. AFB II'),
+    z('58–76', `Erarbeitung IV: Lagerung nach Leitsymptom (AA3, Folien ${FN('aa3-impuls')}–${FN('aa3b-loesung')})`, `${FOLIE('aa3-impuls')} Impuls „Bei einem Schock immer Beine hoch?“ – Meinungen sammeln. **Folien ${FN('lagerung-1')}–${FN('lagerung-4')}:** die vier Lagerungen mit Bild, Wann? Warum? So geht’s (je ca. 1 min). ${FOLIE('aa3')} Lagerungs-Quiz allein am Handy (ca. 4 min), Fortschritt am Beamer. ${FOLIE('aa3-merksatz')} Merksatz AA3 prüfen. ${FOLIE('aa3b')} 3.1/3.2 zeigen und erklären, „Jetzt bearbeiten“ (Uhr 5 min). ${FOLIE('aa3b-loesung')} Musterlösung aufdecken.`, 'Lagerungen ansehen; Quiz am Handy: Leitsymptom erkennen, Lagerung wählen, aufdecken (Bilder auf dem AB und am Handy); Merksatz AA3; 3.1/3.2 allein, mit der Musterlösung vergleichen und verbessern.', 'Plenum → EA (Handy) → EA → Plenum', 'Handy, Blatt 2', 'Fehlvorstellung „immer Beine hoch“ korrigieren; Lagerungsbegründung als K.-o.-Kriterium in KA 3.3; 3.2 übt das Korrigieren falscher Aussagen. AFB II'),
     ueber(`Pause (falls im Stundenraster vorgesehen). – „Sie wissen jetzt, wie Sie lagern. Aber was dürfen Sie im Notfall selbst – und wofür brauchen Sie eine Anordnung?“`),
-    z('76–89', `Vertiefung: Wer darf was? (AA4, Folien ${FN('aa4a')}–${FN('aa4-merksatz')})`, `${FOLIE('aa4a')} Jeder Klick zeigt die nächste Maßnahme; die SuS stimmen am Handy ab (🟢/🟡/🔴), der Beamer zeigt nur, wie viele schon abgestimmt haben. Der nächste Klick zeigt die Lösung mit der Verteilung der Stimmen und „Das hatten X von Y richtig!“, die Handys melden richtig/falsch zurück (6 Maßnahmen); bei vielen falschen Stimmen nachfragen und begründen lassen; nach jeder Lösung eintragen lassen. ${FOLIE('aa4b')} Dialog und 4.1 zeigen, „Jetzt bearbeiten“: Think 2,5 min, Pair 1,5 min (Uhr). ${FOLIE('aa4b-loesung')} Musterlösung 4.1 aufdecken. ${FOLIE('aa4-merksatz')} Merksatz AA4 ergänzen lassen, dann aufdecken.`, 'Am Handy abstimmen, die Wahl begründen, jede Maßnahme in die Tabelle eintragen; Stellungnahme zu Herrn Brandt schreiben, zu zweit vergleichen, mit der Musterlösung verbessern; Merksatz AA4 ergänzen und vergleichen.', 'EA (Handy) → Plenum → PA → Plenum', 'AB S. 4–5, Handy', 'Verantwortungsgrenzen (III.2.b; KA 3.3: „n. ä. A./SOP“); Fehlvorstellung „Antihistaminikum statt Adrenalin“ korrigieren (KA 3.3); Merksatz bündelt die Sofortmaßnahmen. AFB II–III'),
+    z('76–89', `Vertiefung: Wer darf was? (AA4, Folien ${FN('aa4a')}–${FN('aa4b-loesung')})`, `${FOLIE('aa4a')} Jeder Klick zeigt die nächste Maßnahme; die SuS stimmen am Handy ab (🟢/🟡/🔴), der Beamer zeigt nur, wie viele schon abgestimmt haben. Der nächste Klick zeigt die Lösung mit der Verteilung der Stimmen und „Das hatten X von Y richtig!“, die Handys melden richtig/falsch zurück (6 Maßnahmen); bei vielen falschen Stimmen nachfragen und begründen lassen; nach jeder Lösung eintragen lassen. ${FOLIE('aa4-merksatz')} Merksatz AA4 mit Tabelle und Info ergänzen lassen, dann aufdecken. ${FOLIE('blatt3')} **Blatt 3 austeilen.** ${FOLIE('aa4b')} Dialog und 4.1 zeigen, „Jetzt bearbeiten“: Think 2,5 min, Pair 1,5 min (Uhr). ${FOLIE('aa4b-loesung')} Musterlösung 4.1 aufdecken.`, 'Am Handy abstimmen, die Wahl begründen, jede Maßnahme in die Tabelle eintragen; Merksatz AA4 ergänzen und vergleichen; Stellungnahme zu Herrn Brandt schreiben, zu zweit vergleichen, mit der Musterlösung verbessern.', 'EA (Handy) → Plenum → PA → Plenum', 'Blatt 2 (S. 4), Blatt 3, Handy', 'Verantwortungsgrenzen (III.2.b; KA 3.3: „n. ä. A./SOP“); Fehlvorstellung „Antihistaminikum statt Adrenalin“ korrigieren (KA 3.3); Merksatz bündelt die Sofortmaßnahmen. AFB II–III'),
     ueber('„Jetzt wie in der Klassenarbeit: allein, ohne Unterlagen, mit Punkten.“'),
-    z('89–102', `Sicherung: Klausurtraining (AA5, Folien ${FN('aa5')}–${FN('aa5-peer')})`, `${FOLIE('aa5')} Transferfall zeigen, „Jetzt bearbeiten“: Countdown 8 min. ${FOLIE('aa5-peer')} Tauschpartnerin oder Tauschpartner aus einer anderen Stammgruppe; das Raster erscheint am Handy (Uhr 4 min); dazu die Musterlösung Zeile für Zeile aufdecken; Rückmeldesatz einfordern.`, 'Transferfall (5.1, 5.2) allein lösen; Lösung der Partnerin oder des Partners mit dem App-Raster bewerten und mit der Musterlösung vergleichen.', 'EA → PA', 'AB S. 5, Handy', 'Transfer auf einen neuen Fall im KA-Format (KA 3.3); Peer-Feedback nach Erwartungshorizont. AFB III'),
-    z('102–107', `Transfer: Zurück zu Frau Maler (AA6, Folie ${FN('aufloesung')})`, `${FOLIE('aufloesung')} Kausalkette im Unterrichtsgespräch: vor jedem Klick fragen „Was kommt als Nächstes?“, dann aufdecken; zum Schluss die Antwort auf die Leitfrage.`, 'Nächstes Glied vermuten, Kausalkette auf S. 1 ergänzen, Leitfrage beantworten.', 'Plenum', 'AB S. 1', 'Leitfall abschließen; Brücke zur Thromboseprophylaxe (1. AJ). AFB II–III'),
+    z('89–102', `Sicherung: Klausurtraining (AA5, Folien ${FN('aa5')}–${FN('aa5-peer')})`, `${FOLIE('aa5')} Transferfall zeigen, „Jetzt bearbeiten“: Countdown 8 min. ${FOLIE('aa5-peer')} Tauschpartnerin oder Tauschpartner aus einer anderen Stammgruppe; das Raster erscheint am Handy (Uhr 4 min); dazu die Musterlösung Zeile für Zeile aufdecken; Rückmeldesatz einfordern.`, 'Transferfall (5.1, 5.2) allein lösen; Lösung der Partnerin oder des Partners mit dem App-Raster bewerten und mit der Musterlösung vergleichen.', 'EA → PA', 'Blatt 3, Handy', 'Transfer auf einen neuen Fall im KA-Format (KA 3.3); Peer-Feedback nach Erwartungshorizont. AFB III'),
+    z('102–107', `Transfer: Zurück zu Frau Maler (AA6, Folie ${FN('aufloesung')})`, `${FOLIE('aufloesung')} Kausalkette im Unterrichtsgespräch: vor jedem Klick fragen „Was kommt als Nächstes?“, dann aufdecken; zum Schluss die Antwort auf die Leitfrage.`, 'Nächstes Glied vermuten, Kausalkette auf S. 1 ergänzen, Leitfrage beantworten.', 'Plenum', 'Blatt 1 (S. 1)', 'Leitfall abschließen; Brücke zur Thromboseprophylaxe (1. AJ). AFB II–III'),
     z('107–125', 'Puffer (ca. 18 min)', 'Bewusst eingeplante Reserve: für langsames Lesen und Schreiben und für die Sicherungsfolien (Merksätze, Tabelle, Musterlösungen) – mit Aufrufen dauern sie oft länger als geplant. Bleibt Zeit: mit der Hausaufgabe beginnen.', '–', '–', '–', 'Zeitreserve, kein neuer Inhalt'),
     z('125–135', `Abschlusssicherung: „Hätten Sie richtig gehandelt?“ (Folien ${FN('checkout-intro')}–${FN('ende')})`, `${FOLIE('checkout-intro')} „Was haben wir heute gelernt?“ – kurz zusammenfassen und überleiten: dieselben Notfälle, jetzt mit neuem Fachwissen. ${FOLIE('checkout')} Notfall für Notfall: zeigen, abstimmen lassen, „Auflösung zeigen“ – richtige Antwort, Erklärung und die Klasse am Anfang und jetzt nebeneinander; nachfragen, wo sich viel verändert hat. ${FOLIE('checkout-ergebnis')} Vorher – nachher im Überblick; größte Veränderung besprechen (v. a. E4 = Leitfrage). ${FOLIE('ende')} Hausaufgabe und Nachlesen – damit wird die Nachlese-Seite freigeschaltet.`, 'Dieselben Notfälle erneut am Handy entscheiden; Auflösung mit der eigenen Vermutung vergleichen; eigene Bilanz am Handy.', 'EA (Handy) → Plenum', 'Handy, Beamer', 'Vermutungen überprüfen, Lernzuwachs sichtbar machen (vorher/nachher); Lernstandsdiagnose.'),
   ];
@@ -365,7 +395,7 @@ function hinweise(B) {
     punkt(`**Per Knopfdruck am Beamer (Folie ${FN('puzzle')}):** Stammgruppen zu 3 (A, B, C); geht es nicht auf, Vierergruppen mit doppeltem B (Anaphylaxie ist Klausurschwerpunkt). Expertenteams zu 3, Rest zu 4; zwei B-Expertinnen derselben Stammgruppe kommen in verschiedene Teams. Wer später kommt, wird automatisch eingeteilt; Personen ohne Handy trägt die Lehrkraft vorher mit „+ Person ohne Handy“ ein.`),
     punkt('**3BFP2.1 (23 SuS):** 7 Stammgruppen (5 × 3, 2 × 4) · Expertenteams A1–A2, B1–B3, C1–C2. **3BFP2.2 (20 SuS):** 6 Stammgruppen (4 × 3, 2 × 4) · Expertenteams A1–A2, B1–B2, C1–C2.'),
     B.zwischen('Material und Technik'),
-    punkt('Kopien: AB (SV) für alle – 3 Blätter, beidseitig; Expertenblätter A/B/C nur zum Auslegen am Pult (freiwillig, z. B. je 3).'),
+    punkt(`Kopien: AB (SV) für alle als **drei einzelne Blätter**, je beidseitig (Blatt 1 = S. 1–2, Blatt 2 = S. 3–4, Blatt 3 = S. 5–6), getrennt bereitlegen. Sie werden **nacheinander** ausgeteilt – jeweils mit einer Folie „Sie erhalten jetzt Blatt …“ (Folien ${FN('blatt1')}, ${FN('blatt2')} und ${FN('blatt3')}), die Überschrift und Aufgaben des Blattes zeigt. Expertenblätter A/B/C nur zum Auslegen am Pult (freiwillig, z. B. je 3).`),
     punkt('**Beamer:** **beamer.html** öffnen → „Neuen Raum starten“. Unten rechts **Weiter**, links **Zurück** (auch Pfeiltasten, Presenter); Menü ⚙ unten links: zu jeder Folie springen, Vollbild, Namen verbergen, Angemeldete verwalten, neuer Raum für die Parallelklasse. Die Handys wechseln automatisch mit; ein QR-Code unten auf jeder Folie lässt Nachzügler einsteigen. Probeansicht ohne Internet: beamer.html?demo=1.'),
     punkt(`**Nachlese-Seite** (QR-Code auf der letzten AB-Seite): alle Inhalte und Lösungen der Stunde zum Wiederholen. Sie ist gesperrt, solange irgendwo eine Beamer-Stunde läuft – bis Folie ${FN('ende')} erreicht ist oder 10 Minuten nach dem Schließen des Beamers.`),
     punkt('**Zeitplan und Puffer:** Für langsam lesende Klassen gerafft – 4 statt 6 Einstiegsnotfälle, kürzere Infotexte mit kurzen Sätzen, nur 3 Ablenker im Expertenfall, Detektiv mit 4 Fällen, Lagerungs-Quiz allein am Handy (keine Matten), kein Entscheidungsweg, kein Check-out und keine Zusatzaufgaben auf dem AB. Alle Aufgaben im KA-Format (2.1–5.2, Hausaufgabe) bleiben. Dadurch bleiben rund **18 Minuten Puffer** (107–125) für langsames Lesen und die Sicherungsfolien.'),

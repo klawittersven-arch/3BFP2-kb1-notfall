@@ -172,7 +172,7 @@
       fahrplan: folieFahrplan, puzzle: foliePuzzle, experten: folieExperten, stamm: folieStamm, fortschritt: folieFortschritt,
       papier: foliePapier, impuls: folieImpuls, aufstellung: folieAufstellung, dialog: folieDialog, kausalkette: folieKausalkette, ende: folieEnde,
       tabelle: folieTabelle, loesung: folieLoesung, info: folieInfo,
-      merksatz: folieMerksatz, lagerung: folieLagerung, aufgabe: folieAufgabe
+      merksatz: folieMerksatz, lagerung: folieLagerung, aufgabe: folieAufgabe, blatt: folieBlatt
     }[f.typ] || folieImpuls;
     var wurzel = el('section', 'folie folie-' + f.typ);
     wurzel.setAttribute('data-folie', f.id);
@@ -1116,6 +1116,23 @@
       wb.appendChild(ul);
       rechts.appendChild(wb);
     }
+    box.appendChild(rechts);
+    w.appendChild(box);
+  }
+
+  // Austeilen: links das Blatt mit seiner Nummer, rechts Überschrift (wie im AB) und was darauf steht
+  function folieBlatt(f, w) {
+    var box = el('div', 'blatt-folie');
+    var papier = el('div', 'blatt-papier');
+    papier.appendChild(el('div', 'blatt-wort', T.blattWort));
+    papier.appendChild(el('div', 'blatt-nr', String(f.nr)));
+    papier.appendChild(el('div', 'blatt-von', K.ersetzen(T.blattVon, { y: f.von })));
+    papier.appendChild(el('div', 'blatt-seiten', f.seiten));
+    box.appendChild(papier);
+    var rechts = el('div', 'blatt-rechts');
+    rechts.appendChild(titel(f, f.ueberschrift));
+    rechts.appendChild(el('p', 'blatt-darauf', T.blattDarauf));
+    rechts.appendChild(punkteListe(f.punkte));
     box.appendChild(rechts);
     w.appendChild(box);
   }

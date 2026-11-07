@@ -45,7 +45,8 @@ var STUNDE = {
      typ (Beamer): start, fall, abstimmung, ergebnis, murmeln, fahrplan, puzzle, experten, stamm, tabelle,
                    info, fortschritt, papier, loesung, impuls, aufstellung, dialog, kausalkette, ende,
                    merksatz (Lücken per Klick aufdecken), lagerung (Bild + Wann/Warum/So geht’s),
-                   aufgabe (Aufgabe wie im AB; „Weiter“ blendet „Bearbeiten Sie jetzt …“ und die Uhr ein)
+                   aufgabe (Aufgabe wie im AB; „Weiter“ blendet „Bearbeiten Sie jetzt …“ und die Uhr ein),
+                   blatt (Austeilen: „Sie erhalten jetzt Blatt …“ – Überschrift und Punkte wie im Arbeitsblatt)
                    (tabelle, loesung, aufgabe: Inhalte aus inhalte_nachlesen.js, also wie im Arbeitsblatt)
      handy.typ:    vorne, bild, entscheidung, murmeln, gruppe, experte, stamm, modul, papier, faelle, aufstellung, ende
                    (bei typ aufgabe zeigt das Handy erst „Schauen Sie nach vorne“, nach „Weiter“ den handy-Bildschirm)
@@ -56,6 +57,18 @@ var STUNDE = {
       titel: 'Willkommen!',
       schritte: ['Scannen Sie den QR-Code.', 'Geben Sie Ihren **Vornamen** ein.', 'Fertig – Ihr Handy wechselt ab jetzt **automatisch mit dem Beamer**.'],
       handy: { typ: 'vorne', titel: 'Sie sind dabei, {name}!', text: 'Ihr Handy wechselt ab jetzt automatisch mit dem Beamer. Schauen Sie nach vorne.' }
+    },
+    {
+      id: 'blatt1', abschnitt: 'Ankommen', kurz: 'Blatt 1 austeilen', typ: 'blatt', nr: 1, von: 3, seiten: 'Seite 1 und 2',
+      titel: 'Sie erhalten jetzt Blatt 1',
+      ueberschrift: 'Einstieg und Gruppenpuzzle',
+      punkte: [
+        '**Seite 1:** Frau Maler und die Leitfrage – die Antwort ergänzen Sie am Ende der Stunde',
+        '**Einstieg:** Wie hätten Sie gehandelt? (am Handy)',
+        '**Seite 2:** Gruppenpuzzle – Expertenteam (AA1), Merksatz AA1, Vergleichstabelle',
+        'Stammgruppe (AA2 a) und Schockform-Detektiv (AA2 b)'
+      ],
+      handy: { typ: 'vorne', titel: 'Blatt 1 von 3', text: 'Sie erhalten jetzt **Blatt 1: Einstieg und Gruppenpuzzle**. Schauen Sie nach vorne.' }
     },
     {
       id: 'fall', abschnitt: 'Einstieg', kurz: 'Frau Maler', typ: 'fall',
@@ -169,6 +182,18 @@ var STUNDE = {
       titel: 'AA2b · Schockform-Detektiv',
       text: 'Vier kurze Fälle: **Schockform bestimmen** und die **zwei Befunde** markieren, die sie belegen. Jede Person am eigenen Handy – sitzen bleiben in der Stammgruppe.',
       handy: { typ: 'modul', modul: 'detektiv', gruppeZeigen: true }
+    },
+    {
+      id: 'blatt2', abschnitt: 'Gruppenpuzzle', kurz: 'Blatt 2 austeilen', typ: 'blatt', nr: 2, von: 3, seiten: 'Seite 3 und 4',
+      titel: 'Sie erhalten jetzt Blatt 2',
+      ueberschrift: 'Lagerung nach Leitsymptom – wer darf was?',
+      punkte: [
+        '**Seite 3:** Klausurtraining 2.1 und 2.2 (AA2 c)',
+        'Lagerung nach Leitsymptom (AA3): Bilder der vier Lagerungen, Lagerungs-Quiz, Merksatz AA3',
+        '**Seite 4:** Klausurtraining 3.1 und 3.2',
+        'Wer darf was? (AA4 a) und Merksatz AA4'
+      ],
+      handy: { typ: 'vorne', titel: 'Blatt 2 von 3', text: 'Sie erhalten jetzt **Blatt 2: Lagerung nach Leitsymptom – wer darf was?** Schauen Sie nach vorne.' }
     },
     {
       id: 'aa2c', abschnitt: 'Gruppenpuzzle', kurz: 'Klausurtraining 2.1/2.2', typ: 'aufgabe',
@@ -289,6 +314,25 @@ var STUNDE = {
       handy: { typ: 'aufstellung', titel: 'Wer darf was?', start: 'Gleich zeigt Ihre Lehrkraft Maßnahmen am Beamer. Tippen Sie dann hier an, wer sie durchführen darf. Nach jeder Lösung: Maßnahme in die Tabelle auf dem Arbeitsblatt eintragen.' }
     },
     {
+      id: 'aa4-merksatz', abschnitt: 'Verantwortung', kurz: 'Merksatz AA4', typ: 'merksatz', merksatz: 'aa4',
+      titel: 'Merksatz AA4 – Sofortmaßnahmen bei Anaphylaxie',
+      text: 'Ergänzen Sie zuerst allein die Lücken auf dem Arbeitsblatt (Seite 4) – Tabelle und Info helfen. Dann decken wir gemeinsam auf.',
+      tipp: 'Lücke anklicken = aufdecken · noch einmal = ganzer Merksatz groß',
+      handy: { typ: 'papier', titel: 'Merksatz AA4', text: 'Ergänzen Sie den **Merksatz AA4** auf dem Arbeitsblatt. Danach überprüfen Sie am Beamer, ob Sie ihn richtig notiert haben.' }
+    },
+    {
+      id: 'blatt3', abschnitt: 'Klausurtraining', kurz: 'Blatt 3 austeilen', typ: 'blatt', nr: 3, von: 3, seiten: 'Seite 5 und 6',
+      titel: 'Sie erhalten jetzt Blatt 3',
+      ueberschrift: 'Klausurtraining wie in der KA',
+      punkte: [
+        '**Seite 5:** Adrenalin oder Antihistaminikum? – Klausurtraining 4.1 (AA4 b)',
+        'Transferfall wie in der KA: 5.1 und 5.2 (AA5)',
+        '**Seite 6:** Hausaufgabe mit QR-Code zur Selbstkontrolle',
+        'QR-Code zum Nachlesen – erst nach der Stunde'
+      ],
+      handy: { typ: 'vorne', titel: 'Blatt 3 von 3', text: 'Sie erhalten jetzt **Blatt 3: Klausurtraining wie in der KA**. Schauen Sie nach vorne.' }
+    },
+    {
       id: 'aa4b', abschnitt: 'Verantwortung', kurz: 'Adrenalin oder Antihistaminikum? (AA4b)', typ: 'aufgabe',
       titel: 'AA4b · Wer hat recht?',
       bloecke: [{ art: 'dialog' }, { art: 'aufgaben', nrs: ['4.1'] }],
@@ -307,13 +351,6 @@ var STUNDE = {
       aufgaben: ['4.1'],
       tipp: 'Zeile anklicken = aufdecken · noch einmal = groß',
       handy: { typ: 'papier', titel: 'Musterlösung vorne', text: 'Vergleichen Sie Ihre Antwort mit der Musterlösung am Beamer. Verbessern oder ergänzen Sie auf dem Arbeitsblatt – am besten in einer anderen Farbe.' }
-    },
-    {
-      id: 'aa4-merksatz', abschnitt: 'Verantwortung', kurz: 'Merksatz AA4', typ: 'merksatz', merksatz: 'aa4',
-      titel: 'Merksatz AA4 – Sofortmaßnahmen bei Anaphylaxie',
-      text: 'Ergänzen Sie zuerst allein die Lücken auf dem Arbeitsblatt – dann decken wir gemeinsam auf.',
-      tipp: 'Lücke anklicken = aufdecken · noch einmal = ganzer Merksatz groß',
-      handy: { typ: 'papier', titel: 'Merksatz AA4', text: 'Ergänzen Sie den **Merksatz AA4** auf dem Arbeitsblatt. Danach überprüfen Sie am Beamer, ob Sie ihn richtig notiert haben.' }
     },
     {
       id: 'aa5', abschnitt: 'Klausurtraining', kurz: 'Transferfall (AA5)', typ: 'aufgabe',
@@ -446,6 +483,9 @@ var STUNDE = {
     warumTitel: 'Warum?',
     soTitel: 'So geht’s',
     lagerungNr: '{n} von 4',
+    blattWort: 'Blatt',
+    blattVon: 'von {y}',
+    blattDarauf: 'Darauf finden Sie:',
     gruppeFertig: 'Tabelle vollständig!',
     ohneHandyKurz: 'ohne Handy',
     jetztErklaert: 'Jetzt: {label}',

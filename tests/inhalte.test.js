@@ -115,6 +115,14 @@ const aa4 = S.folien.find((f) => f.id === 'aa4a');
 pruefe(aa4.massnahmen.length === 6 && aa4.massnahmen.every((m) => m.ecke >= 0 && m.ecke < aa4.ecken.length), 'AA4a: 6 Maßnahmen mit gültiger Ecke');
 pruefe(aa4.runde === 3 && aa4.ecken.length === 3 && aa4.massnahmen.length <= 9, 'AA4a: Abstimmung am Handy (Runde 3, höchstens 9 Maßnahmen)');
 pruefe(!ids.includes('pause'), 'keine Pausenfolie');
+// Die drei Blätter werden nacheinander ausgeteilt – je eine Folie „Sie erhalten jetzt Blatt …“
+const blaetter = S.folien.filter((f) => f.typ === 'blatt');
+pruefe(blaetter.length === 3 && blaetter.every((f, i) => f.nr === i + 1 && f.von === 3 && f.ueberschrift && f.punkte.length >= 3 && f.handy.typ === 'vorne'), 'drei Austeil-Folien Blatt 1–3 mit Überschrift und Aufgaben');
+pruefe(ids.indexOf('blatt1') === ids.indexOf('start') + 1, 'Blatt 1 gleich nach „Willkommen“');
+pruefe(ids.indexOf('blatt2') === ids.indexOf('aa2c') - 1, 'Blatt 2 vor Klausurtraining 2.1/2.2');
+pruefe(ids.indexOf('blatt3') === ids.indexOf('aa4b') - 1 && ids.indexOf('aa4-merksatz') === ids.indexOf('aa4a') + 1, 'Merksatz AA4 nach „Wer darf was?“ (Blatt 2), dann Blatt 3 vor AA4 b');
+const abQuelle = fs.readFileSync(path.join(WURZEL, 'werkzeuge', 'ab_w2.js'), 'utf8');
+pruefe([1, 2, 3].every((n) => abQuelle.includes('blattKopf(B, ' + n)), 'Arbeitsblatt: Überschrift für Blatt 1, 2 und 3 (aus den Austeil-Folien)');
 for (const d of fs.readdirSync(DOCS).filter((x) => /\.(js|html)$/.test(x))) {
   pruefe(!/Woche [3-9]/.test(fs.readFileSync(path.join(DOCS, d), 'utf8')), `${d}: kein Hinweis auf spätere Wochen`);
 }

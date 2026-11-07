@@ -74,9 +74,13 @@ const textDa = (h, text) => bis(h, (t) => document.body.innerText.includes(t), t
     H.pruefe(await bis(lap, () => document.querySelectorAll('.name-chip').length === 6), 'Beamer zeigt 6 Namen');
     await lap.screenshot({ path: path.join(ORDNER, 'stunde_01_start.png') });
 
-    console.log('\n== Einstieg');
+    console.log('\n== Blatt 1 austeilen, Einstieg');
     await weiter();
-    H.pruefe(await folieIst(lap, 'fall'), 'Weiter → Folie 2: Frau Maler');
+    H.pruefe(await folieIst(lap, 'blatt1') && (await lap.textContent('.blatt-nr')) === '1', 'Weiter → „Sie erhalten jetzt Blatt 1“');
+    H.pruefe(await textDa(handys[0], 'Blatt 1'), 'Handy: Blatt 1 kommt');
+    await lap.screenshot({ path: path.join(ORDNER, 'stunde_02_blatt1.png') });
+    await weiter();
+    H.pruefe(await folieIst(lap, 'fall'), 'Weiter → Frau Maler');
     H.pruefe(await textDa(handys[0], 'Leitfrage'), 'Handy zeigt die Leitfrage');
     H.pruefe(await textDa(handys[5], 'Leitfrage'), 'Handy ohne Live-Verbindung folgt ebenfalls');
     await weiter();
@@ -221,7 +225,10 @@ const textDa = (h, text) => bis(h, (t) => document.body.innerText.includes(t), t
     H.pruefe(await titelIst(handys[0], 'Detektiv'), 'Handy lädt den Schockform-Detektiv');
     H.pruefe(await bis(handys[0], () => !!document.querySelector('.gruppe-mini')), 'Handy zeigt dazu die Stammgruppe');
     await weiter();
-    H.pruefe(await folieIst(lap, 'aa2c'), 'nach dem Detektiv direkt: Klausurtraining 2.1/2.2 (kein Merksatz AA2)');
+    H.pruefe(await folieIst(lap, 'blatt2') && (await lap.textContent('.folie')).includes('Lagerung nach Leitsymptom'), 'nach dem Detektiv: „Sie erhalten jetzt Blatt 2“ (kein Merksatz AA2)');
+    H.pruefe(await textDa(handys[0], 'Blatt 2'), 'Handy: Blatt 2 kommt');
+    await weiter();
+    H.pruefe(await folieIst(lap, 'aa2c'), 'dann Klausurtraining 2.1/2.2');
     H.pruefe((await lap.$$('.a-tabelle .a-nr')).length === 2 && !(await lap.$('.aufgabe-los')), 'Aufgabenfolie: erst die Aufgaben wie im AB, noch ohne Auftrag');
     H.pruefe(await textDa(handys[0], 'erklärt gleich die Aufgabe'), 'Handy: nach vorne schauen, die Lehrkraft erklärt');
     H.pruefe((await lap.textContent('#weiter')).includes('Jetzt bearbeiten'), 'Weiter-Knopf heißt „Jetzt bearbeiten“');
