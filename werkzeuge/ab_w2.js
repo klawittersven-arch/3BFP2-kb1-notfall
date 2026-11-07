@@ -116,7 +116,7 @@ function schuelerTeil(B, { lsg }) {
   const sw = Math.round((BREITE_HOCH - 1700) / 3);
   const zeilenAA2 = sammle('vergleich', [
     ['Ursache', 'Blut- oder Flüssigkeitsverlust (Blutung, z. B. Magen-Darm-Blutung; Verbrennung; Durchfall, Erbrechen)', 'allergische Sofortreaktion auf Medikament, Insektengift oder Nahrungsmittel', 'Verletzung des Rückenmarks (meist Halswirbelsäule), z. B. Kopfsprung, Sturz aus der Höhe'],
-    ['Entstehung (kurz)', 'Volumen ↓ → Rückstrom zum Herzen ↓ → Schlagvolumen ↓ → Blutdruck ↓', 'Histamin → Gefäße weit und durchlässig → relativer Volumenmangel → Blutdruck ↓; Bronchien eng', 'Sympathikus fällt aus → Gefäße weit, Blut versackt → Blutdruck ↓; keine Gegenregulation'],
+    ['Entstehung (kurz)', 'Volumen ↓ → Rückstrom zum Herzen ↓ → Blutdruck ↓; Sympathikus gleicht aus: Puls ↑, Zentralisation', 'Histamin → Gefäße weit und durchlässig → relativer Volumenmangel → Blutdruck ↓; Bronchien eng', 'Sympathikus fällt aus → Gefäße weit, Blut versackt → Blutdruck ↓; keine Gegenregulation (Puls steigt nicht)'],
     ['Puls', 'schnell, schwach', 'schnell', 'langsam oder normal'],
     ['Haut', 'blass, kalt, schweißig (Zentralisation)', 'Juckreiz, Rötung, Quaddeln, Schwellungen (kann auch blass sein)', 'unterhalb der Verletzung warm, trocken, rosig'],
     ['weitere typische Zeichen', 'Durst, Unruhe, schnelle Atmung, wenig Urin; ggf. sichtbares Blut, Teerstuhl', 'Heiserkeit, Atemnot, Übelkeit, Erbrechen, Bauchkrämpfe, Schwindel', 'Lähmungen, Kribbeln, Taubheit, Nacken-/Rückenschmerz, flache Atmung, Auskühlung'],
@@ -210,7 +210,7 @@ function schuelerTeil(B, { lsg }) {
       pS('verantwortung', '**Als Auszubildende/r:** unter Anleitung handeln und sofort eine Pflegefachperson holen.', { spacing: { after: 0 } })
     ], { kopf: 'Info: Verantwortung im Notfall' }),
     B.leer(100),
-    merk('Merksatz AA4', 'aa4'),
+    merk('Merksatz AA4 – Sofortmaßnahmen bei Anaphylaxie', 'aa4'),
     blattKopf(B, 3, { pageBreakBefore: true }),
     teil([IC.beurteilen], '**AA4 b) Wer hat recht?** **Think** (2,5 Min.): allein schreiben. **Pair** (1,5 Min.): zu zweit vergleichen.'),
     pS('adrenalinText', '**Adrenalin i. m.** ist das Mittel der ersten Wahl: Es wirkt am schnellsten, stellt die Gefäße eng (Blutdruck ↑), lässt Schleimhäute abschwellen, weitet die Bronchien.', { spacing: { after: 40, line: 264 } }),
@@ -230,7 +230,7 @@ function schuelerTeil(B, { lsg }) {
 
   /* ---------- AA5 Transferfall ---------- */
   push(
-    B.aa([IC.schreiben], 'AA5: Transferfall – Wissen anwenden:', '**Allein, ohne Unterlagen** (8 Min.). Dann Peer-Korrektur mit dem **Raster am Handy**.', { spacing: { before: 100, after: 60, line: 264 } }),
+    B.aa([IC.schreiben], 'AA5: Transferfall – Wissen anwenden:', '**Allein** (8 Min.) – Hilfe: nur **Merksatz AA3 und AA4**. Dann Peer-Korrektur mit dem **Raster am Handy**.', { spacing: { before: 100, after: 60, line: 264 } }),
     B.meta('13 min (8 min schreiben, 4 min Peer-Korrektur) · Einzelarbeit → Peer-Korrektur mit App-Raster und Musterlösung am Beamer · AFB I–III · KA-Format (KB 1, Aufg. 3.3) · Examensvorbild: Mai 2024 Tag 3, Aufg. 8.2; Mai 2026 Tag 1, Aufg. 3.2'),
     B.kasten([
       pS('transferfall', 'Sie sind in der Tagespflege „Sonnenhof“ eingesetzt. Herr Klaus Martens (74) hat einen Diabetes mellitus Typ 2 und eine Herzinsuffizienz. Gegen 14:15 Uhr sitzt er mit anderen Gästen auf der Terrasse beim Kaffee. Plötzlich schreit er auf: Eine Wespe hat ihn in die Oberlippe gestochen.'),
@@ -257,7 +257,8 @@ function schuelerTeil(B, { lsg }) {
   /* ---------- Seite 6: Hausaufgabe ---------- */
   sammelnAn = false;   // Lösungen der Hausaufgabe gehören nicht auf die Nachlese-Seite (eigene Selbstkontrolle)
   push(
-    B.abschnitt('Hausaufgabe · Ein neuer Fall (ca. 17 Minuten · ohne Hilfsmittel · 13 Punkte)', { pageBreakBefore: true }),
+    B.abschnitt('Hausaufgabe · Ein neuer Fall (ca. 17 Minuten · 13 Punkte)', { pageBreakBefore: true }),
+    B.p('Lesen Sie vorher die **Merksätze AA1, AA3 und AA4**. Dann schreiben Sie ohne Hilfsmittel.', { spacing: { after: 60, line: 252 } }),
     B.meta('ca. 17 min (1,3 min je Punkt wie im Examen) · Einzelarbeit zu Hause · AFB I–III · Examensformat: Ausgangssituation, Rahmensatz je Aufgabe, Situationswechsel im Aufgabenstamm (vgl. Mai 2024 Tag 1, 1.2; Mai 2024 Tag 3, 8.1–8.2; Mai 2026 Tag 1, 1.3)'),
     B.kasten([
       B.p('Sie sind Auszubildende bzw. Auszubildender in der Rehaklinik „Talblick“. Frau Sabine Lorenz (52) ist seit einer Woche nach einer Bandscheibenoperation bei Ihnen. In ihrem Allergiepass steht eine Fischallergie.'),
@@ -375,7 +376,7 @@ function verlaufsplan(B) {
     z('58–76', `Erarbeitung IV: Lagerung nach Leitsymptom (AA3, Folien ${FN('aa3-impuls')}–${FN('aa3b-loesung-32')})`, `${FOLIE('aa3-impuls')} Impuls „Bei einem Schock immer Beine hoch?“ – Meinungen sammeln. **Folien ${FN('lagerung-1')}–${FN('lagerung-4')}:** die vier Lagerungen mit Bild, Wann? Warum? So geht’s (je ca. 1 min). ${FOLIE('aa3')} Lagerungs-Quiz allein am Handy (ca. 4 min), Fortschritt am Beamer. ${FOLIE('aa3-merksatz')} Merksatz AA3 gemeinsam lesen (Lesefolie). ${FOLIE('aa3b')} 3.1/3.2 zeigen und erklären, „Jetzt bearbeiten“ (Uhr 5 min). **Folien ${FN('aa3b-loesung-31')}–${FN('aa3b-loesung-32')}:** Musterlösung 3.1 und 3.2 (je eine Folie) aufdecken.`, 'Lagerungen ansehen; Quiz am Handy: Leitsymptom erkennen, Lagerung wählen, aufdecken (Bilder auf dem AB und am Handy); Merksatz AA3 mitlesen; 3.1/3.2 allein, mit der Musterlösung vergleichen und verbessern.', 'Plenum → EA (Handy) → EA → Plenum', 'Handy, Blatt 2', 'Fehlvorstellung „immer Beine hoch“ korrigieren; Lagerungsbegründung als K.-o.-Kriterium in KA 3.3; 3.2 übt das Korrigieren falscher Aussagen. AFB II'),
     ueber(`Pause (falls im Stundenraster vorgesehen). – „Sie wissen jetzt, wie Sie lagern. Aber was dürfen Sie im Notfall selbst – und wofür brauchen Sie eine Anordnung?“`),
     z('76–89', `Vertiefung: Wer darf was? (AA4, Folien ${FN('aa4a')}–${FN('aa4b-loesung')})`, `${FOLIE('aa4a')} Jeder Klick zeigt die nächste Maßnahme; die SuS stimmen am Handy ab (🟢/🟡/🔴), der Beamer zeigt nur, wie viele schon abgestimmt haben. Der nächste Klick zeigt die Lösung mit der Verteilung der Stimmen und „Das hatten X von Y richtig!“, die Handys melden richtig/falsch zurück (6 Maßnahmen); bei vielen falschen Stimmen nachfragen und begründen lassen; nach jeder Lösung eintragen lassen. ${FOLIE('aa4-merksatz')} Merksatz AA4 gemeinsam lesen (Lesefolie) – er bündelt Tabelle und Info. ${FOLIE('blatt3')} **Blatt 3 austeilen.** ${FOLIE('aa4b')} Dialog und 4.1 zeigen, „Jetzt bearbeiten“: Think 2,5 min, Pair 1,5 min (Uhr). ${FOLIE('aa4b-loesung')} Musterlösung 4.1 aufdecken.`, 'Am Handy abstimmen, die Wahl begründen, jede Maßnahme in die Tabelle eintragen; Merksatz AA4 mitlesen; Stellungnahme zu Herrn Brandt schreiben, zu zweit vergleichen, mit der Musterlösung verbessern.', 'EA (Handy) → Plenum → PA → Plenum', 'Blatt 2 (S. 4), Blatt 3, Handy', 'Verantwortungsgrenzen (III.2.b; KA 3.3: „n. ä. A./SOP“); Fehlvorstellung „Antihistaminikum statt Adrenalin“ korrigieren (KA 3.3); Merksatz bündelt die Sofortmaßnahmen. AFB II–III'),
-    ueber('„Jetzt wenden Sie alles an: ein neuer Fall – allein, ohne Unterlagen, mit Punkten.“'),
+    ueber('„Jetzt wenden Sie alles an: ein neuer Fall – allein, nur mit den Merksätzen AA3 und AA4, mit Punkten.“'),
     z('89–102', `Sicherung: Transferfall – Wissen anwenden (AA5, Folien ${FN('aa5')}–${FN('aa5-peer-2')})`, `${FOLIE('aa5')} Transferfall zeigen, „Jetzt bearbeiten“: Countdown 8 min. ${FOLIE('aa5-peer')} Tauschpartnerin oder Tauschpartner aus einer anderen Stammgruppe; das Raster erscheint am Handy (Uhr 4 min); dazu die Musterlösung Zeile für Zeile aufdecken – sie steht groß auf zwei Folien, die Uhr läuft auf der zweiten weiter; Rückmeldesatz einfordern.`, 'Transferfall (5.1, 5.2) allein lösen; Lösung der Partnerin oder des Partners mit dem App-Raster bewerten und mit der Musterlösung vergleichen.', 'EA → PA', 'Blatt 3, Handy', 'Transfer auf einen neuen Fall im KA-Format (KA 3.3); Peer-Feedback nach Erwartungshorizont. AFB III'),
     z('102–107', `Transfer: Zurück zu Frau Maler (AA6, Folie ${FN('aufloesung')})`, `${FOLIE('aufloesung')} Kausalkette im Unterrichtsgespräch: vor jedem Klick fragen „Was kommt als Nächstes?“, dann aufdecken; zum Schluss die Antwort auf die Leitfrage.`, 'Nächstes Glied vermuten, Kausalkette auf S. 1 ergänzen, Leitfrage beantworten.', 'Plenum', 'Blatt 1 (S. 1)', 'Leitfall abschließen; Brücke zur Thromboseprophylaxe (1. AJ). AFB II–III'),
     z('107–125', 'Puffer (ca. 18 min)', 'Bewusst eingeplante Reserve: für langsames Lesen und Schreiben und für die Sicherungsfolien (Merksätze, Tabelle, Musterlösungen) – mit Aufrufen dauern sie oft länger als geplant. Bleibt Zeit: mit der Hausaufgabe beginnen.', '–', '–', '–', 'Zeitreserve, kein neuer Inhalt'),

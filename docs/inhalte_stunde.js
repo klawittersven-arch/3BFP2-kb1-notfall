@@ -344,7 +344,7 @@ var STUNDE = {
     },
     {
       id: 'aa4-merksatz', abschnitt: 'Verantwortung', kurz: 'Merksatz AA4 lesen', typ: 'merksatz', merksatz: 'aa4',
-      titel: 'Merksatz AA4',
+      titel: 'Merksatz AA4 – Sofortmaßnahmen bei Anaphylaxie',
       text: 'Lesen Sie mit – der Merksatz steht auf Ihrem Arbeitsblatt (Seite 4).',
       tipp: 'Merksatz anklicken = groß',
       handy: { typ: 'vorne', titel: 'Merksatz AA4', text: 'Lesen Sie mit: **Merksatz AA4** auf Ihrem Arbeitsblatt (Seite 4).' }
@@ -385,10 +385,10 @@ var STUNDE = {
       id: 'aa5', abschnitt: 'Anwenden', kurz: 'Transferfall (AA5)', typ: 'aufgabe',
       titel: 'AA5 · Transferfall: Wissen anwenden',
       bloecke: [{ art: 'fall', schluessel: 'transferfall', titel: 'Fallsituation' }, { art: 'aufgaben', nrs: ['5.1', '5.2'] }],
-      los: '✍️ Bearbeiten Sie jetzt **5.1 und 5.2** – **allein und ohne Unterlagen**.',
+      los: '✍️ Bearbeiten Sie jetzt **5.1 und 5.2** – **allein**. Hilfe: nur **Merksatz AA3** (Lagerung) und **Merksatz AA4** (Sofortmaßnahmen).',
       losPunkte: ['Legen Sie das Handy umgedreht hin – die Zeit läuft vorne.', 'Danach: Peer-Korrektur mit einer Person aus einer **anderen Stammgruppe**.'],
       uhr: [{ label: 'Schreiben', sek: 480 }],
-      handy: { typ: 'papier', titel: 'Transferfall: 5.1 und 5.2', text: 'Allein und ohne Unterlagen. Legen Sie das Handy umgedreht hin – die Zeit läuft vorne.' }
+      handy: { typ: 'papier', titel: 'Transferfall: 5.1 und 5.2', text: 'Allein. Hilfe: nur **Merksatz AA3** und **Merksatz AA4** auf dem Arbeitsblatt. Legen Sie das Handy umgedreht hin – die Zeit läuft vorne.' }
     },
     {
       id: 'aa5-peer', abschnitt: 'Anwenden', kurz: 'Peer-Korrektur (AA5) – Teil 1', typ: 'loesung',
@@ -458,9 +458,9 @@ var STUNDE = {
     {
       id: 'ende', abschnitt: 'Abschluss', kurz: 'Hausaufgabe und Nachlesen', typ: 'ende',
       titel: 'Hausaufgabe und Nachlesen',
-      punkte: ['**Hausaufgabe:** ein neuer Fall mit Schreibaufgaben (13 Punkte) – Selbstkontrolle über den QR-Code im Arbeitsblatt.', '**Nachlesen:** Alles aus dieser Stunde über den QR-Code auf der letzten Seite des Arbeitsblatts.'],
+      punkte: ['**Hausaufgabe:** ein neuer Fall mit Schreibaufgaben (13 Punkte) – Selbstkontrolle über den QR-Code im Arbeitsblatt. Tipp: Lesen Sie vorher die Merksätze AA1, AA3 und AA4.', '**Nachlesen:** Alles aus dieser Stunde über den QR-Code auf der letzten Seite des Arbeitsblatts.'],
       frei: '📖 Die Nachlese-Seite ist jetzt freigeschaltet.',
-      handy: { typ: 'ende', titel: 'Die Stunde ist beendet', text: '**Hausaufgabe:** ein neuer Fall – Selbstkontrolle über den QR-Code im Arbeitsblatt. Alles aus dieser Stunde können Sie jetzt nachlesen: QR-Code auf der letzten Seite des Arbeitsblatts.' }
+      handy: { typ: 'ende', titel: 'Die Stunde ist beendet', text: '**Hausaufgabe:** ein neuer Fall – Selbstkontrolle über den QR-Code im Arbeitsblatt. Tipp: Lesen Sie vorher die Merksätze AA1, AA3 und AA4. Alles aus dieser Stunde können Sie jetzt nachlesen: QR-Code auf der letzten Seite des Arbeitsblatts.' }
     }
   ],
 

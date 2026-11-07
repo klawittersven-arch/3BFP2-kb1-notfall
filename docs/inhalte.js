@@ -237,7 +237,7 @@ var INHALTE = {
       ], erklaerung: 'Lähmung nach Unfall, langsamer Puls und warme Haut trotz niedrigem Blutdruck → neurogener Schock.' },
       { form: 'H', tipp: 'Wie viel Flüssigkeit hat Frau Kaya verloren – und wie viel getrunken?', teile: [
         { t: 'Frau Kaya (78) hat seit drei Tagen Brechdurchfall und trinkt kaum.', b: 'beleg' }, ' ',
-        { t: 'Ihre Mundschleimhaut ist trocken, eine Hautfalte am Handrücken bleibt stehen.', b: 'beleg' }, ' ',
+        { t: 'Sie hat großen Durst, ihre Mundschleimhaut ist trocken.', b: 'beleg' }, ' ',
         { t: 'Sie strickt gern für ihre Enkel.', b: '' }, ' ',
         { t: 'Sie ist verwirrt.', b: 'schock' }, ' ',
         { t: 'Puls 110/min, Blutdruck 100/65 mmHg.', b: 'schock' }

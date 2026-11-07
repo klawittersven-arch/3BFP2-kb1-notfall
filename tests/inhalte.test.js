@@ -115,6 +115,11 @@ const aa4 = S.folien.find((f) => f.id === 'aa4a');
 pruefe(aa4.massnahmen.length === 6 && aa4.massnahmen.every((m) => m.ecke >= 0 && m.ecke < aa4.ecken.length), 'AA4a: 6 Maßnahmen mit gültiger Ecke');
 pruefe(aa4.runde === 3 && aa4.ecken.length === 3 && aa4.massnahmen.length <= 9, 'AA4a: Abstimmung am Handy (Runde 3, höchstens 9 Maßnahmen)');
 pruefe(!ids.includes('pause'), 'keine Pausenfolie');
+// Hausaufgabe: Tipp, vorher die Merksätze zu lesen (sonst fehlen die Sofortmaßnahmen für 2.1)
+pruefe(/Merksätze AA1, AA3 und AA4/.test(JSON.stringify(S.folien.find((f) => f.id === 'ende'))) && /Merksätze AA1, AA3 und AA4/.test(fs.readFileSync(path.join(WURZEL, 'werkzeuge', 'ab_w2.js'), 'utf8')), 'Hausaufgabe: Hinweis auf die Merksätze (Folie, Handy, AB)');
+// Transferfall: nur mit vorher Gelerntem lösbar – Merksätze AA3/AA4 sind als Hilfe erlaubt
+pruefe(/Merksatz AA3/.test(S.folien.find((f) => f.id === 'aa5').los) && /Merksatz AA4/.test(S.folien.find((f) => f.id === 'aa5').los), 'AA5: Merksätze AA3 und AA4 als Hilfe genannt');
+pruefe(I.merksaetze.aa4.filter((t) => typeof t === 'object').length >= 4 && I.merksaetze.aa4.map((t) => (typeof t === 'string' ? t : t.l)).join('').split(',').length >= 5, 'Merksatz AA4 nennt mindestens 5 Sofortmaßnahmen');
 // Musterlösungen groß: je Folie höchstens eine Aufgabe (5.1/5.2 gehören zusammen und stehen auf zwei Folien)
 S.folien.filter((f) => f.typ === 'loesung').forEach((f) => pruefe((f.aufgaben || []).length === 1 && (typeof f.aufgaben[0] === 'string' || f.aufgaben[0].zeilen), `Musterlösung ${f.id}: eine Aufgabe je Folie`));
 pruefe(['aa2c-loesung-21', 'aa2c-loesung-22', 'aa3b-loesung-31', 'aa3b-loesung-32', 'aa5-peer', 'aa5-peer-2'].every((id) => ids.includes(id)) && S.folien.find((f) => f.id === 'aa5-peer-2').uhrVon === 'aa5-peer', 'Musterlösungen 2.1/2.2/3.1/3.2 einzeln, AA5 auf zwei Folien mit derselben Uhr');
