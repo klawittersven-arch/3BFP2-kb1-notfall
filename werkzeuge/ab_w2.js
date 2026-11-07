@@ -474,6 +474,18 @@ async function main() {
   nachleseSchreiben();
 }
 
+// Folien und Nachlese zeigen die Musterlösungen ohne Hinweise zur Punktevergabe – die stehen nur in der Lehrerversion.
+// Entfernt werden Klammern mit Punkten, z. B. „(Beurteilung 1 P., Begründung 1 P.)“, und reine Bewertungszeilen.
+function ohnePunkte(loesungen) {
+  const aus = {};
+  for (const [k, zeilen] of Object.entries(loesungen)) {
+    aus[k] = zeilen
+      .map((z) => z.replace(/\s*\([^()]*\d\s*P\.[^()]*\)/g, '').trim())
+      .filter((z) => z && !/\d\s*P\./.test(z));
+  }
+  return aus;
+}
+
 // docs/inhalte_nachlesen.js: Lösungstexte aus dem Arbeitsblatt für die Nachlese-Seite der App
 function nachleseSchreiben() {
   const daten = {
@@ -483,7 +495,7 @@ function nachleseSchreiben() {
     werDarfWas: N.werDarfWas[0].map((c) => c.lsg),
     verantwortung: N.verantwortung, adrenalinText: N.adrenalinText,
     transferfall: N.transferfall,
-    aufgaben: N.aufgaben, loesungen: N.loesungen
+    aufgaben: N.aufgaben, loesungen: ohnePunkte(N.loesungen)
   };
   const ziel = path.join(WURZEL, 'docs', 'inhalte_nachlesen.js');
   fs.writeFileSync(ziel, '/* Automatisch erzeugt von werkzeuge/ab_w2.js – bitte nicht von Hand ändern.\n' +

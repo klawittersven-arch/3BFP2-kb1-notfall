@@ -198,6 +198,8 @@ pruefe(!NL.aufgaben['1.1'] && !NL.loesungen['1.1'], 'Aufgabe 1.1 gestrichen');
 for (const k of ['2.1', '2.2', '3.1', '3.2', '4.1', '5.1 und 5.2', 'Kausalkette', 'Leitfrage']) pruefe(Array.isArray(NL.loesungen[k]) && NL.loesungen[k].length > 0, `Lösung ${k} vorhanden`);
 pruefe(Object.keys(NL.aufgaben).length === 7 && !NL.aufgaben['6.1'] && !NL.aufgaben['6.2'] && !NL.loesungen['6.1'], 'keine gestrichenen Aufgaben mehr (6.1/6.2 zu Frau Maler)');
 pruefe(!Object.keys(NL.loesungen).some((k) => /^Aufgabe/.test(k)), 'keine Hausaufgaben-Lösungen auf der Nachlese-Seite');
+pruefe(!JSON.stringify(NL.loesungen).match(/\d\s*P\.|Punkt/), 'Musterlösungen (Folien, Nachlese) ohne Hinweise zur Punktevergabe', JSON.stringify(NL.loesungen).match(/.{40}\d\s*P\..{10}/));
+pruefe(/\(Beurteilung 1 P\./.test(fs.readFileSync(path.join(WURZEL, 'werkzeuge', 'ab_w2.js'), 'utf8')), 'Lehrerversion behält die Punktevergabe');
 pruefe(NL.vergleich.length === 6 && NL.pikto.length === 4 && NL.werDarfWas.length === 3, 'Tabelle, Lagerung und Verantwortung vollständig');
 pruefe(!NL.weg && !NL.adrenalin && NL.verantwortung.length === 3 && NL.adrenalinText.length === 2, 'kein Entscheidungsweg; Verantwortung in 3 Zeilen, Adrenalin in 2 Sätzen');
 S.folien.find((f) => f.id === 'aa2c').handy.aufgaben.forEach((a) => pruefe(NL.aufgaben[a.nr] && NL.aufgaben[a.nr].text.startsWith(a.text), 'Handy-Text zu ' + a.nr + ' wie im Arbeitsblatt'));
