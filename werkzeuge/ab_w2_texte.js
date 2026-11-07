@@ -40,7 +40,6 @@ const EXPERTEN = {
     ],
     woerter: 'hypovolämisch = mit zu wenig Volumen | Teerstuhl = schwarzer Stuhl durch verdautes Blut | Zentralisation = Umverteilung des Blutes zu Gehirn und Herz',
     adjektiv: 'hypovolämischer',
-    nennen: ['Ursache: schwarzer, klebriger Stuhl (Teerstuhl) unter Gerinnungshemmer → Blutung im Magen-Darm-Trakt', 'Kreislauf: Puls 116/min – Anstieg von 78/min (Tachykardie, Gegenregulation)', 'Kreislauf: Blutdruck 98/72 mmHg – Abfall von 145/85 mmHg, kleine Amplitude; Schockindex 116 : 98 ≈ 1,2', 'Haut: blass, Stirn kalt und feucht (Zentralisation)', 'Volumenmangel: Durst (bittet mehrmals um etwas zu trinken)', 'Gehirn: Unruhe, neue Verwirrtheit, „schwarz vor Augen“ (Minderdurchblutung)', 'Atmung: Atemfrequenz 24/min (Frühzeichen)'],
     karte: {
       ursache: 'Blutverlust: Magen-Darm-Blutung (Teerstuhl) unter Gerinnungshemmer',
       entstehung: 'Volumen ↓ → Rückstrom zum Herzen ↓ → Schlagvolumen und Blutdruck ↓ → Sympathikus: Puls ↑, Zentralisation',
@@ -68,7 +67,6 @@ const EXPERTEN = {
     ],
     woerter: 'Allergen = Auslöser einer Allergie | Mastzellen = Abwehrzellen im Gewebe, die Histamin speichern | Quaddeln = juckende, erhabene Hautschwellungen | anaphylaktisch = durch eine schwere allergische Reaktion',
     adjektiv: 'anaphylaktischer',
-    nennen: ['zeitlicher Zusammenhang: Beginn etwa 10 Minuten nach dem Haselnusskuchen (Allergen)', 'Haut: Juckreiz, Quaddeln an Hals und Brust, Schwellung von Lippen und Augenlidern', 'Atemwege: heisere Stimme (Schwellung der Kehlkopfschleimhaut), Atemfrequenz 26/min, SpO₂ 93 %', 'Kreislauf: Blutdruck 88/50 mmHg – deutlich unter ihrem üblichen Wert (120/70); Puls 128/min (Tachykardie)', 'Magen-Darm: Übelkeit, Bauchkrämpfe', 'Gehirn/Kreislauf: Schwindel'],
     karte: {
       ursache: 'Allergie: Haselnüsse im Kuchen (Nahrungsmittel)',
       entstehung: 'Allergen → Mastzellen setzen Histamin frei → Gefäße weit und durchlässig → relativer Volumenmangel → Blutdruck ↓; Schleimhaut ↑, Bronchien eng → Atemnot',
@@ -91,12 +89,11 @@ const EXPERTEN = {
       'Den neurogenen Schock erkennt man an einem niedrigen Blutdruck bei langsamem oder normalem Puls. Unterhalb der Verletzung ist die Haut warm, trocken und rosig; dort bestehen Lähmungen und Gefühlsstörungen (Kribbeln, Taubheit). Oft klagt die Person über Nacken- oder Rückenschmerzen, der Körper kühlt leicht aus, und bei sehr hoher Verletzung ist auch die Atmung gestört. Achtung: Die Person wirkt „stabil“ – ruhiger Puls, rosige Haut –, ist aber im Schock.',
       'Pflegefachpersonen kontrollieren vor allem die Atmung, Blutdruck und Puls im Verlauf, die Körpertemperatur sowie Lähmungen und Gefühl im Verlauf. Nach einem Unfall kann zusätzlich eine Blutung vorliegen.',
       'Im Rückenmark verlaufen auch die Nervenbahnen des Sympathikus. Sind sie unterbrochen, fehlt den Gefäßen unterhalb der Verletzung die Spannung: Sie werden weit, das Blut „versackt“, es kommt zu einem relativen Volumenmangel → der Blutdruck fällt. Weil der Sympathikus ausfällt, kann der Körper nicht gegensteuern: Der Puls steigt nicht an (oft ist er sogar langsam), und es gibt keine Zentralisation.',
-      'Im Notfall: Notruf veranlassen; den Kopf mit beiden Händen in der vorgefundenen Lage halten; nicht aufsetzen, nicht bewegen; Wärme erhalten; Atmung und Puls überwachen (mehr in Woche 4).',
+      'Im Notfall: Notruf veranlassen; den Kopf mit beiden Händen in der vorgefundenen Lage halten; nicht aufsetzen, nicht bewegen; Wärme erhalten; Atmung und Puls überwachen.',
       'Der neurogene Schock folgt auf eine Verletzung des Rückenmarks, meist im Bereich der Halswirbelsäule oder der oberen Brustwirbelsäule – z. B. nach einem Kopfsprung in flaches Wasser, einem Sturz aus der Höhe oder einem Verkehrsunfall.'
     ],
     woerter: 'neurogen = vom Nervensystem ausgehend | Rückenmark = Nervenstrang im Wirbelkanal | Sympathikus = Teil des Nervensystems, der Puls und Gefäßspannung steigert',
     adjektiv: 'neurogener',
-    nennen: ['Ursache: Kopfsprung in flaches Wasser, starke Nackenschmerzen → Verletzung der Halswirbelsäule', 'Kreislauf: Blutdruck 82/45 mmHg (niedrig)', 'Kreislauf: langsamer Puls 52/min trotz niedrigem Blutdruck – der Sympathikus fällt aus', 'Haut: an den Beinen warm, trocken, rosig (keine Zentralisation)', 'Nerven: Lähmungen (Arme und Beine kaum beweglich), „Ich spür meine Beine nicht“, Kribbeln in den Händen', 'Atmung: flach (hohe Verletzung)'],
     karte: {
       ursache: 'Rückenmarksverletzung an der Halswirbelsäule (Kopfsprung in flaches Wasser)',
       entstehung: 'Sympathikus fällt aus → Gefäße weit, Blut versackt → relativer Volumenmangel → Blutdruck ↓; keine Gegenregulation',

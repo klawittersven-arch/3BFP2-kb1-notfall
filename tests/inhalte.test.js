@@ -98,7 +98,7 @@ pruefe(S.gruppen.length >= 10 && new Set(S.gruppen.map((g) => g.name)).size === 
   pruefe(S.check[b].length === 3 && S.check[b].every((q) => q.optionen[q.richtig]), `Experten-Check ${b}: 3 Fragen mit gültiger Lösung`);
   const r = S.rollen[b];
   pruefe(gleich(S.experten[r.fall].info, AB.EXPERTEN[r.fall].info) && S.experten[r.fall].woerter === AB.EXPERTEN[r.fall].woerter, `Expertentext ${b} gleich in App und Arbeitsblatt`);
-  pruefe(gleich(S.experten[r.fall].nennen, AB.EXPERTEN[r.fall].nennen), 'Selbstkontrolle 1.1 (' + b + ') gleich in App und Arbeitsblatt');
+  pruefe(!('nennen' in S.experten[r.fall]) && !('nennen' in AB.EXPERTEN[r.fall]), 'Experte ' + b + ': keine Klausuraufgabe 1.1 mehr');
   const ueberschrift = AB.EXPERTEN[r.fall].info.filter((x) => /\*\*|Ursache|Entstehung|typische Zeichen|Darauf achte/i.test(x));
   pruefe(ueberschrift.length === 0, 'Infotext ' + b + ': keine Überschriften und keine Namen der Tabellenzeilen', ueberschrift);
   const fallApp = I.markieren.faelle[r.fall].teile.map((t) => (typeof t === 'string' ? t : t.t)).join('').split('\n').map((x) => x.trim());
@@ -108,6 +108,10 @@ const aa4 = S.folien.find((f) => f.id === 'aa4a');
 pruefe(aa4.massnahmen.length === 6 && aa4.massnahmen.every((m) => m.ecke >= 0 && m.ecke < aa4.ecken.length), 'AA4a: 6 Maßnahmen mit gültiger Ecke');
 pruefe(aa4.runde === 3 && aa4.ecken.length === 3 && aa4.massnahmen.length <= 9, 'AA4a: Abstimmung am Handy (Runde 3, höchstens 9 Maßnahmen)');
 pruefe(!ids.includes('pause'), 'keine Pausenfolie');
+for (const d of fs.readdirSync(DOCS).filter((x) => /\.(js|html)$/.test(x))) {
+  pruefe(!/Woche [3-9]/.test(fs.readFileSync(path.join(DOCS, d), 'utf8')), `${d}: kein Hinweis auf spätere Wochen`);
+}
+pruefe(!/Woche [3-9]/.test(fs.readFileSync(path.join(WURZEL, 'werkzeuge', 'ab_w2.js'), 'utf8') + fs.readFileSync(path.join(WURZEL, 'werkzeuge', 'ab_w2_texte.js'), 'utf8')), 'Arbeitsblatt: kein Hinweis auf spätere Wochen');
 ['einstieg', 'checkout'].forEach((id, i) => {
   const f = S.folien.find((x) => x.id === id);
   pruefe(f.typ === 'abstimmung' && f.runde === i + 1 && f.handy.typ === 'abstimmung', id + ': Notfall für Notfall am Beamer, Abstimmung am Handy (Runde ' + (i + 1) + ')');
@@ -141,9 +145,10 @@ for (const d of fs.readdirSync(DOCS).filter((x) => /\.(js|html)$/.test(x))) {
 console.log('Nachlese (inhalte_nachlesen.js, aus dem Arbeitsblatt erzeugt)');
 vm.runInContext(fs.readFileSync(path.join(DOCS, 'inhalte_nachlesen.js'), 'utf8') + '\nthis.NACHLESEN = NACHLESEN;', kontext);
 const NL = kontext.NACHLESEN;
-for (const nr of ['1.1', '2.1', '2.2', '3.1', '3.2', '4.1', '5.1', '5.2', '6.1', '6.2']) pruefe(!!NL.aufgaben[nr], `Aufgabe ${nr} vorhanden`);
-for (const k of ['1.1', '2.1', '2.2', '3.1', '3.2', '4.1', '5.1 und 5.2', 'Kausalkette', 'Leitfrage', '6.1', '6.2']) pruefe(Array.isArray(NL.loesungen[k]) && NL.loesungen[k].length > 0, `Lösung ${k} vorhanden`);
-pruefe(Object.keys(NL.aufgaben).length === 10 && !NL.aufgaben['6.3'] && !NL.aufgaben['7.1'], 'keine gestrichenen Aufgaben mehr (Dokumentation, alte Nummern)');
+for (const nr of ['2.1', '2.2', '3.1', '3.2', '4.1', '5.1', '5.2', '6.1', '6.2']) pruefe(!!NL.aufgaben[nr], `Aufgabe ${nr} vorhanden`);
+pruefe(!NL.aufgaben['1.1'] && !NL.loesungen['1.1'], 'Aufgabe 1.1 gestrichen');
+for (const k of ['2.1', '2.2', '3.1', '3.2', '4.1', '5.1 und 5.2', 'Kausalkette', 'Leitfrage', '6.1', '6.2']) pruefe(Array.isArray(NL.loesungen[k]) && NL.loesungen[k].length > 0, `Lösung ${k} vorhanden`);
+pruefe(Object.keys(NL.aufgaben).length === 9 && !NL.aufgaben['6.3'] && !NL.aufgaben['7.1'], 'keine gestrichenen Aufgaben mehr (Dokumentation, alte Nummern)');
 pruefe(!Object.keys(NL.loesungen).some((k) => /^Aufgabe/.test(k)), 'keine Hausaufgaben-Lösungen auf der Nachlese-Seite');
 pruefe(NL.vergleich.length === 6 && NL.pikto.length === 4 && NL.weg.length === 5 && NL.werDarfWas.length === 3, 'Tabelle, Lagerung und Verantwortung vollständig');
 S.folien.find((f) => f.id === 'aa2c').handy.aufgaben.forEach((a) => pruefe(NL.aufgaben[a.nr] && NL.aufgaben[a.nr].text.startsWith(a.text), 'Handy-Text zu ' + a.nr + ' wie im Arbeitsblatt'));

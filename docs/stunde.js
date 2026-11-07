@@ -595,13 +595,8 @@
       vor.appendChild(uhrZeile());
       vor.appendChild(el('h2', null, K.ersetzen(H.expFall, { person: r.person })));
       var e = S.experten[r.fall];
-      // Reihenfolge wie im Arbeitsblatt: a) Fall + Merksatz AA1 → b) 1.1 → c) Infotext → d) Check → e) Tabellenspalte
+      // Reihenfolge wie im Arbeitsblatt: a) Fall + Merksatz AA1 → b) Infotext → c) Check → d) Tabellenspalte
       nach.appendChild(fmt('p', 'weiter-hinweis', K.ersetzen(H.expWeiter, { b: p.rolle, form: r.form })));
-      var k11 = el('section', 'schritt-karte');
-      k11.appendChild(el('h2', null, H.exp11Titel));
-      k11.appendChild(fmt('p', null, K.ersetzen(H.exp11Text, { person: r.personDativ, adjektiv: r.adjektiv })));
-      k11.appendChild(el('p', 'klein-grau', H.exp11Tipp));
-      nach.appendChild(k11);
       var d = el('details', 'info');
       d.open = infoOffen;
       d.addEventListener('toggle', function () { infoOffen = d.open; });
@@ -637,17 +632,7 @@
     teilErneuern('exp-check', JSON.stringify(checkStand()[p.rolle] || {}), function () { return checkZeichnen(p.rolle); });
     var bestanden = checkBestanden(p.rolle);
     teilErneuern('exp-fertig', [p.ichTeamFertig, p.teamsFertig, p.teamsGesamt, bestanden].join('|'), function () {
-      var box = fertigBereich('team', p.ichTeamFertig, bestanden, K.ersetzen(H.teamFertigText, { x: p.teamsFertig, y: p.teamsGesamt }), H.fertigTeam, H.fertigTeamGesperrt);
-      // Während des Wartens: Selbstkontrolle zur Klausuraufgabe 1.1
-      if (p.ichTeamFertig) {
-        var k = el('section', 'schritt-karte');
-        k.appendChild(fmt('p', null, '**' + H.exp11Kontrolle + '**'));
-        var ul = el('ul', 'auftraege');
-        (S.experten[r.fall].nennen || []).forEach(function (x) { ul.appendChild(el('li', null, x)); });
-        k.appendChild(ul);
-        box.insertBefore(k, box.lastChild);
-      }
-      return box;
+      return fertigBereich('team', p.ichTeamFertig, bestanden, K.ersetzen(H.teamFertigText, { x: p.teamsFertig, y: p.teamsGesamt }), H.fertigTeam, H.fertigTeamGesperrt);
     });
   }
 

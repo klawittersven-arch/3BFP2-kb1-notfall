@@ -33,7 +33,7 @@ geben ihren Vornamen ein – und ihr Handy zeigt ab dann automatisch, was zur ak
 | 5 | Murmeln | umstrittenste Frage groß, 1-Minuten-Uhr (startet selbst) | Frage + eigene Vermutung |
 | 6 | Lernziel | Lernziel, Fahrplan der Stunde | – |
 | 7 | Gruppen einteilen | **„Gruppen zufällig einteilen“**, Gruppenkarten mit Emoji | eigene Stammgruppe in Gruppenfarbe, Buchstabe, Expertenteam |
-| 8 | Expertenrunde (AA1) | Expertenteams mit ✓, Uhr 15 min | Namen des Teams, Schritte a–e: Fall markieren (Raten-Schutz), 1.1 (KA-Aufgabe), Infotext, Experten-Check, **eigene Tabellenspalte ausfüllen** → „Unsere Spalte ist fertig“; Beamer: „✓ Tabelle fertig!“ |
+| 8 | Expertenrunde (AA1) | Expertenteams mit ✓, Uhr 12 min | Namen des Teams, Schritte a–d: Fall markieren (Raten-Schutz), Infotext, Experten-Check, **eigene Tabellenspalte ausfüllen** → „Unsere Spalte ist fertig“; Beamer: „✓ Tabelle fertig!“ |
 | 9 | Merksatz AA1 prüfen | Merksatz, **Lücke anklicken = aufdecken** (kommt automatisch, wenn alle Teams fertig sind) | „Überprüfen Sie am Beamer …“ |
 | 10 | Stammgruppen (AA2a) | Stammgruppen mit ✓, **Erklär-Uhr** A → B → C | Namen der Stammgruppe, „Jetzt erklärt …“, „Unsere Tabelle ist vollständig“ |
 | 11 | Vergleichstabelle sichern | Tabelle wie im AB, **Zelle anklicken = Lösung aufdecken**, noch einmal = groß; Spaltenkopf = ganze Spalte groß | „Vergleichen Sie Ihre Tabelle …“ |
@@ -60,8 +60,8 @@ groß über der Folie – zum Abschreiben (Klick daneben, ✕ oder Esc schließt
 Lösungszeilen bleiben aufgedeckt, auch wenn der Beamer neu geladen wird; „Alle verdecken“ verdeckt wieder.
 Lange Folien werden automatisch etwas kleiner gesetzt, damit alles auf die Bühne passt.
 
-**Zeitplan:** 0–8 Einstieg · 8–60 Gruppenpuzzle · 60–83 Lagerung · (Pause) · 83–97 AA4 · 97–108 AA5 ·
-108–113 AA6 · **113–123 Puffer** · 123–135 Abschluss. Die Notfall-Simulation ist gestrichen; eine Pausenfolie gibt es nicht.
+**Zeitplan:** 0–8 Einstieg · 8–57 Gruppenpuzzle · 57–80 Lagerung · (Pause) · 80–94 AA4 · 94–105 AA5 ·
+105–110 AA6 · **110–123 Puffer** · 123–135 Abschluss. Die Notfall-Simulation ist gestrichen; eine Pausenfolie gibt es nicht.
 
 Aufgedeckte Zellen und Lösungszeilen bleiben aufgedeckt, auch wenn der Beamer neu geladen wird.
 

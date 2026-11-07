@@ -8,15 +8,6 @@ var NACHLESEN = {
    "fall": [
     "Herr Gerhard Albrecht (81) lebt seit vier Jahren im Pflegeheim „Am Kocherufer“. Wegen eines Vorhofflimmerns nimmt er einen Gerinnungshemmer. Er hört schlecht und trägt deshalb zwei Hörgeräte. Am Vormittag hatte er schwarzen, klebrigen Stuhlgang. Danach hat er mit seinem Zimmernachbarn Karten gespielt.",
     "Als Sie ihn um 11:30 Uhr zum Mittagessen an die Bettkante setzen wollen, sagt er: „Mir wird ganz schwarz vor Augen.“ Er ist blass, seine Stirn ist kalt und feucht. Auf seinem Nachttisch steht ein Foto seiner Enkelin. Mehrmals bittet er um etwas zu trinken. Er wirkt unruhig und fragt, wo seine Frau sei, obwohl er sonst gut orientiert ist. Sie messen: Puls 116/min, Blutdruck 98/72 mmHg, Atemfrequenz 24/min. Bei der Morgenrunde lagen die Werte bei Puls 78/min und Blutdruck 145/85 mmHg. Seine Tochter hat sich für den Nachmittag zum Besuch angemeldet."
-   ],
-   "nennen": [
-    "Ursache: schwarzer, klebriger Stuhl (Teerstuhl) unter Gerinnungshemmer → Blutung im Magen-Darm-Trakt",
-    "Kreislauf: Puls 116/min – Anstieg von 78/min (Tachykardie, Gegenregulation)",
-    "Kreislauf: Blutdruck 98/72 mmHg – Abfall von 145/85 mmHg, kleine Amplitude; Schockindex 116 : 98 ≈ 1,2",
-    "Haut: blass, Stirn kalt und feucht (Zentralisation)",
-    "Volumenmangel: Durst (bittet mehrmals um etwas zu trinken)",
-    "Gehirn: Unruhe, neue Verwirrtheit, „schwarz vor Augen“ (Minderdurchblutung)",
-    "Atmung: Atemfrequenz 24/min (Frühzeichen)"
    ]
   },
   "b": {
@@ -25,14 +16,6 @@ var NACHLESEN = {
    "fall": [
     "Mia (19) ist Auszubildende im ersten Ausbildungsdrittel und mit Ihnen auf einer internistischen Station eingesetzt. Es ist ihr dritter Tag auf der Station. In der Pause isst sie ein Stück Geburtstagskuchen, das Haselnüsse enthält. Dabei erzählt sie von ihrem Wochenende im Kletterpark. Mia erwähnt, dass es bei Nüssen „schon mal im Mund gekribbelt“ habe.",
     "Zehn Minuten später kratzt sie sich an Hals und Händen, auf Hals und Brust bilden sich Quaddeln. Ihre Lippen und Augenlider schwellen an. Auf dem Stationsflur ist es gerade ruhig. Mit heiserer Stimme sagt sie: „Mir ist schlecht, und mir ist so schwindelig.“ Sie hat Bauchkrämpfe. Ihre Kollegin misst: Puls 128/min, Blutdruck 88/50 mmHg, Atemfrequenz 26/min, Sauerstoffsättigung 93 %. Sie notiert die Werte auf einem Zettel. Mia sagt, ihr Blutdruck sei sonst „immer so 120 zu 70“."
-   ],
-   "nennen": [
-    "zeitlicher Zusammenhang: Beginn etwa 10 Minuten nach dem Haselnusskuchen (Allergen)",
-    "Haut: Juckreiz, Quaddeln an Hals und Brust, Schwellung von Lippen und Augenlidern",
-    "Atemwege: heisere Stimme (Schwellung der Kehlkopfschleimhaut), Atemfrequenz 26/min, SpO₂ 93 %",
-    "Kreislauf: Blutdruck 88/50 mmHg – deutlich unter ihrem üblichen Wert (120/70); Puls 128/min (Tachykardie)",
-    "Magen-Darm: Übelkeit, Bauchkrämpfe",
-    "Gehirn/Kreislauf: Schwindel"
    ]
   },
   "c": {
@@ -41,14 +24,6 @@ var NACHLESEN = {
    "fall": [
     "An einem Sonntagnachmittag sind Sie privat mit Freunden am Baggersee. Tobias Weber (24) springt kopfüber vom Steg ins Wasser – an einer Stelle, an der das Wasser nur hüfttief ist. Seine Freunde ziehen ihn sofort ans Ufer. Kurz vorher hatte er sich noch mit Sonnencreme eingecremt. Er studiert Sport und spielt in einem Volleyballverein.",
     "Herr Weber ist wach und sagt: „Ich spür meine Beine nicht. Und meine Hände kribbeln.“ Er klagt über starke Nackenschmerzen. Am Steg läuft laute Musik. Arme und Beine kann er kaum bewegen. Seine Atmung ist flach. Sie tasten einen langsamen Puls von 52/min. Die Haut an seinen Beinen ist warm, trocken und rosig. Er fragt, ob jemand sein Handy gesehen hat. Der Rettungsdienst misst später einen Blutdruck von 82/45 mmHg."
-   ],
-   "nennen": [
-    "Ursache: Kopfsprung in flaches Wasser, starke Nackenschmerzen → Verletzung der Halswirbelsäule",
-    "Kreislauf: Blutdruck 82/45 mmHg (niedrig)",
-    "Kreislauf: langsamer Puls 52/min trotz niedrigem Blutdruck – der Sympathikus fällt aus",
-    "Haut: an den Beinen warm, trocken, rosig (keine Zentralisation)",
-    "Nerven: Lähmungen (Arme und Beine kaum beweglich), „Ich spür meine Beine nicht“, Kribbeln in den Händen",
-    "Atmung: flach (hohe Verletzung)"
    ]
   }
  },
@@ -114,7 +89,7 @@ var NACHLESEN = {
    "bild": "lagerung_nicht_bewegen.png",
    "titel": "Nicht bewegen",
    "wann": "**Wann?** Verdacht auf Wirbelsäulenverletzung.",
-   "warum": "**Warum?** Jede Bewegung kann das Rückenmark weiter schädigen. Kopf mit beiden Händen halten (Woche 4)."
+   "warum": "**Warum?** Jede Bewegung kann das Rückenmark weiter schädigen. Kopf mit beiden Händen halten."
   }
  ],
  "weg": [
@@ -179,11 +154,6 @@ var NACHLESEN = {
   "Nach etwa fünf Minuten ist seine Oberlippe stark geschwollen, am Hals bilden sich Quaddeln. Mit kloßiger Stimme sagt er: „Mir ist so eng im Hals.“ Beim Einatmen hören Sie ein pfeifendes Geräusch. Sie messen: Atemfrequenz 28/min, Puls 124/min, Blutdruck 92/60 mmHg (am Morgen: 150/85 mmHg). In der Tagespflege ist keine Ärztin anwesend. Ein Notfallset hat Herr Martens nicht dabei."
  ],
  "aufgaben": {
-  "1.1": {
-   "nr": "1.1",
-   "text": "Begründen Sie anhand von 4 Symptomen aus Ihrem Expertenfall (am Handy: A Herr Albrecht · B Mia · C Herr Weber), dass bei der Person ein hypovolämischer, anaphylaktischer bzw. neurogener Schock vorliegt.",
-   "punkte": 4
-  },
   "2.1": {
    "nr": "2.1",
    "text": "Erläutern Sie, wie es bei Mia zum Schock kommt. – Tipp: Denken Sie in einer Pfeilkette – Auslöser → Botenstoff → Gefäße → Blutdruck; die Atemwege extra.",
@@ -232,12 +202,6 @@ var NACHLESEN = {
   }
  },
  "loesungen": {
-  "1.1": [
-   "A) Herr Albrecht: Ursache: schwarzer, klebriger Stuhl (Teerstuhl) unter Gerinnungshemmer → Blutung im Magen-Darm-Trakt · Kreislauf: Puls 116/min – Anstieg von 78/min (Tachykardie, Gegenregulation) · Kreislauf: Blutdruck 98/72 mmHg – Abfall von 145/85 mmHg, kleine Amplitude; Schockindex 116 : 98 ≈ 1,2 · Haut: blass, Stirn kalt und feucht (Zentralisation) · Volumenmangel: Durst (bittet mehrmals um etwas zu trinken) · Gehirn: Unruhe, neue Verwirrtheit, „schwarz vor Augen“ (Minderdurchblutung) · Atmung: Atemfrequenz 24/min (Frühzeichen)",
-   "B) Mia: zeitlicher Zusammenhang: Beginn etwa 10 Minuten nach dem Haselnusskuchen (Allergen) · Haut: Juckreiz, Quaddeln an Hals und Brust, Schwellung von Lippen und Augenlidern · Atemwege: heisere Stimme (Schwellung der Kehlkopfschleimhaut), Atemfrequenz 26/min, SpO₂ 93 % · Kreislauf: Blutdruck 88/50 mmHg – deutlich unter ihrem üblichen Wert (120/70); Puls 128/min (Tachykardie) · Magen-Darm: Übelkeit, Bauchkrämpfe · Gehirn/Kreislauf: Schwindel",
-   "C) Herr Weber: Ursache: Kopfsprung in flaches Wasser, starke Nackenschmerzen → Verletzung der Halswirbelsäule · Kreislauf: Blutdruck 82/45 mmHg (niedrig) · Kreislauf: langsamer Puls 52/min trotz niedrigem Blutdruck – der Sympathikus fällt aus · Haut: an den Beinen warm, trocken, rosig (keine Zentralisation) · Nerven: Lähmungen (Arme und Beine kaum beweglich), „Ich spür meine Beine nicht“, Kribbeln in den Händen · Atmung: flach (hohe Verletzung)",
-   "(je Symptom mit Zuordnung 1 P.; Werte nur mit Vorwert-Vergleich voll werten; für die volle Punktzahl muss die Kreislaufbeteiligung genannt sein – vgl. Erwartungshorizont KA, Aufg. 3.1)"
-  ],
   "2.1": [
    "Die Haselnuss (Allergen) löst eine allergische Sofortreaktion aus: Mastzellen setzen Histamin und weitere Botenstoffe frei.",
    "Die Gefäße werden weit und durchlässig: Flüssigkeit tritt ins Gewebe (Quaddeln, Schwellung von Lippen und Lidern), im Gefäßsystem fehlt Volumen → der Blutdruck fällt (88/50 mmHg), das Herz gleicht mit 128/min aus.",

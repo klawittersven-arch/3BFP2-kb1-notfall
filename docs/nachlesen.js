@@ -97,11 +97,7 @@
       S.check[b].forEach(function (q, i) {
         w.appendChild(box('zeile-karte', [(i + 1) + '. ' + q.frage, el('p', 'richtig-antwort', '✓ ' + q.optionen[q.richtig])]));
       });
-      w.appendChild(el('h4', null, 'Klausuraufgabe 1.1 – mögliche Symptome'));
-      w.appendChild(box('loesung', e.nennen));
     });
-    w.appendChild(aufgabe('1.1'));
-    w.appendChild(box('loesung', [N.loesungen['1.1'][3]]));
   });
 
   abschnitt('Vergleichstabelle', function (w) {
