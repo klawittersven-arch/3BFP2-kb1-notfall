@@ -270,6 +270,13 @@ var INHALTE = {
     naechste: 'Nächste Situation',
     karteVon: 'Situation {n} von {y}',
     profi: 'Profi-Karte',
+    // Vor dem Quiz: Merksatz AA3 (hilft beim Lösen); während des Quiz aufklappbar
+    merksatzVorher: 'Lesen Sie zuerst den Merksatz – er hilft Ihnen beim Quiz. Sie finden ihn auch auf Ihrem Arbeitsblatt (Seite 3).',
+    quizStarten: 'Quiz starten',
+    merksatzTitel: '📌 Hilfe: Merksatz AA3',
+    geschafftTitel: 'Geschafft! 🛏️',
+    geschafftText: 'Sie lagern nach dem **Leitsymptom**. Warten Sie, bis es vorne weitergeht.',
+    durchklickenText: 'Beim ersten Versuch richtig: {x} von {y} – nötig sind mindestens {z}. Lesen Sie jede Situation genau und schauen Sie in den Merksatz, bevor Sie tippen.',
     bilderTitel: '📄 Hilfe: die vier Lagerungen mit Bildern',
     bilderHinweis: 'Dieselben Bilder finden Sie auf Ihrem Arbeitsblatt (Seite 3).',
     bilder: [
@@ -338,11 +345,11 @@ var INHALTE = {
     rueckmeldung: 'Notieren Sie auf dem Arbeitsblatt: Das muss ich noch üben.',
     zuruecksetzen: 'Alles zurücksetzen',
     aufgaben: [
-      { nr: '1.1', titel: 'Anaphylaktischen Schock begründen (4 P.)', max: 4,
+      { nr: '1.1', titel: 'Schockform begründen (4 P.)', max: 4,
         // pflicht: ohne dieses Kriterium höchstens max − 1 Punkte (wie im Erwartungshorizont der KA)
         pflicht: 'kreislauf',
         pflichtHinweis: 'Ohne Kreislaufzeichen höchstens 3 Punkte – ein Schock zeigt sich immer am Kreislauf.',
-        muster: 'z. B. (je Symptom mit Zuordnung 1 P.):\nzeitlicher Zusammenhang – Beginn 15 Min. nach dem Essen mit Fischsauce bei bekannter Fischallergie\nHaut – Juckreiz an Händen und Kopfhaut, Quaddeln am Bauch\nKreislauf – Puls 124/min, Blutdruckabfall von 128/78 auf 86/52 mmHg, Blässe, Schwindel\nMagen-Darm – Übelkeit\nGehirn – Unruhe (Minderdurchblutung)\nFür die volle Punktzahl muss die Kreislaufbeteiligung genannt sein.',
+        muster: 'Anaphylaktischer Schock.\nBegründung z. B. (je Symptom mit Zuordnung 1 P.):\nzeitlicher Zusammenhang – Beginn 15 Min. nach dem Essen mit Fischsauce bei bekannter Fischallergie\nHaut – Juckreiz an Händen und Kopfhaut, Quaddeln am Bauch\nKreislauf – Puls 124/min, Blutdruckabfall von 128/78 auf 86/52 mmHg, Blässe, Schwindel\nMagen-Darm – Übelkeit\nGehirn – Unruhe (Minderdurchblutung)\nFür die volle Punktzahl muss die Kreislaufbeteiligung genannt sein.',
         kriterien: [
           { id: 'zeit', text: 'Zeitlicher Zusammenhang mit dem Allergen (Fischsauce, bekannte Allergie)', punkte: 1 },
           { id: 'haut', text: 'Haut: Juckreiz, Quaddeln – zugeordnet', punkte: 1 },

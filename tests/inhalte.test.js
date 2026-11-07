@@ -115,6 +115,10 @@ const aa4 = S.folien.find((f) => f.id === 'aa4a');
 pruefe(aa4.massnahmen.length === 6 && aa4.massnahmen.every((m) => m.ecke >= 0 && m.ecke < aa4.ecken.length), 'AA4a: 6 Maßnahmen mit gültiger Ecke');
 pruefe(aa4.runde === 3 && aa4.ecken.length === 3 && aa4.massnahmen.length <= 9, 'AA4a: Abstimmung am Handy (Runde 3, höchstens 9 Maßnahmen)');
 pruefe(!ids.includes('pause'), 'keine Pausenfolie');
+// Hausaufgabe 1.1 nimmt die Schockform nicht vorweg (Aufgabe im AB und Überschrift in der Selbstkontrolle)
+pruefe(/welche Schockform bei Frau Lorenz vorliegt/.test(fs.readFileSync(path.join(WURZEL, 'werkzeuge', 'ab_w2.js'), 'utf8')) && !/anaphyla/i.test(I.transfer.aufgaben[0].titel), 'Hausaufgabe 1.1: Schockform nicht vorgegeben');
+// Gruppenpuzzle nur am Handy – kein Hinweis auf Expertenblätter aus Papier
+pruefe(!/Papier am Pult|Lieber auf Papier|Expertenblatt „/.test(JSON.stringify(S) + fs.readFileSync(path.join(DOCS, 'stunde.js'), 'utf8')), 'Gruppenpuzzle: kein Hinweis „Lieber auf Papier?“ (Handy und Beamer)');
 // Hausaufgabe: Tipp, vorher die Merksätze zu lesen (sonst fehlen die Sofortmaßnahmen für 2.1)
 pruefe(/Merksätze AA1, AA3 und AA4/.test(JSON.stringify(S.folien.find((f) => f.id === 'ende'))) && /Merksätze AA1, AA3 und AA4/.test(fs.readFileSync(path.join(WURZEL, 'werkzeuge', 'ab_w2.js'), 'utf8')), 'Hausaufgabe: Hinweis auf die Merksätze (Folie, Handy, AB)');
 // Transferfall: nur mit vorher Gelerntem lösbar – Merksätze AA3/AA4 sind als Hilfe erlaubt
@@ -131,7 +135,8 @@ pruefe(!/Klausurtraining|wie in der KA/.test(fs.readFileSync(path.join(WURZEL, '
 pruefe(!/Klausur|Klassenarbeit|Erwartungshorizont|\bKA\b/.test(JSON.stringify(I) + JSON.stringify(S) + fs.readFileSync(path.join(DOCS, 'inhalte_nachlesen.js'), 'utf8')), 'App, Folien und Nachlese: kein Verweis auf Klausur oder Klassenarbeit');
 const tab = S.folien.filter((f) => f.typ === 'tabelle');
 pruefe(tab.map((f) => f.spalte).join('') === 'ABC' && tab.filter((f) => f.gemeinsamkeit).length === 1 && tab[2].gemeinsamkeit && ids.indexOf(tab[0].id) === ids.indexOf('aa2a') + 1 && ids.indexOf(tab[2].id) === ids.indexOf(tab[0].id) + 2, 'Tabelle sichern: drei Folien nacheinander (A, B, C – Gemeinsamkeit bei C)');
-// Die drei Blätter werden nacheinander ausgeteilt – je eine Folie „Sie erhalten jetzt Blatt …“
+// Die drei Blätter werden nacheinander ausgeteilt – je eine Folie „Weiter mit Arbeitsblatt …“
+pruefe(S.folien.filter((f) => f.typ === 'blatt').every((f) => f.titel === 'Weiter mit Arbeitsblatt ' + f.nr) && S.beamer.blattKurz === 'AB{n}' && !/Sie erhalten jetzt Blatt/.test(JSON.stringify(S)), 'Austeil-Folien: „Weiter mit Arbeitsblatt N“, Karte „ABN“');
 const blaetter = S.folien.filter((f) => f.typ === 'blatt');
 pruefe(blaetter.length === 3 && blaetter.every((f, i) => f.nr === i + 1 && f.von === 3 && f.ueberschrift && f.punkte.length >= 3 && f.handy.typ === 'vorne'), 'drei Austeil-Folien Blatt 1–3 mit Überschrift und Aufgaben');
 pruefe(ids.indexOf('blatt1') === ids.indexOf('start') + 1, 'Blatt 1 gleich nach „Willkommen“');
@@ -139,6 +144,7 @@ pruefe(ids.indexOf('blatt2') === ids.indexOf('aa2c') - 1, 'Blatt 2 vor den Schre
 pruefe(ids.indexOf('blatt3') === ids.indexOf('aa4b') - 1 && ids.indexOf('aa4-merksatz') === ids.indexOf('aa4a') + 1, 'Merksatz AA4 nach „Wer darf was?“ (Blatt 2), dann Blatt 3 vor AA4 b');
 const abQuelle = fs.readFileSync(path.join(WURZEL, 'werkzeuge', 'ab_w2.js'), 'utf8');
 pruefe([1, 2, 3].every((n) => abQuelle.includes('blattKopf(B, ' + n)), 'Arbeitsblatt: Überschrift für Blatt 1, 2 und 3 (aus den Austeil-Folien)');
+pruefe(abQuelle.includes('`Schockformen: ${f.ueberschrift}`'), 'Arbeitsblatt: Überschriften „Schockformen: …“');
 for (const d of fs.readdirSync(DOCS).filter((x) => /\.(js|html)$/.test(x))) {
   pruefe(!/Woche [3-9]/.test(fs.readFileSync(path.join(DOCS, d), 'utf8')), `${d}: kein Hinweis auf spätere Wochen`);
 }
@@ -195,8 +201,12 @@ pruefe(!NL.aufgaben['1.1'] && !NL.loesungen['1.1'], 'Aufgabe 1.1 gestrichen');
 for (const k of ['2.1', '2.2', '3.1', '3.2', '4.1', '5.1 und 5.2', 'Kausalkette', 'Leitfrage']) pruefe(Array.isArray(NL.loesungen[k]) && NL.loesungen[k].length > 0, `Lösung ${k} vorhanden`);
 pruefe(Object.keys(NL.aufgaben).length === 7 && !NL.aufgaben['6.1'] && !NL.aufgaben['6.2'] && !NL.loesungen['6.1'], 'keine gestrichenen Aufgaben mehr (6.1/6.2 zu Frau Maler)');
 pruefe(!Object.keys(NL.loesungen).some((k) => /^Aufgabe/.test(k)), 'keine Hausaufgaben-Lösungen auf der Nachlese-Seite');
+pruefe(!JSON.stringify(NL.loesungen).match(/\d\s*P\.|Punkt/), 'Musterlösungen (Folien, Nachlese) ohne Hinweise zur Punktevergabe', JSON.stringify(NL.loesungen).match(/.{40}\d\s*P\..{10}/));
+pruefe(/\(Beurteilung 1 P\./.test(fs.readFileSync(path.join(WURZEL, 'werkzeuge', 'ab_w2.js'), 'utf8')), 'Lehrerversion behält die Punktevergabe');
 pruefe(NL.vergleich.length === 6 && NL.pikto.length === 4 && NL.werDarfWas.length === 3, 'Tabelle, Lagerung und Verantwortung vollständig');
-pruefe(!NL.weg && !NL.adrenalin && NL.verantwortung.length === 3 && NL.adrenalinText.length === 2, 'kein Entscheidungsweg; Verantwortung in 3 Zeilen, Adrenalin in 2 Sätzen');
+pruefe(!NL.weg && !NL.adrenalin && !NL.verantwortung && NL.adrenalinText.length === 2, 'kein Entscheidungsweg, kein Info-Kasten Verantwortung; Adrenalin in 2 Sätzen');
+pruefe(/Gefahr erkennen/.test(NL.werDarfWas[0]) && /dokumentieren/.test(NL.werDarfWas[0]) && /Adrenalin/.test(NL.werDarfWas[1]) && /SOP/.test(NL.werDarfWas[1]) && /Diagnose/.test(NL.werDarfWas[2]) && /Auszubildende/.test(NL.werDarfWasAzubi), 'Wer darf was?: Tabelle vorausgefüllt, mit allen Punkten des früheren Info-Kastens');
+pruefe(!/eintragen/i.test(JSON.stringify(S.folien.find((f) => f.id === 'aa4a'))) && !S.handy.aufstellungEintragen, 'Wer darf was?: keine Aufforderung mehr, Maßnahmen einzutragen');
 S.folien.find((f) => f.id === 'aa2c').handy.aufgaben.forEach((a) => pruefe(NL.aufgaben[a.nr] && NL.aufgaben[a.nr].text.startsWith(a.text), 'Handy-Text zu ' + a.nr + ' wie im Arbeitsblatt'));
 S.folien.filter((f) => f.typ === 'loesung').forEach((f) => {
   (f.aufgaben || []).forEach((a) => {

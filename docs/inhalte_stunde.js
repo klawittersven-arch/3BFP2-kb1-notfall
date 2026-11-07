@@ -47,7 +47,7 @@ var STUNDE = {
                    merksatz (Lesefolie: ganzer Merksatz wie auf dem AB, Schlüsselwörter hervorgehoben), lagerung (Bild + Wann/Warum/So geht’s),
                    loesung (je Aufgabe eine Folie; aufgaben: [{ nrs, loesung, zeilen: [von, bis] }] teilt lange Lösungen; uhrVon = Uhr einer anderen Folie weiterzeigen),
                    aufgabe (Aufgabe wie im AB; „Weiter“ blendet „Bearbeiten Sie jetzt …“ und die Uhr ein),
-                   blatt (Austeilen: „Sie erhalten jetzt Blatt …“ – Überschrift und Punkte wie im Arbeitsblatt)
+                   blatt (Austeilen: „Weiter mit Arbeitsblatt …“, Karte „AB1/AB2/AB3“ – Überschrift und Punkte wie im Arbeitsblatt)
                    (tabelle, loesung, aufgabe: Inhalte aus inhalte_nachlesen.js, also wie im Arbeitsblatt)
      handy.typ:    vorne, bild, entscheidung, murmeln, gruppe, experte, stamm, modul, papier, faelle, aufstellung, ende
                    (bei typ aufgabe zeigt das Handy erst „Schauen Sie nach vorne“, nach „Weiter“ den handy-Bildschirm)
@@ -61,7 +61,7 @@ var STUNDE = {
     },
     {
       id: 'blatt1', abschnitt: 'Ankommen', kurz: 'Blatt 1 austeilen', typ: 'blatt', nr: 1, von: 3, seiten: 'Seite 1 und 2',
-      titel: 'Sie erhalten jetzt Blatt 1',
+      titel: 'Weiter mit Arbeitsblatt 1',
       ueberschrift: 'Einstieg und Gruppenpuzzle',
       punkte: [
         '**Seite 1:** Frau Maler und die Leitfrage – die Antwort ergänzen Sie am Ende der Stunde',
@@ -69,7 +69,7 @@ var STUNDE = {
         '**Seite 2:** Gruppenpuzzle – Expertenteam (AA1), Merksatz AA1, Vergleichstabelle',
         'Stammgruppe (AA2 a) und Schockform-Detektiv (AA2 b)'
       ],
-      handy: { typ: 'vorne', titel: 'Blatt 1 von 3', text: 'Sie erhalten jetzt **Blatt 1: Einstieg und Gruppenpuzzle**. Schauen Sie nach vorne.' }
+      handy: { typ: 'vorne', titel: 'Weiter mit Arbeitsblatt 1', text: 'Weiter mit **Arbeitsblatt 1: Einstieg und Gruppenpuzzle**. Schauen Sie nach vorne.' }
     },
     {
       id: 'fall', abschnitt: 'Einstieg', kurz: 'Frau Maler', typ: 'fall',
@@ -135,7 +135,7 @@ var STUNDE = {
       id: 'aa1', abschnitt: 'Gruppenpuzzle', kurz: 'Expertenrunde (AA1)', typ: 'experten',
       titel: 'AA1 · Expertenteams',
       text: '🚶 **Setzen Sie sich mit Ihrem Expertenteam zusammen** – die Namen stehen auf Ihrem Handy.',
-      auftraege: ['**Infotext** lesen (Handy oder Papier am Pult)', '**Fall markieren** (Handy) – der Infotext hilft', 'Experten-Check (Handy)', 'Gemeinsam die **Spalte** der Tabelle (AB) → „Unsere Spalte ist fertig“'],
+      auftraege: ['**Infotext** lesen (Handy)', '**Fall markieren** (Handy) – der Infotext hilft', 'Experten-Check (Handy)', 'Gemeinsam die **Spalte** der Tabelle (AB) → „Unsere Spalte ist fertig“'],
       uhr: [{ label: 'Expertenrunde', sek: 900 }],
       alleFertig: 'Alle Expertenteams fertig – gleich lesen wir den Merksatz AA1, dann geht es in die Stammgruppen.',
       handy: { typ: 'experte' }
@@ -200,7 +200,7 @@ var STUNDE = {
     },
     {
       id: 'blatt2', abschnitt: 'Gruppenpuzzle', kurz: 'Blatt 2 austeilen', typ: 'blatt', nr: 2, von: 3, seiten: 'Seite 3 und 4',
-      titel: 'Sie erhalten jetzt Blatt 2',
+      titel: 'Weiter mit Arbeitsblatt 2',
       ueberschrift: 'Lagerung nach Leitsymptom – wer darf was?',
       punkte: [
         '**Seite 3:** Schreibaufgaben 2.1 und 2.2 (AA2 c)',
@@ -208,7 +208,7 @@ var STUNDE = {
         '**Seite 4:** Schreibaufgaben 3.1 und 3.2',
         'Wer darf was? (AA4 a) und Merksatz AA4'
       ],
-      handy: { typ: 'vorne', titel: 'Blatt 2 von 3', text: 'Sie erhalten jetzt **Blatt 2: Lagerung nach Leitsymptom – wer darf was?** Schauen Sie nach vorne.' }
+      handy: { typ: 'vorne', titel: 'Weiter mit Arbeitsblatt 2', text: 'Weiter mit **Arbeitsblatt 2: Lagerung nach Leitsymptom – wer darf was?** Schauen Sie nach vorne.' }
     },
     {
       id: 'aa2c', abschnitt: 'Gruppenpuzzle', kurz: 'Schreibaufgaben 2.1/2.2', typ: 'aufgabe',
@@ -288,7 +288,7 @@ var STUNDE = {
     {
       id: 'aa3', abschnitt: 'Lagerung', kurz: 'Lagerungs-Quiz (AA3)', typ: 'fortschritt', seite: 'w2-lagerung',
       titel: 'AA3 a) · Lagerungs-Quiz',
-      punkte: ['Jede Person für sich am Handy: **kurze Situationen**.', 'Was ist das **Leitsymptom**? Tippen Sie an, wie Sie lagern – dann **Aufdecken** und die Begründung lesen.', 'Hilfe: die **Bilder der vier Lagerungen** auf dem Arbeitsblatt (S. 3) und am Handy.', 'Am Ende zeigt das Handy den **Merksatz AA3** – er steht auch auf dem Arbeitsblatt.'],
+      punkte: ['Jede Person für sich am Handy: **kurze Situationen**.', 'Was ist das **Leitsymptom**? Tippen Sie an, wie Sie lagern – dann **Aufdecken** und die Begründung lesen.', 'Hilfe: die **Bilder der vier Lagerungen** auf dem Arbeitsblatt (S. 3) und am Handy.', 'Zuerst zeigt das Handy den **Merksatz AA3** – er hilft beim Quiz.'],
       handy: { typ: 'modul', modul: 'lagerung' }
     },
     {
@@ -324,7 +324,7 @@ var STUNDE = {
     {
       id: 'aa4a', abschnitt: 'Verantwortung', kurz: 'Wer darf was? (AA4a)', typ: 'aufstellung', runde: 3,
       titel: 'AA4a · Wer darf was?',
-      text: 'Stimmen Sie **am Handy** ab: Wer darf die Maßnahme durchführen? Nach jeder Lösung: Maßnahme in die **Tabelle** (AB) eintragen.',
+      text: 'Stimmen Sie **am Handy** ab: Wer darf die Maßnahme durchführen? Die **Tabelle** auf Ihrem Arbeitsblatt (Seite 4) hilft Ihnen.',
       ecken: [
         { emoji: '🟢', text: 'mache ich selbst' },
         { emoji: '🟡', text: 'nur n. ä. A. oder SOP' },
@@ -340,7 +340,7 @@ var STUNDE = {
       ],
       zeigen: 'Lösung zeigen',
       naechste: 'Nächste Maßnahme',
-      handy: { typ: 'aufstellung', titel: 'Wer darf was?', start: 'Gleich zeigt Ihre Lehrkraft Maßnahmen am Beamer. Tippen Sie dann hier an, wer sie durchführen darf. Nach jeder Lösung: Maßnahme in die Tabelle auf dem Arbeitsblatt eintragen.' }
+      handy: { typ: 'aufstellung', titel: 'Wer darf was?', start: 'Gleich zeigt Ihre Lehrkraft Maßnahmen am Beamer. Tippen Sie dann hier an, wer sie durchführen darf. Die Tabelle auf Ihrem Arbeitsblatt (Seite 4) hilft Ihnen.' }
     },
     {
       id: 'aa4-merksatz', abschnitt: 'Verantwortung', kurz: 'Merksatz AA4 lesen', typ: 'merksatz', merksatz: 'aa4',
@@ -351,7 +351,7 @@ var STUNDE = {
     },
     {
       id: 'blatt3', abschnitt: 'Anwenden', kurz: 'Blatt 3 austeilen', typ: 'blatt', nr: 3, von: 3, seiten: 'Seite 5 und 6',
-      titel: 'Sie erhalten jetzt Blatt 3',
+      titel: 'Weiter mit Arbeitsblatt 3',
       ueberschrift: 'Wissen anwenden',
       punkte: [
         '**Seite 5:** Adrenalin oder Antihistaminikum? – Schreibaufgabe 4.1 (AA4 b)',
@@ -359,7 +359,7 @@ var STUNDE = {
         '**Seite 6:** Hausaufgabe mit QR-Code zur Selbstkontrolle',
         'QR-Code zum Nachlesen – erst nach der Stunde'
       ],
-      handy: { typ: 'vorne', titel: 'Blatt 3 von 3', text: 'Sie erhalten jetzt **Blatt 3: Wissen anwenden**. Schauen Sie nach vorne.' }
+      handy: { typ: 'vorne', titel: 'Weiter mit Arbeitsblatt 3', text: 'Weiter mit **Arbeitsblatt 3: Wissen anwenden**. Schauen Sie nach vorne.' }
     },
     {
       id: 'aa4b', abschnitt: 'Verantwortung', kurz: 'Adrenalin oder Antihistaminikum? (AA4b)', typ: 'aufgabe',
@@ -521,7 +521,7 @@ var STUNDE = {
     warumTitel: 'Warum?',
     soTitel: 'So geht’s',
     lagerungNr: '{n} von 4',
-    blattWort: 'Blatt',
+    blattKurz: 'AB{n}',
     blattVon: 'von {y}',
     blattDarauf: 'Darauf finden Sie:',
     gruppeFertig: 'Tabelle vollständig!',
@@ -590,7 +590,6 @@ var STUNDE = {
     expFall: 'b) Fall: {person}',
     expInfo: 'a) Infotext: {form}',
     expWoerter: 'Wörterhilfe',
-    expPapier: 'Lieber auf Papier? Bitten Sie Ihre Lehrkraft am Pult um das Expertenblatt „{b} · {form}“.',
     checkTitel: 'c) Experten-Check',
     checkText: 'Können Sie Ihre Schockform erklären? Beantworten Sie alle drei Fragen richtig.',
     checkRichtig: 'Richtig!',
@@ -637,7 +636,6 @@ var STUNDE = {
     aufstellungRichtig: '✓ Richtig – das hatten Sie!',
     aufstellungFalsch: '✗ Nicht ganz. Richtig ist: {ecke}',
     aufstellungKeine: 'Sie haben nicht abgestimmt. Richtig ist: {ecke}',
-    aufstellungEintragen: '✍️ Tragen Sie die Maßnahme jetzt in die Tabelle auf dem Arbeitsblatt ein.',
     nichtEingeteilt: 'Sie sind noch keiner Gruppe zugeteilt. Bitte melden Sie sich bei Ihrer Lehrkraft.'
   },
 

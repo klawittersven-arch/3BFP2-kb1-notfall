@@ -387,8 +387,8 @@ b, strong { font-weight: 800; }
 .blatt-folie { display: grid; grid-template-columns: 330px 1fr; gap: 60px; align-items: center; height: 100%; }
 .blatt-papier { width: 330px; aspect-ratio: 210 / 297; background: #fff; border-radius: 10px; box-shadow: var(--schatten);
   border-top: 16px solid var(--akzent); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-.blatt-wort { font-size: 34px; font-weight: 800; color: var(--dunkelpetrol); letter-spacing: 1px; }
-.blatt-nr { font-size: 170px; font-weight: 900; line-height: 1; color: var(--dunkelpetrol); }
+.blatt-nr { font-size: 112px; font-weight: 900; line-height: 1; color: var(--dunkelpetrol); letter-spacing: -.02em; }
+.blatt-titel { margin: 4px 0 6px; font-size: 46px; font-weight: 900; line-height: 1.15; color: var(--akzent); }
 .blatt-von { font-size: 26px; color: #4A5A60; }
 .blatt-seiten { margin-top: 18px; font-size: 21px; font-weight: 700; background: var(--akzent-hell); border-radius: 999px; padding: 6px 16px; }
 .blatt-darauf { margin: 18px 0 8px; font-size: 24px; font-weight: 800; color: var(--dunkelpetrol); }

@@ -27,7 +27,7 @@ geben ihren Vornamen ein – und ihr Handy zeigt ab dann automatisch, was zur ak
 | Nr. | Folie | Beamer | Handys |
 |---|---|---|---|
 | 1 | Willkommen | großer QR-Code, Namen der Angemeldeten | Vorname eingeben → „Sie sind dabei“ |
-| 2 | Sie erhalten jetzt Blatt 1 | **Austeilen:** Blatt mit Nummer, Überschrift wie auf dem AB, was darauf steht | „Sie erhalten jetzt Blatt 1 …“ |
+| 2 | Weiter mit Arbeitsblatt 1 | **Austeilen:** Karte „AB1“, Überschrift wie auf dem AB (groß), was darauf steht | „Weiter mit Arbeitsblatt 1 …“ |
 | 3 | Frau Maler | Fallauszug, Leitfrage | Leitfrage |
 | 4 | Wie hätten Sie gehandelt? | Auftrag, dann **Notfall für Notfall** (4 Notfälle, der letzte = Frau Maler): Notfall groß, „x von y haben abgestimmt“ → „Ergebnisse anzeigen“ (Verteilung, **keine Auflösung**) | derselbe Notfall: Vermutung antippen, sicher / vermute nur; danach „Ergebnis vorne“ |
 | 5 | Ergebnis | Übersicht: 4 Karten, ★ = größte Uneinigkeit, Karte anklicken = groß | „Ergebnis vorne“ |
@@ -39,7 +39,7 @@ geben ihren Vornamen ein – und ihr Handy zeigt ab dann automatisch, was zur ak
 | 11 | Stammgruppen (AA2a) | Stammgruppen mit ✓, **Erklär-Uhr** A → B → C | Namen der Stammgruppe, „Jetzt erklärt …“, „Unsere Tabelle ist vollständig“ |
 | 12–14 | Vergleichstabelle sichern (A, B, C) | **je Folie eine Spalte groß** – Zelle anklicken = Lösung aufdecken, noch einmal = groß; bei C dazu die Gemeinsamkeit | „Vergleichen Sie die Spalte …“ |
 | 15–16 | Schockform-Detektiv | Erklärfolie (was und warum), dann Fortschritt je Stammgruppe | Detektiv: 4 Fälle (Befunde antippen und Form wählen, „Prüfen“; 2 Versuche), am Ende „Geschafft!“ |
-| 17 | Sie erhalten jetzt Blatt 2 | **Austeilen:** Blatt mit Nummer, Überschrift wie auf dem AB, was darauf steht | „Sie erhalten jetzt Blatt 2 …“ |
+| 17 | Weiter mit Arbeitsblatt 2 | **Austeilen:** Karte „AB2“, Überschrift wie auf dem AB (groß), was darauf steht | „Weiter mit Arbeitsblatt 2 …“ |
 | 18–20 | Schreibaufgaben 2.1/2.2 | **Aufgabenfolie** wie im AB → „Jetzt bearbeiten“ (Auftrag + Uhr 5 min) → **je eine Musterlösung** für 2.1 und 2.2 (große Schrift) | erst „Schauen Sie nach vorne“, dann die Fälle Mia, Weber, Albrecht zum Nachlesen |
 | 21–25 | Lagerung | Impuls „immer Beine hoch?“, dann **4 Lagerungsfolien** (Bild, Wann? Warum? So geht’s) | dasselbe Bild |
 | 26 | Lagerungs-Quiz (AA3) | Fortschritt | Quiz allein am Handy (ohne Matte, ohne Timer), Bilder der vier Lagerungen als Hilfe |
@@ -47,7 +47,7 @@ geben ihren Vornamen ein – und ihr Handy zeigt ab dann automatisch, was zur ak
 | 28–30 | Schreibaufgaben 3.1/3.2 (AA3 b) | Aufgabenfolie → „Jetzt bearbeiten“ (Uhr 5 min) → **je eine Musterlösung** für 3.1 und 3.2 | „Auf Papier“ |
 | 31 | Wer darf was? (AA4a) | jeder Klick: nächste Maßnahme (6), „x von y haben abgestimmt“, dann Lösung **mit der Verteilung der Stimmen** und „Das hatten X von Y richtig!“ | 🟢 / 🟡 / 🔴 antippen, nach der Lösung: richtig oder falsch |
 | 32 | Merksatz AA4 lesen | Lesefolie | „Lesen Sie mit …“ |
-| 33 | Sie erhalten jetzt Blatt 3 | **Austeilen:** Blatt mit Nummer, Überschrift wie auf dem AB, was darauf steht | „Sie erhalten jetzt Blatt 3 …“ |
+| 33 | Weiter mit Arbeitsblatt 3 | **Austeilen:** Karte „AB3“, Überschrift wie auf dem AB (groß), was darauf steht | „Weiter mit Arbeitsblatt 3 …“ |
 | 34–35 | Wer hat recht? (AA4b) | Aufgabenfolie mit Dialog und 4.1 → Think/Pair-Uhr → Musterlösung | „Auf Papier“ |
 | 36–38 | Transferfall: Wissen anwenden (AA5) | Transferfall wie im AB → Countdown 8 min → Peer-Korrektur (4 min) mit Musterlösung auf **zwei Folien** (die Uhr läuft auf der zweiten weiter) | „Handy umgedreht“, dann Bewertungsraster |
 | 39 | Frau Maler (AA6) | Kausalkette Schritt für Schritt (aufgedecktes Glied anklicken = groß), dann Antwort auf die Leitfrage | „Ergänzen Sie die Kausalkette auf Seite 1 …“ |
@@ -69,8 +69,8 @@ Gerafft für langsam lesende Klassen: Das Arbeitsblatt hat **6 Seiten** (3 Blät
 im KA-Format bleiben. Eine Pausenfolie gibt es nicht.
 
 **Blätter nacheinander austeilen:** Blatt 1 (S. 1–2) zu Beginn, Blatt 2 (S. 3–4) vor den Schreibaufgaben 2.1/2.2,
-Blatt 3 (S. 5–6) vor „Wer hat recht?“ (AA4 b). Jedes Blatt beginnt mit einer blauen Überschrift „Blatt … von 3“;
-dieselbe Überschrift und die Aufgaben des Blattes zeigt die Folie „Sie erhalten jetzt Blatt …“ (Texte in `docs/inhalte_stunde.js`,
+Blatt 3 (S. 5–6) vor „Wer hat recht?“ (AA4 b). Jedes Blatt beginnt mit einer blauen Überschrift „Schockformen: …“;
+dieselbe Überschrift und die Aufgaben des Blattes zeigt die Folie „Weiter mit Arbeitsblatt …“ (Texte in `docs/inhalte_stunde.js`,
 das Arbeitsblatt übernimmt die Überschrift von dort).
 
 Aufgedeckte Zellen und Lösungszeilen bleiben aufgedeckt, auch wenn der Beamer neu geladen wird.
@@ -119,7 +119,7 @@ alles von selbst online:
 ```
 arbeitsblatt/
   KB1_W2_Schockformen_SV.docx        Schülerversion (3 QR-Codes: Stunden-App, Hausaufgabe, Nachlesen)
-  KB1_W2_Schockformen_Anlagen.docx   Expertenblätter A/B/C (Papierfassung, freiwillig)
+  KB1_W2_Schockformen_Anlagen.docx   Expertenblätter A/B/C (nur Reserve, falls Handys oder WLAN ausfallen)
   KB1_W2_Schockformen_LV_LSG.docx    Lehrerversion: Verlaufsplan mit Foliennummern, Hinweise, Lösungen
   (+ PDF-Fassungen)
 docs/                ← alles, was GitHub Pages veröffentlicht

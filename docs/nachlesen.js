@@ -145,7 +145,7 @@
   abschnitt('Wer darf was?', function (w) {
     var e = folie('aa4a').ecken;
     N.werDarfWas.forEach(function (t, i) { w.appendChild(box('zeile-karte', ['**' + e[i].emoji + ' ' + e[i].text + ':** ' + t])); });
-    w.appendChild(box('box', N.verantwortung));
+    if (N.werDarfWasAzubi) w.appendChild(box('box', [N.werDarfWasAzubi]));
     w.appendChild(el('h3', null, 'Adrenalin oder Antihistaminikum?'));
     w.appendChild(box('box', N.adrenalinText));
     folie('aa4b').sprecher.forEach(function (sp) { w.appendChild(p('💬 **' + sp.wer + ':** ' + sp.text)); });

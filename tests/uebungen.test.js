@@ -160,6 +160,10 @@ fs.mkdirSync(ORDNER, { recursive: true });
   beobachten(s, protokoll, 'lagerung');
   await s.goto(basis + 'w2-lagerung.html');
   const L = INHALTE.lagerung;
+  // Vor dem Quiz: Merksatz AA3 als Hilfe, dann „Quiz starten“
+  pruefe((await s.textContent('#uebung')).includes('Leitsymptom') && !!(await s.$('.merksatz')) && (await s.$$('.antwort')).length === 0, 'vor dem Quiz: Merksatz AA3, noch keine Situation');
+  await s.click('button:has-text("' + L.quizStarten + '")');
+  pruefe(!!(await s.$('.lager-merksatz')) && (await s.$$('.antwort')).length > 0, 'Quiz gestartet, Merksatz bleibt aufklappbar');
   for (let n = 0; n < L.karten.length; n++) {
     const k = L.karten[n];
     if (n === 0) {
@@ -178,8 +182,8 @@ fs.mkdirSync(ORDNER, { recursive: true });
     pruefe((await s.textContent('#uebung')).includes(k.warum), `Karte ${n + 1}: Begründung sichtbar`);
     await s.click('button:has-text(\"' + L.naechste + '\")');
   }
-  await s.waitForSelector('.merksatz');
-  pruefe((await s.textContent('.merksatz')).includes('Leitsymptom'), 'Merksatz AA3 erscheint');
+  await s.waitForSelector('button:has-text("' + INHALTE.allgemein.nochEinmal + '")');
+  pruefe((await s.textContent('#uebung')).includes(L.geschafftTitel), 'am Ende: Geschafft!');
   await s.close();
 
   /* ---------- AA6 Raster ---------- */

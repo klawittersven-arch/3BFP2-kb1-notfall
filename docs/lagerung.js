@@ -1,6 +1,7 @@
 /* AA3 · Lagerungs-Quiz (Programmlogik – Texte in inhalte.js → lagerung).
-   Je Situation: lesen → Lagerung antippen → Aufdecken (Lösung und Begründung) → nächste Situation
-   → am Ende Merksatz AA3 (nur, wenn genug beim ersten Versuch richtig sind). */
+   Zuerst Merksatz AA3 (hilft beim Lösen) → „Quiz starten“. Je Situation: lesen → Lagerung antippen →
+   Aufdecken (Lösung und Begründung) → nächste Situation. Merksatz und Bilder bleiben aufklappbar.
+   Am Ende „Geschafft!“ (nur, wenn genug beim ersten Versuch richtig sind). */
 (function () {
   'use strict';
   var K = window.KB1;
@@ -11,7 +12,7 @@
   var platz = document.getElementById('uebung');
   var N = T.karten.length;
 
-  function leer() { return { karte: 0, wahl: T.karten.map(function () { return null; }), offen: T.karten.map(function () { return false; }) }; }
+  function leer() { return { gestartet: false, karte: 0, wahl: T.karten.map(function () { return null; }), offen: T.karten.map(function () { return false; }) }; }
   var z = K.Speicher.sitzung.lesen(SCHL);
   if (!z || !Array.isArray(z.wahl) || z.wahl.length !== N) z = leer();
   function speichern() { K.Speicher.sitzung.schreiben(SCHL, z); }
@@ -25,7 +26,35 @@
     K.melden(SEITE, aufgedeckt(), N, fertig ? (richtig() >= T.mindestensErsterVersuch ? 'fertig' : 'durchklicken') : 'arbeitet');
   }
 
-  // Hilfe: die vier Lagerungen mit Bildern (dieselben Bilder wie im Arbeitsblatt, S. 4)
+  // Vor dem Quiz: Merksatz AA3 lesen, dann starten
+  function startZeigen() {
+    platz.textContent = '';
+    platz.appendChild(K.merksatzElement('aa3', 'Merksatz AA3', T.merksatzVorher));
+    platz.appendChild(K.knopf(T.quizStarten + ' →', 'knopf-breit', function () {
+      z.gestartet = true;
+      speichern();
+      karteZeigen();
+      K.scrollen(document.querySelector('.inhalt'));
+    }));
+  }
+
+  // Hilfe während des Quiz: Merksatz AA3 zum Aufklappen
+  var merksatzOffen = false;
+  function merksatzHilfe() {
+    var d = el('details', 'info lager-merksatz');
+    d.open = merksatzOffen;
+    d.addEventListener('toggle', function () { merksatzOffen = d.open; });
+    d.appendChild(el('summary', null, T.merksatzTitel));
+    var p = el('p', 'merksatz-text');
+    (INHALTE.merksaetze.aa3 || []).forEach(function (t) {
+      if (typeof t === 'string') p.appendChild(document.createTextNode(t));
+      else p.appendChild(el('mark', 'luecke', t.l));
+    });
+    d.appendChild(p);
+    return d;
+  }
+
+  // Hilfe: die vier Lagerungen mit Bildern (dieselben Bilder wie im Arbeitsblatt)
   var bilderOffen = false;
   function bilderHilfe() {
     var d = el('details', 'info lager-bilder');
@@ -51,6 +80,7 @@
 
   function karteZeigen() {
     platz.textContent = '';
+    if (!z.gestartet && z.karte === 0 && !z.offen[0]) return startZeigen();
     if (z.karte >= N) return ende();
     var i = z.karte;
     var k = T.karten[i];
@@ -75,6 +105,7 @@
     });
     wahlBox.appendChild(antworten);
     platz.appendChild(wahlBox);
+    platz.appendChild(merksatzHilfe());
     platz.appendChild(bilderHilfe());
     var aufdecken = K.knopf(T.aufdecken, '', function () {
       z.offen[i] = true;
@@ -122,11 +153,14 @@
   function ende() {
     var box = el('div');
     if (richtig() >= T.mindestensErsterVersuch) {
-      box.appendChild(el('p', 'rueckmeldung richtig', K.ersetzen(INHALTE.allgemein.ersterVersuch, { x: richtig(), y: N })));
-      box.appendChild(K.merksatzElement('aa3', 'Merksatz AA3'));
+      var g = el('section', 'karte');
+      g.appendChild(el('h2', null, T.geschafftTitel));
+      g.appendChild(el('p', 'rueckmeldung richtig', K.ersetzen(INHALTE.allgemein.ersterVersuch, { x: richtig(), y: N })));
+      g.appendChild(K.formatiert('p', null, T.geschafftText));
+      box.appendChild(g);
       K.Erledigt.merken(SEITE);
     } else {
-      box.appendChild(K.durchklickenElement(richtig(), N, T.mindestensErsterVersuch, neu));
+      box.appendChild(K.durchklickenElement(richtig(), N, T.mindestensErsterVersuch, neu, T.durchklickenText));
     }
     box.appendChild(K.knopf(INHALTE.allgemein.nochEinmal, 'knopf-leise', neu));
     platz.appendChild(box);
