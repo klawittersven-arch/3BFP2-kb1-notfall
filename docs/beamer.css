@@ -384,11 +384,11 @@ b, strong { font-weight: 800; }
 .blatt-folie .punkte li { font-size: 26px; }
 
 /* Merksatz prüfen: Lücken per Klick aufdecken */
-.merksatz-folie { margin-top: 18px; background: #fff; border-radius: 24px; box-shadow: var(--schatten); border-left: 12px solid var(--petrol); padding: 26px 34px 30px; }
+.merksatz-folie { cursor: pointer; margin-top: 18px; background: #fff; border-radius: 24px; box-shadow: var(--schatten); border-left: 12px solid var(--petrol); padding: 26px 34px 30px; }
 .merksatz-kopf { font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: .06em; color: var(--petrol); margin-bottom: 12px; }
-.merksatz-satz { margin: 0; font-size: 34px; line-height: 2.05; }
-.aufdeck.luecke { display: inline-block; min-width: 220px; min-height: 0; padding: 0 16px; margin: 0 4px; font-size: 32px; line-height: 1.5; text-align: center; vertical-align: baseline; font-weight: 800; }
-.aufdeck.luecke .verdeckt { display: inline; font-size: 28px; }
+.merksatz-satz { margin: 0; font-size: 36px; line-height: 1.7; }
+.merksatz-wort { background: var(--gruen-hell); color: #1E5A36; font-weight: 900; padding: 0 8px; border-radius: 8px; }
+.merksatz-tipp { margin-top: 14px; }
 
 /* Lagerung: Bild + Wann / Warum / So geht's */
 .lagerung-ueber { display: flex; justify-content: space-between; font-size: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--akzent); margin-bottom: 4px; }
@@ -459,7 +459,6 @@ button.antwort-karte { font: inherit; font-size: 27px; text-align: left; border:
 .gross-zu { position: absolute; top: 18px; right: 18px; width: 54px; height: 54px; border-radius: 50%; border: 0; background: var(--hell); font-size: 26px; font-weight: 900; cursor: pointer; color: var(--dunkelpetrol); }
 .gross-text { font-size: 46px; line-height: 1.4; font-weight: 700; color: var(--text); }
 .gross-merksatz { margin: 0; font-weight: 600; line-height: 1.6; }
-.gross-luecke { background: var(--gruen-hell); color: #1E5A36; font-weight: 900; padding: 0 10px; border-radius: 8px; }
 .gross-schritt { margin: 0 0 6px; font-size: 22px; font-weight: 800; color: var(--akzent); text-transform: uppercase; letter-spacing: .06em; }
 .gross-spalte-titel { display: inline-block; color: #fff; padding: 6px 18px; border-radius: 12px; }
 .gross-spalte-titel.A { background: var(--a); } .gross-spalte-titel.B { background: var(--b); } .gross-spalte-titel.C { background: var(--c); }

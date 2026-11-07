@@ -142,7 +142,7 @@ pruefe(S.folien.indexOf(S.folien.find((f) => f.id === 'aa1-merksatz')) === S.fol
 pruefe(!S.folien.some((f) => (f.handy || {}).modul === 'simulation') && !fs.existsSync(path.join(DOCS, 'simulation.js')), 'keine Notfall-Simulation mehr');
 ['aa1', 'aa3', 'aa4'].forEach((k) => {
   const m = S.folien.filter((f) => f.typ === 'merksatz' && f.merksatz === k);
-  pruefe(m.length === 1 && I.merksaetze[k].some((t) => typeof t === 'object'), 'Merksatz ' + k.toUpperCase() + ': genau eine Folie zum Aufdecken');
+  pruefe(m.length === 1 && I.merksaetze[k].some((t) => typeof t === 'object') && m[0].handy.typ === 'vorne' && /Lesen Sie mit/.test(m[0].text), 'Merksatz ' + k.toUpperCase() + ': genau eine Lesefolie');
 });
 const lagFolien = S.folien.filter((f) => f.typ === 'lagerung');
 pruefe(lagFolien.length === 4 && lagFolien.every((f, i) => f.nr === i + 1), 'vier Lagerungsfolien, nummeriert 1–4');
@@ -152,6 +152,11 @@ lagFolien.forEach((f) => {
 });
 pruefe(lagFolien.map((f) => f.id).join() === S.folien.slice(S.folien.findIndex((f) => f.id === 'aa3-impuls') + 1).slice(0, 4).map((f) => f.id).join(), 'Lagerungsfolien direkt nach „Beine hoch?“');
 pruefe(!S.folien.some((f) => f.typ === 'merksatz' && f.merksatz === 'aa2'), 'keine Folie zum Merksatz AA2');
+// Merksätze stehen fertig auf dem AB: nirgends die Aufforderung, Lücken zu ergänzen
+const alleTexte = ['inhalte.js', 'inhalte_stunde.js'].map((d) => fs.readFileSync(path.join(DOCS, d), 'utf8')).join('\n') + fs.readFileSync(path.join(WURZEL, 'werkzeuge', 'ab_w2.js'), 'utf8');
+pruefe(!/Merksatz[^.'\n]{0,40}ergänz|Lücken im Kasten|richtig notiert|Lücke anklicken/i.test(alleTexte), 'keine Aufforderung mehr, Merksatz-Lücken zu ergänzen');
+pruefe(/B\.b\(x\.l\)/.test(fs.readFileSync(path.join(WURZEL, 'werkzeuge', 'ab_bausteine.js'), 'utf8')), 'Arbeitsblatt: Merksätze fertig ausgefüllt, Schlüsselwörter fett');
+pruefe(/^\*\*a\)\*\* Infotext/.test(S.handy.expAuftraege[0]) && /^\*\*b\)\*\* Fall markieren/.test(S.handy.expAuftraege[1]) && /^a\)/.test(S.handy.expInfo) && /^b\)/.test(S.handy.expFall), 'Expertenrunde: a) Infotext, b) Fall markieren');
 pruefe(I.lagerung.bilder.length === 4 && I.lagerung.bilder.every((b) => fs.existsSync(path.join(DOCS, b.bild))), 'Lagerungs-Quiz: Bilder der vier Lagerungen am Handy');
 pruefe(!/timer|Rollen tauschen|Rollentausch|Matte/i.test(JSON.stringify(I.lagerung) + fs.readFileSync(path.join(DOCS, 'lagerung.js'), 'utf8')), 'Lagerungs-Quiz: allein am Handy – kein Timer, keine Matte, kein Rollentausch');
 pruefe(!ids.includes('aa3bc') && !ids.includes('aa3c-loesung') && !/Entscheidungsweg|Parcours|Yogamatte/.test(JSON.stringify(S.folien)), 'kein Entscheidungsweg und kein Parcours mehr');

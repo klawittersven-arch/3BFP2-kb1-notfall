@@ -163,9 +163,9 @@ function bausteine({ lsg = false, breite = 9072 } = {}) {
     ] })]
   });
 
-  // Merksatz-Kasten mit Lücken. teile: Strings und { l: 'Lösung', n: Zeichenzahl }
+  // Merksatz-Kasten, fertig ausgefüllt: teile = Strings und { l: 'Schlüsselwort' } (fett)
   B.merksatz = (titel, zeilen) => B.kasten(
-    zeilen.map((teile) => new Paragraph({ spacing: { after: 100, line: 300 }, children: teile.flatMap((x) => (typeof x === 'string' ? B.runs(x) : [B.luecke(x.l, x.n || 14)])) })),
+    zeilen.map((teile) => new Paragraph({ spacing: { after: 100, line: 300 }, children: teile.flatMap((x) => (typeof x === 'string' ? B.runs(x) : [B.b(x.l)])) })),
     { kopf: titel, fill: 'FFFFFF', kopfFill: F.BLAU_HELL, rand: '2E75B6' }
   );
 

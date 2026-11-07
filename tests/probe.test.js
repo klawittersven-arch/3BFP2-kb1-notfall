@@ -75,7 +75,7 @@ const folieIst = (lap, id, ms) => bis(lap, (x) => { const f = document.querySele
     }
     await bis(h, () => { const b = document.getElementById('fertig-team'); return b && !b.disabled; });
     await h.click('#fertig-team');
-    H.pruefe(await folieIst(lap, 'aa1-merksatz', 60000), 'alle fertig → automatisch „Merksatz AA1 prüfen“');
+    H.pruefe(await folieIst(lap, 'aa1-merksatz', 60000), 'alle fertig → automatisch „Merksatz AA1 lesen“');
     await lap.click('#weiter');
     H.pruefe(await folieIst(lap, 'aa2a'), 'Weiter: Stammgruppen');
     H.pruefe(await bis(h, () => !!document.querySelector('.stamm-kopf')), 'Handy der Lehrkraft: Stammgruppe mit erfundenen Namen');

@@ -28,8 +28,8 @@ var INHALTE = {
   allgemein: {
     kopfzeile: 'KB I – Notfallsituationen · Woche 2 · 3BFP2',
     merksatzUeberschrift: 'Ihr Merksatz',
-    // {titel} = Name des Kastens auf dem Arbeitsblatt, z. B. „Merksatz AA1“
-    merksatzHinweis: 'Jetzt aufs Arbeitsblatt: Ergänzen Sie die Lücken im Kasten „{titel}“!',
+    // {titel} = Name des Kastens auf dem Arbeitsblatt, z. B. „Merksatz AA1“ (dort steht der Merksatz fertig)
+    merksatzHinweis: 'Geschafft! Diesen Merksatz finden Sie auch auf Ihrem Arbeitsblatt im Kasten „{titel}“.',
     fortschritt: '{x} von {y} gelöst',
     ersterVersuch: 'Beim ersten Versuch richtig: {x} von {y}',
     nochEinmal: 'Noch einmal üben',
@@ -55,7 +55,7 @@ var INHALTE = {
   },
 
   /* ------------------------------------------------------------------------
-     MERKSÄTZE – erscheinen am Ende einer Übung. { l: '…' } = Lücke auf dem AB
+     MERKSÄTZE – erscheinen am Ende einer Übung. { l: '…' } = Schlüsselwort (auf dem AB fett, am Beamer hervorgehoben)
      ------------------------------------------------------------------------ */
   merksaetze: {
     aa1: ['Ein Schock zeigt sich an den Zeichen des ', { l: 'Kreislaufs' }, ': Puls, Blutdruck, Haut und Bewusstsein. Die Schockform erkenne ich an der ', { l: 'Ursache' }, ' und an den ', { l: 'Begleitzeichen' }, ', z. B. Quaddeln oder Lähmungen.'],
@@ -100,7 +100,7 @@ var INHALTE = {
        w            = Erklärung nach dem Prüfen
      ------------------------------------------------------------------------ */
   markieren: {
-    titel: 'AA1 · Befunde markieren',
+    titel: 'AA1 · Expertenteam: Infotext und Fall',
     anweisung: 'Tippen Sie im Fall **alle Stellen** an, die auf einen Schock oder seine Ursache hinweisen. Tippen Sie noch einmal, um eine Markierung zu entfernen. Dann: „Prüfen“.',
     // Der Fall kommt nur aus dem QR-Code des Expertenblatts (?fall=a, ?fall=b, ?fall=c)
     ohneQr: 'Bitte scannen Sie den QR-Code auf Ihrem Expertenblatt (A, B oder C).',

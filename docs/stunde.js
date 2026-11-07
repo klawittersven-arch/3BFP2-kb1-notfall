@@ -593,18 +593,19 @@
       nach.textContent = '';
       var team = el('div'); team.id = 'exp-team'; vor.appendChild(team);
       vor.appendChild(uhrZeile());
-      vor.appendChild(el('h2', null, K.ersetzen(H.expFall, { person: r.person })));
       var e = S.experten[r.fall];
-      // Reihenfolge wie im Arbeitsblatt: a) Fall + Merksatz AA1 → b) Infotext → c) Check → d) Tabellenspalte
-      nach.appendChild(fmt('p', 'weiter-hinweis', K.ersetzen(H.expWeiter, { b: p.rolle, form: r.form })));
+      // Reihenfolge wie im Arbeitsblatt: a) Infotext → b) Fall markieren (Infotext bleibt aufklappbar) → c) Check → d) Tabellenspalte
       var d = el('details', 'info');
       d.open = infoOffen;
       d.addEventListener('toggle', function () { infoOffen = d.open; });
       d.appendChild(el('summary', null, K.ersetzen(H.expInfo, { form: r.form })));
       e.info.forEach(function (x) { d.appendChild(fmt('p', null, x)); });
       d.appendChild(fmt('p', 'woerter', '**' + H.expWoerter + ':** ' + e.woerter.split(' | ').join(' · ')));
-      nach.appendChild(d);
-      nach.appendChild(el('p', 'papier-hinweis', '📄 ' + K.ersetzen(H.expPapier, { b: p.rolle, form: r.form })));
+      vor.appendChild(d);
+      vor.appendChild(el('p', 'papier-hinweis', '📄 ' + K.ersetzen(H.expPapier, { b: p.rolle, form: r.form })));
+      vor.appendChild(el('h2', null, K.ersetzen(H.expFall, { person: r.person })));
+      vor.appendChild(el('p', 'klein-grau', H.expFallHilfe));
+      nach.appendChild(fmt('p', 'weiter-hinweis', H.expWeiter));
       var c = el('div'); c.id = 'exp-check'; nach.appendChild(c);
       var tab = el('section', 'schritt-karte tabelle-karte');
       tab.appendChild(el('h2', null, H.expTabelleTitel));

@@ -35,7 +35,7 @@ geben ihren Vornamen ein – und ihr Handy zeigt ab dann automatisch, was zur ak
 | 7 | Lernziel | Lernziel, Fahrplan der Stunde | – |
 | 8 | Gruppen einteilen | **„Gruppen zufällig einteilen“**, Gruppenkarten mit Emoji | eigene Stammgruppe in Gruppenfarbe, Buchstabe, Expertenteam |
 | 9 | Expertenrunde (AA1) | Expertenteams mit ✓, Uhr 15 min | Namen des Teams, Schritte a–d: Fall markieren (3 Ablenker, Raten-Schutz), Infotext (kurze Sätze), Experten-Check, **eigene Tabellenspalte ausfüllen** → „Unsere Spalte ist fertig“; Beamer: „✓ Tabelle fertig!“ |
-| 10 | Merksatz AA1 prüfen | Merksatz, **Lücke anklicken = aufdecken** (kommt automatisch, wenn alle Teams fertig sind) | „Überprüfen Sie am Beamer …“ |
+| 10 | Merksatz AA1 lesen | **Lesefolie**: ganzer Merksatz wie auf dem AB, anklicken = groß (kommt automatisch, wenn alle Teams fertig sind) | „Lesen Sie mit …“ |
 | 11 | Stammgruppen (AA2a) | Stammgruppen mit ✓, **Erklär-Uhr** A → B → C | Namen der Stammgruppe, „Jetzt erklärt …“, „Unsere Tabelle ist vollständig“ |
 | 12 | Vergleichstabelle sichern | Tabelle wie im AB, **Zelle anklicken = Lösung aufdecken**, noch einmal = groß; Spaltenkopf = ganze Spalte groß | „Vergleichen Sie Ihre Tabelle …“ |
 | 13–14 | Schockform-Detektiv | Erklärfolie (was und warum), dann Fortschritt je Stammgruppe | Detektiv: 4 Fälle (Befunde antippen und Form wählen, „Prüfen“; 2 Versuche), am Ende „Geschafft!“ |
@@ -43,10 +43,10 @@ geben ihren Vornamen ein – und ihr Handy zeigt ab dann automatisch, was zur ak
 | 16–17 | Klausurtraining 2.1/2.2 | **Aufgabenfolie** wie im AB → „Jetzt bearbeiten“ (Auftrag + Uhr 5 min) → Musterlösung zum Aufdecken | erst „Schauen Sie nach vorne“, dann die Fälle Mia, Weber, Albrecht zum Nachlesen |
 | 18–22 | Lagerung | Impuls „immer Beine hoch?“, dann **4 Lagerungsfolien** (Bild, Wann? Warum? So geht’s) | dasselbe Bild |
 | 23 | Lagerungs-Quiz (AA3) | Fortschritt | Quiz allein am Handy (ohne Matte, ohne Timer), Bilder der vier Lagerungen als Hilfe |
-| 24 | Merksatz AA3 prüfen | Lücken aufdecken | „Überprüfen Sie am Beamer …“ |
+| 24 | Merksatz AA3 lesen | Lesefolie | „Lesen Sie mit …“ |
 | 25–26 | Klausurtraining 3.1/3.2 (AA3 b) | Aufgabenfolie → „Jetzt bearbeiten“ (Uhr 5 min) → Musterlösung | „Auf Papier“ |
 | 27 | Wer darf was? (AA4a) | jeder Klick: nächste Maßnahme (6), „x von y haben abgestimmt“, dann Lösung **mit der Verteilung der Stimmen** und „Das hatten X von Y richtig!“ | 🟢 / 🟡 / 🔴 antippen, nach der Lösung: richtig oder falsch |
-| 28 | Merksatz AA4 | erst auf dem AB ergänzen (Tabelle und Info helfen), dann Lücken aufdecken | „Auf Papier“ |
+| 28 | Merksatz AA4 lesen | Lesefolie | „Lesen Sie mit …“ |
 | 29 | Sie erhalten jetzt Blatt 3 | **Austeilen:** Blatt mit Nummer, Überschrift wie auf dem AB, was darauf steht | „Sie erhalten jetzt Blatt 3 …“ |
 | 30–31 | Wer hat recht? (AA4b) | Aufgabenfolie mit Dialog und 4.1 → Think/Pair-Uhr → Musterlösung | „Auf Papier“ |
 | 32–33 | Klausurtraining (AA5) | Transferfall wie im AB → Countdown 8 min → Peer-Korrektur (4 min) mit Musterlösung zum Aufdecken | „Handy umgedreht“, dann Bewertungsraster |
@@ -56,10 +56,10 @@ geben ihren Vornamen ein – und ihr Handy zeigt ab dann automatisch, was zur ak
 | 37 | Vorher – nachher | Übersicht aller 4 Notfälle mit Lösung | eigene Bilanz (richtig zu Beginn / jetzt) |
 | 38 | Hausaufgabe und Nachlesen | Hausaufgabe, Nachlesen – **gibt die Nachlese-Seite frei** | „Die Stunde ist beendet“, Hausaufgabe |
 
-**Sicherungsfolien:** Nach jedem Merksatz kommt eine Folie zum Aufdecken der Lücken, nach jeder Papieraufgabe
-eine Aufgabenfolie (erst erklären, dann „✍️ Jetzt bearbeiten“ – das startet die Uhr) und eine Musterlösung zum
-Aufdecken. **Noch einmal klicken** auf eine aufgedeckte Zelle, Lösungszeile, Lücke oder ein Kettenglied zeigt sie
-groß über der Folie – zum Abschreiben (Klick daneben, ✕ oder Esc schließt). Aufgedeckte Zellen, Lücken und
+**Merksätze** stehen fertig auf dem Arbeitsblatt (Schlüsselwörter fett); die Merksatz-Folien sind kurze Lesefolien.
+**Sicherungsfolien:** Nach jeder Papieraufgabe kommt eine Aufgabenfolie (erst erklären, dann „✍️ Jetzt bearbeiten“ – das startet die Uhr) und eine Musterlösung zum
+Aufdecken. **Noch einmal klicken** auf eine aufgedeckte Zelle, Lösungszeile oder ein Kettenglied zeigt sie
+groß über der Folie – zum Abschreiben (Klick daneben, ✕ oder Esc schließt). Aufgedeckte Zellen und
 Lösungszeilen bleiben aufgedeckt, auch wenn der Beamer neu geladen wird; „Alle verdecken“ verdeckt wieder.
 Lange Folien werden automatisch etwas kleiner gesetzt, damit alles auf die Bühne passt.
 
@@ -95,7 +95,7 @@ Hinweis: Wie eine echte Stunde sperrt auch die Probestunde die Nachlese-Seite, b
   zu 3 (Rest 4). Personen ohne Handy vorher mit „+ Person ohne Handy“ eintragen. **Name anklicken** schiebt die
   Person in die nächste Gruppe; „Neu mischen“ teilt neu ein. Wer später kommt, wird automatisch eingeteilt.
 - **Expertenrunde → Merksatz AA1:** Sobald alle Expertenteams „fertig“ gemeldet haben, wechseln Beamer und
-  Handys **automatisch** zu Folie 9 (Merksatz AA1 prüfen), danach mit „Weiter“ in die Stammgruppen.
+  Handys **automatisch** zu Folie 10 (Merksatz AA1 lesen), danach mit „Weiter“ in die Stammgruppen.
 - **Uhren:** „▶ Uhr starten“ an der Folie; „↻“ startet neu, „■“ stoppt. Bei mehreren Abschnitten gibt es einen
   Ton beim Wechsel. Die Handys zeigen die Restzeit mit.
 - **Beamer neu laden** oder Laptop kurz zu: Der Raum bleibt (6 Stunden) und die Folie auch.

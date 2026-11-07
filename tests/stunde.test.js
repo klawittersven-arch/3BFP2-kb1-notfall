@@ -153,6 +153,10 @@ const textDa = (h, text) => bis(h, (t) => document.body.innerText.includes(t), t
       H.pruefe(await bis(h, () => !!document.querySelector('.team-kasten') && document.querySelectorAll('.markierbar').length > 0), `${namen[i]}: Expertenteam und Fall zum Markieren`);
     }
     H.pruefe(await textDa(handys[0], 'Setzen Sie sich mit') || await textDa(handys[0], 'allein in Ihrem Team'), 'Handy nennt die Namen des Expertenteams');
+    H.pruefe(await handys[0].evaluate(() => {
+      const info = document.querySelector('#vor-uebung details.info'), fall = document.querySelector('.markierbar');
+      return !!info && info.open && /^a\) Infotext/.test(info.querySelector('summary').textContent) && !!(info.compareDocumentPosition(fall) & Node.DOCUMENT_POSITION_FOLLOWING);
+    }), 'Expertenrunde: a) Infotext (offen) steht vor b) Fall markieren');
     const fertigKnopf = await handys[0].$('#fertig-team');
     H.pruefe(fertigKnopf && await fertigKnopf.isDisabled(), '„Unsere Spalte ist fertig“ erst nach dem Experten-Check');
     for (let i = 0; i < handys.length; i++) {
@@ -177,12 +181,12 @@ const textDa = (h, text) => bis(h, (t) => document.body.innerText.includes(t), t
         H.pruefe(await bis(lap, () => document.querySelectorAll('.t-karte .haken').length >= 1), 'Beamer zeigt den Haken');
       }
     }
-    H.pruefe(await folieIst(lap, 'aa1-merksatz'), 'alle Teams fertig → Beamer wechselt automatisch zu „Merksatz AA1 prüfen“');
-    H.pruefe(await textDa(handys[0], 'Merksatz AA1'), 'Handy: Merksatz AA1 am Beamer überprüfen');
-    const luecken = (await lap.$$('.merksatz-satz .aufdeck')).length;
-    H.pruefe(luecken === 3 && (await lap.$$('.merksatz-satz .aufdeck.offen')).length === 0, 'Merksatz AA1 mit 3 verdeckten Lücken');
-    await lap.click('.merksatz-satz .aufdeck >> nth=0');
-    H.pruefe(await bis(lap, () => document.querySelectorAll('.merksatz-satz .aufdeck.offen').length === 1), 'Lücke anklicken deckt sie auf');
+    H.pruefe(await folieIst(lap, 'aa1-merksatz'), 'alle Teams fertig → Beamer wechselt automatisch zu „Merksatz AA1 lesen“');
+    H.pruefe(await textDa(handys[0], 'Lesen Sie mit'), 'Handy: Merksatz AA1 auf dem Arbeitsblatt mitlesen');
+    H.pruefe((await lap.$$('.merksatz-satz .merksatz-wort')).length === 3 && (await lap.$$('.merksatz-satz .aufdeck')).length === 0, 'Lesefolie: ganzer Merksatz, 3 Schlüsselwörter hervorgehoben, nichts zum Aufdecken');
+    await lap.click('.merksatz-folie');
+    H.pruefe(await bis(lap, () => !!document.querySelector('.gross-merksatz')), 'Merksatz anklicken → groß');
+    await lap.keyboard.press('Escape');
     await lap.screenshot({ path: path.join(ORDNER, 'stunde_09_merksatz.png') });
     await weiter();
     H.pruefe(await folieIst(lap, 'aa2a'), 'Weiter: Stammgruppen');
@@ -259,7 +263,7 @@ const textDa = (h, text) => bis(h, (t) => document.body.innerText.includes(t), t
     await weiter();
     H.pruefe(await titelIst(handys[1], 'Lagerungs-Quiz'), 'Handy lädt das Lagerungs-Quiz');
     await weiter();
-    H.pruefe(await folieIst(lap, 'aa3-merksatz'), 'nach dem Quiz: Merksatz AA3 prüfen');
+    H.pruefe(await folieIst(lap, 'aa3-merksatz'), 'nach dem Quiz: Merksatz AA3 lesen');
     await weiter();
     H.pruefe(await folieIst(lap, 'aa3b') && (await lap.$$('.a-tabelle .a-nr')).length === 2 && (await lap.$$('.weg')).length === 0, 'AA3 b): nur 3.1/3.2 wie im AB, kein Entscheidungsweg');
     await weiter();

@@ -991,33 +991,27 @@
   }
 
   // Merksatz prüfen: Lücken einzeln aufdecken (Text aus inhalte.js → merksaetze, wie im AB)
+  // Merksatz zum gemeinsamen Lesen: ganzer Satz wie auf dem AB, Schlüsselwörter hervorgehoben; anklicken = groß
   function folieMerksatz(f, w) {
     w.appendChild(titel(f, f.text));
-    var alle = [];
     var name = 'Merksatz ' + f.merksatz.toUpperCase();
     var teile = (INHALTE.merksaetze || {})[f.merksatz] || [];
+    function satz(klasse) {
+      var p = el('p', klasse);
+      teile.forEach(function (t) {
+        if (typeof t === 'string') p.appendChild(document.createTextNode(t));
+        else p.appendChild(el('strong', 'merksatz-wort', t.l));
+      });
+      return p;
+    }
     var box = el('section', 'merksatz-folie');
     box.appendChild(el('div', 'merksatz-kopf', name));
-    var p = el('p', 'merksatz-satz');
-    function merksatzGross(k) {
-      k.appendChild(el('h2', null, name));
-      var q = el('p', 'gross-text gross-merksatz');
-      var offen = aufgedeckt().zellen;
-      teile.forEach(function (t, i) {
-        if (typeof t === 'string') q.appendChild(document.createTextNode(t));
-        else q.appendChild(el('mark', 'gross-luecke', offen[f.id + ':' + i] ? t.l : '______'));
-      });
-      k.appendChild(q);
-    }
-    teile.forEach(function (t, i) {
-      if (typeof t === 'string') { p.appendChild(document.createTextNode(t)); return; }
-      var schl = f.id + ':' + i;
-      alle.push(schl);
-      p.appendChild(aufdeckZelle(schl, t.l, 'luecke', merksatzGross));
+    box.appendChild(satz('merksatz-satz'));
+    box.addEventListener('click', function () {
+      grossZeigen(function (k) { k.appendChild(el('h2', null, name)); k.appendChild(satz('gross-text gross-merksatz')); });
     });
-    box.appendChild(p);
     w.appendChild(box);
-    w.appendChild(aufdeckKnoepfe(f, alle));
+    if (f.tipp) w.appendChild(el('p', 'tipp merksatz-tipp', f.tipp));
   }
 
   // Lagerung: großes Bild, daneben Wann? / Warum? / So geht’s
