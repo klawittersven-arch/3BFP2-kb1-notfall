@@ -56,6 +56,7 @@
     if (f.typ === 'aufstellung') return f.massnahmen.length * 2;
     if (f.typ === 'kausalkette') return f.kette.length + 1;
     if (f.typ === 'aufgabe') return 1;      // 0: Aufgabe erklären · 1: „Bearbeiten Sie jetzt …“ + Uhr
+    if (f.typ === 'abstimmung') return FRAGEN.length * 2;   // je Notfall: zeigen und abstimmen, dann Ergebnis
     return 0;
   }
   function gruppenInfo(nr) { return S.gruppen[nr % S.gruppen.length]; }
@@ -203,6 +204,7 @@
     if (s < maxSchritt(f)) {
       if (f.typ === 'aufstellung') w.textContent = s === 0 ? f.naechste : (s % 2 === 1 ? f.zeigen : f.naechste);
       else if (f.typ === 'aufgabe') w.textContent = '✍️ ' + (f.losKnopf || T.losKnopf);
+      else if (f.typ === 'abstimmung') w.textContent = s === 0 ? T.ersterNotfall : (s % 2 === 1 ? (f.runde === 2 ? T.aufloesungZeigen : T.ergebnisseZeigen) : T.naechsterNotfall);
       else w.textContent = s === f.kette.length ? f.antwortTitel : f.aufdecken;
     } else if (i < FOLIEN.length - 1) {
       w.textContent = K.ersetzen(T.weiter, { kurz: FOLIEN[i + 1].kurz });
@@ -372,17 +374,37 @@
     w.appendChild(box);
   }
 
+  // Einstieg (Runde 1) und Check-out (Runde 2): Notfall für Notfall, die Klasse stimmt am Handy ab (ohne Namen).
+  // Schritt 0 = Auftrag · ungerade = Notfall zeigen (nur „x von y haben abgestimmt“) · gerade = Ergebnis:
+  // Runde 1 die Verteilung ohne Auflösung, Runde 2 die Auflösung mit Beginn und Ende nebeneinander.
   function folieAbstimmung(f, w) {
-    w.appendChild(titel(f, f.unter));
-    w.appendChild(punkteListe(f.punkte));
-    var r = (stand.stimmen && stand.stimmen[f.runde]) || { n: 0 };
-    var y = (stand.geraete || []).length;
-    w.appendChild(el('div', 'zaehl-gross', K.ersetzen(f.zaehler, { x: r.n, y: y })));
-    var b = el('div', 'balken-gross');
-    var s = el('span');
-    s.style.width = (y ? Math.min(100, Math.round(100 * r.n / y)) : 0) + '%';
-    b.appendChild(s);
-    w.appendChild(b);
+    var s = schritt();
+    var k = Math.ceil(s / 2);
+    var frage = k ? FRAGEN[k - 1] : null;
+    if (!frage) {
+      w.appendChild(titel(f, f.unter));
+      w.appendChild(punkteListe(f.punkte));
+      return;
+    }
+    var kopf = el('div', 'notfall-kopf');
+    kopf.appendChild(el('span', 'notfall-titel', f.titel));
+    kopf.appendChild(el('span', 'notfall-nr', K.ersetzen(T.notfallNr, { n: k, y: FRAGEN.length })));
+    w.appendChild(kopf);
+    if (s % 2 === 0) {
+      w.appendChild(abstKarte(frage, f.runde === 2 ? [1, 2] : [1], f.runde === 2, true, false));
+      if (f.runde !== 2) w.appendChild(el('p', 'abgestimmt', T.aufloesungSpaeter));
+      return;
+    }
+    var box = el('section', 'notfall-frage');
+    box.appendChild(el('h2', null, frage.frage));
+    var opts = el('div', 'notfall-optionen');
+    frage.optionen.forEach(function (o) { opts.appendChild(el('div', 'notfall-option', o)); });
+    box.appendChild(opts);
+    w.appendChild(box);
+    var v = ((stand.stimmen && stand.stimmen[f.runde]) || { fragen: {} }).fragen[frage.nr] || {};
+    var n = 0;
+    Object.keys(v).forEach(function (b) { n += v[b].sicher + v[b].unsicher; });
+    w.appendChild(el('p', 'abgestimmt', K.ersetzen(T.abgestimmt, { x: n, y: stand.online || 0 })));
   }
 
   // Eine Abstimmungskarte; runden = [1] oder [1, 2]
@@ -1423,15 +1445,16 @@
       }
       return { 'w2-detektiv': INHALTE.detektiv.faelle.length + 1, 'w2-lagerung': INHALTE.lagerung.karten.length }[seite] || 5;
     }
-    function abstimmen(p, runde) {
-      var antworten = {}, sicher = {};
-      FRAGEN.forEach(function (f, i) {
-        // Beginn: typische Fehlvorstellungen (besonders E1 und E6), Ende: meist richtig
-        var quote = runde === 2 ? 0.85 : (i === 0 || i === FRAGEN.length - 1 ? 0.35 : 0.55);
-        antworten[f.nr] = Math.random() < quote ? f.richtig : f.optionen[Math.floor(Math.random() * f.optionen.length)].charAt(0);
-        sicher[f.nr] = Math.random() < (runde === 2 ? 0.75 : 0.4) ? 1 : 0;
-      });
-      post('/api/stimme', { geraeteId: p.id, runde: runde, antworten: antworten, sicher: sicher });
+    // eine erfundene Stimme zum Notfall i (die bisherigen Antworten der Person werden mitgeschickt)
+    function abstimmen(p, runde, i) {
+      var f = FRAGEN[i];
+      var alle = z['a' + runde] = z['a' + runde] || {};
+      var d = alle[p.id] = alle[p.id] || { antworten: {}, sicher: {} };
+      // Beginn: typische Fehlvorstellungen (besonders E1 und E6), Ende: meist richtig
+      var quote = runde === 2 ? 0.85 : (i === 0 || i === FRAGEN.length - 1 ? 0.35 : 0.55);
+      d.antworten[f.nr] = Math.random() < quote ? f.richtig : f.optionen[Math.floor(Math.random() * f.optionen.length)].charAt(0);
+      d.sicher[f.nr] = Math.random() < (runde === 2 ? 0.75 : 0.4) ? 1 : 0;
+      post('/api/stimme', { geraeteId: p.id, runde: runde, antworten: d.antworten, sicher: d.sicher });
     }
     function takt() {
       if (!raum || !raum.probe || !stand || !z) return;
@@ -1455,9 +1478,10 @@
           post('/api/stimme', { geraeteId: p.id, runde: f.runde, antworten: a, sicher: {} });
         });
       }
-      if (f.typ === 'abstimmung') {
-        var schon = f.runde === 2 ? z.s2 : z.s1;
-        auswahl(z.leute.filter(function (p) { return !schon[p.id]; }), 3).forEach(function (p) { schon[p.id] = true; abstimmen(p, f.runde); });
+      if (f.typ === 'abstimmung' && schritt() % 2 === 1) {
+        var i = Math.ceil(schritt() / 2) - 1;
+        var schon = z['a' + f.runde] || {};
+        auswahl(z.leute.filter(function (p) { return !(schon[p.id] && schon[p.id].antworten[FRAGEN[i].nr]); }), 5).forEach(function (p) { abstimmen(p, f.runde, i); });
       }
       var seite = f.seite || (f.typ === 'experten' ? 'w2-markieren' : null);
       if (seite) {
@@ -1487,7 +1511,7 @@
     return {
       starten: function (neu) {
         if (neu) {
-          z = { raum: raum.raum, leute: T.probeNamen.map(function (n) { return { id: 'probe' + K.zufallsId(12), name: n }; }), an: {}, s1: {}, s2: {}, s3: {}, prog: {}, ft: {}, fs: {}, folie: null, seit: 0, eingeteilt: null };
+          z = { raum: raum.raum, leute: T.probeNamen.map(function (n) { return { id: 'probe' + K.zufallsId(12), name: n }; }), an: {}, a1: {}, a2: {}, s3: {}, prog: {}, ft: {}, fs: {}, folie: null, seit: 0, eingeteilt: null };
           speichern();
         } else {
           var g = K.Speicher.dauer.lesen(SCHL);

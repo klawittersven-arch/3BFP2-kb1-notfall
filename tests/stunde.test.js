@@ -81,19 +81,35 @@ const textDa = (h, text) => bis(h, (t) => document.body.innerText.includes(t), t
     H.pruefe(await textDa(handys[5], 'Leitfrage'), 'Handy ohne Live-Verbindung folgt ebenfalls');
     await weiter();
     H.pruefe(await folieIst(lap, 'einstieg'), 'Folie 3: Wie hätten Sie gehandelt?');
-    for (let i = 0; i < handys.length; i++) {
-      const h = handys[i];
-      H.pruefe(await bis(h, (n) => document.querySelectorAll('.frage').length === n, S.fragen.length), `${namen[i]}: ${S.fragen.length} Fragen am Handy`);
-      const boxen = await h.$$('.frage');
-      for (let j = 0; j < S.fragen.length; j++) {
-        const f = S.fragen[j];
-        const opt = i % 2 ? f.optionen.find((o) => o.charAt(0) === f.richtig) : f.optionen.find((o) => o.charAt(0) !== f.richtig);
-        await (await boxen[j].$(`.antwort:has-text("${opt}")`)).click();
-        await (await boxen[j].$('.klein-knopf >> nth=1')).click();
+    H.pruefe(await textDa(handys[0], 'ersten Notfall'), 'Handy: gleich kommt der erste Notfall');
+    // Notfall für Notfall: die Lehrkraft zeigt ihn, alle stimmen gleichzeitig ab, dann „Ergebnisse anzeigen“
+    // (gerade Handys tippen falsch und „vermute nur“, ungerade richtig und „sicher“)
+    for (let j = 0; j < S.fragen.length; j++) {
+      const f = S.fragen[j];
+      await weiter();
+      if (j === 0) {
+        H.pruefe(await bis(lap, () => !!document.querySelector('.notfall-frage')) && (await lap.$$('.abst-zahl')).length === 0, 'Beamer: Notfall 1 groß, noch keine Verteilung');
+        H.pruefe((await lap.textContent('#weiter')).includes('Ergebnisse anzeigen'), 'Weiter-Knopf: „Ergebnisse anzeigen“');
       }
-      await h.click('button.knopf-breit');
+      for (let i = 0; i < handys.length; i++) {
+        const h = handys[i];
+        const da = await textDa(h, 'Notfall ' + (j + 1) + ' von ' + S.fragen.length);
+        if (j === 0) H.pruefe(da, namen[i] + ': Notfall 1 am Handy');
+        const b = i % 2 ? f.richtig : f.optionen.find((o) => o.charAt(0) !== f.richtig).charAt(0);
+        await h.click('.notfall-antworten .antwort[data-option="' + b + '"]');
+        await h.click('.sicher-knoepfe .antwort[data-sicher="' + (i % 2) + '"]');
+      }
+      H.pruefe(await bis(lap, () => /^6 von \d+ haben abgestimmt/.test((document.querySelector('.abgestimmt') || {}).textContent || '')), 'Notfall ' + (j + 1) + ': „6 von … haben abgestimmt“');
+      if (j === 0) await lap.screenshot({ path: path.join(ORDNER, 'stunde_03_notfall.png') });
+      await weiter();
+      if (j === 0) {
+        H.pruefe(await bis(lap, () => !!document.querySelector('.abst-frage.gross')) && (await lap.$$('.abst-option.richtig')).length === 0, 'Ergebnisse anzeigen: Verteilung, keine Auflösung');
+        H.pruefe(await textDa(handys[0], 'Auflösung gibt es am Ende'), 'Handy: Ergebnis vorne, Auflösung erst am Ende');
+        H.pruefe(await textDa(handys[0], 'Ihre Vermutung:'), 'Handy zeigt die eigene Vermutung');
+        await lap.screenshot({ path: path.join(ORDNER, 'stunde_03_ergebnis.png') });
+        await handys[0].screenshot({ path: path.join(ORDNER, 'handy_03_notfall.png'), fullPage: true });
+      }
     }
-    H.pruefe(await bis(lap, () => ((document.querySelector('.zaehl-gross') || {}).textContent || '').startsWith('6 von 6')), 'Beamer: „6 von 6 haben abgestimmt“');
     await weiter();
     H.pruefe(await folieIst(lap, 'einstieg-ergebnis'), 'Folie 4: Ergebnis');
     H.pruefe((await lap.$$('.abst-frage')).length === 6 && (await lap.$$('.abst-frage.stern')).length === 1, '6 Karten, eine als „größte Uneinigkeit“ markiert');
@@ -286,23 +302,34 @@ const textDa = (h, text) => bis(h, (t) => document.body.innerText.includes(t), t
 
     console.log('\n== Check-out');
     await lap.click('#menue-knopf');
-    await lap.click('.menue-folie:has-text("Hätten Sie richtig gehandelt?")');
-    H.pruefe(await folieIst(lap, 'checkout'), 'Check-out');
-    for (const h of handys) {
-      await bis(h, () => document.getElementById('titel').textContent.includes('richtig gehandelt'));
-      const boxen = await h.$$('.frage');
-      for (let j = 0; j < S.fragen.length; j++) {
-        const f = S.fragen[j];
-        await (await boxen[j].$(`.antwort:has-text("${f.optionen.find((o) => o.charAt(0) === f.richtig)}")`)).click();
-        await (await boxen[j].$('.klein-knopf >> nth=0')).click();
+    await lap.click('.menue-folie:has-text("Was haben wir heute gelernt?")');
+    H.pruefe(await folieIst(lap, 'checkout-intro') && (await lap.$$('.warum-box')).length === 1, 'vor dem Check-out: „Was haben wir heute gelernt?“');
+    await weiter();
+    H.pruefe(await folieIst(lap, 'checkout'), 'Check-out: Hätten Sie richtig gehandelt?');
+    // alle entscheiden jetzt richtig und „sicher“
+    for (let j = 0; j < S.fragen.length; j++) {
+      const f = S.fragen[j];
+      await weiter();
+      for (const h of handys) {
+        await textDa(h, 'Notfall ' + (j + 1) + ' von ' + S.fragen.length);
+        await h.click('.notfall-antworten .antwort[data-option="' + f.richtig + '"]');
+        await h.click('.sicher-knoepfe .antwort[data-sicher="1"]');
       }
-      await h.click('button.knopf-breit');
+      H.pruefe(await bis(lap, () => /^6 von \d+ haben abgestimmt/.test((document.querySelector('.abgestimmt') || {}).textContent || '')), 'Check-out Notfall ' + (j + 1) + ': alle haben abgestimmt');
+      if (j === 0) H.pruefe((await lap.textContent('#weiter')).includes('Auflösung zeigen'), 'Weiter-Knopf: „Auflösung zeigen“');
+      await weiter();
+      if (j === 0) {
+        H.pruefe(await bis(lap, () => document.querySelectorAll('.abst-frage.gross .abst-option.richtig').length === 1 && document.querySelectorAll('.abst-frage.gross .abst-kopf').length === 3), 'Auflösung: richtige Antwort, Beginn und Ende nebeneinander');
+        H.pruefe(await textDa(handys[0], 'Richtig ist:') && await textDa(handys[0], 'Ihre Vermutung zu Beginn'), 'Handy: Auflösung mit eigener Vermutung (Beginn) und Entscheidung (jetzt)');
+        await lap.screenshot({ path: path.join(ORDNER, 'stunde_check_aufloesung.png') });
+        await handys[0].screenshot({ path: path.join(ORDNER, 'handy_check_aufloesung.png'), fullPage: true });
+      }
     }
-    H.pruefe(await textDa(handys[0], 'Ihre Vermutung (Beginn)'), 'Handy: Auflösung mit Vermutung (Beginn) und Entscheidung (Ende)');
     await weiter();
     H.pruefe(await folieIst(lap, 'checkout-ergebnis'), 'vorher – nachher');
     H.pruefe((await lap.$$('.abst-option.richtig')).length === S.fragen.length, 'Lösung ist markiert');
     H.pruefe((await lap.$$('.abst-kopf')).length >= 12, 'zwei Spalten je Karte (Beginn, Ende)');
+    H.pruefe(await textDa(handys[0], 'Richtig zu Beginn: 0 von 6 · jetzt: 6 von 6') && await textDa(handys[1], 'Richtig zu Beginn: 6 von 6 · jetzt: 6 von 6'), 'Handy: eigene Bilanz (Beginn und jetzt)');
     await lap.screenshot({ path: path.join(ORDNER, 'stunde_23_vorher_nachher.png') });
 
     console.log('\n== Ende gibt die Nachlese frei');

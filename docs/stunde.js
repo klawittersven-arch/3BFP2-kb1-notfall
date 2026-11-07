@@ -1,7 +1,7 @@
 /* Handy-App der Beamer-Stunde (w2.html) – Programmlogik, Texte in inhalte_stunde.js.
  *
  * Ein QR-Code für die ganze Stunde. Das Handy meldet sich mit Vornamen im Raum an und zeigt
- * dann immer den Bildschirm, der zur Folie am Beamer passt. Übungen (Abstimmung, Markieren,
+ * dann immer den Bildschirm, der zur Folie am Beamer passt. Übungen (Markieren,
  * Detektiv, Lagerung, Raster) werden als fertige Module eingebunden: Wechselt die
  * Folie zu einer anderen Übung, lädt die Seite neu (der letzte Stand liegt im Tab-Speicher).
  * Springen zwischen Übungen ist so nicht möglich – das Handy folgt nur dem Beamer. */
@@ -100,7 +100,6 @@
     var h = f.handy || { typ: 'vorne' };
     // Aufgabenfolie: erst erklärt die Lehrkraft (Handy: nach vorne schauen), nach „Weiter“ wird gearbeitet
     if (f.typ === 'aufgabe' && !(m.schritt > 0)) return { schl: 'aufgabeVorne' };
-    if (h.typ === 'entscheidung') return { schl: 'modul:entscheidung:' + h.runde, modul: 'entscheidung', params: { runde: h.runde } };
     if (h.typ === 'experte') {
       if (!m.puzzle) return { schl: 'warten' };
       if (m.puzzle.alleTeamsFertig) return { schl: 'stamm' };
@@ -307,7 +306,7 @@
     ({
       vorne: zeigeVorne, murmeln: zeigeMurmeln, gruppe: zeigeGruppe, warten: zeigeWarten, stamm: zeigeStamm,
       papier: zeigePapier, aufstellung: zeigeAufstellung, ende: zeigeEnde, faelle: zeigeFaelle,
-      aufgabeVorne: zeigeAufgabeVorne, bild: zeigeBild
+      aufgabeVorne: zeigeAufgabeVorne, bild: zeigeBild, abstimmung: zeigeAbstimmung, bilanz: zeigeBilanz
     }[b.schl] || zeigeVorne)(f, h);
     uhrenAktualisieren();
   }
@@ -417,6 +416,108 @@
     });
   }
 
+  /* ---------- Einstieg (Runde 1) und Check-out (Runde 2): Notfall für Notfall ----------
+     Die Lehrkraft zeigt einen Notfall am Beamer, die Klasse stimmt gleichzeitig ab (ohne Namen, wie
+     „Wer darf was?“). Danach: Runde 1 nur das Ergebnis vorne, Runde 2 die Auflösung mit Beginn und Ende.
+     Die eigenen Antworten bleiben auf dem Handy (für Murmeln, Auflösung und Bilanz). */
+  var SCHL_ABST = 'kb1nf_abstimmung';
+  function abstStand() {
+    var a = anmeldung();
+    var z = K.Speicher.dauer.lesen(SCHL_ABST);
+    if (!z || !z.runden || !a || z.raum !== a.raum) z = { raum: a ? a.raum : '', runden: {} };
+    [1, 2].forEach(function (r) { z.runden[r] = z.runden[r] || { antworten: {}, sicher: {} }; });
+    return z;
+  }
+  function abstWaehlen(runde, nr, antwort, sicher) {
+    var a = anmeldung();
+    var z = abstStand();
+    var d = z.runden[runde];
+    if (antwort) d.antworten[nr] = antwort;
+    if (sicher === 0 || sicher === 1) d.sicher[nr] = sicher;
+    K.Speicher.dauer.schreiben(SCHL_ABST, z);
+    if (a && d.antworten[nr]) KB1Verbindung.senden(BASIS, '/api/stimme', { raum: a.raum, geraeteId: a.geraeteId, runde: runde, antworten: d.antworten, sicher: d.sicher }).catch(function () {});
+  }
+  function optionText(frage, b) { return b ? frage.optionen.filter(function (o) { return o.charAt(0) === b; })[0] || '' : ''; }
+  function zeigeAbstimmung(f, h) {
+    kopf(f.kurz);
+    var s = stand.schritt || 0;
+    var k = Math.ceil(s / 2);
+    var FR = INHALTE.entscheidung.fragen;
+    var frage = k ? FR[k - 1] : null;
+    if (!frage) { bildschirm('🗳️', h.titel, h.start); return; }
+    var runde = f.runde;
+    var z = abstStand();
+    var meine = z.runden[runde].antworten[frage.nr];
+    var sicher = z.runden[runde].sicher[frage.nr];
+    var ergebnis = s % 2 === 0;
+    var aufloesung = ergebnis && runde === 2;
+    var box = bildschirm('', '', '');
+    box.appendChild(el('p', 'klein-grau', K.ersetzen(H.notfallNr, { n: k, y: FR.length })));
+    box.appendChild(el('p', 'notfall-handy', frage.frage));
+    var knoepfe = el('div', 'antworten notfall-antworten');
+    frage.optionen.forEach(function (o) {
+      var b = o.charAt(0);
+      var richtig = aufloesung && b === frage.richtig;
+      var kn = K.knopf(o, 'antwort' + (meine === b ? ' gewaehlt' : '') + (richtig ? ' richtig' : '') + (aufloesung && meine === b && !richtig ? ' falsch' : ''), function () {
+        abstWaehlen(runde, frage.nr, b);
+        letzterInhalt = '';
+        zeigen();
+      });
+      kn.setAttribute('data-option', b);
+      kn.disabled = ergebnis;
+      knoepfe.appendChild(kn);
+    });
+    box.appendChild(knoepfe);
+    if (!ergebnis) {
+      box.appendChild(el('p', 'sicher-frage', H.abstSicherFrage));
+      var sk = el('div', 'antworten sicher-knoepfe');
+      [[1, H.abstSicher], [0, H.abstUnsicher]].forEach(function (x) {
+        var kn = K.knopf(x[1], 'antwort' + (sicher === x[0] ? ' gewaehlt' : ''), function () {
+          abstWaehlen(runde, frage.nr, null, x[0]);
+          letzterInhalt = '';
+          zeigen();
+        });
+        kn.setAttribute('data-sicher', x[0]);
+        sk.appendChild(kn);
+      });
+      box.appendChild(sk);
+      box.appendChild(el('p', 'aufstellung-hinweis', meine && (sicher === 0 || sicher === 1) ? H.abstAngekommen : (runde === 1 ? H.abstFrage1 : H.abstFrage2)));
+      return;
+    }
+    if (runde === 1) {
+      box.appendChild(el('p', 'aufstellung-hinweis', meine ? K.ersetzen(H.abstIhre, { a: optionText(frage, meine), s: sicher === 1 ? H.sicherKurz : H.unsicherKurz }) : H.abstKeine));
+      box.appendChild(fmt('p', 'aufstellung-hinweis', H.abstErgebnis));
+      return;
+    }
+    var beginn = z.runden[1].antworten[frage.nr];
+    var rm = el('div', 'rueckmeldung ' + (meine === frage.richtig ? 'ist-richtig' : 'ist-falsch'));
+    rm.appendChild(el('p', 'rueck-titel', '✓ ' + K.ersetzen(H.abstRichtigIst, { a: optionText(frage, frage.richtig) })));
+    rm.appendChild(el('p', 'abst-beginn', beginn ? K.ersetzen(H.abstBeginn, { a: optionText(frage, beginn) }) + (beginn === frage.richtig ? ' ✓' : ' ✗') : H.abstBeginnKeine));
+    rm.appendChild(el('p', 'abst-ende', meine ? K.ersetzen(H.abstEnde, { a: optionText(frage, meine) }) + (meine === frage.richtig ? ' ✓' : ' ✗') : H.abstEndeKeine));
+    rm.appendChild(el('p', null, frage.erklaerung));
+    box.appendChild(rm);
+  }
+
+  // Vorher – nachher: die eigene Bilanz über alle Notfälle
+  function zeigeBilanz(f, h) {
+    kopf(f.kurz);
+    var z = abstStand();
+    var FR = INHALTE.entscheidung.fragen;
+    function richtig(r, fr) { return z.runden[r].antworten[fr.nr] === fr.richtig; }
+    function zaehle(r) { return FR.filter(function (fr) { return richtig(r, fr); }).length; }
+    var box = bildschirm('📊', h.titel, h.text);
+    box.appendChild(el('p', 'bilanz-zahl', K.ersetzen(H.bilanz, { a: zaehle(1), e: zaehle(2), y: FR.length })));
+    var liste = el('div', 'bilanz-liste');
+    FR.forEach(function (fr) {
+      var zeile = el('div', 'bilanz-zeile');
+      zeile.appendChild(el('strong', null, fr.nr));
+      zeile.appendChild(el('span', null, H.bilanzBeginn + ' ' + (richtig(1, fr) ? '✓' : '✗') + ' · ' + H.bilanzEnde + ' ' + (richtig(2, fr) ? '✓' : '✗')));
+      zeile.appendChild(el('span', 'klein-grau', K.ersetzen(H.abstRichtigIst, { a: optionText(fr, fr.richtig) })));
+      liste.appendChild(zeile);
+    });
+    box.appendChild(liste);
+  }
+
   function zeigeMurmeln(f, h) {
     kopf(f.kurz);
     var nr = stand.frage;
@@ -429,9 +530,7 @@
     k.style.textAlign = 'left';
     k.appendChild(el('h2', null, frage.nr));
     k.appendChild(el('p', null, frage.frage));
-    var z = K.Speicher.dauer.lesen('kb1nf_entscheidung');
-    var a = z && z.runden && z.runden[1] && z.runden[1].antworten && z.runden[1].antworten[frage.nr];
-    var opt = frage.optionen.filter(function (o) { return o.charAt(0) === a; })[0];
+    var opt = optionText(frage, abstStand().runden[1].antworten[frage.nr]);
     k.appendChild(fmt('p', null, opt ? '**' + K.ersetzen(h.ihre, { a: opt }) + '**' : h.keine));
     uebung.appendChild(k);
   }

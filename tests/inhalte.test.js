@@ -87,7 +87,7 @@ const handyJs = fs.readFileSync(path.join(DOCS, 'stunde.js'), 'utf8');
 for (const f of S.folien) {
   pruefe(new RegExp('\\b' + f.typ + ': folie').test(beamerJs), `Folie ${f.id}: Beamer kennt den Typ „${f.typ}“`);
   const h = f.handy || {};
-  pruefe(['vorne', 'bild', 'entscheidung', 'murmeln', 'gruppe', 'experte', 'stamm', 'modul', 'papier', 'faelle', 'aufstellung', 'ende'].includes(h.typ), `Folie ${f.id}: Handy-Bildschirm „${h.typ}“ ist bekannt`);
+  pruefe(['vorne', 'bild', 'abstimmung', 'bilanz', 'murmeln', 'gruppe', 'experte', 'stamm', 'modul', 'papier', 'faelle', 'aufstellung', 'ende'].includes(h.typ), `Folie ${f.id}: Handy-Bildschirm „${h.typ}“ ist bekannt`);
   if (h.modul) pruefe(fs.existsSync(path.join(DOCS, h.modul + '.js')), `Folie ${f.id}: Übung ${h.modul}.js existiert`);
   (f.uhr || []).forEach((u) => pruefe(Number.isInteger(u.sek) && u.sek >= 5 && u.sek <= 3600, `Folie ${f.id}: Uhr „${u.label}“ zwischen 5 s und 60 min`));
   if (f.uhr) pruefe(f.uhr.length <= 6, `Folie ${f.id}: höchstens 6 Uhr-Abschnitte`);
@@ -108,6 +108,12 @@ const aa4 = S.folien.find((f) => f.id === 'aa4a');
 pruefe(aa4.massnahmen.length === 6 && aa4.massnahmen.every((m) => m.ecke >= 0 && m.ecke < aa4.ecken.length), 'AA4a: 6 Maßnahmen mit gültiger Ecke');
 pruefe(aa4.runde === 3 && aa4.ecken.length === 3 && aa4.massnahmen.length <= 9, 'AA4a: Abstimmung am Handy (Runde 3, höchstens 9 Maßnahmen)');
 pruefe(!ids.includes('pause'), 'keine Pausenfolie');
+['einstieg', 'checkout'].forEach((id, i) => {
+  const f = S.folien.find((x) => x.id === id);
+  pruefe(f.typ === 'abstimmung' && f.runde === i + 1 && f.handy.typ === 'abstimmung', id + ': Notfall für Notfall am Beamer, Abstimmung am Handy (Runde ' + (i + 1) + ')');
+});
+pruefe(ids.indexOf('checkout-intro') === ids.indexOf('checkout') - 1, 'vor dem Check-out: Erklärfolie „Was haben wir heute gelernt?“');
+pruefe(!fs.existsSync(path.join(DOCS, 'entscheidung.js')), 'kein Modul mehr, das alle sechs Fragen auf einmal stellt');
 pruefe(!ids.includes('ikl') && !/Ich-kann|Nächste Woche/i.test(JSON.stringify(S.folien)), 'keine Ich-kann-Liste und kein Ausblick auf nächste Woche');
 pruefe(S.folien[S.folien.length - 1].typ === 'ende' && /Hausaufgabe/.test(JSON.stringify(S.folien[S.folien.length - 1])), 'letzte Folie: Hausaufgabe und Nachlesen (gibt die Nachlese frei)');
 for (const d of fs.readdirSync(DOCS).filter((x) => /\.(js|html|css)$/.test(x))) {

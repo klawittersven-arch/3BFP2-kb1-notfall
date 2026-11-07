@@ -70,9 +70,8 @@ var STUNDE = {
       id: 'einstieg', abschnitt: 'Einstieg', kurz: 'Wie hätten Sie gehandelt?', typ: 'abstimmung', runde: 1,
       titel: 'Wie hätten Sie gehandelt?',
       unter: 'Ihre Vermutungen, bitte!',
-      punkte: ['Sechs kurze Notfälle – der letzte ist **Frau Maler um 11 Uhr**.', 'Tippen Sie Ihre Vermutung an – und ob Sie sich **sicher** sind oder **nur vermuten**.', '**Falsch liegen ist ausdrücklich erlaubt:** Genau diese Entscheidungen lernen Sie heute.'],
-      zaehler: '{x} von {y} haben abgestimmt',
-      handy: { typ: 'entscheidung', runde: 1 }
+      punkte: ['Sechs kurze Notfälle – der letzte ist **Frau Maler um 11 Uhr**. Sie kommen **nacheinander** an den Beamer.', 'Tippen Sie am Handy Ihre Vermutung an – und ob Sie sich **sicher** sind oder **nur vermuten**.', 'Danach sehen Sie, wie die Klasse abgestimmt hat. **Aufgelöst wird erst am Ende der Stunde.**', '**Falsch liegen ist ausdrücklich erlaubt:** Genau diese Entscheidungen lernen Sie heute.'],
+      handy: { typ: 'abstimmung', titel: 'Wie hätten Sie gehandelt?', start: 'Gleich zeigt Ihre Lehrkraft den ersten Notfall am Beamer. Dann tippen Sie hier Ihre Vermutung an.' }
     },
     {
       id: 'einstieg-ergebnis', abschnitt: 'Einstieg', kurz: 'Ergebnis', typ: 'ergebnis', runde: 1,
@@ -98,7 +97,7 @@ var STUNDE = {
         { emoji: '⚖️', text: 'Wer darf was? Adrenalin oder Antihistaminikum?', zeit: '14 min' },
         { emoji: '📝', text: 'Klausurtraining wie in der KA', zeit: '11 min' },
         { emoji: '🔎', text: 'Zurück zu Frau Maler', zeit: '5 min' },
-        { emoji: '✅', text: 'Hätten Sie richtig gehandelt?', zeit: '10 min' }
+        { emoji: '✅', text: 'Hätten Sie richtig gehandelt?', zeit: '12 min' }
       ],
       handy: { typ: 'vorne', titel: 'Heute: Schock ist nicht gleich Schock', text: 'Schauen Sie nach vorne – gleich geht es mit dem Gruppenpuzzle los.' }
     },
@@ -372,18 +371,35 @@ var STUNDE = {
       handy: { typ: 'vorne', titel: 'Zurück zu Frau Maler', text: 'Ergänzen Sie die **Kausalkette** auf dem Arbeitsblatt (AA6), während sie vorne Schritt für Schritt aufgedeckt wird.' }
     },
     {
+      id: 'checkout-intro', abschnitt: 'Abschluss', kurz: 'Was haben wir heute gelernt?', typ: 'info', emoji: '🎯',
+      titel: 'Was haben wir heute gelernt?',
+      unter: 'Können Sie jetzt besser einschätzen, was in den Notfällen zu tun ist?',
+      punkte: [
+        'Zu Beginn der Stunde haben Sie bei **sechs Notfällen** vermutet, wie Sie handeln würden – ohne Auflösung.',
+        'Jetzt lösen Sie **dieselben Notfälle** noch einmal – mit Ihrem **neuen Fachwissen**.',
+        'Nach jedem Notfall gibt es die **Auflösung** – und Sie sehen, wie die Klasse **am Anfang** und **jetzt** abgestimmt hat.'
+      ],
+      warumTitel: 'Heute neu gelernt',
+      warum: [
+        '**Drei Schockformen** im Vergleich: hypovolämisch, anaphylaktisch, neurogen',
+        '**Lagerung nach dem Leitsymptom** – nicht immer „Beine hoch“',
+        '**Wer darf was?** Selbst handeln – oder nur nach Anordnung bzw. SOP',
+        '**Adrenalin i. m.** ist bei Anaphylaxie das Mittel der ersten Wahl'
+      ],
+      handy: { typ: 'vorne', titel: 'Was haben wir heute gelernt?', text: 'Gleich lösen Sie die sechs Notfälle vom Stundenbeginn noch einmal – mit Ihrem neuen Fachwissen.' }
+    },
+    {
       id: 'checkout', abschnitt: 'Abschluss', kurz: 'Hätten Sie richtig gehandelt?', typ: 'abstimmung', runde: 2,
       titel: 'Hätten Sie richtig gehandelt?',
       unter: 'Prüfen Sie Ihre Vermutungen',
-      punkte: ['Jetzt wissen Sie mehr: Entscheiden Sie **dieselben sechs Notfälle** noch einmal.', 'Danach sehen Sie die Auflösung – und Ihre Vermutungen vom Stundenbeginn daneben.'],
-      zaehler: '{x} von {y} haben abgestimmt',
-      handy: { typ: 'entscheidung', runde: 2 }
+      punkte: ['Jetzt wissen Sie mehr: Entscheiden Sie **dieselben sechs Notfälle** noch einmal – Notfall für Notfall am Handy.', 'Nach jedem Notfall: die **Auflösung** – und wie die Klasse **am Anfang** und **jetzt** abgestimmt hat.'],
+      handy: { typ: 'abstimmung', titel: 'Hätten Sie richtig gehandelt?', start: 'Gleich zeigt Ihre Lehrkraft den ersten Notfall noch einmal. Entscheiden Sie jetzt mit Ihrem neuen Fachwissen.' }
     },
     {
       id: 'checkout-ergebnis', abschnitt: 'Abschluss', kurz: 'Vorher – nachher', typ: 'ergebnis', runde: 2, loesung: true,
       titel: 'Vorher – nachher',
-      unter: 'Karte anklicken = groß, mit Erklärung',
-      handy: { typ: 'entscheidung', runde: 2 }
+      unter: 'Karte anklicken = groß, mit Erklärung · Bei welchem Notfall hat sich die Klasse am stärksten verändert?',
+      handy: { typ: 'bilanz', titel: 'Ihre Bilanz', text: 'Vergleichen Sie am Beamer: Bei welchem Notfall hat sich die Klasse am stärksten verändert?' }
     },
     {
       id: 'ende', abschnitt: 'Abschluss', kurz: 'Hausaufgabe und Nachlesen', typ: 'ende',
@@ -437,6 +453,12 @@ var STUNDE = {
     abgestimmt: '{x} von {y} haben abgestimmt',
     richtigGelegen: '✓ Das hatten {x} von {y} richtig!',
     losKnopf: 'Jetzt bearbeiten',
+    ersterNotfall: 'Erster Notfall',
+    naechsterNotfall: 'Nächster Notfall',
+    ergebnisseZeigen: 'Ergebnisse anzeigen',
+    aufloesungZeigen: 'Auflösung zeigen',
+    notfallNr: 'Notfall {n} von {y}',
+    aufloesungSpaeter: 'Die Auflösung gibt es am Ende der Stunde.',
     spalteGross: 'Ganze Spalte groß zeigen',
     loesungZu: 'Musterlösung {nr}',
     gliedNr: 'Glied {n} von {y}',
@@ -534,6 +556,26 @@ var STUNDE = {
     mitglied: '{name} · {b} {form}',
     du: '(Sie)',
     gruppeFertig: '✓ Ihre ganze Gruppe ist fertig.',
+    notfallNr: 'Notfall {n} von {y}',
+    abstFrage1: 'Tippen Sie Ihre Vermutung an – und ob Sie sich sicher sind.',
+    abstFrage2: 'Tippen Sie Ihre Entscheidung an – und ob Sie sich sicher sind.',
+    abstSicherFrage: 'Wie sicher sind Sie?',
+    abstSicher: 'Ich bin mir sicher',
+    abstUnsicher: 'Ich vermute nur',
+    abstAngekommen: 'Ihre Wahl ist angekommen. Bis zum Ergebnis können Sie sie noch ändern.',
+    abstIhre: 'Ihre Vermutung: {a} ({s})',
+    sicherKurz: 'sicher',
+    unsicherKurz: 'nur vermutet',
+    abstKeine: 'Sie haben bei diesem Notfall nicht abgestimmt.',
+    abstErgebnis: 'Das Ergebnis steht vorne. **Die Auflösung gibt es am Ende der Stunde.**',
+    abstRichtigIst: 'Richtig ist: {a}',
+    abstBeginn: 'Ihre Vermutung zu Beginn: {a}',
+    abstEnde: 'Ihre Entscheidung jetzt: {a}',
+    abstBeginnKeine: 'Zu Beginn haben Sie nicht abgestimmt.',
+    abstEndeKeine: 'Jetzt haben Sie nicht abgestimmt.',
+    bilanz: 'Richtig zu Beginn: {a} von {y} · jetzt: {e} von {y}',
+    bilanzBeginn: 'Beginn',
+    bilanzEnde: 'jetzt',
     aufstellungNr: 'Maßnahme {n} von {y}',
     aufstellungFrage: 'Wer darf diese Maßnahme durchführen? Tippen Sie an.',
     aufstellungGewaehlt: 'Ihre Wahl ist angekommen. Bis zur Lösung können Sie sie noch ändern.',

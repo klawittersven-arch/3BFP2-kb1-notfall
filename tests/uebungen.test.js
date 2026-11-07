@@ -27,7 +27,7 @@ fs.mkdirSync(ORDNER, { recursive: true });
   beobachten(s, protokoll, 'index');
   await s.goto(basis + 'index.html');
   pruefe((await s.$$('a')).length === 0, 'Startseite ohne Links (nur über QR-Codes zu den Übungen)');
-  const seiten = ['w2-entscheidung.html?runde=1', 'w2-entscheidung.html?runde=2', 'w2-markieren.html?fall=a', 'w2-detektiv.html', 'w2-lagerung.html', 'w2-raster.html', 'w2-transfer.html'];
+  const seiten = ['w2-markieren.html?fall=a', 'w2-detektiv.html', 'w2-lagerung.html', 'w2-raster.html', 'w2-transfer.html'];
   for (const l of seiten) {
     const r = await s.request.get(basis + l);
     pruefe(r.status() === 200, `Seite erreichbar: ${l}`);
@@ -38,8 +38,6 @@ fs.mkdirSync(ORDNER, { recursive: true });
   console.log('Aufruf ohne QR-Parameter');
   s = await kontext.newPage();
   beobachten(s, protokoll, 'ohne-parameter');
-  await s.goto(basis + 'w2-entscheidung.html');
-  pruefe((await s.$$('#uebung button')).length === 0 && (await s.textContent('#uebung')).includes(INHALTE.entscheidung.ohneQr), 'Abstimmung ohne ?runde: nur Hinweis, keine Rundenauswahl');
   await s.goto(basis + 'w2-markieren.html');
   pruefe((await s.$$('#uebung button')).length === 0 && (await s.textContent('#uebung')).includes(INHALTE.markieren.ohneQr), 'Markieren ohne ?fall: nur Hinweis, keine Fallauswahl');
   await s.close();
@@ -175,62 +173,6 @@ fs.mkdirSync(ORDNER, { recursive: true });
   }
   await s.waitForSelector('.merksatz');
   pruefe((await s.textContent('.merksatz')).includes('Leitsymptom'), 'Merksatz AA3 erscheint');
-  await s.close();
-
-  /* ---------- Einstieg / Check-out ---------- */
-  console.log('Wie hätten Sie gehandelt? (Einstieg / Check-out)');
-  s = await kontext.newPage();
-  beobachten(s, protokoll, 'entscheidung');
-  const E = INHALTE.entscheidung;
-  await s.goto(basis + 'w2-entscheidung.html');
-  pruefe((await s.textContent('#uebung')).includes(E.ohneQr) && await s.isHidden('#anweisung'), 'ohne QR-Code: nur Hinweis, keine Fragen');
-  await s.goto(basis + 'w2-entscheidung.html?runde=1');
-  pruefe(E.fragen.length === 6 && E.fragen[5].frage.includes('Frau Maler'), '6 Fragen, E6 = Leitfrage Frau Maler');
-  pruefe((await s.textContent('#titel')) === E.titel && (await s.textContent('.rundenkopf')) === E.runde1, 'QR-Code Einstieg: „Wie hätten Sie gehandelt?“ – Vermutungen');
-  pruefe((await s.textContent('#anweisung')).includes('Falsch liegen ist jetzt ausdrücklich erlaubt'), 'Einstieg: Falsch liegen ist erlaubt');
-  pruefe((await s.$$('.frage')).length === E.fragen.length, 'alle Fragen angezeigt');
-  await s.click('button:has-text(\"' + E.abschicken1 + '\")');
-  pruefe((await s.textContent('#uebung')).includes(E.nochOffen), 'unvollständig → Hinweis');
-  const fragenBoxen = await s.$$('.frage');
-  for (let i = 0; i < E.fragen.length; i++) {
-    const f = E.fragen[i];
-    const falsch = f.optionen.find((o) => o.charAt(0) !== f.richtig);
-    await (await fragenBoxen[i].$(`.antwort:has-text("${falsch}")`)).click();
-    await (await fragenBoxen[i].$(`.klein-knopf:has-text("${E.unsicher}")`)).click();
-  }
-  await s.click('button:has-text(\"' + E.abschicken1 + '\")');
-  pruefe((await s.textContent('#uebung')).includes(E.danke1), 'Einstieg: Dank, keine Auflösung');
-  pruefe(!(await s.textContent('#uebung')).includes(E.fragen[0].erklaerung), 'Einstieg verrät die Lösung nicht');
-  const knoepfe1 = await s.$$eval('#uebung button', (b) => b.map((x) => x.textContent));
-  pruefe(knoepfe1.length === 1 && knoepfe1[0] === E.neu, 'nach dem Einstieg nur „Antworten ändern“ – kein Weg zum Check-out', knoepfe1);
-  await s.goto(basis + 'w2-entscheidung.html?runde=2');
-  pruefe((await s.textContent('#titel')) === E.titel2 && (await s.textContent('.rundenkopf')) === E.runde2, 'QR-Code Check-out: „Hätten Sie richtig gehandelt?“');
-  pruefe((await s.textContent('#anweisung')).includes('dieselben sechs Notfälle'), 'Check-out: eigene Anweisung');
-  const boxen2 = await s.$$('.frage');
-  for (let i = 0; i < E.fragen.length; i++) {
-    const f = E.fragen[i];
-    const richtig = f.optionen.find((o) => o.charAt(0) === f.richtig);
-    await (await boxen2[i].$(`.antwort:has-text("${richtig}")`)).click();
-    await (await boxen2[i].$(`.klein-knopf:has-text("${E.sicher}")`)).click();
-  }
-  await s.click('button:has-text(\"' + E.abschicken2 + '\")');
-  const aufl = await s.textContent('#uebung');
-  pruefe(aufl.includes(E.danke2) && aufl.includes(E.fragen[0].erklaerung) && aufl.includes(E.fragen[5].erklaerung), 'Check-out: Auflösung mit Erklärung (auch E6)');
-  const anzahl = E.fragen.length;
-  pruefe((await s.$$('.falsch-text')).length === anzahl && (await s.$$('.ok-text')).length === anzahl, 'Vermutung (Beginn) und Entscheidung (Ende) nebeneinander');
-  const zeile1 = await s.textContent('.falsch-text');
-  pruefe(zeile1.startsWith('Ihre Vermutung (Beginn):') && zeile1.includes(E.unsicherKurz), 'Beschriftung „Ihre Vermutung (Beginn) … nur vermutet“', zeile1);
-  const zeile2 = await s.textContent('.ok-text');
-  pruefe(zeile2.startsWith('Ihre Entscheidung (Ende):') && zeile2.includes(E.richtig) && zeile2.includes(E.sicherKurz), 'Beschriftung „Ihre Entscheidung (Ende) … richtig · sicher“', zeile2);
-  await s.screenshot({ path: path.join(ORDNER, 'entscheidung_aufloesung.png'), fullPage: true });
-  // Gespeicherte Antworten zum alten Fragensatz (nur E1–E5) gelten als nicht abgegeben
-  await s.evaluate(() => {
-    const z = JSON.parse(localStorage.getItem('kb1nf_entscheidung'));
-    Object.values(z.runden).forEach((d) => { delete d.antworten.E6; delete d.sicher.E6; });
-    localStorage.setItem('kb1nf_entscheidung', JSON.stringify(z));
-  });
-  await s.reload();
-  pruefe((await s.$$('.frage .antwort')).length > 0 && !(await s.textContent('#uebung')).includes(E.danke2), 'alter Stand ohne E6 → Fragen werden neu gestellt');
   await s.close();
 
   /* ---------- AA6 Raster ---------- */
