@@ -332,22 +332,10 @@ a { color: var(--petrol); }
 @media (min-width: 520px) { .antworten { grid-template-columns: 1fr 1fr; } }
 .antwort.gewaehlt { background: var(--dunkelpetrol); border-color: #F2B600; box-shadow: 0 0 0 3px #F2B600 inset; }
 
-/* Monitorvergleich */
-.monitorvergleich { display: grid; gap: 8px; margin: 10px 0; }
-.mv-zeile { display: grid; grid-template-columns: 0.9fr 1fr 1fr; gap: 8px; align-items: center; text-align: left;
-  font: inherit; font-size: 16px; background: #fff; color: inherit; border: 2px solid var(--rand); border-radius: 10px; padding: 10px; }
-button.mv-zeile { cursor: pointer; min-height: 52px; }
-.mv-kopf { background: var(--dunkelpetrol); color: #fff; border-color: var(--dunkelpetrol); font-weight: 700; font-size: 14px; }
-.mv-zeile.gewaehlt { border-color: #F2B600; background: #FFF3C4; }
-.mv-zeile.ok { border-color: var(--gruen); background: var(--gruen-hell); }
-.mv-zeile.falsch { border: 2px dashed var(--bernstein-rand); background: var(--bernstein-hell); }
-
-/* ---------- Lagerungsparcours (AA3) ---------- */
+/* ---------- Lagerungs-Quiz (AA3) ---------- */
 .lagerkarte { background: #fff; border: 3px solid var(--petrol); }
 .lagerkarte.profi { border-color: #7A4300; background: #FFF8EC; }
 .lagerkarte .situation { font-size: 20px; font-weight: 600; margin: 0; }
-.timer { font-size: 22px; font-weight: 800; text-align: center; color: var(--dunkelpetrol); min-height: 1.2em; margin: 0 0 12px; }
-.timer.ende { color: #8A1C00; }
 .lager-bilder { margin-top: 14px; }
 .lager-bild { margin: 10px 0 0; }
 .lager-bild img { display: block; width: 100%; height: auto; border-radius: 10px; border: 1px solid #D5DEE5; }

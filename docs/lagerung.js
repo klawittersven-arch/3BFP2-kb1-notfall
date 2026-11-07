@@ -1,6 +1,6 @@
-/* AA3 · Lagerungsparcours (Programmlogik – Texte in inhalte.js → lagerung).
-   Je Karte: Situation lesen → (optional) 60-Sekunden-Timer → auf der Matte lagern und begründen →
-   gewählte Lagerung antippen → Aufdecken → nächste Karte, Rollen tauschen → am Ende Merksatz AA3. */
+/* AA3 · Lagerungs-Quiz (Programmlogik – Texte in inhalte.js → lagerung).
+   Je Situation: lesen → Lagerung antippen → Aufdecken (Lösung und Begründung) → nächste Situation
+   → am Ende Merksatz AA3 (nur, wenn genug beim ersten Versuch richtig sind). */
 (function () {
   'use strict';
   var K = window.KB1;
@@ -10,7 +10,6 @@
   var SCHL = 'kb1nf_lagerung';
   var platz = document.getElementById('uebung');
   var N = T.karten.length;
-  var timer = null;
 
   function leer() { return { karte: 0, wahl: T.karten.map(function () { return null; }), offen: T.karten.map(function () { return false; }) }; }
   var z = K.Speicher.sitzung.lesen(SCHL);
@@ -51,7 +50,6 @@
   }
 
   function karteZeigen() {
-    clearInterval(timer);
     platz.textContent = '';
     if (z.karte >= N) return ende();
     var i = z.karte;
@@ -61,22 +59,6 @@
     box.appendChild(el('h2', null, k.titel));
     box.appendChild(el('p', 'situation', k.text));
     platz.appendChild(box);
-
-    // Timer
-    var zeit = el('p', 'timer');
-    zeit.setAttribute('aria-live', 'polite');
-    var timerKnopf = K.knopf(T.timerStart, 'knopf-zweit', function () {
-      var rest = 60;
-      timerKnopf.hidden = true;
-      zeit.textContent = K.ersetzen(T.timerLaeuft, { s: rest });
-      clearInterval(timer);
-      timer = setInterval(function () {
-        rest--;
-        if (rest <= 0) { clearInterval(timer); zeit.textContent = T.timerEnde; zeit.classList.add('ende'); }
-        else zeit.textContent = K.ersetzen(T.timerLaeuft, { s: rest });
-      }, 1000);
-    });
-    if (!z.offen[i]) { platz.appendChild(timerKnopf); platz.appendChild(zeit); }
 
     var wahlBox = el('section', 'karte');
     wahlBox.appendChild(el('h2', null, T.wahlFrage));
@@ -96,7 +78,6 @@
     platz.appendChild(bilderHilfe());
     var aufdecken = K.knopf(T.aufdecken, '', function () {
       z.offen[i] = true;
-      clearInterval(timer);
       speichern();
       darstellen();
       stand();
@@ -120,7 +101,6 @@
       });
       aufdecken.hidden = z.offen[i];
       aufdecken.disabled = !z.wahl[i];
-      timerKnopf.hidden = z.offen[i] || timerKnopf.hidden;
       loesung.hidden = !z.offen[i];
       weiter.hidden = !z.offen[i];
       loesung.textContent = '';

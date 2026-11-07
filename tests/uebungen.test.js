@@ -52,7 +52,7 @@ fs.mkdirSync(ORDNER, { recursive: true });
     const knoepfe = await s.$$('.markierbar');
     pruefe(knoepfe.length === teile.length, `${teile.length} antippbare Stellen`);
     const ablenker = teile.filter((t) => !t.k).length;
-    pruefe(ablenker >= 4, `Fall ${fall}: ${ablenker} Sätze, die nicht dazugehören`);
+    pruefe(ablenker === 3, `Fall ${fall}: ${ablenker} Sätze, die nicht dazugehören (3 Ablenker)`);
     // Raten: alles antippen → Hinweis, alle Markierungen weg, nichts verraten
     if (fall === 'a') {
       for (const k of knoepfe) await k.click();
@@ -135,21 +135,27 @@ fs.mkdirSync(ORDNER, { recursive: true });
     }
     await s.click('button:has-text(\"' + INHALTE.allgemein.weiter + '\")');
   }
-  await s.waitForSelector('.monitorvergleich');
-  pruefe((await text()).includes(D.monitor.titel) && !(await text()).includes('Monitorvergleich'), `Titel „${D.monitor.titel}“ statt „Monitorvergleich“`);
-  await s.click('button.mv-zeile:has-text("Blutdruck")');
-  await s.click('button.mv-zeile:has-text("Puls")');
-  await pruefenD();
-  pruefe((await text()).includes('unterscheidet die Formen nicht'), 'Vergleich: Blutdruck als Fehler erklärt');
-  await s.click('button.mv-zeile:has-text("Haut")');
-  await pruefenD();
-  await s.waitForSelector('.merksatz');
-  pruefe((await s.textContent('.merksatz')).includes('Sympathikus'), 'Merksatz AA2 erscheint');
+  // Fall 1 und 3 nicht beim ersten Versuch → zu wenige → „Nicht einfach durchklicken“
+  await s.waitForSelector('.durchklicken');
+  pruefe((await text()).includes(INHALTE.allgemein.durchklickenTitel) && !(await text()).includes(D.geschafftTitel), `nur 2 von ${D.faelle.length} beim ersten Versuch → „Nicht einfach durchklicken“`);
+  pruefe(await s.$('.monitorvergleich') === null && await s.$('.merksatz') === null, 'kein Patientenvergleich und kein Merksatz AA2 mehr');
+  await s.click('button:has-text("' + INHALTE.allgemein.durchklickenKnopf + '")');
+  for (const f of D.faelle) {
+    const teile = f.teile.filter((t) => typeof t === 'object');
+    const belege = teile.map((t, i) => (t.b === 'beleg' ? i : -1)).filter((i) => i >= 0);
+    const btn = await s.$$('.markierbar');
+    for (const i of belege.slice(0, 2)) await btn[i].click();
+    await s.click(`.antwort:has-text("${D.formen.find((x) => x.kuerzel === f.form).text}")`);
+    await pruefenD();
+    await s.click('button:has-text(\"' + INHALTE.allgemein.weiter + '\")');
+  }
+  await s.waitForSelector('.detektiv-ende');
+  pruefe((await text()).includes(D.geschafftTitel) && (await text()).includes(`${D.faelle.length} von ${D.faelle.length}`), 'neu gestartet, alle beim ersten Versuch → „Geschafft!“');
   await s.screenshot({ path: path.join(ORDNER, 'detektiv_fertig.png'), fullPage: true });
   await s.close();
 
   /* ---------- AA3 Lagerung ---------- */
-  console.log('AA3 Lagerungsparcours');
+  console.log('AA3 Lagerungs-Quiz');
   s = await kontext.newPage();
   beobachten(s, protokoll, 'lagerung');
   await s.goto(basis + 'w2-lagerung.html');
@@ -157,9 +163,7 @@ fs.mkdirSync(ORDNER, { recursive: true });
   for (let n = 0; n < L.karten.length; n++) {
     const k = L.karten[n];
     if (n === 0) {
-      await s.click('button:has-text(\"' + L.timerStart + '\")');
-      await s.waitForTimeout(1100);
-      pruefe(/noch \d+ s/.test(await s.textContent('.timer')), 'Timer läuft');
+      pruefe(await s.$('.timer') === null && !/Sekunden|Rollen tauschen/.test(await s.textContent('#uebung')), 'Quiz allein: kein Timer, kein Rollentausch');
       pruefe(!(await s.textContent('#uebung')).includes('Etwas anderes') && (await s.textContent('#uebung')).includes('Reanimation beginnen'), 'Auswahl wie im Entscheidungsweg (Reanimation statt „Etwas anderes“)');
       await s.click('.lager-bilder summary');
       pruefe(await s.$$eval('.lager-bild img', (b) => b.length === 4 && b.every((x) => x.complete && x.naturalWidth > 0)), 'Hilfe: die vier Lagerungen mit Bildern am Handy');
@@ -199,12 +203,12 @@ fs.mkdirSync(ORDNER, { recursive: true });
   pruefe(await s.$('.muster') === null, 'Musterlösung zunächst verborgen');
   const knopfText = INHALTE.transfer.erstSchreiben;
   for (let i = 0; i < INHALTE.transfer.aufgaben.length; i++) await s.click(`button:has-text("${knopfText}") >> nth=0`);
-  pruefe((await s.$$('.muster')).length === 5, 'alle Musterlösungen aufgedeckt');
+  pruefe((await s.$$('.muster')).length === 3, 'alle Musterlösungen aufgedeckt (1.1, 2.1, 2.2)');
   for (const c of await s.$$('.kriterium input')) await c.check();
-  pruefe((await s.textContent('.gesamtpunkte')).includes('20 von 20'), 'volle Punktzahl 20', await s.textContent('.gesamtpunkte'));
-  // 1.2 wie im KA-Erwartungshorizont: ohne Kreislaufzeichen höchstens 3 von 4 Punkten
+  pruefe((await s.textContent('.gesamtpunkte')).includes('13 von 13'), 'volle Punktzahl 13', await s.textContent('.gesamtpunkte'));
+  // 1.1 wie im KA-Erwartungshorizont: ohne Kreislaufzeichen höchstens 3 von 4 Punkten
   await s.uncheck('.kriterium:has-text("Kreislauf: Puls") input');
-  pruefe((await s.textContent('.gesamtpunkte')).includes('19 von 20'), '1.2 ohne Kreislaufzeichen: höchstens 3 Punkte', await s.textContent('.gesamtpunkte'));
+  pruefe((await s.textContent('.gesamtpunkte')).includes('12 von 13'), '1.1 ohne Kreislaufzeichen: höchstens 3 Punkte', await s.textContent('.gesamtpunkte'));
   pruefe((await s.textContent('#uebung')).includes('Ohne Kreislaufzeichen höchstens 3 Punkte'), 'Hinweis zur Kreislauf-Pflicht sichtbar');
   await s.close();
 

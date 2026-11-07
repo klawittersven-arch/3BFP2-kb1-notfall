@@ -58,8 +58,6 @@
     a.kette.forEach(function (g) { var li = el('li'); li.appendChild(fmt('strong', null, g.titel)); li.appendChild(document.createTextNode(' – ' + g.text)); ol.appendChild(li); });
     w.appendChild(ol);
     w.appendChild(box('loesung', ['**' + a.antwortTitel + ':** ' + a.antwort]));
-    w.appendChild(el('h3', null, 'Klausurtraining (freiwillig)'));
-    ['6.1', '6.2'].forEach(function (nr) { w.appendChild(aufgabe(nr)); w.appendChild(loesung(nr)); });
   });
 
   abschnitt('Einstieg: Wie hätten Sie gehandelt?', function (w) {
@@ -108,7 +106,7 @@
   });
 
   abschnitt('Merksätze', function (w) {
-    [['aa1', 'Merksatz AA1'], ['aa2', 'Merksatz AA2'], ['aa3', 'Merksatz AA3'], ['aa4', 'Merksatz AA4']].forEach(function (m) {
+    [['aa1', 'Merksatz AA1'], ['aa3', 'Merksatz AA3'], ['aa4', 'Merksatz AA4']].forEach(function (m) {
       w.appendChild(box('box', ['**' + m[1] + ':** ' + merksatz(I.merksaetze[m[0]])]));
     });
   });
@@ -122,12 +120,6 @@
       w.appendChild(box('zeile-karte', [el('h4', null, 'Fall ' + (i + 1)), text,
         el('p', 'richtig-antwort', '✓ ' + formen[f.form] + 'er Schock'), '**Belege:** ' + belege.join(' · '), f.erklaerung]));
     });
-    var m = I.detektiv.monitor;
-    var k = box('zeile-karte', [el('h4', null, m.titel), '**Links:** ' + m.links + ' · **Rechts:** ' + m.rechts]);
-    m.zeilen.forEach(function (z) {
-      k.appendChild(p((z.richtig ? '✓ ' : '') + '**' + z.name + ':** ' + z.l + ' | ' + z.r + ' – ' + z.w));
-    });
-    w.appendChild(k);
     w.appendChild(el('h3', null, 'Klausurtraining'));
     ['2.1', '2.2'].forEach(function (nr) { w.appendChild(aufgabe(nr)); w.appendChild(loesung(nr)); });
   });
@@ -142,9 +134,7 @@
       d.appendChild(box(null, ['**' + x.titel + '**', x.wann, x.warum]));
       w.appendChild(d);
     });
-    w.appendChild(el('h3', null, 'Entscheidungsweg – von oben nach unten prüfen'));
-    w.appendChild(box('box', N.weg.map(function (z) { return z.frage + ' → **' + z.antwort + '**'; })));
-    w.appendChild(el('h3', null, 'Lagerungskarten'));
+    w.appendChild(el('h3', null, 'Lagerungs-Quiz'));
     I.lagerung.karten.forEach(function (c) {
       w.appendChild(box('zeile-karte', [el('h4', null, c.titel), c.text, el('p', 'richtig-antwort', '✓ ' + c.loesung), c.warum]));
     });
@@ -157,7 +147,7 @@
     N.werDarfWas.forEach(function (t, i) { w.appendChild(box('zeile-karte', ['**' + e[i].emoji + ' ' + e[i].text + ':** ' + t])); });
     w.appendChild(box('box', N.verantwortung));
     w.appendChild(el('h3', null, 'Adrenalin oder Antihistaminikum?'));
-    w.appendChild(box('box', N.adrenalin.map(function (z) { return z[0] + ' → ' + z[1]; }).concat(N.adrenalinText)));
+    w.appendChild(box('box', N.adrenalinText));
     folie('aa4b').sprecher.forEach(function (sp) { w.appendChild(p('💬 **' + sp.wer + ':** ' + sp.text)); });
     w.appendChild(aufgabe('4.1'));
     w.appendChild(loesung('4.1'));

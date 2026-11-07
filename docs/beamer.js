@@ -947,20 +947,7 @@
     w.appendChild(aufdeckKnoepfe(f, alle));
   }
 
-  // Entscheidungsweg (AA3 b) wie im Arbeitsblatt; mitLoesung: Antworten per Klick aufdecken
-  function wegTabelle(f, NL, alle) {
-    var g = el('div', 'weg');
-    g.appendChild(el('div', 'weg-kopf', 'Frage'));
-    g.appendChild(el('div', 'weg-kopf', '„Ja“ → so handle bzw. lagere ich'));
-    (NL.weg || []).forEach(function (z, i) {
-      g.appendChild(fmt('div', 'weg-frage', z.frage));
-      if (!alle) { g.appendChild(el('div', 'weg-leer', '')); return; }
-      var schl = f.id + ':weg:' + i;
-      alle.push(schl);
-      g.appendChild(aufdeckZelle(schl, z.antwort, 'weg-antwort', ohneSterne(z.frage)));
-    });
-    return g;
-  }
+
   function aufgabeKopf(nr, a, klasse) {
     var kopf = el('div', klasse || 'loesung-aufgabe');
     if (a.vorsatz) kopf.appendChild(fmt('p', 'a-vorsatz', a.vorsatz));
@@ -973,13 +960,12 @@
   }
 
   // Musterlösung zu Klausuraufgaben; jede Zeile einzeln aufdecken.
-  // aufgaben: ['2.1', …] oder [{ nrs: ['5.1', '5.2'], loesung: '5.1 und 5.2' }]; bloecke: [{ art: 'weg' }]
+  // aufgaben: ['2.1', …] oder [{ nrs: ['5.1', '5.2'], loesung: '5.1 und 5.2' }]
   function folieLoesung(f, w) {
     var NL = window.NACHLESEN || {};
     w.appendChild(titel(f));
     var alle = [];
     var box = el('div', 'loesungen');
-    (f.bloecke || []).forEach(function (b) { if (b.art === 'weg') box.appendChild(wegTabelle(f, NL, alle)); });
     (f.aufgaben || []).forEach(function (eintrag) {
       var nrs = typeof eintrag === 'string' ? [eintrag] : eintrag.nrs;
       var lsg = typeof eintrag === 'string' ? eintrag : eintrag.loesung;
@@ -1063,7 +1049,6 @@
   // Aufgabe wie im Arbeitsblatt. Schritt 1 („Weiter“): „Bearbeiten Sie jetzt …“ und die Uhr
   function aufgabeBlock(f, b, NL) {
     if (b.art === 'text') return fmt('p', 'a-text', b.text);
-    if (b.art === 'weg') return wegTabelle(f, NL, null);
     if (b.art === 'aufgaben') {
       var t = el('div', 'a-tabelle');
       ['Nr.', 'Aufgabe', 'Punkte'].forEach(function (x) { t.appendChild(el('div', 'a-kopf', x)); });
@@ -1443,14 +1428,14 @@
         var fall = rolle(id) ? S.rollen[rolle(id)].fall : 'a';
         return INHALTE.markieren.faelle[fall].teile.filter(function (t) { return typeof t === 'object' && t.k; }).length;
       }
-      return { 'w2-detektiv': INHALTE.detektiv.faelle.length + 1, 'w2-lagerung': INHALTE.lagerung.karten.length }[seite] || 5;
+      return { 'w2-detektiv': INHALTE.detektiv.faelle.length, 'w2-lagerung': INHALTE.lagerung.karten.length }[seite] || 5;
     }
     // eine erfundene Stimme zum Notfall i (die bisherigen Antworten der Person werden mitgeschickt)
     function abstimmen(p, runde, i) {
       var f = FRAGEN[i];
       var alle = z['a' + runde] = z['a' + runde] || {};
       var d = alle[p.id] = alle[p.id] || { antworten: {}, sicher: {} };
-      // Beginn: typische Fehlvorstellungen (besonders E1 und E6), Ende: meist richtig
+      // Beginn: typische Fehlvorstellungen (besonders E1 und E4), Ende: meist richtig
       var quote = runde === 2 ? 0.85 : (i === 0 || i === FRAGEN.length - 1 ? 0.35 : 0.55);
       d.antworten[f.nr] = Math.random() < quote ? f.richtig : f.optionen[Math.floor(Math.random() * f.optionen.length)].charAt(0);
       d.sicher[f.nr] = Math.random() < (runde === 2 ? 0.75 : 0.4) ? 1 : 0;

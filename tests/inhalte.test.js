@@ -22,6 +22,9 @@ for (const k of Object.keys(AB.MERKSAETZE)) pruefe(gleich(AB.MERKSAETZE[k], I.me
 
 console.log('Entscheidungsfragen');
 pruefe(gleich(AB.ENTSCHEIDUNG, I.entscheidung.fragen), 'Fragen, Optionen, Lösungen und Erklärungen gleich');
+pruefe(I.entscheidung.fragen.length === 4 && I.entscheidung.fragen.map((f) => f.nr).join() === 'E1,E2,E3,E4', 'vier Notfälle E1–E4');
+pruefe(/Frau Maler/.test(I.entscheidung.fragen[3].frage), 'der letzte Notfall (E4) ist die Leitfrage zu Frau Maler');
+pruefe(!I.entscheidung.fragen.some((f) => /Infusion stoppen|Sauerstoff geben/.test(f.frage + f.optionen.join())), 'Infusion und Sauerstoff nur noch in „Wer darf was?“');
 
 console.log('Lagerungskarten');
 pruefe(AB.LAGERUNGSKARTEN.length === I.lagerung.karten.length, 'gleiche Anzahl Karten');
@@ -35,17 +38,21 @@ pruefe(I.lagerung.karten.every((k) => kuerzel.includes(k.richtig)), 'jede Karte 
 console.log('Markieren und Detektiv');
 for (const f of ['a', 'b', 'c']) {
   const teile = I.markieren.faelle[f].teile.filter((t) => typeof t === 'object');
-  pruefe(teile.some((t) => t.k === 'schock') && teile.some((t) => !t.k), `Fall ${f}: hat Schockzeichen und Ablenker`);
+  pruefe(teile.some((t) => t.k === 'schock') && teile.filter((t) => !t.k).length === 3, `Fall ${f}: hat Schockzeichen und genau 3 Ablenker`);
   pruefe(teile.every((t) => typeof t.w === 'string' && t.w.length > 5), `Fall ${f}: jede Stelle hat eine Erklärung`);
 }
 I.detektiv.faelle.forEach((f, i) => {
   pruefe(f.teile.filter((t) => typeof t === 'object' && t.b === 'beleg').length >= 2, `Detektiv-Fall ${i + 1}: mindestens 2 Belege`);
 });
-pruefe(I.detektiv.monitor.zeilen.filter((z) => z.richtig).length === 2, 'Monitorvergleich: genau 2 richtige Zeilen');
+pruefe(I.markieren.hoechstensFalsch < 3, 'Schutz gegen Raten: weniger falsche Markierungen erlaubt als Ablenker im Fall');
+pruefe(I.detektiv.faelle.length === 4 && ['H', 'A', 'N'].every((x) => I.detektiv.faelle.some((f) => f.form === x)), 'Detektiv: 4 Fälle, jede Schockform mindestens einmal');
+pruefe(!I.detektiv.monitor && !/Vergleich/.test(I.detektiv.anweisung), 'Detektiv: kein Patientenvergleich mehr');
+pruefe(I.detektiv.mindestensErsterVersuch <= I.detektiv.faelle.length, 'Detektiv: Mindestzahl erreichbar');
+pruefe(!I.merksaetze.aa2 && !AB.MERKSAETZE.aa2, 'kein Merksatz AA2 mehr');
 
 console.log('Raster');
 const transferMax = I.transfer.aufgaben.reduce((s, a) => s + a.max, 0);
-pruefe(transferMax === 20, 'Hausaufgabe: 20 Punkte', transferMax);
+pruefe(transferMax === 13 && I.transfer.aufgaben.map((a) => a.nr).join() === '1.1,2.1,2.2', 'Hausaufgabe: 1.1, 2.1, 2.2 mit 13 Punkten', transferMax);
 const rasterMax = I.raster.gruppen.reduce((s, g) => s + g.max, 0);
 pruefe(rasterMax === 7, 'AA5 (5.1 und 5.2): 7 Punkte', rasterMax);
 
@@ -125,7 +132,7 @@ for (const d of fs.readdirSync(DOCS).filter((x) => /\.(js|html|css)$/.test(x))) 
 }
 pruefe(S.folien.indexOf(S.folien.find((f) => f.id === 'aa1-merksatz')) === S.folien.indexOf(S.folien.find((f) => f.id === 'aa1')) + 1, 'nach der Expertenrunde folgt der Merksatz AA1 (automatischer Wechsel)');
 pruefe(!S.folien.some((f) => (f.handy || {}).modul === 'simulation') && !fs.existsSync(path.join(DOCS, 'simulation.js')), 'keine Notfall-Simulation mehr');
-['aa1', 'aa2', 'aa3', 'aa4'].forEach((k) => {
+['aa1', 'aa3', 'aa4'].forEach((k) => {
   const m = S.folien.filter((f) => f.typ === 'merksatz' && f.merksatz === k);
   pruefe(m.length === 1 && I.merksaetze[k].some((t) => typeof t === 'object'), 'Merksatz ' + k.toUpperCase() + ': genau eine Folie zum Aufdecken');
 });
@@ -136,8 +143,17 @@ lagFolien.forEach((f) => {
   pruefe(f.wann.length && f.warum.length && f.so.length, `Lagerungsfolie ${f.nr}: Wann, Warum, So geht’s`);
 });
 pruefe(lagFolien.map((f) => f.id).join() === S.folien.slice(S.folien.findIndex((f) => f.id === 'aa3-impuls') + 1).slice(0, 4).map((f) => f.id).join(), 'Lagerungsfolien direkt nach „Beine hoch?“');
-pruefe(I.lagerung.bilder.length === 4 && I.lagerung.bilder.every((b) => fs.existsSync(path.join(DOCS, b.bild))), 'Lagerungsparcours: Bilder der vier Lagerungen am Handy');
-pruefe(!I.lagerung.optionen.some((o) => /anderes/i.test(o.text)) && I.lagerung.karten.every((k) => I.lagerung.optionen.some((o) => o.kuerzel === k.richtig)), 'Lagerungsparcours: kein „Etwas anderes“, jede Lösung ist eine der Optionen');
+pruefe(!S.folien.some((f) => f.typ === 'merksatz' && f.merksatz === 'aa2'), 'keine Folie zum Merksatz AA2');
+pruefe(I.lagerung.bilder.length === 4 && I.lagerung.bilder.every((b) => fs.existsSync(path.join(DOCS, b.bild))), 'Lagerungs-Quiz: Bilder der vier Lagerungen am Handy');
+pruefe(!/timer|Rollen tauschen|Rollentausch|Matte/i.test(JSON.stringify(I.lagerung) + fs.readFileSync(path.join(DOCS, 'lagerung.js'), 'utf8')), 'Lagerungs-Quiz: allein am Handy – kein Timer, keine Matte, kein Rollentausch');
+pruefe(!ids.includes('aa3bc') && !ids.includes('aa3c-loesung') && !/Entscheidungsweg|Parcours|Yogamatte/.test(JSON.stringify(S.folien)), 'kein Entscheidungsweg und kein Parcours mehr');
+pruefe(S.folien.find((f) => f.id === 'aa1').uhr[0].sek === 900, 'Expertenrunde: 15 Minuten');
+pruefe(S.folien.find((f) => f.id === 'aa5').uhr[0].sek === 480, 'Transferfall: 8 Minuten schreiben');
+['a', 'b', 'c'].forEach((f) => {
+  const woerter = (x) => x.join(' ').split(/\s+/).length;
+  pruefe(woerter(S.experten[f].info) <= 160, `Infotext ${f}: höchstens 160 Wörter (gekürzt)`, woerter(S.experten[f].info));
+});
+pruefe(!I.lagerung.optionen.some((o) => /anderes/i.test(o.text)) && I.lagerung.karten.every((k) => I.lagerung.optionen.some((o) => o.kuerzel === k.richtig)), 'Lagerungs-Quiz: kein „Etwas anderes“, jede Lösung ist eine der Optionen');
 for (const d of fs.readdirSync(DOCS).filter((x) => /\.(js|html)$/.test(x))) {
   pruefe(!/Examen/.test(fs.readFileSync(path.join(DOCS, d), 'utf8')), `${d}: kein Hinweis auf das Examen`);
 }
@@ -145,12 +161,13 @@ for (const d of fs.readdirSync(DOCS).filter((x) => /\.(js|html)$/.test(x))) {
 console.log('Nachlese (inhalte_nachlesen.js, aus dem Arbeitsblatt erzeugt)');
 vm.runInContext(fs.readFileSync(path.join(DOCS, 'inhalte_nachlesen.js'), 'utf8') + '\nthis.NACHLESEN = NACHLESEN;', kontext);
 const NL = kontext.NACHLESEN;
-for (const nr of ['2.1', '2.2', '3.1', '3.2', '4.1', '5.1', '5.2', '6.1', '6.2']) pruefe(!!NL.aufgaben[nr], `Aufgabe ${nr} vorhanden`);
+for (const nr of ['2.1', '2.2', '3.1', '3.2', '4.1', '5.1', '5.2']) pruefe(!!NL.aufgaben[nr], `Aufgabe ${nr} vorhanden`);
 pruefe(!NL.aufgaben['1.1'] && !NL.loesungen['1.1'], 'Aufgabe 1.1 gestrichen');
-for (const k of ['2.1', '2.2', '3.1', '3.2', '4.1', '5.1 und 5.2', 'Kausalkette', 'Leitfrage', '6.1', '6.2']) pruefe(Array.isArray(NL.loesungen[k]) && NL.loesungen[k].length > 0, `Lösung ${k} vorhanden`);
-pruefe(Object.keys(NL.aufgaben).length === 9 && !NL.aufgaben['6.3'] && !NL.aufgaben['7.1'], 'keine gestrichenen Aufgaben mehr (Dokumentation, alte Nummern)');
+for (const k of ['2.1', '2.2', '3.1', '3.2', '4.1', '5.1 und 5.2', 'Kausalkette', 'Leitfrage']) pruefe(Array.isArray(NL.loesungen[k]) && NL.loesungen[k].length > 0, `Lösung ${k} vorhanden`);
+pruefe(Object.keys(NL.aufgaben).length === 7 && !NL.aufgaben['6.1'] && !NL.aufgaben['6.2'] && !NL.loesungen['6.1'], 'keine gestrichenen Aufgaben mehr (6.1/6.2 zu Frau Maler)');
 pruefe(!Object.keys(NL.loesungen).some((k) => /^Aufgabe/.test(k)), 'keine Hausaufgaben-Lösungen auf der Nachlese-Seite');
-pruefe(NL.vergleich.length === 6 && NL.pikto.length === 4 && NL.weg.length === 5 && NL.werDarfWas.length === 3, 'Tabelle, Lagerung und Verantwortung vollständig');
+pruefe(NL.vergleich.length === 6 && NL.pikto.length === 4 && NL.werDarfWas.length === 3, 'Tabelle, Lagerung und Verantwortung vollständig');
+pruefe(!NL.weg && !NL.adrenalin && NL.verantwortung.length === 3 && NL.adrenalinText.length === 2, 'kein Entscheidungsweg; Verantwortung in 3 Zeilen, Adrenalin in 2 Sätzen');
 S.folien.find((f) => f.id === 'aa2c').handy.aufgaben.forEach((a) => pruefe(NL.aufgaben[a.nr] && NL.aufgaben[a.nr].text.startsWith(a.text), 'Handy-Text zu ' + a.nr + ' wie im Arbeitsblatt'));
 S.folien.filter((f) => f.typ === 'loesung').forEach((f) => {
   (f.aufgaben || []).forEach((a) => {
@@ -158,7 +175,6 @@ S.folien.filter((f) => f.typ === 'loesung').forEach((f) => {
     const lsg = typeof a === 'string' ? a : a.loesung;
     pruefe(nrs.every((nr) => NL.aufgaben[nr]) && NL.loesungen[lsg] && NL.loesungen[lsg].length > 0, 'Lösungsfolie ' + f.id + ': Aufgabe und Lösung ' + lsg + ' wie im Arbeitsblatt');
   });
-  (f.bloecke || []).forEach((b) => pruefe(b.art === 'weg' && NL.weg.length === 5, 'Lösungsfolie ' + f.id + ': Entscheidungsweg'));
 });
 S.folien.filter((f) => f.typ === 'aufgabe').forEach((f) => {
   pruefe(f.los && (f.uhr || []).length > 0 && f.handy, 'Aufgabenfolie ' + f.id + ': Auftrag „Bearbeiten Sie jetzt …“ mit Uhr');
