@@ -411,12 +411,13 @@ var STUNDE = {
       id: 'aufloesung', abschnitt: 'Frau Maler', kurz: 'Zurück zu Frau Maler (AA6)', typ: 'kausalkette',
       titel: 'AA6 · Woher kam Frau Malers Luftnot?',
       text: 'Was kommt als Nächstes? Ergänzen Sie die Kausalkette auf **Arbeitsblatt 1**.',
+      // \u00AD = weicher Trennstrich: trennt nur, wenn das Wort in der großen Schrift nicht in die Karte passt
       kette: [
         { titel: 'Immobilität', text: 'Nach der Hüft-TEP liegt sie aus Angst vor einer Luxation fast nur im Bett.' },
-        { titel: 'Tiefe Beinvenenthrombose', text: 'Morgens: rechte Wade dick, Schmerz beim Auftreten.' },
-        { titel: 'Lungenembolie', text: 'Ein Teil des Gerinnsels gelangt über das rechte Herz in die Lungenarterie.' },
-        { titel: 'Obstruktiver Schock', text: '11 Uhr: Luftnot, Puls 118/min, blass, kalter Schweiß, Unruhe (Schockindex ≈ 1,1).' },
-        { titel: 'Kreislaufstillstand', text: 'Mittag: zyanotisch, keine Reaktion, kein Puls.' }
+        { titel: 'Tiefe Beinvenen\u00ADthrombose', text: 'Morgens: rechte Wade dick, Schmerz beim Auftreten.' },
+        { titel: 'Lungen\u00ADembolie', text: 'Ein Teil des Gerinnsels gelangt über das rechte Herz in die Lungenarterie.' },
+        { titel: 'Obstruk\u00ADtiver Schock', text: '11 Uhr: Luftnot, Puls 118/min, blass, kalter Schweiß, Unruhe (Schockindex ≈ 1,1).' },
+        { titel: 'Kreislauf\u00ADstillstand', text: 'Mittag: zyanotisch, keine Reaktion, kein Puls.' }
       ],
       antwortTitel: 'Antwort auf die Leitfrage',
       antwort: 'Die Luftnot kam von einer **Lungenembolie**. Um 11 Uhr: **Oberkörper hoch** (Luftnot steht im Vordergrund), **nicht mobilisieren**, nicht allein lassen, **sofort Hilfe holen** und engmaschig überwachen.',

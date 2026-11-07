@@ -27,6 +27,10 @@ const F = k.STUNDE.folien;
       await p.click('#menue-knopf');
       await p.click(`.menue-folie >> nth=${i}`);
       await p.waitForFunction((id) => { const x = document.querySelector('.folie'); return x && x.dataset.folie === id; }, f.id);
+      // Kausalkette: verdeckte Glieder zeigen nur „?“ – der Begriff scheint nicht durch
+      if (f.typ === 'kausalkette') {
+        H.pruefe(await p.evaluate(() => { const v = [...document.querySelectorAll('.glied.verdeckt .glied-titel')]; return v.length > 0 && v.every((t) => getComputedStyle(t).visibility === 'hidden'); }), `Folie ${i + 1}: verdeckte Glieder ohne lesbaren Begriff`);
+      }
       // bis zum letzten Unterschritt und alles aufdecken – das ist der längste Zustand der Folie
       // (der Weiter-Knopf heißt bei Unterschritten anders, z. B. „Nächste Maßnahme“; „Weiter: …“ führt zur nächsten Folie)
       for (let s = 0; s < 20 && (await p.$eval('#weiter', (b) => !b.textContent.startsWith('Weiter') && !b.disabled)); s++) await p.click('#weiter');
@@ -56,6 +60,15 @@ const F = k.STUNDE.folien;
         });
         H.pruefe(g === true, `Folie ${i + 1}: aufgedeckte Lösung groß (passt auf die Bühne)`);
         await p.keyboard.press('Escape');
+      }
+      if (f.typ === 'kausalkette') {
+        // Begriffe groß (zum Abschreiben ins AB); jeder passt in seine Karte, alle Karten gleich breit
+        const k = await p.evaluate(() => {
+          const t = [...document.querySelectorAll('.glied-titel')];
+          const b = [...document.querySelectorAll('.glied')].map((g) => Math.round(g.getBoundingClientRect().width));
+          return { px: parseFloat(getComputedStyle(t[0]).fontSize), passt: t.every((x) => x.scrollWidth <= x.clientWidth), gleich: Math.max(...b) - Math.min(...b) <= 1 };
+        });
+        H.pruefe(k.px >= 34 && k.passt && k.gleich, `Folie ${i + 1}: Begriffe der Kausalkette groß und passend`, k);
       }
       if (f.typ === 'lagerung') {
         H.pruefe(m.bilder, `Folie ${i + 1}: Bild geladen`);
