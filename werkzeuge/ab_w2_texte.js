@@ -123,4 +123,133 @@ const LAGERUNGSKARTEN = [
   { titel: 'Herr Ivo (66)', text: 'Nach einem Wespenstich ist er bewusstlos und atmet nicht normal.', loesung: 'Reanimation beginnen (KB III)', warum: 'Keine normale Atmung = Kreislaufstillstand. Lagerung: Rückenlage auf harter Unterlage.' }
 ];
 
-module.exports = { LINK_BASIS, SEITEN, MERKSAETZE, EXPERTEN, ENTSCHEIDUNG, LAGERUNGSKARTEN };
+/* =====================================================================
+   Inhalte des Arbeitsblatts – gemeinsam für die digitale Fassung (ab_w2.js)
+   und die analoge Fassung ohne Handys (ab_w2_analog.js). Was hier steht,
+   ist in beiden Fassungen wortgleich.
+   loesung: Erwartungshorizont der Lehrerversion (mit Punkten); für Folien,
+   Nachlese und Lösungskarten werden die Punkte-Hinweise entfernt.
+   ===================================================================== */
+const LERNZIEL = 'Sie vergleichen den hypovolämischen, den anaphylaktischen und den neurogenen Schock und begründen Sofortmaßnahmen und Lagerung (Positionierung) anhand des Leitsymptoms. Sie unterscheiden, was Sie selbst tun dürfen und was nur nach ärztlicher Anordnung.';
+
+const FALLBEZUG = {
+  kopf: 'Fallbezug: „Reanimation – und nicht nur ich war hilflos“ (Auszug)',
+  absaetze: [
+    'Frau Maler (71) ist seit gestern neu im Pflegeheim. Vor drei Wochen bekam sie nach einem Oberschenkelhalsbruch eine Hüft-TEP. Seitdem liegt sie fast nur im Bett.',
+    'Schülerin Christin berichtet: „Gegen elf Uhr war sie unruhig, atmete schnell und bekam schlecht Luft. Sie war blass und hatte kalten Schweiß auf der Stirn. Puls 118/min, Blutdruck 105/70 mmHg. Ich dachte, sie sei nur aufgeregt.“'
+  ]
+};
+const LEITFRAGE = 'Woher kommt Frau Malers Luftnot – und wie hätte man sie um 11 Uhr lagern müssen?';
+const KETTE = 'Immobilität → tiefe Beinvenenthrombose → Lungenembolie → obstruktiver Schock → Kreislaufstillstand';
+const LEITFRAGE_ANTWORT = 'Die Luftnot kommt von einer Lungenembolie: Ein Gerinnsel aus der Beinvene hat die Lungenstrombahn verlegt → obstruktiver Schock. Um 11 Uhr: Oberkörper hoch (Luftnot im Vordergrund), nicht mobilisieren, nicht allein lassen, sofort Hilfe holen und engmaschig überwachen.';
+
+// Vergleichstabelle: Zeile, A hypovolämisch, B anaphylaktisch, C neurogen
+const VERGLEICH = [
+  ['Ursache', 'Blut- oder Flüssigkeitsverlust (Blutung, z. B. Magen-Darm-Blutung; Verbrennung; Durchfall, Erbrechen)', 'allergische Sofortreaktion auf Medikament, Insektengift oder Nahrungsmittel', 'Verletzung des Rückenmarks (meist Halswirbelsäule), z. B. Kopfsprung, Sturz aus der Höhe'],
+  ['Entstehung (kurz)', 'Volumen ↓ → Rückstrom zum Herzen ↓ → Blutdruck ↓; Sympathikus gleicht aus: Puls ↑, Zentralisation', 'Histamin → Gefäße weit und durchlässig → relativer Volumenmangel → Blutdruck ↓; Bronchien eng', 'Sympathikus fällt aus → Gefäße weit, Blut versackt → Blutdruck ↓; keine Gegenregulation (Puls steigt nicht)'],
+  ['Puls', 'schnell, schwach', 'schnell', 'langsam oder normal'],
+  ['Haut', 'blass, kalt, schweißig (Zentralisation)', 'Juckreiz, Rötung, Quaddeln, Schwellungen (kann auch blass sein)', 'unterhalb der Verletzung warm, trocken, rosig'],
+  ['weitere typische Zeichen', 'Durst, Unruhe, schnelle Atmung, wenig Urin; ggf. sichtbares Blut, Teerstuhl', 'Heiserkeit, Atemnot, Übelkeit, Erbrechen, Bauchkrämpfe, Schwindel', 'Lähmungen, Kribbeln, Taubheit, Nacken-/Rückenschmerz, flache Atmung, Auskühlung'],
+  ['Darauf achte ich besonders', 'Blutungsquelle; Puls und Blutdruck im Verlauf (Schockindex); Bewusstsein; Urin', 'Atemwege und Atmung (Heiserkeit, SpO₂); Kreislauf; zweite Reaktion nach Stunden möglich', 'Atmung; Blutdruck und Puls; Temperatur; nicht bewegen']
+];
+const GEMEINSAMKEIT = 'Bei allen drei Formen fällt der Blutdruck, die Organe werden schlecht durchblutet → Sauerstoffmangel → Lebensgefahr. Anaphylaktischer und neurogener Schock sind distributive Schockformen: Die Gefäße sind weit gestellt (relativer Volumenmangel).';
+
+// Die vier Lagerungen: Bild, Titel, Wann?, Warum?
+const PIKTO = [
+  ['lagerung_oberkoerper_hoch.png', 'Oberkörper hoch (halbsitzend)', '**Wann?** Atemnot steht im Vordergrund.', '**Warum?** Die Atemhilfsmuskulatur kann besser arbeiten.'],
+  ['lagerung_beine_hoch.png', 'Flach, Beine hoch (Schocklage)', '**Wann?** Schockzeichen ohne Atemnot.', '**Warum?** Blut aus den Beinen fließt zum Herzen. Nicht bei Atemnot oder Verletzungen an Beinen, Becken, Wirbelsäule.'],
+  ['lagerung_seitenlage.png', 'Stabile Seitenlage', '**Wann?** Bewusstlos, Atmung normal.', '**Warum?** Die Atemwege bleiben frei, Erbrochenes kann abfließen.'],
+  ['lagerung_nicht_bewegen.png', 'Nicht bewegen', '**Wann?** Verdacht auf Wirbelsäulenverletzung.', '**Warum?** Jede Bewegung kann das Rückenmark schädigen. Kopf mit beiden Händen halten.']
+];
+const ANAPHYLAXIE_LAGERUNG = '**Bei Anaphylaxie:** nicht aufsetzen oder aufstehen lassen. **Atmet die Person nicht normal → Reanimation** (KB III).';
+
+// Wer darf was? – fertig ausgefüllt (🟢 selbst · 🟡 n. ä. A. oder SOP · 🔴 ärztlich)
+const WER_DARF_WAS = [
+  ['Gefahr erkennen', 'Hilfe holen', 'Allergen stoppen (z. B. Infusion stoppen, Zugang belassen)', 'nach Leitsymptom lagern', 'überwachen', 'dokumentieren'],
+  ['Medikamente: **Adrenalin i. m.**, Antihistaminikum', 'Sauerstoff', 'Infusionen', '**SOP** = schriftliche, ärztlich freigegebene Notfall-Anweisung'],
+  ['Medikamente anordnen (Wirkstoff, Dosis, Weg)', 'Notfall-SOP schriftlich freigeben', 'Weiterbehandlung festlegen, z. B. Intensivstation', 'Diagnose stellen, z. B. „anaphylaktischer Schock“']
+];
+const WER_DARF_WAS_KOPF = ['🟢 mache ich selbst (eigenverantwortlich)', '🟡 nur nach ärztlicher Anordnung (n. ä. A.) oder SOP', '🔴 ärztliche Aufgabe'];
+const AZUBI = '**Als Auszubildende/r:** unter Anleitung handeln und sofort eine Pflegefachperson holen.';
+const ADRENALIN_TEXT = [
+  '**Adrenalin i. m.** ist das Mittel der ersten Wahl: Es wirkt am schnellsten, stellt die Gefäße eng (Blutdruck ↑), lässt Schleimhäute abschwellen, weitet die Bronchien.',
+  '**Antihistaminika** und **Kortison** wirken langsamer und zu schwach – sie kommen erst **nach** Adrenalin.'
+];
+const DIALOG = [
+  { wer: '💬 Herr Brandt, Pflegefachkraft:', text: '„Geben Sie ihr erst mal das Antihistaminikum aus dem Notfallkoffer. Adrenalin ist mir zu heftig.“' },
+  { wer: '💬 Lina, Auszubildende:', text: '„Aber in unserer Notfall-SOP steht Adrenalin ganz oben …“' }
+];
+const TRANSFERFALL = [
+  'Sie sind in der Tagespflege „Sonnenhof“ eingesetzt. Herr Klaus Martens (74) hat einen Diabetes mellitus Typ 2 und eine Herzinsuffizienz. Gegen 14:15 Uhr sitzt er mit anderen Gästen auf der Terrasse beim Kaffee. Plötzlich schreit er auf: Eine Wespe hat ihn in die Oberlippe gestochen.',
+  'Nach etwa fünf Minuten ist seine Oberlippe stark geschwollen, am Hals bilden sich Quaddeln. Mit kloßiger Stimme sagt er: „Mir ist so eng im Hals.“ Beim Einatmen hören Sie ein pfeifendes Geräusch. Sie messen: Atemfrequenz 28/min, Puls 124/min, Blutdruck 92/60 mmHg (am Morgen: 150/85 mmHg). In der Tagespflege ist keine Ärztin anwesend. Ein Notfallset hat Herr Martens nicht dabei.'
+];
+const TRANSFER_RAHMEN = 'Pflegefachpersonen leiten in lebensbedrohlichen Situationen lebenserhaltende Sofortmaßnahmen ein.';
+
+// Schreibaufgaben im Klausurformat (Nr. · Aufgabe · Punkte) mit Erwartungshorizont
+const AUFGABEN = {
+  '2.1': { nr: '2.1', text: 'Erläutern Sie, wie es bei Mia zum Schock kommt. Nutzen Sie die Vergleichstabelle (Seite 2, Spalte?, Zeile „Entstehung“). Nennen Sie dazu passende Befunde aus Mias Fall.', punkte: 3,
+    loesung: ['Die Haselnuss (Allergen) löst eine allergische Sofortreaktion aus: Mastzellen setzen Histamin und weitere Botenstoffe frei.', 'Die Gefäße werden weit und durchlässig: Flüssigkeit tritt ins Gewebe (Quaddeln, Schwellung von Lippen und Lidern), im Gefäßsystem fehlt Volumen → der Blutdruck fällt (88/50 mmHg), das Herz gleicht mit 128/min aus.', 'Zusätzlich schwellen die Schleimhäute an (Heiserkeit) und die Bronchien verengen sich → Atemnot, Sauerstoffmangel (SpO₂ 93 %).', '(je schlüssiger Schritt 1 P.)'] },
+  '2.2': { nr: '2.2', text: 'Herr Albrecht hat einen schnellen Puls (116/min), Herr Weber einen langsamen Puls (52/min). Erklären Sie diesen Unterschied.', punkte: 2,
+    loesung: ['Herr Albrecht verliert Blut (Volumenmangel). Der Sympathikus wird aktiviert und steigert den Puls, um den Blutdruck zu halten (Ausgleich). (1 P.)', 'Bei Herrn Weber ist das Rückenmark verletzt, der Sympathikus fällt aus. Der Körper kann nicht gegensteuern: Der Puls steigt nicht, er ist sogar langsam. (1 P.)'] },
+  '3.1': { nr: '3.1', vorsatz: 'Frau Carla Yıldız (55) hat in der Radiologie Kontrastmittel erhalten. Sie ist heiser und atmet pfeifend mit 30 Atemzügen pro Minute. Ihr Blutdruck liegt bei 90/55 mmHg.', text: 'Begründen Sie, warum Sie Frau Yıldız trotz des niedrigen Blutdrucks mit erhöhtem Oberkörper lagern.', punkte: 2,
+    loesung: ['Bei Frau Yıldız steht die Atemnot im Vordergrund (Heiserkeit, pfeifende Atmung, 30/min). Mit erhöhtem Oberkörper kann sie die Atemhilfsmuskulatur einsetzen, die Bauchorgane drücken nicht gegen das Zwerchfell.', 'Flach mit Beinen hoch würde die Atemnot verstärken. Nicht aufsetzen oder aufstehen lassen, Kreislauf engmaschig überwachen. (je schlüssiges Argument 1 P.)'] },
+  '3.2': { nr: '3.2', text: 'Nehmen Sie Stellung zu der Aussage: „Bei einem Schock legt man immer die Beine hoch.“', punkte: 2,
+    loesung: ['Die Aussage ist falsch. Die Schocklage hilft nur bei Schockzeichen ohne Atemnot, weil Blut aus den Beinen zum Herzen fließt.', 'Entscheidend ist das Leitsymptom: bei Atemnot Oberkörper hoch, bei Bewusstlosigkeit mit normaler Atmung stabile Seitenlage, bei Verdacht auf Wirbelsäulenverletzung nicht bewegen; bei Verletzungen an Beinen oder Becken keine Schocklage. (Beurteilung 1 P., Begründung mit Gegenbeispiel 1 P.)'] },
+  '4.1': { nr: '4.1', text: 'Nehmen Sie Stellung zu der Aussage von Herrn Brandt.', punkte: 3,
+    loesung: ['Die Aussage ist fachlich falsch. Beim anaphylaktischen Schock ist Adrenalin i. m. das Mittel der ersten Wahl (nach SOP bzw. ärztlicher Anordnung): Es stellt die Gefäße eng und hebt den Blutdruck, lässt die Schleimhäute abschwellen, weitet die Bronchien und wirkt am schnellsten.', 'Ein Antihistaminikum blockiert nur Histamin, wirkt langsamer und hebt weder den Blutdruck noch weitet es die Bronchien. Es darf Adrenalin nicht verzögern und kann danach gegeben werden.', 'Lina sollte die SOP ansprechen und sofort das Notfallteam bzw. die Ärztin einbeziehen. (Beurteilung 1 P., je fachliches Argument 1 P., max. 3 P.)'] },
+  '5.1': { nr: '5.1', text: 'Beschreiben Sie stichwortartig 5 Sofortmaßnahmen, die Sie bei Herrn Martens bis zum Eintreffen des Rettungsdienstes einleiten. Begründen Sie dabei die Positionierung von Herrn Martens.', punkte: 6 },
+  '5.2': { nr: '5.2', text: 'Kennzeichnen Sie in Ihrer Antwort zu 5.1 jede Maßnahme, die Sie nur nach ärztlicher Anordnung durchführen dürfen, mit „n. ä. A.“.', punkte: 1 }
+};
+// 5.1 und 5.2 haben einen gemeinsamen Erwartungshorizont
+const LOESUNG_5 = [
+  'z. B.: Hilfe holen: eine Kollegin setzt den Notruf 112 ab (Notärztin nötig); Herrn Martens nicht allein lassen.',
+  'Oberkörper hoch (halbsitzend), weil Atemnot und Schwellung im Vordergrund stehen (Kloßgefühl, pfeifende Einatmung, 28/min): Die Atemhilfsmuskulatur kann arbeiten. Keine Schocklage – auch wegen der Herzinsuffizienz. Nicht aufstehen oder gehen lassen.',
+  'Vitalzeichen engmaschig überwachen: Atmung, Puls, Blutdruck, Bewusstsein, wenn vorhanden SpO₂ (Schockindex 124 : 92 ≈ 1,3).',
+  'Beengende Kleidung am Hals öffnen; Einstichstelle zusätzlich kühlen (Kühlpack in ein Tuch gewickelt).',
+  'Nichts zu essen oder zu trinken geben (Schwellung, Aspirationsgefahr).',
+  'Adrenalin i. m. (n. ä. A.) – gibt hier die Notärztin, da keine Anordnung und kein Notfallset vorliegen; Sauerstoff (n. ä. A.).',
+  'Uhrzeit, Werte und Maßnahmen notieren; bei Bewusstlosigkeit mit normaler Atmung stabile Seitenlage, ohne normale Atmung Reanimation (KB III).',
+  '5.1: je beschriebene Maßnahme 1 P. (max. 5), Begründung der Positionierung 1 P.; Schocklage trotz Atemnot oder Antihistaminikum statt Adrenalin wird nicht gewertet. 5.2: 1 P., wenn alle Medikamenten- und Sauerstoff-Maßnahmen mit „n. ä. A.“ gekennzeichnet sind.'
+];
+
+// Hausaufgabe: ein neuer Fall im Prüfungsformat (13 Punkte)
+const HAUSAUFGABE = {
+  titel: 'Hausaufgabe · Ein neuer Fall (ca. 17 Minuten · 13 Punkte)',
+  hinweis: 'Lesen Sie vorher die **Merksätze AA1, AA3 und AA4**. Dann schreiben Sie ohne Hilfsmittel.',
+  situation: [
+    'Sie sind Auszubildende bzw. Auszubildender in der Rehaklinik „Talblick“. Frau Sabine Lorenz (52) ist seit einer Woche nach einer Bandscheibenoperation bei Ihnen. In ihrem Allergiepass steht eine Fischallergie.',
+    'Um 12:20 Uhr isst sie Gemüsecurry mit Fischsauce. Um 12:35 Uhr klingelt sie. Sie kratzt sich an den Händen und an der Kopfhaut, am Bauch sind Quaddeln. „Mir ist so schwindelig und übel.“ Sie ist blass und unruhig. Puls 124/min, Blutdruck 86/52 mmHg (am Morgen: Puls 72/min, Blutdruck 128/78 mmHg), Atemfrequenz 20/min, Sauerstoffsättigung 96 %. Ihre Stimme klingt normal, sie hat keine Atemnot. Die Stationsärztin ist im Haus; es gibt eine Notfall-SOP für allergische Notfälle.'
+  ],
+  rahmen1: 'Pflegefachpersonen schätzen akute Situationen anhand von Beobachtungen und Messwerten ein.',
+  aufgabe1: { nr: '1.1', text: 'Begründen Sie anhand von 4 Symptomen aus der Situation, welche Schockform bei Frau Lorenz vorliegt.', punkte: 4 },
+  loesung1: [
+    'Anaphylaktischer Schock. Begründung z. B. (je Symptom mit Zuordnung 1 P.): zeitlicher Zusammenhang – Beginn 15 Min. nach dem Essen mit Fischsauce bei bekannter Fischallergie · Haut – Juckreiz an Händen und Kopfhaut, Quaddeln am Bauch · Kreislauf – Puls 124/min, Blutdruckabfall von 128/78 auf 86/52 mmHg, Blässe, Schwindel · Magen-Darm – Übelkeit · Gehirn – Unruhe (Minderdurchblutung).',
+    'Für die volle Punktzahl muss die Kreislaufbeteiligung genannt sein – ein Schock zeigt sich immer am Kreislauf.'
+  ],
+  rahmen2: 'Pflegefachpersonen leiten in lebensbedrohlichen Situationen Sofortmaßnahmen ein.',
+  aufgaben2: [
+    { nr: '2.1', text: 'Beschreiben Sie stichwortartig 6 Sofortmaßnahmen, die Sie bei Frau Lorenz einleiten. Begründen Sie die Positionierung.', punkte: 7 },
+    { nr: '2.2', vorsatz: 'Fünf Minuten später ist Frau Lorenz heiser und sagt: „Ich krieg so schlecht Luft.“ Die Sauerstoffsättigung sinkt auf 90 %.', text: 'Begründen Sie, wie Sie Frau Lorenz jetzt positionieren.', punkte: 2 }
+  ],
+  loesung2: [
+    '2.1 z. B.: nicht weiteressen (Allergen stoppen) · Hilfe holen: Stationsärztin bzw. Notfallteam alarmieren, Frau Lorenz nicht allein lassen · flach lagern, Beine hoch, weil Kreislaufzeichen ohne Atemnot im Vordergrund stehen → mehr Blut zum Herzen; nicht aufsetzen oder aufstehen lassen · Adrenalin i. m. nach Notfall-SOP bzw. ärztlicher Anordnung vorbereiten/verabreichen (Außenseite Oberschenkel) · venösen Zugang und Volumengabe n. ä. A. vorbereiten · Sauerstoff n. ä. A./SOP · Vitalzeichen engmaschig (Puls, Blutdruck, Atmung, SpO₂, Bewusstsein) · Uhrzeit, Symptome und Maßnahmen dokumentieren.',
+    '(je Maßnahme 1 P., max. 6 P.; Begründung der Positionierung 1 P.; Antihistaminikum statt Adrenalin wird nicht gewertet)',
+    '2.2 Jetzt Oberkörper hoch (halbsitzend), weil die Atemnot im Vordergrund steht (Heiserkeit = Schleimhautschwellung, SpO₂ 90 %): Die Atemhilfsmuskulatur kann arbeiten. Trotzdem nicht auf die Bettkante setzen oder aufstehen lassen; Kreislauf weiter überwachen und die Ärztin über die Verschlechterung informieren. (Positionierung 1 P., Begründung 1 P.)'
+  ]
+};
+
+// Inhaltliche Hinweise für die Lehrerversion (digitale und analoge Fassung)
+const LV_HINWEISE = {
+  leitlinie: 'Die Lagerungsempfehlungen folgen der S2k-Leitlinie Anaphylaxie (AWMF 061-025, 2021): symptomorientiert; Flachlagerung und Vermeiden abrupter Lageveränderungen (Aufsitzen, Aufstehen) als Grundstrategie; bei führender Atemnot (halb-)sitzend; bei eingeschränktem Bewusstsein und intaktem Kreislauf stabile Seitenlage; zur Kreislaufverbesserung Beine hoch.',
+  adrenalin: 'Adrenalin i. m. laut Leitlinie 0,15–0,6 mg in die Außenseite des Oberschenkels, Autoinjektoren 0,15/0,3/0,5 mg, Wiederholung nach ca. 5–10 min. Antihistaminika: langsamerer Wirkungseintritt, Wirkung auf Kreislauf und Bronchokonstriktion nicht belegt, lebensrettende Sofortmaßnahmen dürfen nicht verzögert werden. Glukokortikoide: untergeordnete Rolle in der Akutphase. Die KA-Lösung nennt „Erwachsene 0,5 mg“ – das liegt in diesem Bereich.',
+  leitfall: 'Der Leitfall ist belastend (Christin, Reanimation). AA6 bleibt bewusst fachlich (Kausalkette, verpasste Chancen) und bewertet Christin nicht; Erleben, Hilflosigkeit und Verarbeitung sind Thema in KB II und KB V.',
+  uebungsfaelle: 'Die Übungsfälle vermeiden bewusst die Personen und Auslöser der Klassenarbeit (Frau Sommer, Herr Brenner, Antibiotika-Kurzinfusion), damit die KA den Transfer prüft.',
+  nichtEnthalten: 'KB II: psychologische Erste Hilfe, Beruhigen, Notfalleinwilligung, SPIKES/NURSE, SAfE · KB III: Reanimation, ABCDE-Schema, Notaufnahme/Triage, PTBS (nur Verweise) · KB IV: Delegationsrecht, Haftung, unterlassene Hilfeleistung, Ersthelferschutz, Patientenverfügung · KB V: eigene Überforderung · Deutsch: Notruf absetzen, SBAR · Pädiatrie (3. AJ): Anaphylaxie bei Kindern · Anatomie: Pathophysiologie der Lungenembolie (1. AJ, nur aktiviert).',
+  quellen: 'S2k-Leitlinie Akuttherapie und Management der Anaphylaxie, AWMF 061-025, Update 2021 (Ring et al., Allergo J Int 2021;30:1–25) · MSD Manual Profi-Ausgabe: Schock · Landeslehrplan Berufsfachschule Pflege BW, CE 06 · BW-Abschlussprüfungen Mai 2023–Mai 2026 (Operatoren, Aufgabenformat)'
+};
+
+module.exports = {
+  LINK_BASIS, SEITEN, MERKSAETZE, EXPERTEN, ENTSCHEIDUNG, LAGERUNGSKARTEN,
+  LERNZIEL, FALLBEZUG, LEITFRAGE, KETTE, LEITFRAGE_ANTWORT, VERGLEICH, GEMEINSAMKEIT, PIKTO, ANAPHYLAXIE_LAGERUNG,
+  WER_DARF_WAS, WER_DARF_WAS_KOPF, AZUBI, ADRENALIN_TEXT, DIALOG, TRANSFERFALL, TRANSFER_RAHMEN, AUFGABEN, LOESUNG_5, HAUSAUFGABE, LV_HINWEISE
+};

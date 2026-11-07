@@ -9,7 +9,7 @@ const fs = require('fs');
 const path = require('path');
 const D = require('docx');
 const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType, ShadingType, AlignmentType, VerticalAlign, TableLayoutType, HeightRule, PageOrientation } = D;
-const { bausteine, kopf, fuss, bild, F, SEITE_HOCH, SEITE_QUER, STILE, WURZEL, rahmen, keinRand, ohneRaender, linie } = require('./ab_bausteine');
+const { bausteine, kopf, fuss, bild, F, SEITE_HOCH, SEITE_QUER, STILE, WURZEL, rahmen, keinRand, ohneRaender, linie, ohnePunkte: ohnePunkteZeilen } = require('./ab_bausteine');
 const T = require('./ab_w2_texte');
 // Foliennummern für den Verlaufsplan direkt aus dem Foliensatz der App (docs/inhalte_stunde.js)
 const STUNDE = (() => { const k = {}; require('vm').runInNewContext(fs.readFileSync(path.join(__dirname, '..', 'docs', 'inhalte_stunde.js'), 'utf8') + ';this.S = STUNDE;', k); return k.S; })();
@@ -66,26 +66,28 @@ function schuelerTeil(B, { lsg }) {
   const teil = (sym, text) => { aktuellerTeil = text; return B.teil(sym, text); };
   const aufg = (liste) => { if (liste.length === 1) aktuellerTeil = liste[0].nr; if (sammelnAn) liste.forEach((a) => { N.aufgaben[a.nr] = a; }); return B.aufgaben(liste); };
   const pS = (schl, text, o) => sammleText(B, schl, text, o);
+  // Aufgabe aus ab_w2_texte.js (ohne Erwartungshorizont – der steht unter den Schreiblinien)
+  const A = (nr) => { const { loesung, ...aufgabe } = T.AUFGABEN[nr]; return aufgabe; };
 
   /* ---------- Seite 1: Lernziel, Frau Maler, Leitfrage, Kausalkette (am Ende der Stunde), Einstieg ---------- */
-  const kette = 'Immobilität → tiefe Beinvenenthrombose → Lungenembolie → obstruktiver Schock → Kreislaufstillstand';
+  const kette = T.KETTE;
   const luecke = '_'.repeat(12);
   push(
     blattKopf(B, 1),
     B.titel('Schock ist nicht gleich Schock – vergleichen und nach Leitsymptom handeln', lsg ? '[LSG]' : null),
-    new Paragraph({ spacing: { after: 120, line: 264 }, children: [B.emoji('🎯 '), B.b('Lernziel: '), ...B.runs('Sie vergleichen den hypovolämischen, den anaphylaktischen und den neurogenen Schock und begründen Sofortmaßnahmen und Lagerung (Positionierung) anhand des Leitsymptoms. Sie unterscheiden, was Sie selbst tun dürfen und was nur nach ärztlicher Anordnung.')] }),
+    new Paragraph({ spacing: { after: 120, line: 264 }, children: [B.emoji('🎯 '), B.b('Lernziel: '), ...B.runs(T.LERNZIEL)] }),
     new Paragraph({ spacing: { after: 140 }, children: [bild(IC.handy, 0.5, 0.5), B.t(' = am Smartphone (Stunden-App)      ', { size: 19 }), bild(IC.stift, 0.5, 0.5), B.t(' = auf Papier', { size: 19 })] }),
     B.kasten([
-      B.p('Frau Maler (71) ist seit gestern neu im Pflegeheim. Vor drei Wochen bekam sie nach einem Oberschenkelhalsbruch eine Hüft-TEP. Seitdem liegt sie fast nur im Bett.'),
-      B.p('Schülerin Christin berichtet: „Gegen elf Uhr war sie unruhig, atmete schnell und bekam schlecht Luft. Sie war blass und hatte kalten Schweiß auf der Stirn. Puls 118/min, Blutdruck 105/70 mmHg. Ich dachte, sie sei nur aufgeregt.“', { spacing: { after: 0, line: 264 } })
-    ], { kopf: 'Fallbezug: „Reanimation – und nicht nur ich war hilflos“ (Auszug)', fill: 'FFFFFF', kopfFill: 'FFFFFF', rand: '000000' }),
+      B.p(T.FALLBEZUG.absaetze[0]),
+      B.p(T.FALLBEZUG.absaetze[1], { spacing: { after: 0, line: 264 } })
+    ], { kopf: T.FALLBEZUG.kopf, fill: 'FFFFFF', kopfFill: 'FFFFFF', rand: '000000' }),
     B.leer(100),
-    B.leitfrage('Woher kommt Frau Malers Luftnot – und wie hätte man sie um 11 Uhr lagern müssen?'),
+    B.leitfrage(T.LEITFRAGE),
     B.aa([IC.lesen, IC.schreiben], 'AA6 · Am Ende der Stunde:', 'Ihre Lehrkraft deckt die **Kausalkette** am Beamer Schritt für Schritt auf. Ergänzen Sie die Lücken und beantworten Sie dann die Leitfrage.'),
     B.meta(`5 min · Plenum (Unterrichtsgespräch) · AFB II–III · Folie ${FN('aufloesung')} · die SuS tragen die Kette hier auf S. 1 ein`),
     (aktuellerTeil = 'Kausalkette', L([kette]), new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 80, after: 100 }, children: [B.b(lsg ? kette : `Immobilität → ${luecke} → ${luecke} → ${luecke} → Kreislaufstillstand`, { size: 21 })] })),
     (aktuellerTeil = 'Leitfrage', new Paragraph({ spacing: { before: 40, after: 0 }, keepNext: true, children: [B.b('Antwort auf die Leitfrage:')] })),
-    B.linien(2, L(['Die Luftnot kommt von einer Lungenembolie: Ein Gerinnsel aus der Beinvene hat die Lungenstrombahn verlegt → obstruktiver Schock. Um 11 Uhr: Oberkörper hoch (Luftnot im Vordergrund), nicht mobilisieren, nicht allein lassen, sofort Hilfe holen und engmaschig überwachen.'])),
+    B.linien(2, L([T.LEITFRAGE_ANTWORT])),
     B.leer(140),
     handy(T.SEITEN.stunde, [
       B.p('**So läuft die Stunde:** Scannen Sie den QR-Code **am Beamer** und geben Sie Ihren Vornamen ein. Ihr Handy wechselt dann **automatisch mit dem Beamer**.'),
@@ -114,14 +116,7 @@ function schuelerTeil(B, { lsg }) {
     B.meta(`15 min (+ 1 min Merksatz AA1 lesen) · Einzelarbeit → Gruppenarbeit (Expertenteam, 3–4) · AFB I–II · KA-Bezug KB 1, Aufg. 3.1 (Befunde im Fall erkennen und zuordnen; schriftlich in der Hausaufgabe 1.1) · Folie ${FN('aa1')} zeigt am Beamer, welche Teams fertig sind`),
   );
   const sw = Math.round((BREITE_HOCH - 1700) / 3);
-  const zeilenAA2 = sammle('vergleich', [
-    ['Ursache', 'Blut- oder Flüssigkeitsverlust (Blutung, z. B. Magen-Darm-Blutung; Verbrennung; Durchfall, Erbrechen)', 'allergische Sofortreaktion auf Medikament, Insektengift oder Nahrungsmittel', 'Verletzung des Rückenmarks (meist Halswirbelsäule), z. B. Kopfsprung, Sturz aus der Höhe'],
-    ['Entstehung (kurz)', 'Volumen ↓ → Rückstrom zum Herzen ↓ → Blutdruck ↓; Sympathikus gleicht aus: Puls ↑, Zentralisation', 'Histamin → Gefäße weit und durchlässig → relativer Volumenmangel → Blutdruck ↓; Bronchien eng', 'Sympathikus fällt aus → Gefäße weit, Blut versackt → Blutdruck ↓; keine Gegenregulation (Puls steigt nicht)'],
-    ['Puls', 'schnell, schwach', 'schnell', 'langsam oder normal'],
-    ['Haut', 'blass, kalt, schweißig (Zentralisation)', 'Juckreiz, Rötung, Quaddeln, Schwellungen (kann auch blass sein)', 'unterhalb der Verletzung warm, trocken, rosig'],
-    ['weitere typische Zeichen', 'Durst, Unruhe, schnelle Atmung, wenig Urin; ggf. sichtbares Blut, Teerstuhl', 'Heiserkeit, Atemnot, Übelkeit, Erbrechen, Bauchkrämpfe, Schwindel', 'Lähmungen, Kribbeln, Taubheit, Nacken-/Rückenschmerz, flache Atmung, Auskühlung'],
-    ['Darauf achte ich besonders', 'Blutungsquelle; Puls und Blutdruck im Verlauf (Schockindex); Bewusstsein; Urin', 'Atemwege und Atmung (Heiserkeit, SpO₂); Kreislauf; zweite Reaktion nach Stunden möglich', 'Atmung; Blutdruck und Puls; Temperatur; nicht bewegen']
-  ]);
+  const zeilenAA2 = sammle('vergleich', T.VERGLEICH);
   push(
     B.leer(60),
     merk('Merksatz AA1', 'aa1'),
@@ -130,7 +125,7 @@ function schuelerTeil(B, { lsg }) {
       [{ text: '', w: 1700 }, { text: 'A hypovolämisch', w: sw }, { text: 'B anaphylaktisch', w: sw }, { text: 'C neurogen', w: BREITE_HOCH - 1700 - 2 * sw }],
       [
         ...zeilenAA2.map((z) => [{ text: `**${z[0]}**`, fill: F.LACHS }, { lsg: z[1] }, { lsg: z[2] }, { lsg: z[3] }]),
-        [{ text: '**Gemeinsamkeit**', fill: F.LACHS }, { colSpan: 3, lsg: sammle('gemeinsamkeit', 'Bei allen drei Formen fällt der Blutdruck, die Organe werden schlecht durchblutet → Sauerstoffmangel → Lebensgefahr. Anaphylaktischer und neurogener Schock sind distributive Schockformen: Die Gefäße sind weit gestellt (relativer Volumenmangel).') }]
+        [{ text: '**Gemeinsamkeit**', fill: F.LACHS }, { colSpan: 3, lsg: sammle('gemeinsamkeit', T.GEMEINSAMKEIT) }]
       ],
       { hoehe: 640, schrift: 19 }
     )
@@ -144,14 +139,11 @@ function schuelerTeil(B, { lsg }) {
     B.app([B.p('Bestimmen Sie bei **vier kurzen Fällen** die **Schockform** und tippen Sie die **zwei Befunde** an, die sie belegen – dann „Prüfen“.', { spacing: { after: 0, line: 264 } })]),
     blattKopf(B, 2, { pageBreakBefore: true }),
     teil([IC.schreiben], '**AA2 c) Schreibaufgaben** (allein – die Fälle stehen am Handy):'),
-    aufg([
-      { nr: '2.1', text: 'Erläutern Sie, wie es bei Mia zum Schock kommt. Nutzen Sie die Vergleichstabelle (Seite 2, Spalte?, Zeile „Entstehung“). Nennen Sie dazu passende Befunde aus Mias Fall.', punkte: 3 },
-      { nr: '2.2', text: 'Herr Albrecht hat einen schnellen Puls (116/min), Herr Weber einen langsamen Puls (52/min). Erklären Sie diesen Unterschied.', punkte: 2 }
-    ]),
+    aufg([A('2.1'), A('2.2')]),
     zw('2.1'),
-    B.linien(3, L(['Die Haselnuss (Allergen) löst eine allergische Sofortreaktion aus: Mastzellen setzen Histamin und weitere Botenstoffe frei.', 'Die Gefäße werden weit und durchlässig: Flüssigkeit tritt ins Gewebe (Quaddeln, Schwellung von Lippen und Lidern), im Gefäßsystem fehlt Volumen → der Blutdruck fällt (88/50 mmHg), das Herz gleicht mit 128/min aus.', 'Zusätzlich schwellen die Schleimhäute an (Heiserkeit) und die Bronchien verengen sich → Atemnot, Sauerstoffmangel (SpO₂ 93 %).', '(je schlüssiger Schritt 1 P.)'])),
+    B.linien(3, L(T.AUFGABEN['2.1'].loesung)),
     zw('2.2'),
-    B.linien(3, L(['Herr Albrecht verliert Blut (Volumenmangel). Der Sympathikus wird aktiviert und steigert den Puls, um den Blutdruck zu halten (Ausgleich). (1 P.)', 'Bei Herrn Weber ist das Rückenmark verletzt, der Sympathikus fällt aus. Der Körper kann nicht gegensteuern: Der Puls steigt nicht, er ist sogar langsam. (1 P.)']))
+    B.linien(3, L(T.AUFGABEN['2.2'].loesung))
   );
 
   /* ---------- AA3 ---------- */
@@ -160,12 +152,7 @@ function schuelerTeil(B, { lsg }) {
     B.meta(`18 min (Impuls, vier Lagerungsfolien, Quiz, Merksatz, 3.1/3.2 mit Musterlösung) · Plenum → Einzelarbeit (Handy) → Einzelarbeit → Plenum · AFB II · KA-Bezug KB 1, Aufg. 3.3 · Folien ${FN('aa3-impuls')}–${FN('aa3b-loesung-32')}`)
   );
   const pw = Math.floor(BREITE_HOCH / 4);
-  const pikto = sammle('pikto', [
-    ['lagerung_oberkoerper_hoch.png', 'Oberkörper hoch (halbsitzend)', '**Wann?** Atemnot steht im Vordergrund.', '**Warum?** Die Atemhilfsmuskulatur kann besser arbeiten.'],
-    ['lagerung_beine_hoch.png', 'Flach, Beine hoch (Schocklage)', '**Wann?** Schockzeichen ohne Atemnot.', '**Warum?** Blut aus den Beinen fließt zum Herzen. Nicht bei Atemnot oder Verletzungen an Beinen, Becken, Wirbelsäule.'],
-    ['lagerung_seitenlage.png', 'Stabile Seitenlage', '**Wann?** Bewusstlos, Atmung normal.', '**Warum?** Die Atemwege bleiben frei, Erbrochenes kann abfließen.'],
-    ['lagerung_nicht_bewegen.png', 'Nicht bewegen', '**Wann?** Verdacht auf Wirbelsäulenverletzung.', '**Warum?** Jede Bewegung kann das Rückenmark schädigen. Kopf mit beiden Händen halten.']
-  ]);
+  const pikto = sammle('pikto', T.PIKTO);
   push(new Table({
     width: { size: pw * 4, type: WidthType.DXA }, columnWidths: [pw, pw, pw, pw], layout: TableLayoutType.FIXED,
     rows: [
@@ -173,21 +160,18 @@ function schuelerTeil(B, { lsg }) {
     ]
   }));
   push(
-    new Paragraph({ spacing: { before: 60, after: 60 }, children: [B.emoji('⚠️ '), ...B.runs('**Bei Anaphylaxie:** nicht aufsetzen oder aufstehen lassen. **Atmet die Person nicht normal → Reanimation** (KB III).', { size: 19 })] }),
+    new Paragraph({ spacing: { before: 60, after: 60 }, children: [B.emoji('⚠️ '), ...B.runs(T.ANAPHYLAXIE_LAGERUNG, { size: 19 })] }),
     lsg ? new Paragraph({ spacing: { after: 80 }, children: [B.i('Quelle: nach S2k-Leitlinie Akuttherapie und Management der Anaphylaxie (AWMF 061-025, 2021); sprachlich vereinfacht.', { size: 15, color: F.GRAU_T })] }) : null,
     teil([IC.handy], '**a) Lagerungs-Quiz** (allein am Handy):'),
     B.app([B.p('Was ist das **Leitsymptom**? Tippen Sie an, wie Sie lagern, und decken Sie auf. Hilfe: die **Bilder oben** und der **Merksatz AA3**.', { spacing: { after: 0, line: 264 } })]),
     B.leer(60),
     merk('Merksatz AA3', 'aa3'),
     teil([IC.schreiben], '**b) Schreibaufgaben:**'),
-    aufg([
-      { nr: '3.1', vorsatz: 'Frau Carla Yıldız (55) hat in der Radiologie Kontrastmittel erhalten. Sie ist heiser und atmet pfeifend mit 30 Atemzügen pro Minute. Ihr Blutdruck liegt bei 90/55 mmHg.', text: 'Begründen Sie, warum Sie Frau Yıldız trotz des niedrigen Blutdrucks mit erhöhtem Oberkörper lagern.', punkte: 2 },
-      { nr: '3.2', text: 'Nehmen Sie Stellung zu der Aussage: „Bei einem Schock legt man immer die Beine hoch.“', punkte: 2 }
-    ]),
+    aufg([A('3.1'), A('3.2')]),
     zw('3.1'),
-    B.linien(3, L(['Bei Frau Yıldız steht die Atemnot im Vordergrund (Heiserkeit, pfeifende Atmung, 30/min). Mit erhöhtem Oberkörper kann sie die Atemhilfsmuskulatur einsetzen, die Bauchorgane drücken nicht gegen das Zwerchfell.', 'Flach mit Beinen hoch würde die Atemnot verstärken. Nicht aufsetzen oder aufstehen lassen, Kreislauf engmaschig überwachen. (je schlüssiges Argument 1 P.)'])),
+    B.linien(3, L(T.AUFGABEN['3.1'].loesung)),
     zw('3.2'),
-    B.linien(3, L(['Die Aussage ist falsch. Die Schocklage hilft nur bei Schockzeichen ohne Atemnot, weil Blut aus den Beinen zum Herzen fließt.', 'Entscheidend ist das Leitsymptom: bei Atemnot Oberkörper hoch, bei Bewusstlosigkeit mit normaler Atmung stabile Seitenlage, bei Verdacht auf Wirbelsäulenverletzung nicht bewegen; bei Verletzungen an Beinen oder Becken keine Schocklage. (Beurteilung 1 P., Begründung mit Gegenbeispiel 1 P.)']))
+    B.linien(3, L(T.AUFGABEN['3.2'].loesung))
   );
 
   /* ---------- Teil B · AA4 ---------- */
@@ -197,15 +181,11 @@ function schuelerTeil(B, { lsg }) {
     B.meta(`13 min (a mit Merksatz AA4 als Lesefolie, Blatt 3 austeilen, b mit Musterlösung) · Einzelarbeit (Abstimmung am Handy) → Plenum → Partnerarbeit → Plenum · AFB II–III · KA-Bezug KB 1, Aufg. 3.3 · Kompetenz III.2.b · Folien ${FN('aa4a')}–${FN('aa4b-loesung')}`)
   );
   // Wer darf was? – fertig ausgefüllt (enthält auch die Punkte des früheren Kastens „Info: Verantwortung im Notfall“)
-  const WER_DARF_WAS = sammle('werDarfWas', [
-    ['Gefahr erkennen', 'Hilfe holen', 'Allergen stoppen (z. B. Infusion stoppen, Zugang belassen)', 'nach Leitsymptom lagern', 'überwachen', 'dokumentieren'],
-    ['Medikamente: **Adrenalin i. m.**, Antihistaminikum', 'Sauerstoff', 'Infusionen', '**SOP** = schriftliche, ärztlich freigegebene Notfall-Anweisung'],
-    ['Medikamente anordnen (Wirkstoff, Dosis, Weg)', 'Notfall-SOP schriftlich freigeben', 'Weiterbehandlung festlegen, z. B. Intensivstation', 'Diagnose stellen, z. B. „anaphylaktischer Schock“']
-  ]);
-  const AZUBI = sammle('werDarfWasAzubi', '**Als Auszubildende/r:** unter Anleitung handeln und sofort eine Pflegefachperson holen.');
+  const WER_DARF_WAS = sammle('werDarfWas', T.WER_DARF_WAS);
+  const AZUBI = sammle('werDarfWasAzubi', T.AZUBI);
   const vw = Math.floor(BREITE_HOCH / 3);
   const liste = (punkte) => ({ absaetze: punkte.map((t, i) => new Paragraph({ spacing: { after: i === punkte.length - 1 ? 0 : 30, line: 240 }, children: [B.t('• ', { size: 19 }), ...B.runs(t, { size: 19 })] })) });
-  push(B.tabelle([{ text: '🟢 mache ich selbst (eigenverantwortlich)', w: vw }, { text: '🟡 nur nach ärztlicher Anordnung (n. ä. A.) oder SOP', w: vw }, { text: '🔴 ärztliche Aufgabe', w: BREITE_HOCH - 2 * vw }], [
+  push(B.tabelle([{ text: T.WER_DARF_WAS_KOPF[0], w: vw }, { text: T.WER_DARF_WAS_KOPF[1], w: vw }, { text: T.WER_DARF_WAS_KOPF[2], w: BREITE_HOCH - 2 * vw }], [
     WER_DARF_WAS.map(liste),
     [{ colSpan: 3, text: AZUBI }]
   ], { schrift: 19, kopfFill: F.LACHS_KOPF }));
@@ -214,19 +194,19 @@ function schuelerTeil(B, { lsg }) {
     merk('Merksatz AA4 – Sofortmaßnahmen bei Anaphylaxie', 'aa4'),
     blattKopf(B, 3, { pageBreakBefore: true }),
     teil([IC.beurteilen], '**AA4 b) Wer hat recht?** **Think** (2,5 Min.): allein schreiben. **Pair** (1,5 Min.): zu zweit vergleichen.'),
-    pS('adrenalinText', '**Adrenalin i. m.** ist das Mittel der ersten Wahl: Es wirkt am schnellsten, stellt die Gefäße eng (Blutdruck ↑), lässt Schleimhäute abschwellen, weitet die Bronchien.', { spacing: { after: 40, line: 264 } }),
-    pS('adrenalinText', '**Antihistaminika** und **Kortison** wirken langsamer und zu schwach – sie kommen erst **nach** Adrenalin.', { spacing: { after: 100, line: 264 } })
+    pS('adrenalinText', T.ADRENALIN_TEXT[0], { spacing: { after: 40, line: 264 } }),
+    pS('adrenalinText', T.ADRENALIN_TEXT[1], { spacing: { after: 100, line: 264 } })
   );
   const dw = Math.floor(BREITE_HOCH / 2) - 100;
   const blase = (wer, text) => B.zelle([new Paragraph({ spacing: { after: 40 }, children: [B.b(wer, { size: 19 })] }), new Paragraph({ spacing: { after: 0 }, children: [B.i(text)] })], dw, { borders: rahmen(F.ORANGE_D, 6), shading: { type: ShadingType.CLEAR, color: 'auto', fill: F.LACHS_HELL } });
   push(
     new Table({ width: { size: dw * 2 + 200, type: WidthType.DXA }, columnWidths: [dw, 200, dw], layout: TableLayoutType.FIXED, rows: [new TableRow({ cantSplit: true, children: [
-      blase('💬 Herr Brandt, Pflegefachkraft:', '„Geben Sie ihr erst mal das Antihistaminikum aus dem Notfallkoffer. Adrenalin ist mir zu heftig.“'),
+      blase(T.DIALOG[0].wer, T.DIALOG[0].text),
       new TableCell({ width: { size: 200, type: WidthType.DXA }, borders: { top: keinRand, bottom: keinRand, left: keinRand, right: keinRand }, children: [new Paragraph({ children: [] })] }),
-      blase('💬 Lina, Auszubildende:', '„Aber in unserer Notfall-SOP steht Adrenalin ganz oben …“')
+      blase(T.DIALOG[1].wer, T.DIALOG[1].text)
     ] })] }),
-    aufg([{ nr: '4.1', text: 'Nehmen Sie Stellung zu der Aussage von Herrn Brandt.', punkte: 3 }]),
-    B.linien(3, L(['Die Aussage ist fachlich falsch. Beim anaphylaktischen Schock ist Adrenalin i. m. das Mittel der ersten Wahl (nach SOP bzw. ärztlicher Anordnung): Es stellt die Gefäße eng und hebt den Blutdruck, lässt die Schleimhäute abschwellen, weitet die Bronchien und wirkt am schnellsten.', 'Ein Antihistaminikum blockiert nur Histamin, wirkt langsamer und hebt weder den Blutdruck noch weitet es die Bronchien. Es darf Adrenalin nicht verzögern und kann danach gegeben werden.', 'Lina sollte die SOP ansprechen und sofort das Notfallteam bzw. die Ärztin einbeziehen. (Beurteilung 1 P., je fachliches Argument 1 P., max. 3 P.)']))
+    aufg([A('4.1')]),
+    B.linien(3, L(T.AUFGABEN['4.1'].loesung))
   );
 
   /* ---------- AA5 Transferfall ---------- */
@@ -234,53 +214,31 @@ function schuelerTeil(B, { lsg }) {
     B.aa([IC.schreiben], 'AA5: Transferfall – Wissen anwenden:', '**Allein** (8 Min.) – Hilfe: nur **Merksatz AA3 und AA4**. Dann Peer-Korrektur mit dem **Raster am Handy**.', { spacing: { before: 100, after: 60, line: 264 } }),
     B.meta('13 min (8 min schreiben, 4 min Peer-Korrektur) · Einzelarbeit → Peer-Korrektur mit App-Raster und Musterlösung am Beamer · AFB I–III · KA-Format (KB 1, Aufg. 3.3) · Examensvorbild: Mai 2024 Tag 3, Aufg. 8.2; Mai 2026 Tag 1, Aufg. 3.2'),
     B.kasten([
-      pS('transferfall', 'Sie sind in der Tagespflege „Sonnenhof“ eingesetzt. Herr Klaus Martens (74) hat einen Diabetes mellitus Typ 2 und eine Herzinsuffizienz. Gegen 14:15 Uhr sitzt er mit anderen Gästen auf der Terrasse beim Kaffee. Plötzlich schreit er auf: Eine Wespe hat ihn in die Oberlippe gestochen.'),
-      pS('transferfall', 'Nach etwa fünf Minuten ist seine Oberlippe stark geschwollen, am Hals bilden sich Quaddeln. Mit kloßiger Stimme sagt er: „Mir ist so eng im Hals.“ Beim Einatmen hören Sie ein pfeifendes Geräusch. Sie messen: Atemfrequenz 28/min, Puls 124/min, Blutdruck 92/60 mmHg (am Morgen: 150/85 mmHg). In der Tagespflege ist keine Ärztin anwesend. Ein Notfallset hat Herr Martens nicht dabei.', { spacing: { after: 0, line: 264 } })
+      pS('transferfall', T.TRANSFERFALL[0]),
+      pS('transferfall', T.TRANSFERFALL[1], { spacing: { after: 0, line: 264 } })
     ], { kopf: 'Fallsituation', fill: F.GRAU_HELL, kopfFill: F.GRAU_HELL, rand: F.GRAU_R }),
-    new Paragraph({ spacing: { before: 80, after: 60 }, children: [B.i('Pflegefachpersonen leiten in lebensbedrohlichen Situationen lebenserhaltende Sofortmaßnahmen ein.')] }),
-    aufg([
-      { nr: '5.1', text: 'Beschreiben Sie stichwortartig 5 Sofortmaßnahmen, die Sie bei Herrn Martens bis zum Eintreffen des Rettungsdienstes einleiten. Begründen Sie dabei die Positionierung von Herrn Martens.', punkte: 6 },
-      { nr: '5.2', text: 'Kennzeichnen Sie in Ihrer Antwort zu 5.1 jede Maßnahme, die Sie nur nach ärztlicher Anordnung durchführen dürfen, mit „n. ä. A.“.', punkte: 1 }
-    ]),
+    new Paragraph({ spacing: { before: 80, after: 60 }, children: [B.i(T.TRANSFER_RAHMEN)] }),
+    aufg([A('5.1'), A('5.2')]),
     (aktuellerTeil = '5.1 und 5.2', null),   // ohne Zwischenüberschrift: die Linien stehen direkt unter den Aufgaben
-    B.linien(7, L([
-      'z. B.: Hilfe holen: eine Kollegin setzt den Notruf 112 ab (Notärztin nötig); Herrn Martens nicht allein lassen.',
-      'Oberkörper hoch (halbsitzend), weil Atemnot und Schwellung im Vordergrund stehen (Kloßgefühl, pfeifende Einatmung, 28/min): Die Atemhilfsmuskulatur kann arbeiten. Keine Schocklage – auch wegen der Herzinsuffizienz. Nicht aufstehen oder gehen lassen.',
-      'Vitalzeichen engmaschig überwachen: Atmung, Puls, Blutdruck, Bewusstsein, wenn vorhanden SpO₂ (Schockindex 124 : 92 ≈ 1,3).',
-      'Beengende Kleidung am Hals öffnen; Einstichstelle zusätzlich kühlen (Kühlpack in ein Tuch gewickelt).',
-      'Nichts zu essen oder zu trinken geben (Schwellung, Aspirationsgefahr).',
-      'Adrenalin i. m. (n. ä. A.) – gibt hier die Notärztin, da keine Anordnung und kein Notfallset vorliegen; Sauerstoff (n. ä. A.).',
-      'Uhrzeit, Werte und Maßnahmen notieren; bei Bewusstlosigkeit mit normaler Atmung stabile Seitenlage, ohne normale Atmung Reanimation (KB III).',
-      '5.1: je beschriebene Maßnahme 1 P. (max. 5), Begründung der Positionierung 1 P.; Schocklage trotz Atemnot oder Antihistaminikum statt Adrenalin wird nicht gewertet. 5.2: 1 P., wenn alle Medikamenten- und Sauerstoff-Maßnahmen mit „n. ä. A.“ gekennzeichnet sind.'
-    ]))
+    B.linien(7, L(T.LOESUNG_5))
   );
 
   /* ---------- Seite 6: Hausaufgabe ---------- */
   sammelnAn = false;   // Lösungen der Hausaufgabe gehören nicht auf die Nachlese-Seite (eigene Selbstkontrolle)
   push(
-    B.abschnitt('Hausaufgabe · Ein neuer Fall (ca. 17 Minuten · 13 Punkte)', { pageBreakBefore: true }),
-    B.p('Lesen Sie vorher die **Merksätze AA1, AA3 und AA4**. Dann schreiben Sie ohne Hilfsmittel.', { spacing: { after: 60, line: 252 } }),
+    B.abschnitt(T.HAUSAUFGABE.titel, { pageBreakBefore: true }),
+    B.p(T.HAUSAUFGABE.hinweis, { spacing: { after: 60, line: 252 } }),
     B.meta('ca. 17 min (1,3 min je Punkt wie im Examen) · Einzelarbeit zu Hause · AFB I–III · Examensformat: Ausgangssituation, Rahmensatz je Aufgabe, Situationswechsel im Aufgabenstamm (vgl. Mai 2024 Tag 1, 1.2; Mai 2024 Tag 3, 8.1–8.2; Mai 2026 Tag 1, 1.3)'),
     B.kasten([
-      B.p('Sie sind Auszubildende bzw. Auszubildender in der Rehaklinik „Talblick“. Frau Sabine Lorenz (52) ist seit einer Woche nach einer Bandscheibenoperation bei Ihnen. In ihrem Allergiepass steht eine Fischallergie.'),
-      B.p('Um 12:20 Uhr isst sie Gemüsecurry mit Fischsauce. Um 12:35 Uhr klingelt sie. Sie kratzt sich an den Händen und an der Kopfhaut, am Bauch sind Quaddeln. „Mir ist so schwindelig und übel.“ Sie ist blass und unruhig. Puls 124/min, Blutdruck 86/52 mmHg (am Morgen: Puls 72/min, Blutdruck 128/78 mmHg), Atemfrequenz 20/min, Sauerstoffsättigung 96 %. Ihre Stimme klingt normal, sie hat keine Atemnot. Die Stationsärztin ist im Haus; es gibt eine Notfall-SOP für allergische Notfälle.', { spacing: { after: 0, line: 264 } })
+      B.p(T.HAUSAUFGABE.situation[0]),
+      B.p(T.HAUSAUFGABE.situation[1], { spacing: { after: 0, line: 264 } })
     ], { kopf: 'Ausgangssituation', fill: F.GRAU_HELL, kopfFill: F.GRAU_HELL, rand: F.GRAU_R }),
-    new Paragraph({ spacing: { before: 120, after: 60 }, keepNext: true, children: [B.i('Pflegefachpersonen schätzen akute Situationen anhand von Beobachtungen und Messwerten ein.')] }),
-    aufg([{ nr: '1.1', text: 'Begründen Sie anhand von 4 Symptomen aus der Situation, welche Schockform bei Frau Lorenz vorliegt.', punkte: 4 }]),
-    B.linien(3, L([
-      'Anaphylaktischer Schock. Begründung z. B. (je Symptom mit Zuordnung 1 P.): zeitlicher Zusammenhang – Beginn 15 Min. nach dem Essen mit Fischsauce bei bekannter Fischallergie · Haut – Juckreiz an Händen und Kopfhaut, Quaddeln am Bauch · Kreislauf – Puls 124/min, Blutdruckabfall von 128/78 auf 86/52 mmHg, Blässe, Schwindel · Magen-Darm – Übelkeit · Gehirn – Unruhe (Minderdurchblutung).',
-      'Für die volle Punktzahl muss die Kreislaufbeteiligung genannt sein – ein Schock zeigt sich immer am Kreislauf.'
-    ])),
-    new Paragraph({ spacing: { before: 120, after: 60 }, keepNext: true, children: [B.i('Pflegefachpersonen leiten in lebensbedrohlichen Situationen Sofortmaßnahmen ein.')] }),
-    aufg([
-      { nr: '2.1', text: 'Beschreiben Sie stichwortartig 6 Sofortmaßnahmen, die Sie bei Frau Lorenz einleiten. Begründen Sie die Positionierung.', punkte: 7 },
-      { nr: '2.2', vorsatz: 'Fünf Minuten später ist Frau Lorenz heiser und sagt: „Ich krieg so schlecht Luft.“ Die Sauerstoffsättigung sinkt auf 90 %.', text: 'Begründen Sie, wie Sie Frau Lorenz jetzt positionieren.', punkte: 2 }
-    ]),
-    B.linien(6, L([
-      '2.1 z. B.: nicht weiteressen (Allergen stoppen) · Hilfe holen: Stationsärztin bzw. Notfallteam alarmieren, Frau Lorenz nicht allein lassen · flach lagern, Beine hoch, weil Kreislaufzeichen ohne Atemnot im Vordergrund stehen → mehr Blut zum Herzen; nicht aufsetzen oder aufstehen lassen · Adrenalin i. m. nach Notfall-SOP bzw. ärztlicher Anordnung vorbereiten/verabreichen (Außenseite Oberschenkel) · venösen Zugang und Volumengabe n. ä. A. vorbereiten · Sauerstoff n. ä. A./SOP · Vitalzeichen engmaschig (Puls, Blutdruck, Atmung, SpO₂, Bewusstsein) · Uhrzeit, Symptome und Maßnahmen dokumentieren.',
-      '(je Maßnahme 1 P., max. 6 P.; Begründung der Positionierung 1 P.; Antihistaminikum statt Adrenalin wird nicht gewertet)',
-      '2.2 Jetzt Oberkörper hoch (halbsitzend), weil die Atemnot im Vordergrund steht (Heiserkeit = Schleimhautschwellung, SpO₂ 90 %): Die Atemhilfsmuskulatur kann arbeiten. Trotzdem nicht auf die Bettkante setzen oder aufstehen lassen; Kreislauf weiter überwachen und die Ärztin über die Verschlechterung informieren. (Positionierung 1 P., Begründung 1 P.)'
-    ])),
+    new Paragraph({ spacing: { before: 120, after: 60 }, keepNext: true, children: [B.i(T.HAUSAUFGABE.rahmen1)] }),
+    aufg([T.HAUSAUFGABE.aufgabe1]),
+    B.linien(3, L(T.HAUSAUFGABE.loesung1)),
+    new Paragraph({ spacing: { before: 120, after: 60 }, keepNext: true, children: [B.i(T.HAUSAUFGABE.rahmen2)] }),
+    aufg(T.HAUSAUFGABE.aufgaben2),
+    B.linien(6, L(T.HAUSAUFGABE.loesung2)),
     // Zwei QR-Kästen nebeneinander: Selbstkontrolle (mit Punktezeile) und Nachlesen
     B.leer(20),
     qrZeile(B, [
@@ -407,12 +365,12 @@ function hinweise(B) {
     punkt('Schutz gegen Durchklicken wie gewohnt: Am Handy erscheinen Merksatz bzw. „Geschafft!“ nur, wenn genug Aufgaben beim ersten Versuch richtig sind – sonst „Nicht einfach durchklicken“ (am Beamer sichtbar).'),
     B.zwischen('Inhaltliche Hinweise'),
     punkt('**Einstieg und Check-out („Wie hätten Sie gehandelt?“):** Sie zeigen die vier Notfälle nacheinander, die Klasse stimmt jeweils gleichzeitig am Handy ab – ohne Namen. Falsch liegen ist ausdrücklich erlaubt; die Sicherheit („sicher“ / „vermute nur“) macht Fehlvorstellungen sichtbar, die mit Überzeugung vertreten werden. Beim Einstieg zeigt „Ergebnisse anzeigen“ nur die Verteilung – nichts auflösen, auch nicht beim Murmeln. Im Check-out (nach der Folie „Was haben wir heute gelernt?“) dieselben Notfälle noch einmal, jetzt mit „Auflösung zeigen“: richtige Antwort, Erklärung und die Klasse am Anfang und jetzt nebeneinander. E4 ist die Leitfrage (Frau Maler um 11 Uhr); sie wird in AA6 geklärt (Kausalkette auf S. 1 des AB). Der Check-out steht nicht auf dem AB.'),
-    punkt('Die Lagerungsempfehlungen folgen der S2k-Leitlinie Anaphylaxie (AWMF 061-025, 2021): symptomorientiert; Flachlagerung und Vermeiden abrupter Lageveränderungen (Aufsitzen, Aufstehen) als Grundstrategie; bei führender Atemnot (halb-)sitzend; bei eingeschränktem Bewusstsein und intaktem Kreislauf stabile Seitenlage; zur Kreislaufverbesserung Beine hoch.'),
-    punkt('Adrenalin i. m. laut Leitlinie 0,15–0,6 mg in die Außenseite des Oberschenkels, Autoinjektoren 0,15/0,3/0,5 mg, Wiederholung nach ca. 5–10 min. Antihistaminika: langsamerer Wirkungseintritt, Wirkung auf Kreislauf und Bronchokonstriktion nicht belegt, lebensrettende Sofortmaßnahmen dürfen nicht verzögert werden. Glukokortikoide: untergeordnete Rolle in der Akutphase. Die KA-Lösung nennt „Erwachsene 0,5 mg“ – das liegt in diesem Bereich.'),
-    punkt('Der Leitfall ist belastend (Christin, Reanimation). AA6 bleibt bewusst fachlich (Kausalkette, verpasste Chancen) und bewertet Christin nicht; Erleben, Hilflosigkeit und Verarbeitung sind Thema in KB II und KB V.'),
-    punkt('Die Übungsfälle vermeiden bewusst die Personen und Auslöser der Klassenarbeit (Frau Sommer, Herr Brenner, Antibiotika-Kurzinfusion), damit die KA den Transfer prüft.'),
+    punkt(T.LV_HINWEISE.leitlinie),
+    punkt(T.LV_HINWEISE.adrenalin),
+    punkt(T.LV_HINWEISE.leitfall),
+    punkt(T.LV_HINWEISE.uebungsfaelle),
     B.zwischen('Nicht enthalten (andere Kompetenzbereiche/Fächer)'),
-    punkt('KB II: psychologische Erste Hilfe, Beruhigen, Notfalleinwilligung, SPIKES/NURSE, SAfE · KB III: Reanimation, ABCDE-Schema, Notaufnahme/Triage, PTBS (nur Verweise) · KB IV: Delegationsrecht, Haftung, unterlassene Hilfeleistung, Ersthelferschutz, Patientenverfügung · KB V: eigene Überforderung · Deutsch: Notruf absetzen, SBAR · Pädiatrie (3. AJ): Anaphylaxie bei Kindern · Anatomie: Pathophysiologie der Lungenembolie (1. AJ, nur aktiviert).'),
+    punkt(T.LV_HINWEISE.nichtEnthalten),
     B.zwischen('„Wer darf was?“ (AA4a) – Lösung'),
     punkt('🟢 selbst: Infusion stoppen, Zugang belassen · nach Leitsymptom lagern'),
     punkt('🟡 n. ä. A./SOP: Adrenalin i. m. · Sauerstoff · Antihistaminikum'),
@@ -421,7 +379,7 @@ function hinweise(B) {
   );
   push(B.tabelle([{ text: 'Karte', w: 2000 }, { text: 'Situation', w: 3900 }, { text: 'Lösung und Begründung', w: B.breite - 5900 }],
     T.LAGERUNGSKARTEN.map((c) => [`**${c.titel}**${c.dilemma ? ' (Dilemma)' : ''}`, c.text, `**${c.loesung}** – ${c.warum}`]), { schrift: 17 }));
-  push(B.zwischen('Quellen'), punkt('S2k-Leitlinie Akuttherapie und Management der Anaphylaxie, AWMF 061-025, Update 2021 (Ring et al., Allergo J Int 2021;30:1–25) · MSD Manual Profi-Ausgabe: Schock · Landeslehrplan Berufsfachschule Pflege BW, CE 06 · BW-Abschlussprüfungen Mai 2023–Mai 2026 (Operatoren, Aufgabenformat)'));
+  push(B.zwischen('Quellen'), punkt(T.LV_HINWEISE.quellen));
   return k;
 }
 
@@ -479,11 +437,7 @@ async function main() {
 // Entfernt werden Klammern mit Punkten, z. B. „(Beurteilung 1 P., Begründung 1 P.)“, und reine Bewertungszeilen.
 function ohnePunkte(loesungen) {
   const aus = {};
-  for (const [k, zeilen] of Object.entries(loesungen)) {
-    aus[k] = zeilen
-      .map((z) => z.replace(/\s*\([^()]*\d\s*P\.[^()]*\)/g, '').trim())
-      .filter((z) => z && !/\d\s*P\./.test(z));
-  }
+  for (const [k, zeilen] of Object.entries(loesungen)) aus[k] = ohnePunkteZeilen(zeilen);
   return aus;
 }
 
