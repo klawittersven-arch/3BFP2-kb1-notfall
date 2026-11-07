@@ -367,11 +367,12 @@ b, strong { font-weight: 800; }
 .ts-kopf.ts-gemeinsam { background: #E6EEF0; }
 .mit-gemeinsamkeit .ts-zelle.ts-gemeinsam { font-size: 23px; }
 .aufdeck-knoepfe .tipp { margin-right: auto; }
-.loesungen { display: grid; gap: 18px; }
-.loesung-teil { display: grid; gap: 8px; }
-.loesung-aufgabe { margin: 0; font-size: 22px; line-height: 1.35; }
-.loesung-punkte { color: var(--leise); font-size: 18px; }
-.l-zeile { font-size: 20px; line-height: 1.35; }
+.loesungen { display: grid; gap: 20px; }
+.loesung-teil { display: grid; gap: 10px; }
+.loesung-aufgabe { margin: 0; font-size: 27px; line-height: 1.3; }
+.loesung-punkte { color: var(--leise); font-size: 22px; }
+.loesung-weiter { margin: 0; font-size: 22px; font-weight: 800; color: var(--leise); }
+.l-zeile { font-size: 29px; line-height: 1.3; padding: 10px 18px; }
 
 /* Erklärfolie */
 .info-folie { display: grid; grid-template-columns: 1fr 520px; gap: 40px; height: 100%; }
@@ -440,7 +441,7 @@ b, strong { font-weight: 800; }
 .aufgabe-blatt .sprechblase { padding: 14px 20px; }
 .aufgabe-blatt .sprechblase .was { font-size: 24px; }
 .a-vorsatz + p, .loesung-aufgabe p { margin: 0; }
-.loesung-aufgabe .a-vorsatz { font-size: 18px; }
+.loesung-aufgabe .a-vorsatz { font-size: 23px; }
 .loesung-mit-uhr { grid-template-columns: 1fr 360px; }
 .loesung-rechts { display: grid; gap: 14px; align-content: start; }
 .loesung-rechts .punkte li { font-size: 20px; padding-left: 34px; }

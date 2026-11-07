@@ -45,6 +45,7 @@ var STUNDE = {
      typ (Beamer): start, fall, abstimmung, ergebnis, murmeln, fahrplan, puzzle, experten, stamm, tabelle,
                    info, fortschritt, papier, loesung, impuls, aufstellung, dialog, kausalkette, ende,
                    merksatz (Lesefolie: ganzer Merksatz wie auf dem AB, Schlüsselwörter hervorgehoben), lagerung (Bild + Wann/Warum/So geht’s),
+                   loesung (je Aufgabe eine Folie; aufgaben: [{ nrs, loesung, zeilen: [von, bis] }] teilt lange Lösungen; uhrVon = Uhr einer anderen Folie weiterzeigen),
                    aufgabe (Aufgabe wie im AB; „Weiter“ blendet „Bearbeiten Sie jetzt …“ und die Uhr ein),
                    blatt (Austeilen: „Sie erhalten jetzt Blatt …“ – Überschrift und Punkte wie im Arbeitsblatt)
                    (tabelle, loesung, aufgabe: Inhalte aus inhalte_nachlesen.js, also wie im Arbeitsblatt)
@@ -220,16 +221,23 @@ var STUNDE = {
         typ: 'faelle', titel: 'Schreibaufgaben 2.1 und 2.2', text: 'Schreiben Sie allein auf dem Arbeitsblatt. Hier können Sie die Fälle nachlesen:',
         aufgaben: [
           { nr: '2.1', text: 'Erläutern Sie, wie es bei Mia zum Schock kommt.', faelle: ['b'] },
-          { nr: '2.2', text: 'Nennen Sie 1 Befund, der bei Herrn Weber anders ist als bei Herrn Albrecht. Begründen Sie den Unterschied.', faelle: ['c', 'a'] }
+          { nr: '2.2', text: 'Herr Albrecht hat einen schnellen Puls (116/min), Herr Weber einen langsamen Puls (52/min). Erklären Sie diesen Unterschied.', faelle: ['a', 'c'] }
         ]
       }
     },
     {
-      id: 'aa2c-loesung', abschnitt: 'Gruppenpuzzle', kurz: 'Musterlösung 2.1/2.2', typ: 'loesung',
-      titel: 'Musterlösung 2.1 und 2.2',
-      aufgaben: ['2.1', '2.2'],
+      id: 'aa2c-loesung-21', abschnitt: 'Gruppenpuzzle', kurz: 'Musterlösung 2.1', typ: 'loesung',
+      titel: 'Musterlösung 2.1',
+      aufgaben: ['2.1'],
       tipp: 'Zeile anklicken = aufdecken · noch einmal = groß',
-      handy: { typ: 'papier', titel: 'Musterlösung vorne', text: 'Vergleichen Sie Ihre Antworten mit der Musterlösung am Beamer. Verbessern oder ergänzen Sie auf dem Arbeitsblatt – am besten in einer anderen Farbe.' }
+      handy: { typ: 'papier', titel: 'Musterlösung vorne', text: 'Vergleichen Sie Ihre Antwort mit der Musterlösung am Beamer. Verbessern oder ergänzen Sie auf dem Arbeitsblatt – am besten in einer anderen Farbe.' }
+    },
+    {
+      id: 'aa2c-loesung-22', abschnitt: 'Gruppenpuzzle', kurz: 'Musterlösung 2.2', typ: 'loesung',
+      titel: 'Musterlösung 2.2',
+      aufgaben: ['2.2'],
+      tipp: 'Zeile anklicken = aufdecken · noch einmal = groß',
+      handy: { typ: 'papier', titel: 'Musterlösung vorne', text: 'Vergleichen Sie Ihre Antwort mit der Musterlösung am Beamer. Verbessern oder ergänzen Sie auf dem Arbeitsblatt – am besten in einer anderen Farbe.' }
     },
     {
       id: 'aa3-impuls', abschnitt: 'Lagerung', kurz: 'Schock → Beine hoch?', typ: 'impuls',
@@ -300,11 +308,18 @@ var STUNDE = {
       handy: { typ: 'papier', titel: 'Schreibaufgaben 3.1 und 3.2', text: 'Bearbeiten Sie jetzt die Aufgaben **3.1 und 3.2** allein auf dem Arbeitsblatt. Die Zeit läuft vorne.' }
     },
     {
-      id: 'aa3b-loesung', abschnitt: 'Lagerung', kurz: 'Musterlösung 3.1/3.2', typ: 'loesung',
-      titel: 'Musterlösung 3.1 und 3.2',
-      aufgaben: ['3.1', '3.2'],
+      id: 'aa3b-loesung-31', abschnitt: 'Lagerung', kurz: 'Musterlösung 3.1', typ: 'loesung',
+      titel: 'Musterlösung 3.1',
+      aufgaben: ['3.1'],
       tipp: 'Zeile anklicken = aufdecken · noch einmal = groß',
-      handy: { typ: 'papier', titel: 'Musterlösung vorne', text: 'Vergleichen Sie Ihre Antworten mit der Musterlösung am Beamer. Verbessern oder ergänzen Sie auf dem Arbeitsblatt – am besten in einer anderen Farbe.' }
+      handy: { typ: 'papier', titel: 'Musterlösung vorne', text: 'Vergleichen Sie Ihre Antwort mit der Musterlösung am Beamer. Verbessern oder ergänzen Sie auf dem Arbeitsblatt – am besten in einer anderen Farbe.' }
+    },
+    {
+      id: 'aa3b-loesung-32', abschnitt: 'Lagerung', kurz: 'Musterlösung 3.2', typ: 'loesung',
+      titel: 'Musterlösung 3.2',
+      aufgaben: ['3.2'],
+      tipp: 'Zeile anklicken = aufdecken · noch einmal = groß',
+      handy: { typ: 'papier', titel: 'Musterlösung vorne', text: 'Vergleichen Sie Ihre Antwort mit der Musterlösung am Beamer. Verbessern oder ergänzen Sie auf dem Arbeitsblatt – am besten in einer anderen Farbe.' }
     },
     {
       id: 'aa4a', abschnitt: 'Verantwortung', kurz: 'Wer darf was? (AA4a)', typ: 'aufstellung', runde: 3,
@@ -376,12 +391,20 @@ var STUNDE = {
       handy: { typ: 'papier', titel: 'Transferfall: 5.1 und 5.2', text: 'Allein und ohne Unterlagen. Legen Sie das Handy umgedreht hin – die Zeit läuft vorne.' }
     },
     {
-      id: 'aa5-peer', abschnitt: 'Anwenden', kurz: 'Peer-Korrektur (AA5)', typ: 'loesung',
-      titel: 'AA5 · Peer-Korrektur mit Musterlösung',
+      id: 'aa5-peer', abschnitt: 'Anwenden', kurz: 'Peer-Korrektur (AA5) – Teil 1', typ: 'loesung',
+      titel: 'AA5 · Peer-Korrektur mit Musterlösung (1/2)',
       punkte: ['Tauschen Sie mit einer Person aus einer **anderen Stammgruppe**.', 'Haken Sie im **Bewertungsraster am Handy** ab – die App zählt die Punkte.', 'Rückmeldung in **einem Satz**.'],
-      aufgaben: [{ nrs: ['5.1', '5.2'], loesung: '5.1 und 5.2' }],
+      aufgaben: [{ nrs: ['5.1', '5.2'], loesung: '5.1 und 5.2', zeilen: [0, 4] }],
       uhr: [{ label: 'Peer-Korrektur', sek: 240 }],
       tipp: 'Zeile anklicken = aufdecken · noch einmal = groß',
+      handy: { typ: 'modul', modul: 'raster' }
+    },
+    {
+      id: 'aa5-peer-2', abschnitt: 'Anwenden', kurz: 'Peer-Korrektur (AA5) – Teil 2', typ: 'loesung',
+      titel: 'AA5 · Peer-Korrektur mit Musterlösung (2/2)',
+      aufgaben: [{ nrs: [], loesung: '5.1 und 5.2', zeilen: [4, 99], weiter: true }],
+      uhr: [{ label: 'Peer-Korrektur', sek: 240 }], uhrVon: 'aa5-peer',
+      tipp: 'Zeile anklicken = aufdecken · noch einmal = groß · die Uhr läuft weiter',
       handy: { typ: 'modul', modul: 'raster' }
     },
     {
@@ -492,6 +515,7 @@ var STUNDE = {
     aufloesungSpaeter: 'Die Auflösung gibt es am Ende der Stunde.',
     gemeinsamkeitTitel: 'Gemeinsamkeit aller drei',
     loesungZu: 'Musterlösung {nr}',
+    loesungWeiter: 'Fortsetzung',
     gliedNr: 'Glied {n} von {y}',
     wannTitel: 'Wann?',
     warumTitel: 'Warum?',

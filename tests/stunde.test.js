@@ -237,7 +237,8 @@ const textDa = (h, text) => bis(h, (t) => document.body.innerText.includes(t), t
     H.pruefe(await textDa(handys[0], 'Blatt 2'), 'Handy: Blatt 2 kommt');
     await weiter();
     H.pruefe(await folieIst(lap, 'aa2c'), 'dann Schreibaufgaben 2.1/2.2');
-    H.pruefe((await lap.$$('.a-tabelle .a-nr')).length === 2 && !(await lap.$('.aufgabe-los')), 'Aufgabenfolie: erst die Aufgaben wie im AB, noch ohne Auftrag');
+    // im Browser prüfen (die Folie kann gerade neu gezeichnet werden – dann wären gemerkte Elemente veraltet)
+    H.pruefe(await bis(lap, () => document.querySelectorAll('.a-tabelle .a-nr').length === 2 && !document.querySelector('.aufgabe-los')), 'Aufgabenfolie: erst die Aufgaben wie im AB, noch ohne Auftrag');
     H.pruefe(await textDa(handys[0], 'erklärt gleich die Aufgabe'), 'Handy: nach vorne schauen, die Lehrkraft erklärt');
     H.pruefe((await lap.textContent('#weiter')).includes('Jetzt bearbeiten'), 'Weiter-Knopf heißt „Jetzt bearbeiten“');
     await weiter();
@@ -247,13 +248,16 @@ const textDa = (h, text) => bis(h, (t) => document.body.innerText.includes(t), t
     H.pruefe(!(await lap.textContent('.folie')).includes('Expertin/Experte B'), 'keine Expertenkorrektur mehr');
     await handys[0].screenshot({ path: path.join(ORDNER, 'handy_13_faelle.png'), fullPage: true });
     await weiter();
-    H.pruefe(await folieIst(lap, 'aa2c-loesung'), 'Musterlösung 2.1/2.2');
+    H.pruefe(await folieIst(lap, 'aa2c-loesung-21') && (await lap.$$('.loesung-aufgabe')).length === 1, 'Musterlösung 2.1 – eine Aufgabe je Folie');
+    H.pruefe(await bis(lap, () => { const e = document.querySelector('.l-zeile'), l = document.querySelector('.loesungen'); return !!e && e.isConnected && parseFloat(getComputedStyle(e).fontSize) * (parseFloat(l.style.zoom) || 1) >= 28; }), 'Lösungszeilen groß (mind. 28 px)');
     const zeilenL = (await lap.$$('.loesungen .aufdeck')).length;
     await lap.click('button:has-text("Alle aufdecken")');
     H.pruefe(await bis(lap, (n) => document.querySelectorAll('.loesungen .aufdeck.offen').length === n, zeilenL), 'Alle aufdecken zeigt alle ' + zeilenL + ' Lösungszeilen');
     await lap.screenshot({ path: path.join(ORDNER, 'stunde_14_musterloesung.png') });
     await lap.reload();
     H.pruefe(await bis(lap, (n) => document.querySelectorAll('.loesungen .aufdeck.offen').length === n, zeilenL), 'aufgedeckt bleibt aufgedeckt (auch nach Neuladen)');
+    await weiter();
+    H.pruefe(await folieIst(lap, 'aa2c-loesung-22') && (await lap.textContent('.loesung-aufgabe')).includes('116/min'), 'dann Musterlösung 2.2 (Puls-Unterschied)');
     await weiter();
     H.pruefe(await folieIst(lap, 'aa3-impuls'), 'weiter zu „Schock → Beine hoch?“');
 
@@ -279,8 +283,8 @@ const textDa = (h, text) => bis(h, (t) => document.body.innerText.includes(t), t
     await lap.click('#zurueck');
     H.pruefe(await folieIst(lap, 'aa3-merksatz'), 'Zurück: eine Folie zurück');
     await lap.click('#menue-knopf');
-    await lap.click('.menue-folie:has-text("Musterlösung 3.1/3.2")');
-    H.pruefe(await folieIst(lap, 'aa3b-loesung') && (await lap.$$('.loesungen .aufdeck')).length > 0, 'Menü: Sprung zur Musterlösung 3.1/3.2');
+    await lap.click('.menue-folie:has-text("Musterlösung 3.2")');
+    H.pruefe(await folieIst(lap, 'aa3b-loesung-32') && (await lap.$$('.loesungen .aufdeck')).length > 0, 'Menü: Sprung zur Musterlösung 3.2');
     await lap.click('#menue-knopf');
     await lap.click('.menue-folie:has-text("Wer darf was?")');
     H.pruefe(await folieIst(lap, 'aa4a'), 'Menü: Sprung zu „Wer darf was?“');

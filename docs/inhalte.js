@@ -298,7 +298,7 @@ var INHALTE = {
      ------------------------------------------------------------------------ */
   raster: {
     titel: 'AA5 · Bewertungsraster',
-    anweisung: 'Lesen Sie die Lösung Ihrer Partnerin oder Ihres Partners. **Haken Sie an, was dort steht.** Die App zählt die Punkte wie im Erwartungshorizont.',
+    anweisung: 'Lesen Sie die Lösung Ihrer Partnerin oder Ihres Partners. **Haken Sie an, was dort steht.** Die App zählt die Punkte.',
     gesamt: 'Punkte: {x} von {y}',
     rueckmeldung: 'Geben Sie jetzt eine Rückmeldung in einem Satz: Was ist gut gelungen – was fehlt noch?',
     fehlerTitel: 'Fehler, die Punkte kosten:',
@@ -341,7 +341,7 @@ var INHALTE = {
       { nr: '1.1', titel: 'Anaphylaktischen Schock begründen (4 P.)', max: 4,
         // pflicht: ohne dieses Kriterium höchstens max − 1 Punkte (wie im Erwartungshorizont der KA)
         pflicht: 'kreislauf',
-        pflichtHinweis: 'Ohne Kreislaufzeichen höchstens 3 Punkte – wie in der Klassenarbeit.',
+        pflichtHinweis: 'Ohne Kreislaufzeichen höchstens 3 Punkte – ein Schock zeigt sich immer am Kreislauf.',
         muster: 'z. B. (je Symptom mit Zuordnung 1 P.):\nzeitlicher Zusammenhang – Beginn 15 Min. nach dem Essen mit Fischsauce bei bekannter Fischallergie\nHaut – Juckreiz an Händen und Kopfhaut, Quaddeln am Bauch\nKreislauf – Puls 124/min, Blutdruckabfall von 128/78 auf 86/52 mmHg, Blässe, Schwindel\nMagen-Darm – Übelkeit\nGehirn – Unruhe (Minderdurchblutung)\nFür die volle Punktzahl muss die Kreislaufbeteiligung genannt sein.',
         kriterien: [
           { id: 'zeit', text: 'Zeitlicher Zusammenhang mit dem Allergen (Fischsauce, bekannte Allergie)', punkte: 1 },

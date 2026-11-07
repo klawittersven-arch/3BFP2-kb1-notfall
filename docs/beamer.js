@@ -143,7 +143,7 @@
   }
 
   function uhrStarten(f) {
-    lehrer('uhr', { uhr: { folie: f.id, segmente: f.uhr } });
+    lehrer('uhr', { uhr: { folie: f.uhrVon || f.id, segmente: f.uhr } });
   }
 
   /* ---------- Abstimmung: umstrittenste Frage ---------- */
@@ -257,7 +257,7 @@
   function uhrZustand(f) {
     var u = stand && stand.stunde && stand.stunde.uhr;
     var seg = f.uhr || [];
-    if (!u || u.folie !== f.id) return { laeuft: false, segmente: seg, nr: 0, rest: seg.length ? seg[0].sek : 0 };
+    if (!u || u.folie !== (f.uhrVon || f.id)) return { laeuft: false, segmente: seg, nr: 0, rest: seg.length ? seg[0].sek : 0 };
     var vergangen = (jetzt() - u.start) / 1000;
     var summe = 0;
     for (var i = 0; i < u.segmente.length; i++) {
@@ -955,7 +955,10 @@
       var lsg = typeof eintrag === 'string' ? eintrag : eintrag.loesung;
       var teil = el('section', 'loesung-teil');
       nrs.forEach(function (nr) { teil.appendChild(aufgabeKopf(nr, (NL.aufgaben || {})[nr] || {})); });
+      if (eintrag.weiter) teil.appendChild(el('p', 'loesung-weiter', K.ersetzen(T.loesungZu, { nr: lsg }) + ' · ' + T.loesungWeiter));
+      var bereich = eintrag.zeilen || [0, 99];   // lange Lösungen auf zwei Folien: Zeilen von … bis (ohne)
       ((NL.loesungen || {})[lsg] || []).forEach(function (zeile, i) {
+        if (i < bereich[0] || i >= bereich[1]) return;
         var schl = f.id + ':' + lsg + ':' + i;
         alle.push(schl);
         teil.appendChild(aufdeckZelle(schl, zeile, 'l-zeile', K.ersetzen(T.loesungZu, { nr: lsg })));
