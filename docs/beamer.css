@@ -348,14 +348,24 @@ b, strong { font-weight: 800; }
 .aufdeck:hover { border-color: var(--petrol); background: var(--hell); }
 .aufdeck.offen { border: 2px solid var(--gruen); background: var(--gruen-hell); cursor: default; }
 .aufdeck .verdeckt { display: block; text-align: center; font-size: 22px; font-weight: 900; color: var(--petrol-hell); }
-.vergleich { display: grid; grid-template-columns: 200px repeat(3, minmax(0, 1fr)); gap: 6px; }
-.v-kopf { font-weight: 900; font-size: 18px; padding: 6px 10px; border-radius: 8px; color: #fff; background: var(--leise); }
-.v-kopf:first-child { background: transparent; }
-.v-kopf.A { background: var(--a); } .v-kopf.B { background: var(--b); } .v-kopf.C { background: var(--c); }
-.v-zeilenkopf { font-weight: 800; font-size: 16px; padding: 8px 10px; background: var(--akzent-hell); border-radius: 8px; display: flex; align-items: center; }
-.v-zelle { font-size: 15px; line-height: 1.3; }
-.v-breit { grid-column: span 3; }
 .aufdeck-knoepfe { margin-top: 12px; justify-content: flex-end; }
+/* Vergleichstabelle sichern: eine Spalte je Folie, große Schrift (bei C mit Gemeinsamkeit etwas kleiner) */
+.tabelle-spalte-kopf { display: flex; align-items: center; gap: 22px; margin-bottom: 14px; }
+.tabelle-spalte-kopf .f-titel { font-size: 40px; margin: 0; }
+.spalte-marke { color: #fff; font-weight: 900; font-size: 32px; padding: 6px 24px; border-radius: 14px; }
+.spalte-marke.A { background: var(--a); } .spalte-marke.B { background: var(--b); } .spalte-marke.C { background: var(--c); }
+.tabelle-unter { margin: 0 0 0 auto; max-width: 560px; font-size: 21px; font-weight: 700; line-height: 1.3; color: var(--petrol); text-align: right; }
+.tabelle-spalte { display: grid; grid-template-columns: 320px minmax(0, 1fr); gap: 10px; border-left: 12px solid var(--leise); padding-left: 14px; }
+.tabelle-spalte.A { border-left-color: var(--a); } .tabelle-spalte.B { border-left-color: var(--b); } .tabelle-spalte.C { border-left-color: var(--c); }
+.ts-kopf { font-weight: 800; font-size: 26px; line-height: 1.15; padding: 8px 16px; background: var(--akzent-hell); border-radius: 10px; display: flex; align-items: center; }
+.ts-zelle { font-size: 32px; line-height: 1.25; min-height: 66px; padding: 8px 18px; }
+.ts-zelle .verdeckt { font-size: 32px; }
+.tabelle-spalte.mit-gemeinsamkeit { grid-template-columns: 300px minmax(0, 1fr); gap: 6px; }
+.mit-gemeinsamkeit .ts-kopf { font-size: 24px; padding: 6px 14px; }
+.mit-gemeinsamkeit .ts-zelle { font-size: 29px; min-height: 52px; padding: 6px 16px; }
+.ts-gemeinsam { margin-top: 8px; }
+.ts-kopf.ts-gemeinsam { background: #E6EEF0; }
+.mit-gemeinsamkeit .ts-zelle.ts-gemeinsam { font-size: 23px; }
 .aufdeck-knoepfe .tipp { margin-right: auto; }
 .loesungen { display: grid; gap: 18px; }
 .loesung-teil { display: grid; gap: 8px; }
@@ -447,8 +457,6 @@ b, strong { font-weight: 800; }
 .abgestimmt.ergebnis { color: var(--gruen); font-size: 34px; }
 
 /* Großansicht: aufgedeckte Lösungen zum Abschreiben (2. Klick), ganze Tabellenspalte, Kettenglied */
-button.v-kopf { font-family: inherit; border: 0; text-align: left; cursor: zoom-in; }
-button.v-kopf:hover { filter: brightness(1.12); }
 .aufdeck.offen { cursor: zoom-in; }
 button.glied { font: inherit; text-align: left; border: 0; cursor: zoom-in; color: inherit; }
 button.glied:hover { box-shadow: 0 0 0 4px var(--petrol-hell); }
@@ -460,11 +468,6 @@ button.antwort-karte { font: inherit; font-size: 27px; text-align: left; border:
 .gross-text { font-size: 46px; line-height: 1.4; font-weight: 700; color: var(--text); }
 .gross-merksatz { margin: 0; font-weight: 600; line-height: 1.6; }
 .gross-schritt { margin: 0 0 6px; font-size: 22px; font-weight: 800; color: var(--akzent); text-transform: uppercase; letter-spacing: .06em; }
-.gross-spalte-titel { display: inline-block; color: #fff; padding: 6px 18px; border-radius: 12px; }
-.gross-spalte-titel.A { background: var(--a); } .gross-spalte-titel.B { background: var(--b); } .gross-spalte-titel.C { background: var(--c); }
-.gross-spalte { display: grid; grid-template-columns: 260px 1fr; gap: 10px; }
-.gross-spalte .v-zeilenkopf { font-size: 24px; }
-.g-zelle { font-size: 28px; line-height: 1.3; }
 
 /* Einstieg und Check-out: Notfall für Notfall */
 .notfall-kopf { display: flex; justify-content: space-between; align-items: baseline; font-size: 22px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: var(--akzent); margin-bottom: 10px; }

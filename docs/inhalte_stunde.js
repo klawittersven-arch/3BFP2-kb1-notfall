@@ -155,11 +155,25 @@ var STUNDE = {
       handy: { typ: 'stamm' }
     },
     {
-      id: 'aa2a-sichern', abschnitt: 'Gruppenpuzzle', kurz: 'Tabelle sichern', typ: 'tabelle',
+      id: 'aa2a-sichern-a', abschnitt: 'Gruppenpuzzle', kurz: 'Tabelle sichern: A hypovolämisch', typ: 'tabelle', spalte: 'A',
       titel: 'Vergleichstabelle sichern',
-      text: 'Vergleichen Sie Ihre Tabelle mit der Musterlösung – ergänzen und verbessern Sie Ihre Einträge.',
-      tipp: 'Zelle anklicken = aufdecken · noch einmal = groß · Spaltenkopf (A, B, C) = ganze Spalte groß',
-      handy: { typ: 'papier', titel: 'Tabelle vergleichen', text: 'Vergleichen Sie Ihre Tabelle auf dem Arbeitsblatt mit der Musterlösung vorne am Beamer. Ergänzen und verbessern Sie Ihre Einträge.' }
+      text: 'Vergleichen Sie mit Ihrer Tabelle – ergänzen und verbessern Sie Ihre Einträge.',
+      tipp: 'Zelle anklicken = aufdecken · noch einmal = groß',
+      handy: { typ: 'papier', titel: 'Tabelle vergleichen: Spalte A', text: 'Vergleichen Sie die Spalte **A – hypovolämisch** auf Ihrem Arbeitsblatt mit der Musterlösung vorne am Beamer. Ergänzen und verbessern Sie Ihre Einträge.' }
+    },
+    {
+      id: 'aa2a-sichern-b', abschnitt: 'Gruppenpuzzle', kurz: 'Tabelle sichern: B anaphylaktisch', typ: 'tabelle', spalte: 'B',
+      titel: 'Vergleichstabelle sichern',
+      text: 'Vergleichen Sie mit Ihrer Tabelle – ergänzen und verbessern Sie Ihre Einträge.',
+      tipp: 'Zelle anklicken = aufdecken · noch einmal = groß',
+      handy: { typ: 'papier', titel: 'Tabelle vergleichen: Spalte B', text: 'Vergleichen Sie die Spalte **B – anaphylaktisch** auf Ihrem Arbeitsblatt mit der Musterlösung vorne am Beamer. Ergänzen und verbessern Sie Ihre Einträge.' }
+    },
+    {
+      id: 'aa2a-sichern-c', abschnitt: 'Gruppenpuzzle', kurz: 'Tabelle sichern: C neurogen', typ: 'tabelle', spalte: 'C', gemeinsamkeit: true,
+      titel: 'Vergleichstabelle sichern',
+      text: 'Vergleichen Sie mit Ihrer Tabelle – ergänzen und verbessern Sie Ihre Einträge.',
+      tipp: 'Zelle anklicken = aufdecken · noch einmal = groß',
+      handy: { typ: 'papier', titel: 'Tabelle vergleichen: Spalte C', text: 'Vergleichen Sie die Spalte **C – neurogen** auf Ihrem Arbeitsblatt mit der Musterlösung vorne am Beamer. Ergänzen und verbessern Sie Ihre Einträge.' }
     },
     {
       id: 'aa2b-intro', abschnitt: 'Gruppenpuzzle', kurz: 'Was ist der Schockform-Detektiv?', typ: 'info', emoji: '🔍',
@@ -476,7 +490,7 @@ var STUNDE = {
     aufloesungZeigen: 'Auflösung zeigen',
     notfallNr: 'Notfall {n} von {y}',
     aufloesungSpaeter: 'Die Auflösung gibt es am Ende der Stunde.',
-    spalteGross: 'Ganze Spalte groß zeigen',
+    gemeinsamkeitTitel: 'Gemeinsamkeit aller drei',
     loesungZu: 'Musterlösung {nr}',
     gliedNr: 'Glied {n} von {y}',
     wannTitel: 'Wann?',

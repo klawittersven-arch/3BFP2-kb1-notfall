@@ -225,7 +225,7 @@
   // Textreiche Folien (Aufgabe wie im AB, Musterlösungen): wird es zu lang, wird der Inhalt
   // unter dem Titel stufenweise kleiner, bis alles auf die Bühne passt (höchstens auf 64 %).
   function einpassen(wurzel) {
-    var ziel = wurzel.querySelector('.aufgabe-folie, .loesung-mit-uhr, .loesungen');
+    var ziel = wurzel.querySelector('.aufgabe-folie, .loesung-mit-uhr, .loesungen, .tabelle-spalte');
     if (!ziel) return;
     var grenze = $('inhalt').getBoundingClientRect().bottom + 1;
     function unten() {
@@ -904,49 +904,33 @@
   }
 
   // Vergleichstabelle wie auf dem Arbeitsblatt; Zelle anklicken = Lösung aufdecken
+  // Vergleichstabelle sichern: je Folie eine Spalte (A, B oder C) groß; Zelle anklicken = aufdecken, noch einmal = groß.
+  // Auf der Folie zu C steht zusätzlich die Gemeinsamkeit aller drei Schockformen.
   function folieTabelle(f, w) {
     var NL = window.NACHLESEN || {};
-    var kopf = el('div', 'ergebnis-kopf');
+    var c = 'ABC'.indexOf(f.spalte) + 1;
+    var name = f.spalte + ' ' + S.rollen[f.spalte].kurz;
+    var kopf = el('div', 'tabelle-spalte-kopf');
     kopf.appendChild(fmt('h1', 'f-titel', f.titel));
-    kopf.appendChild(fmt('p', 'f-unter', f.text));
+    kopf.appendChild(el('span', 'spalte-marke ' + f.spalte, name));
+    kopf.appendChild(fmt('p', 'tabelle-unter', f.text));
     w.appendChild(kopf);
     var alle = [];
-    var tab = el('div', 'vergleich');
-    var SPALTEN = ['A hypovolämisch', 'B anaphylaktisch', 'C neurogen'];
-    tab.appendChild(el('div', 'v-kopf', ''));
-    SPALTEN.forEach(function (t, i) {
-      var z = knopf(t, 'v-kopf ' + 'ABC'.charAt(i), function () { spalteGross(i + 1); });
-      z.title = T.spalteGross;
-      tab.appendChild(z);
-    });
-    // ganze Spalte groß: verdeckte Zellen lassen sich auch dort aufdecken
-    function spalteGross(c) {
-      grossZeigen(function (k) {
-        k.appendChild(el('h2', 'gross-spalte-titel ' + 'ABC'.charAt(c - 1), SPALTEN[c - 1]));
-        var g2 = el('div', 'gross-spalte');
-        (NL.vergleich || []).forEach(function (zeile, r) {
-          g2.appendChild(el('div', 'v-zeilenkopf', zeile[0]));
-          g2.appendChild(aufdeckZelle(f.id + ':' + r + ':' + c, zeile[c], 'g-zelle', zeile[0] + ' · ' + SPALTEN[c - 1]));
-        });
-        k.appendChild(g2);
-      });
-    }
+    var tab = el('div', 'tabelle-spalte ' + f.spalte + (f.gemeinsamkeit ? ' mit-gemeinsamkeit' : ''));
     (NL.vergleich || []).forEach(function (zeile, r) {
-      tab.appendChild(el('div', 'v-zeilenkopf', zeile[0]));
-      for (var c = 1; c <= 3; c++) {
-        var schl = f.id + ':' + r + ':' + c;
-        alle.push(schl);
-        tab.appendChild(aufdeckZelle(schl, zeile[c], 'v-zelle', zeile[0] + ' · ' + SPALTEN[c - 1]));
-      }
+      var schl = f.id + ':' + r;
+      alle.push(schl);
+      tab.appendChild(el('div', 'ts-kopf', zeile[0]));
+      tab.appendChild(aufdeckZelle(schl, zeile[c], 'ts-zelle', zeile[0] + ' · ' + name));
     });
-    tab.appendChild(el('div', 'v-zeilenkopf', 'Gemeinsamkeit'));
-    var g = aufdeckZelle(f.id + ':gemeinsam', NL.gemeinsamkeit || '', 'v-zelle v-breit', 'Gemeinsamkeit');
-    alle.push(f.id + ':gemeinsam');
-    tab.appendChild(g);
+    if (f.gemeinsamkeit) {
+      alle.push(f.id + ':gemeinsam');
+      tab.appendChild(el('div', 'ts-kopf ts-gemeinsam', T.gemeinsamkeitTitel));
+      tab.appendChild(aufdeckZelle(f.id + ':gemeinsam', NL.gemeinsamkeit || '', 'ts-zelle ts-gemeinsam', T.gemeinsamkeitTitel));
+    }
     w.appendChild(tab);
     w.appendChild(aufdeckKnoepfe(f, alle));
   }
-
 
   function aufgabeKopf(nr, a, klasse) {
     var kopf = el('div', klasse || 'loesung-aufgabe');

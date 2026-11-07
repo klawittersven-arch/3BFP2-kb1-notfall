@@ -115,6 +115,8 @@ const aa4 = S.folien.find((f) => f.id === 'aa4a');
 pruefe(aa4.massnahmen.length === 6 && aa4.massnahmen.every((m) => m.ecke >= 0 && m.ecke < aa4.ecken.length), 'AA4a: 6 Maßnahmen mit gültiger Ecke');
 pruefe(aa4.runde === 3 && aa4.ecken.length === 3 && aa4.massnahmen.length <= 9, 'AA4a: Abstimmung am Handy (Runde 3, höchstens 9 Maßnahmen)');
 pruefe(!ids.includes('pause'), 'keine Pausenfolie');
+const tab = S.folien.filter((f) => f.typ === 'tabelle');
+pruefe(tab.map((f) => f.spalte).join('') === 'ABC' && tab.filter((f) => f.gemeinsamkeit).length === 1 && tab[2].gemeinsamkeit && ids.indexOf(tab[0].id) === ids.indexOf('aa2a') + 1 && ids.indexOf(tab[2].id) === ids.indexOf(tab[0].id) + 2, 'Tabelle sichern: drei Folien nacheinander (A, B, C – Gemeinsamkeit bei C)');
 // Die drei Blätter werden nacheinander ausgeteilt – je eine Folie „Sie erhalten jetzt Blatt …“
 const blaetter = S.folien.filter((f) => f.typ === 'blatt');
 pruefe(blaetter.length === 3 && blaetter.every((f, i) => f.nr === i + 1 && f.von === 3 && f.ueberschrift && f.punkte.length >= 3 && f.handy.typ === 'vorne'), 'drei Austeil-Folien Blatt 1–3 mit Überschrift und Aufgaben');
