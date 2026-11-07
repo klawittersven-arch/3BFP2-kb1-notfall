@@ -43,8 +43,9 @@ const F = k.STUNDE.folien;
       });
       H.pruefe(m.passt, `Folie ${i + 1} „${f.kurz}“ passt auf die Bühne`, m.passt ? '' : m.ueber + ' px zu hoch');
       // aufgedeckte Lösung noch einmal anklicken → groß; die Großansicht passt auf die Bühne
-      const offen = await p.$('.folie .aufdeck.offen, .folie button.glied');
-      if (offen) {
+      // Locator statt gemerktem Element: Die Folie kann gerade neu gezeichnet werden, der Locator sucht dann neu
+      const offen = p.locator('.folie .aufdeck.offen, .folie button.glied').first();
+      if (await offen.count()) {
         await offen.click();
         const g = await p.evaluate(() => {
           const e = document.getElementById('ebene');

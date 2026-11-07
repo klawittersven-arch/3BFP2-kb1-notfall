@@ -69,7 +69,6 @@ details.info { margin: 0 0 16px; border: 2px solid var(--rand); border-radius: 1
 details.info summary { cursor: pointer; font-weight: 800; padding: 12px 0; color: var(--dunkelpetrol); font-size: 19px; }
 details.info p { margin: 0 0 12px; }
 .woerter { font-size: 16px; color: #3B4D52; }
-.papier-hinweis { font-size: 16px; color: #3B4D52; margin: 0 0 16px; }
 
 /* Experten-Check */
 .check { background: var(--hellblau); border-radius: 14px; padding: 14px 16px; margin: 0 0 16px; }

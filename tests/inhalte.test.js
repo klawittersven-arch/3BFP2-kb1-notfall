@@ -115,6 +115,8 @@ const aa4 = S.folien.find((f) => f.id === 'aa4a');
 pruefe(aa4.massnahmen.length === 6 && aa4.massnahmen.every((m) => m.ecke >= 0 && m.ecke < aa4.ecken.length), 'AA4a: 6 Maßnahmen mit gültiger Ecke');
 pruefe(aa4.runde === 3 && aa4.ecken.length === 3 && aa4.massnahmen.length <= 9, 'AA4a: Abstimmung am Handy (Runde 3, höchstens 9 Maßnahmen)');
 pruefe(!ids.includes('pause'), 'keine Pausenfolie');
+// Gruppenpuzzle nur am Handy – kein Hinweis auf Expertenblätter aus Papier
+pruefe(!/Papier am Pult|Lieber auf Papier|Expertenblatt „/.test(JSON.stringify(S) + fs.readFileSync(path.join(DOCS, 'stunde.js'), 'utf8')), 'Gruppenpuzzle: kein Hinweis „Lieber auf Papier?“ (Handy und Beamer)');
 // Hausaufgabe: Tipp, vorher die Merksätze zu lesen (sonst fehlen die Sofortmaßnahmen für 2.1)
 pruefe(/Merksätze AA1, AA3 und AA4/.test(JSON.stringify(S.folien.find((f) => f.id === 'ende'))) && /Merksätze AA1, AA3 und AA4/.test(fs.readFileSync(path.join(WURZEL, 'werkzeuge', 'ab_w2.js'), 'utf8')), 'Hausaufgabe: Hinweis auf die Merksätze (Folie, Handy, AB)');
 // Transferfall: nur mit vorher Gelerntem lösbar – Merksätze AA3/AA4 sind als Hilfe erlaubt

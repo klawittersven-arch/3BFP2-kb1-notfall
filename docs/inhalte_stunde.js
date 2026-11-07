@@ -135,7 +135,7 @@ var STUNDE = {
       id: 'aa1', abschnitt: 'Gruppenpuzzle', kurz: 'Expertenrunde (AA1)', typ: 'experten',
       titel: 'AA1 · Expertenteams',
       text: '🚶 **Setzen Sie sich mit Ihrem Expertenteam zusammen** – die Namen stehen auf Ihrem Handy.',
-      auftraege: ['**Infotext** lesen (Handy oder Papier am Pult)', '**Fall markieren** (Handy) – der Infotext hilft', 'Experten-Check (Handy)', 'Gemeinsam die **Spalte** der Tabelle (AB) → „Unsere Spalte ist fertig“'],
+      auftraege: ['**Infotext** lesen (Handy)', '**Fall markieren** (Handy) – der Infotext hilft', 'Experten-Check (Handy)', 'Gemeinsam die **Spalte** der Tabelle (AB) → „Unsere Spalte ist fertig“'],
       uhr: [{ label: 'Expertenrunde', sek: 900 }],
       alleFertig: 'Alle Expertenteams fertig – gleich lesen wir den Merksatz AA1, dann geht es in die Stammgruppen.',
       handy: { typ: 'experte' }
@@ -590,7 +590,6 @@ var STUNDE = {
     expFall: 'b) Fall: {person}',
     expInfo: 'a) Infotext: {form}',
     expWoerter: 'Wörterhilfe',
-    expPapier: 'Lieber auf Papier? Bitten Sie Ihre Lehrkraft am Pult um das Expertenblatt „{b} · {form}“.',
     checkTitel: 'c) Experten-Check',
     checkText: 'Können Sie Ihre Schockform erklären? Beantworten Sie alle drei Fragen richtig.',
     checkRichtig: 'Richtig!',

@@ -602,7 +602,6 @@
       e.info.forEach(function (x) { d.appendChild(fmt('p', null, x)); });
       d.appendChild(fmt('p', 'woerter', '**' + H.expWoerter + ':** ' + e.woerter.split(' | ').join(' · ')));
       vor.appendChild(d);
-      vor.appendChild(el('p', 'papier-hinweis', '📄 ' + K.ersetzen(H.expPapier, { b: p.rolle, form: r.form })));
       vor.appendChild(el('h2', null, K.ersetzen(H.expFall, { person: r.person })));
       vor.appendChild(el('p', 'klein-grau', H.expFallHilfe));
       nach.appendChild(fmt('p', 'weiter-hinweis', H.expWeiter));

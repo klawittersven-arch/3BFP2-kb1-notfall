@@ -119,7 +119,7 @@ alles von selbst online:
 ```
 arbeitsblatt/
   KB1_W2_Schockformen_SV.docx        Schülerversion (3 QR-Codes: Stunden-App, Hausaufgabe, Nachlesen)
-  KB1_W2_Schockformen_Anlagen.docx   Expertenblätter A/B/C (Papierfassung, freiwillig)
+  KB1_W2_Schockformen_Anlagen.docx   Expertenblätter A/B/C (nur Reserve, falls Handys oder WLAN ausfallen)
   KB1_W2_Schockformen_LV_LSG.docx    Lehrerversion: Verlaufsplan mit Foliennummern, Hinweise, Lösungen
   (+ PDF-Fassungen)
 docs/                ← alles, was GitHub Pages veröffentlicht
