@@ -271,14 +271,14 @@ var INHALTE = {
     karteVon: 'Situation {n} von {y}',
     profi: 'Profi-Karte',
     // Vor dem Quiz: Merksatz AA3 (hilft beim Lösen); während des Quiz aufklappbar
-    merksatzVorher: 'Lesen Sie zuerst den Merksatz – er hilft Ihnen beim Quiz. Sie finden ihn auch auf Ihrem Arbeitsblatt (Seite 3).',
+    merksatzVorher: 'Lesen Sie zuerst den Merksatz – er hilft Ihnen beim Quiz. Sie finden ihn auch auf Ihrem Arbeitsblatt.',
     quizStarten: 'Quiz starten',
     merksatzTitel: '📌 Hilfe: Merksatz AA3',
     geschafftTitel: 'Geschafft! 🛏️',
     geschafftText: 'Sie lagern nach dem **Leitsymptom**. Warten Sie, bis es vorne weitergeht.',
     durchklickenText: 'Beim ersten Versuch richtig: {x} von {y} – nötig sind mindestens {z}. Lesen Sie jede Situation genau und schauen Sie in den Merksatz, bevor Sie tippen.',
     bilderTitel: '📄 Hilfe: die vier Lagerungen mit Bildern',
-    bilderHinweis: 'Dieselben Bilder finden Sie auf Ihrem Arbeitsblatt (Seite 3).',
+    bilderHinweis: 'Dieselben Bilder finden Sie auf Ihrem Arbeitsblatt.',
     bilder: [
       { bild: 'bilder/lagerung_oberkoerper_hoch.svg', titel: 'Oberkörper hoch (halbsitzend)', wann: 'Atemnot steht im Vordergrund.' },
       { bild: 'bilder/lagerung_beine_hoch.svg', titel: 'Flach, Beine hoch (Schocklage)', wann: 'Schockzeichen ohne Atemnot.' },

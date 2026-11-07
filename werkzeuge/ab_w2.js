@@ -145,7 +145,7 @@ function schuelerTeil(B, { lsg }) {
     blattKopf(B, 2, { pageBreakBefore: true }),
     teil([IC.schreiben], '**AA2 c) Schreibaufgaben** (allein – die Fälle stehen am Handy):'),
     aufg([
-      { nr: '2.1', text: 'Erläutern Sie, wie es bei Mia zum Schock kommt. Nutzen Sie die Vergleichstabelle (Seite 2, Spalte B, Zeile „Entstehung“). Nennen Sie dazu passende Befunde aus Mias Fall.', punkte: 3 },
+      { nr: '2.1', text: 'Erläutern Sie, wie es bei Mia zum Schock kommt. Nutzen Sie die Vergleichstabelle (Seite 2, Spalte?, Zeile „Entstehung“). Nennen Sie dazu passende Befunde aus Mias Fall.', punkte: 3 },
       { nr: '2.2', text: 'Herr Albrecht hat einen schnellen Puls (116/min), Herr Weber einen langsamen Puls (52/min). Erklären Sie diesen Unterschied.', punkte: 2 }
     ]),
     zw('2.1'),
@@ -200,7 +200,7 @@ function schuelerTeil(B, { lsg }) {
   const WER_DARF_WAS = sammle('werDarfWas', [
     ['Gefahr erkennen', 'Hilfe holen', 'Allergen stoppen (z. B. Infusion stoppen, Zugang belassen)', 'nach Leitsymptom lagern', 'überwachen', 'dokumentieren'],
     ['Medikamente: **Adrenalin i. m.**, Antihistaminikum', 'Sauerstoff', 'Infusionen', '**SOP** = schriftliche, ärztlich freigegebene Notfall-Anweisung'],
-    ['Diagnose stellen, z. B. „anaphylaktischer Schock“']
+    ['Medikamente anordnen (Wirkstoff, Dosis, Weg)', 'Notfall-SOP schriftlich freigeben', 'Weiterbehandlung festlegen, z. B. Intensivstation', 'Diagnose stellen, z. B. „anaphylaktischer Schock“']
   ]);
   const AZUBI = sammle('werDarfWasAzubi', '**Als Auszubildende/r:** unter Anleitung handeln und sofort eine Pflegefachperson holen.');
   const vw = Math.floor(BREITE_HOCH / 3);

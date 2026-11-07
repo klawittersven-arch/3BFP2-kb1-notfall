@@ -291,11 +291,14 @@ b, strong { font-weight: 800; }
 
 /* ---------- Kausalkette ---------- */
 .kette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin: 20px 0 28px; }
-.glied { background: #fff; border-radius: 18px; padding: 18px 16px; box-shadow: 0 4px 14px rgba(20, 45, 52, .08); position: relative; min-height: 210px; transition: opacity .3s, transform .3s; }
-.glied.verdeckt { opacity: .12; transform: scale(.96); }
-.glied-titel { font-size: 23px; font-weight: 900; color: var(--dunkelpetrol); margin-bottom: 8px; line-height: 1.2; }
+.glied { background: #fff; border-radius: 18px; padding: 18px 14px; box-shadow: 0 4px 14px rgba(20, 45, 52, .08); position: relative; min-height: 210px; transition: opacity .3s, transform .3s; }
+/* verdeckt: nur die leere Karte mit „?“ – der Begriff darf noch nicht durchscheinen */
+.glied.verdeckt { opacity: .45; transform: scale(.96); }
+.glied.verdeckt > * { visibility: hidden; }
+.glied.verdeckt::before { content: '?'; position: absolute; inset: 0; display: grid; place-items: center; font-size: 72px; font-weight: 900; color: var(--leise); }
+.glied-titel { font-size: 38px; font-weight: 900; color: var(--dunkelpetrol); margin-bottom: 10px; line-height: 1.12; hyphens: manual; }
 .glied-text { font-size: 18px; line-height: 1.35; }
-.glied:not(:last-child)::after { content: '→'; position: absolute; right: -16px; top: 50%; transform: translate(50%, -50%); font-size: 30px; font-weight: 900; color: var(--akzent); }
+.glied:not(:last-child)::after { content: '→'; position: absolute; z-index: 2; right: -8px; top: 50%; transform: translate(50%, -50%); font-size: 30px; font-weight: 900; color: var(--akzent); }
 .antwort-karte { background: var(--gruen-hell); border-radius: 22px; padding: 22px 30px; font-size: 27px; line-height: 1.4; }
 .antwort-karte h3 { margin: 0 0 8px; color: #1E5A36; font-size: 24px; text-transform: uppercase; letter-spacing: .05em; }
 
@@ -390,7 +393,6 @@ b, strong { font-weight: 800; }
 .blatt-nr { font-size: 112px; font-weight: 900; line-height: 1; color: var(--dunkelpetrol); letter-spacing: -.02em; }
 .blatt-titel { margin: 4px 0 6px; font-size: 46px; font-weight: 900; line-height: 1.15; color: var(--akzent); }
 .blatt-von { font-size: 26px; color: #4A5A60; }
-.blatt-seiten { margin-top: 18px; font-size: 21px; font-weight: 700; background: var(--akzent-hell); border-radius: 999px; padding: 6px 16px; }
 .blatt-darauf { margin: 18px 0 8px; font-size: 24px; font-weight: 800; color: var(--dunkelpetrol); }
 .blatt-folie .punkte li { font-size: 26px; }
 
