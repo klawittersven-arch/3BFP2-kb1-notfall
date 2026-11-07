@@ -3,20 +3,26 @@
  *   – Schülerversion ohne Handy, QR-Code, Beamer und ohne Klausur-Wörter,
  *   – inhaltlich dieselbe Stunde wie die digitale Fassung (Aufgaben, Merksätze, Fälle, Lösungen),
  *   – Lösungskarten ohne Punkte-Hinweise, Loskarten passend zu den Klassen.
- * Start (im Ordner tests/): node analog.test.js */
+ * Eigenständig: nutzt nur Dateien im Ordner analog/. Start (im Ordner analog/tests/): node analog.test.js */
 'use strict';
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const vm = require('vm');
 const { execFileSync } = require('child_process');
-const { pruefe, ergebnis } = require('./hilfen');
+let pruefZahl = 0, fehlerZahl = 0;
+function pruefe(bedingung, text, details) {
+  pruefZahl++;
+  if (bedingung) console.log('  ✓ ' + text);
+  else { fehlerZahl++; console.log('  ✗ ' + text + (details !== undefined ? '  → ' + JSON.stringify(details) : '')); }
+}
+function ergebnis() { console.log(`\n${pruefZahl - fehlerZahl} von ${pruefZahl} Prüfungen bestanden.`); return fehlerZahl === 0; }
 
 const WURZEL = path.resolve(__dirname, '..');
 const GEN = path.join(WURZEL, 'werkzeuge', 'ab_w2_analog.js');
-const T = require(path.join(WURZEL, 'werkzeuge', 'ab_w2_texte.js'));
+const T = require(path.join(WURZEL, 'daten', 'texte.js'));
 const A = require(GEN);
-const lade = (datei, name) => { const k = {}; vm.createContext(k); vm.runInContext(fs.readFileSync(path.join(WURZEL, 'docs', datei), 'utf8') + `\nthis.__x = ${name};`, k); return k.__x; };
+const lade = (datei, name) => { const k = {}; vm.createContext(k); vm.runInContext(fs.readFileSync(path.join(WURZEL, 'daten', datei), 'utf8') + `\nthis.__x = ${name};`, k); return k.__x; };
 const I = lade('inhalte.js', 'INHALTE');
 const S = lade('inhalte_stunde.js', 'STUNDE');
 

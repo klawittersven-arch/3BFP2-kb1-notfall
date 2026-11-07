@@ -266,17 +266,11 @@ function fuss(text) {
   return new Footer({ children: [new Paragraph({ alignment: AlignmentType.RIGHT, spacing: { after: 0 }, children: [new TextRun({ text: text + ' · Seite ', font: SCHRIFT, size: 16, color: F.GRAU_T }), new TextRun({ children: [PageNumber.CURRENT], font: SCHRIFT, size: 16, color: F.GRAU_T })] })] });
 }
 
-// Musterlösungen ohne Hinweise zur Punktevergabe (Folien, Nachlese, Lösungskarten) – die stehen nur in der Lehrerversion.
-// Entfernt Klammern mit Punkten, z. B. „(Beurteilung 1 P., Begründung 1 P.)“, und reine Bewertungszeilen.
-function ohnePunkte(zeilen) {
-  return zeilen.map((z) => z.replace(/\s*\([^()]*\d\s*P\.[^()]*\)/g, '').trim()).filter((z) => z && !/\d\s*P\./.test(z));
-}
-
-const SEITE_HOCH ={ size: { width: 11906, height: 16838 }, margin: { top: 1417, right: 1134, bottom: 1134, left: 1134, header: 500, footer: 500 } };
+const SEITE_HOCH = { size: { width: 11906, height: 16838 }, margin: { top: 1417, right: 1134, bottom: 1134, left: 1134, header: 500, footer: 500 } };
 const SEITE_QUER = { size: { width: 11906, height: 16838, orientation: D.PageOrientation.LANDSCAPE }, margin: { top: 1300, right: 1134, bottom: 1000, left: 1134, header: 500, footer: 500 } };
 
 const STILE = {
   default: { document: { run: { font: SCHRIFT, size: 22 }, paragraph: { spacing: { after: 80 } } } }
 };
 
-module.exports = { bausteine, kopf, fuss, bild, F, SEITE_HOCH, SEITE_QUER, STILE, WURZEL, rahmen, linie, keinRand, ohneRaender, ohnePunkte };
+module.exports = { bausteine, kopf, fuss, bild, F, SEITE_HOCH, SEITE_QUER, STILE, WURZEL, rahmen, linie, keinRand, ohneRaender };

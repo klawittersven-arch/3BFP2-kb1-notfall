@@ -217,9 +217,8 @@
     $('mini').hidden = f.typ === 'start';
     if (f.typ !== 'start') qrEinsetzen($('mini-qr'), 'mini');
     $('mini-text').textContent = '';
-    $('mini-text').appendChild(document.createTextNode(T.spaeterDazu + ' '));
+    $('mini-text').appendChild(document.createTextNode('Später dazu? QR-Code scannen · '));
     $('mini-text').appendChild(el('b', null, raum.raum));
-    $('mini-text').appendChild(el('span', 'mini-tipp', T.qrAnklicken));
     uhrenAktualisieren();
   }
 
@@ -330,25 +329,6 @@
   setInterval(uhrenAktualisieren, 250);
 
   /* ---------- Folien ---------- */
-  // Kleiner QR-Code unten anklicken: groß über der Folie – zum Dazukommen mitten in der Stunde
-  // (z. B. wenn die Stunde in der Folgewoche mit Arbeitsblatt 2 weitergeht).
-  function qrGrossZeigen() {
-    if (!raum || !raum.raum) return;
-    grossZeigen(function (k) {
-      k.classList.add('qr-ansicht');
-      k.appendChild(el('h2', null, T.qrGrossTitel));
-      var q = el('div', 'qr-gross');
-      q.appendChild(qrBauen(440));
-      k.appendChild(q);
-      var r = el('div', 'qr-raum');
-      r.appendChild(document.createTextNode(T.raumcode + ' '));
-      r.appendChild(el('b', null, raum.raum));
-      k.appendChild(r);
-      k.appendChild(el('div', 'qr-adresse', handyAdresse().replace(/^https?:\/\//, '')));
-      k.appendChild(el('p', 'qr-hinweis', T.qrGrossText));
-    });
-  }
-
   function folieStart(f, w) {
     var box = el('div', 'start');
     var karte = el('div', 'qr-karte');
@@ -411,7 +391,7 @@
     kopf.appendChild(el('span', 'notfall-nr', K.ersetzen(T.notfallNr, { n: k, y: FRAGEN.length })));
     w.appendChild(kopf);
     if (s % 2 === 0) {
-      w.appendChild(abstKarte(frage, rundenFuer(f), f.runde === 2, true, false));
+      w.appendChild(abstKarte(frage, f.runde === 2 ? [1, 2] : [1], f.runde === 2, true, false));
       if (f.runde !== 2) w.appendChild(el('p', 'abgestimmt', T.aufloesungSpaeter));
       return;
     }
@@ -427,15 +407,7 @@
     w.appendChild(el('p', 'abgestimmt', K.ersetzen(T.abgestimmt, { x: n, y: stand.online || 0 })));
   }
 
-  // Welche Runden eine Karte zeigt: Einstieg [1]; Check-out [1, 2] – oder nur [2], wenn es im Raum keine
-  // Stimmen vom Einstieg gibt (z. B. neuer Raum, weil die Stunde in der Folgewoche mit Arbeitsblatt 2 weitergeht)
-  function rundenFuer(f) {
-    if (f.runde !== 2) return [1];
-    var r1 = stand.stimmen && stand.stimmen[1];
-    return r1 && r1.n ? [1, 2] : [2];
-  }
-
-  // Eine Abstimmungskarte; runden = [1], [1, 2] oder [2]
+  // Eine Abstimmungskarte; runden = [1] oder [1, 2]
   function abstKarte(frage, runden, loesung, istGross, stern) {
     var karte = el('section', 'abst-frage' + (istGross ? ' gross' : '') + (stern ? ' stern' : ''));
     if (stern && !istGross) karte.appendChild(el('span', 'abst-stern', T.groessteUneinigkeit));
@@ -470,7 +442,7 @@
   }
 
   function folieErgebnis(f, w) {
-    var runden = rundenFuer(f);
+    var runden = f.runde === 2 ? [1, 2] : [1];
     var loesung = loesungAn[f.id] !== undefined ? loesungAn[f.id] : !!f.loesung;
     var kopf = el('div', 'ergebnis-kopf');
     kopf.appendChild(fmt('h1', 'f-titel', f.titel));
@@ -495,8 +467,8 @@
       w.appendChild(wrap);
       return;
     }
-    var mitStimmen = runden.some(function (r) { var x = stand.stimmen && stand.stimmen[r]; return x && x.n; });
-    if (!mitStimmen) { w.appendChild(absatz(T.keineStimmen)); return; }
+    var r1 = stand.stimmen && stand.stimmen[1];
+    if (!r1 || !r1.n) { w.appendChild(absatz(T.keineStimmen)); return; }
     var raster = el('div', 'abst ohne-erklaerung' + (runden.length === 2 ? ' zwei' : ''));
     FRAGEN.forEach(function (fr, i) {
       var k = abstKarte(fr, runden, loesung, false, fr.nr === stern);
@@ -1252,8 +1224,6 @@
   $('weiter').addEventListener('click', weiter);
   $('zurueck').addEventListener('click', zurueck);
   $('menue-knopf').addEventListener('click', menue);
-  $('mini').addEventListener('click', qrGrossZeigen);
-  $('mini').addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); qrGrossZeigen(); } });
   document.addEventListener('keydown', function (e) {
     if (e.target && /INPUT|TEXTAREA/.test(e.target.tagName)) return;
     if (!stand) return;

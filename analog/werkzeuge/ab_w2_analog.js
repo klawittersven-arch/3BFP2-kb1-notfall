@@ -1,24 +1,25 @@
 /* Erstellt die ANALOGE Fassung der Stunde KB I · Woche 2 (SW 7) „Schock ist nicht gleich Schock“:
    ohne Smartphones und ohne Beamer – alles auf Papier, Sicherung an der Tafel und mit Lösungskarten.
-     arbeitsblatt/KB1_W2_Schockformen_analog_SV.docx       Schülerversion: AB1 (S. 1–4), AB2 (S. 5–8), AB3 (S. 9–10),
+   Eigenständiges Projekt im Ordner analog/ – nutzt keine Datei der digitalen Fassung.
+     analog/arbeitsblatt/KB1_W2_Schockformen_analog_SV.docx       Schülerversion: AB1 (S. 1–4), AB2 (S. 5–8), AB3 (S. 9–10),
                                                            Korrekturbogen (S. 11–12)
-     arbeitsblatt/KB1_W2_Schockformen_analog_Anlagen.docx  Expertenblätter, Kontrollkarten, Lösungskarten, Loskarten, Tischschilder
-     arbeitsblatt/KB1_W2_Schockformen_analog_LV_LSG.docx   Lehrerversion: Verlaufsplan, Tafelbild, Kopierliste,
+     analog/arbeitsblatt/KB1_W2_Schockformen_analog_Anlagen.docx  Expertenblätter, Kontrollkarten, Lösungskarten, Loskarten, Tischschilder
+     analog/arbeitsblatt/KB1_W2_Schockformen_analog_LV_LSG.docx   Lehrerversion: Verlaufsplan, Tafelbild, Kopierliste,
                                                            Lösungen fürs Plenum, Arbeitsblatt mit Lösungen
-   Inhaltlich dieselbe Stunde wie die digitale Fassung (ab_w2.js): Fälle, Aufgaben, Lösungen und Merksätze
-   kommen aus werkzeuge/ab_w2_texte.js, die Übungen (Experten-Check, Fall markieren, Detektiv, Lagerungs-Quiz,
-   Wer darf was?, Bewertungsraster, Selbstkontrolle) aus docs/inhalte.js und docs/inhalte_stunde.js.
-   Aufruf (im Hauptverzeichnis): node werkzeuge/ab_w2_analog.js */
+   Inhaltlich dieselbe Stunde wie die digitale Fassung: Fälle, Aufgaben, Lösungen und Merksätze stehen in
+   analog/daten/texte.js, die Übungen (Experten-Check, Fall markieren, Detektiv, Lagerungs-Quiz, Wer darf was?,
+   Bewertungsraster, Selbstkontrolle) in analog/daten/inhalte.js und inhalte_stunde.js – Kopien vom 7.11.2026.
+   Aufruf (im Ordner analog/): node werkzeuge/ab_w2_analog.js */
 'use strict';
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
 const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType, ShadingType, AlignmentType, VerticalAlign, TableLayoutType, HeightRule, BorderStyle } = require('docx');
-const { bausteine, kopf, fuss, bild, F, SEITE_HOCH, SEITE_QUER, STILE, WURZEL, rahmen, keinRand, ohnePunkte } = require('./ab_bausteine');
-const T = require('./ab_w2_texte');
+const { bausteine, kopf, fuss, bild, F, SEITE_HOCH, SEITE_QUER, STILE, WURZEL, rahmen, keinRand, ohnePunkte } = require('./bausteine');
+const T = require('../daten/texte');
 
-// Inhalte der App – dieselben Fälle, Fragen und Lösungen wie am Handy
-const lade = (datei, name) => { const k = {}; vm.createContext(k); vm.runInContext(fs.readFileSync(path.join(WURZEL, 'docs', datei), 'utf8') + `\nthis.__x = ${name};`, k); return k.__x; };
+// Übungsdaten (Kopie der App-Inhalte) – dieselben Fälle, Fragen und Lösungen wie am Handy
+const lade = (datei, name) => { const k = {}; vm.createContext(k); vm.runInContext(fs.readFileSync(path.join(WURZEL, 'daten', datei), 'utf8') + `\nthis.__x = ${name};`, k); return k.__x; };
 const I = lade('inhalte.js', 'INHALTE');
 const S = lade('inhalte_stunde.js', 'STUNDE');
 const folie = (id) => { const f = S.folien.find((x) => x.id === id); if (!f) throw new Error('Folie fehlt: ' + id); return f; };
@@ -723,6 +724,6 @@ async function main() {
   }), 'KB1_W2_Schockformen_analog_LV_LSG.docx');
 }
 
-// Direkt aufgerufen: Dokumente bauen. Von tests/analog.test.js geladen: nur die Daten der Papierfassung.
+// Direkt aufgerufen: Dokumente bauen. Von analog/tests/analog.test.js geladen: nur die Daten der Papierfassung.
 if (require.main === module) main().catch((e) => { console.error(e); process.exit(1); });
 module.exports = { EINSTIEG, CHECK, KLASSEN, lose, teamsVon };

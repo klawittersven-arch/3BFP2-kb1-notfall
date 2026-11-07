@@ -367,51 +367,6 @@ const textDa = (h, text) => bis(h, (t) => document.body.innerText.includes(t), t
     await lap.click('#ebene .knopf-gross');
     H.pruefe(await textDa(handys[3], S.handy.fehlerEntfernt), 'entferntes Handy sieht die Anmeldung mit Hinweis');
 
-    console.log('\n== Folgewoche: neuer Raum, weiter mit Arbeitsblatt 2');
-    const l2ctx = await browser.newContext({ viewport: { width: 1600, height: 900 } });
-    const lap2 = await l2ctx.newPage();
-    H.beobachten(lap2, protokoll, 'beamer-folgewoche');
-    await lap2.goto(basis + 'beamer.html');
-    await lap2.click('#starten');
-    H.pruefe(await folieIst(lap2, 'start'), 'Folgewoche: neuer Raum');
-    const raum2 = await lap2.evaluate(() => JSON.parse(localStorage.getItem('kb1nf_lehrer_raum')).raum);
-    await lap2.click('#menue-knopf');
-    await lap2.click('.menue-folie:has-text("Blatt 2 austeilen")');
-    H.pruefe(await folieIst(lap2, 'blatt2'), 'Menü: direkt zu „Weiter mit Arbeitsblatt 2“');
-    H.pruefe((await lap2.textContent('#mini')).includes('anklicken = groß'), 'kleiner QR-Code unten mit Hinweis „anklicken = groß“');
-    await lap2.click('#mini');
-    H.pruefe(await bis(lap2, () => { const q = document.querySelector('#ebene .qr-ansicht .qr-gross'); return !!q && q.getBoundingClientRect().width >= 400 && !!q.querySelector('canvas, img'); }), 'QR-Code anklicken = groß über der Folie');
-    H.pruefe((await lap2.textContent('#ebene .qr-raum')).includes(raum2), 'große Ansicht zeigt den Raumcode');
-    await lap2.screenshot({ path: path.join(ORDNER, 'stunde_qr_gross.png') });
-    await lap2.keyboard.press('Escape');
-    H.pruefe(await bis(lap2, () => document.getElementById('ebene').hidden), 'Esc schließt die große Ansicht');
-    const h2ctx = await browser.newContext(H.MOBIL);
-    const h2 = await h2ctx.newPage();
-    H.beobachten(h2, protokoll, 'handy-folgewoche');
-    await h2.goto(basis + 'w2.html?raum=' + raum2);
-    await h2.fill('#anmelde-name', 'Lea');
-    await h2.click('.anmelde-los');
-    H.pruefe(await textDa(h2, 'Arbeitsblatt 2'), 'Handy steigt direkt bei „Weiter mit Arbeitsblatt 2“ ein');
-    await lap2.click('#menue-knopf');
-    await lap2.click('.menue-folie:has-text("Was haben wir heute gelernt?")');
-    await lap2.click('#weiter');
-    H.pruefe(await folieIst(lap2, 'checkout'), 'Folgewoche: Check-out ohne Einstieg im selben Raum');
-    for (let j = 0; j < S.fragen.length; j++) {
-      await lap2.click('#weiter');
-      await textDa(h2, 'Notfall ' + (j + 1) + ' von ' + S.fragen.length);
-      await h2.click('.notfall-antworten .antwort[data-option="' + S.fragen[j].richtig + '"]');
-      await h2.click('.sicher-knoepfe .antwort[data-sicher="1"]');
-      await bis(lap2, () => /^1 von \d+ haben abgestimmt/.test((document.querySelector('.abgestimmt') || {}).textContent || ''));
-      await lap2.click('#weiter');
-      if (j === 0) H.pruefe(await bis(lap2, () => document.querySelectorAll('.abst-frage.gross .abst-option.richtig').length === 1 && document.querySelectorAll('.abst-frage.gross .abst-kopf').length === 2), 'Auflösung ohne Einstieg: nur die Spalte „Ende“');
-    }
-    await lap2.click('#weiter');
-    H.pruefe(await folieIst(lap2, 'checkout-ergebnis'), 'Folgewoche: Ergebnis-Folie');
-    H.pruefe(!(await lap2.textContent('.folie')).includes('Noch keine Stimmen') && (await lap2.$$('.abst-kopf')).length === 2 * S.fragen.length, 'Ergebnis zeigt die Stimmen vom Ende (keine leere Spalte „Beginn“)');
-    H.pruefe(await textDa(h2, 'Richtig: 4 von 4') && !(await h2.innerText('body')).includes('Beginn'), 'Handy-Bilanz ohne Einstieg: nur „jetzt“');
-    await l2ctx.close();
-    await h2ctx.close();
-
     H.pruefe(protokoll.konsole.length === 0, 'keine Fehler in der Konsole', protokoll.konsole);
     H.pruefe(protokoll.extern.length === 0, 'keine Anfragen an fremde Adressen', protokoll.extern);
     ok = H.ergebnis();

@@ -75,33 +75,6 @@ das Arbeitsblatt übernimmt die Überschrift von dort).
 
 Aufgedeckte Zellen und Lösungszeilen bleiben aufgedeckt, auch wenn der Beamer neu geladen wird.
 
-**Nicht fertig geworden?** In der Folgewoche mit Arbeitsblatt 2 oder 3 weitermachen: `beamer.html` → „Neuen Raum
-starten“ → Menü ⚙ → Folie „Weiter mit Arbeitsblatt 2“ (bzw. 3). Den **kleinen QR-Code unten links anklicken** – er
-erscheint groß mit Raumcode, die SuS scannen ihn (das geht auf jeder Folie, auch für Nachzügler). Die Übungen ab
-Arbeitsblatt 2 brauchen keine Gruppen aus der Vorwoche. Nur der Vergleich mit dem Einstieg entfällt: Beamer und Handy
-zeigen beim Check-out dann nur die Entscheidung am Ende.
-
-## Analoge Fassung ohne Handys und Beamer
-
-Dieselbe Stunde komplett auf Papier – für Lehrkräfte, die nicht nebenher den Beamer steuern und die Handys im Blick
-behalten wollen. Inhaltlich gleich: dieselben Fälle, Aufgaben (alle im KA-Format), Lösungen und Merksätze
-(gemeinsame Quelle `werkzeuge/ab_w2_texte.js`, Übungen aus `docs/inhalte.js` und `docs/inhalte_stunde.js`).
-
-| Digital | Analog |
-|---|---|
-| Abstimmen am Handy (Einstieg, Check-out, Wer darf was?) | Ankreuzen auf dem AB, Handzeichen, Strichliste an der Tafel |
-| Gruppen per Knopfdruck | Loskarten (fertig eingeteilt für 3BFP2.1 und 3BFP2.2) und Tischschilder |
-| Fall markieren, Experten-Check am Handy | Expertenblatt: unterstreichen und ankreuzen, dann Kontrollkarte auf dem Tisch |
-| Detektiv, Lagerungs-Quiz am Handy | Ankreuzen auf dem AB, Auflösung im Plenum (Lösungen in der LV) |
-| Musterlösungen am Beamer | Lösungskarten 1–4, eine pro Stammgruppe |
-| Bewertungsraster, Selbstkontrolle am Handy | Korrekturbogen (Rückseite: Selbstkontrolle der Hausaufgabe) |
-| Kausalkette am Beamer | an der Tafel entwickeln (Tafelbild in der LV) |
-
-Das AB hat **12 Seiten**: AB1 (S. 1–4) zu Beginn, AB2 (S. 5–8) vor AA3, AB3 (S. 9–10) vor AA5,
-Korrekturbogen (S. 11–12) erst nach der Schreibzeit von AA5. Antworten, die am Handy immer „B“ wären, sind auf
-Papier gemischt. Zeitplan: 0–12 Einstieg · 12–31 Expertenteams · 31–48 Stammgruppen · 48–64 Detektiv und 2.1/2.2 ·
-64–85 Lagerung · 85–99 AA4 · 99–113 AA5 · 113–119 AA6 · 119–127 Puffer · 127–135 Check-out.
-
 ### Probestunde: alles selbst ausprobieren
 
 Am Laptop `beamer.html` öffnen → **„Probestunde mit erfundener Klasse“** (läuft schon ein Raum: Menü ⚙ →
@@ -148,9 +121,6 @@ arbeitsblatt/
   KB1_W2_Schockformen_SV.docx        Schülerversion (3 QR-Codes: Stunden-App, Hausaufgabe, Nachlesen)
   KB1_W2_Schockformen_Anlagen.docx   Expertenblätter A/B/C (nur Reserve, falls Handys oder WLAN ausfallen)
   KB1_W2_Schockformen_LV_LSG.docx    Lehrerversion: Verlaufsplan mit Foliennummern, Hinweise, Lösungen
-  KB1_W2_Schockformen_analog_SV.docx        Papierfassung ohne Handys: AB (12 Seiten) mit Korrekturbogen
-  KB1_W2_Schockformen_analog_Anlagen.docx   Expertenblätter, Kontrollkarten, Lösungskarten 1–4, Loskarten, Tischschilder
-  KB1_W2_Schockformen_analog_LV_LSG.docx    Lehrerversion der Papierfassung: Verlaufsplan, Tafelbild, Kopierliste, Lösungen
   (+ PDF-Fassungen)
 docs/                ← alles, was GitHub Pages veröffentlicht
   beamer.html/js/css   Beamer-Foliensatz
@@ -167,7 +137,7 @@ docs/                ← alles, was GitHub Pages veröffentlicht
 worker/src/          ← Cloudflare-Worker: index.js (Räume, Live-Verbindung, Nachlese-Sperre), stunde.js (Gruppenpuzzle)
 wrangler.jsonc       ← Cloudflare-Konfiguration (Projekt „kb1-notfall“)
 qr/                  ← QR-Codes fürs Arbeitsblatt (Stunden-App, Hausaufgabe, Nachlesen)
-werkzeuge/           ← ab_w2.js, ab_w2_analog.js, ab_w2_texte.js, ab_bausteine.js (Arbeitsblätter + inhalte_nachlesen.js),
+werkzeuge/           ← ab_w2.js, ab_w2_texte.js, ab_bausteine.js (Arbeitsblätter + inhalte_nachlesen.js),
                        qr_erzeugen.py, lagerung_bilder.js (SVG → PNG fürs AB), bilder/
 tests/               ← automatische Tests; tests/seiten/ = Testgerüst der Übungen (nicht veröffentlicht)
 ```
@@ -191,8 +161,7 @@ tests/               ← automatische Tests; tests/seiten/ = Testgerüst der Üb
 - **Übungen:** `docs/inhalte.js`.
 - **Merksätze, Einstiegsfragen (E1–E4), Lagerungskarten, Expertentexte** stehen auch im Arbeitsblatt
   (`werkzeuge/ab_w2_texte.js`). Bei Änderungen beide Stellen anpassen; `tests/inhalte.test.js` meldet Abweichungen.
-- **Aufgaben, Fälle und Lösungen des Arbeitsblatts** stehen in `werkzeuge/ab_w2_texte.js` – für die digitale und die
-  analoge Fassung gemeinsam. Danach beide neu erzeugen; `ab_w2.js` aktualisiert auch die Nachlese-Seite.
+- **Lösungen im Arbeitsblatt** (`werkzeuge/ab_w2.js`) danach neu erzeugen – das aktualisiert auch die Nachlese-Seite.
 - Nach größeren Änderungen in `docs/sw.js` `VERSION` erhöhen (Offline-Speicher).
 
 ## Arbeitsblätter neu erzeugen
@@ -202,7 +171,6 @@ pip install segno zxing-cpp pillow
 python werkzeuge/qr_erzeugen.py
 node werkzeuge/lagerung_bilder.js
 node werkzeuge/ab_w2.js
-node werkzeuge/ab_w2_analog.js
 soffice --headless --convert-to pdf --outdir arbeitsblatt arbeitsblatt/*.docx
 ```
 
@@ -217,6 +185,5 @@ node uebungen.test.js      # alle Übungen in Handygröße 390 × 844
 node folien.test.js       # jede Folie passt auf die Beamer-Bühne (auch voll aufgedeckt), Bilder laden
 node stunde.test.js        # ganze Stunde: Beamer + 6 Handys (eins ohne Live-Verbindung)
 node probe.test.js         # Probestunde: erfundene Klasse + ein Handy der Lehrkraft
-node analog.test.js        # Papierfassung: ohne Handy/Beamer, inhaltlich gleich, Loskarten, Lösungskarten
 ```
 Playwright und Chromium sind in der Testumgebung vorinstalliert; sonst `npm install` und `npx playwright install chromium`.
