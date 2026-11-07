@@ -82,11 +82,12 @@ function bausteine({ lsg = false, breite = 9072 } = {}) {
     spacing: { before: 120, after: 160 },
     children: [new TextRun({ text, font: TITELSCHRIFT, bold: true, size: 32 }), ...(zusatz ? [new TextRun({ text: ' ' + zusatz, font: TITELSCHRIFT, bold: true, size: 32, highlight: 'yellow' })] : [])]
   });
-  B.abschnitt = (text) => new Paragraph({
+  B.abschnitt = (text, o = {}) => new Paragraph({
     children: [new TextRun({ text, font: SCHRIFT, bold: true, size: 24 })],
     spacing: { before: 240, after: 100 },
     border: { bottom: { style: BorderStyle.SINGLE, size: 6, color: F.GRAU_R, space: 2 } },
-    keepNext: true
+    keepNext: true,
+    ...o
   });
   B.zwischen = (text) => new Paragraph({ children: [B.b(text, { size: 22 })], spacing: { before: 160, after: 60 }, keepNext: true });
 
@@ -123,7 +124,7 @@ function bausteine({ lsg = false, breite = 9072 } = {}) {
     const r = rahmen(rand, 6);
     const rows = [];
     if (kopf) rows.push(new TableRow({ cantSplit: true, children: [zelle([new Paragraph({ children: B.runs(kopf, { bold: true }), spacing: { after: 0 }, keepNext: true })], w, { borders: r, shading: { type: ShadingType.CLEAR, color: 'auto', fill: kopfFill } })] }));
-    rows.push(new TableRow({ children: [zelle(absaetze, w, { borders: r, shading: { type: ShadingType.CLEAR, color: 'auto', fill } })] }));
+    rows.push(new TableRow({ cantSplit: true, children: [zelle(absaetze, w, { borders: r, shading: { type: ShadingType.CLEAR, color: 'auto', fill } })] }));
     return new Table({ width: { size: w, type: WidthType.DXA }, columnWidths: [w], layout: TableLayoutType.FIXED, rows });
   };
 
@@ -138,10 +139,10 @@ function bausteine({ lsg = false, breite = 9072 } = {}) {
   };
 
   // Handy-Kasten: Text links, QR rechts, darunter Link (wie 03_Regelkreis)
-  B.handy = (seite, absaetze, { linkBasis, qrDatei, fill = F.BLAU_HELL } = {}) => {
-    const qrW = 1750;
+  B.handy = (seite, absaetze, { linkBasis, qrDatei, fill = F.BLAU_HELL, qrCm = 2.6 } = {}) => {
+    const qrW = Math.round(1750 * qrCm / 2.6);
     const r = rahmen('2E75B6', 6);
-    const qr = qrDatei && fs.existsSync(qrDatei) ? bild(qrDatei, 2.6, 2.6) : B.t('[QR]', { color: F.GRAU_T });
+    const qr = qrDatei && fs.existsSync(qrDatei) ? bild(qrDatei, qrCm, qrCm) : B.t('[QR]', { color: F.GRAU_T });
     return new Table({
       width: { size: breite, type: WidthType.DXA }, columnWidths: [breite - qrW, qrW], layout: TableLayoutType.FIXED,
       rows: [new TableRow({ cantSplit: true, children: [
@@ -265,7 +266,7 @@ function fuss(text) {
   return new Footer({ children: [new Paragraph({ alignment: AlignmentType.RIGHT, spacing: { after: 0 }, children: [new TextRun({ text: text + ' · Seite ', font: SCHRIFT, size: 16, color: F.GRAU_T }), new TextRun({ children: [PageNumber.CURRENT], font: SCHRIFT, size: 16, color: F.GRAU_T })] })] });
 }
 
-const SEITE_HOCH = { size: { width: 11906, height: 16838 }, margin: { top: 1417, right: 1417, bottom: 1134, left: 1417, header: 500, footer: 500 } };
+const SEITE_HOCH = { size: { width: 11906, height: 16838 }, margin: { top: 1417, right: 1134, bottom: 1134, left: 1134, header: 500, footer: 500 } };
 const SEITE_QUER = { size: { width: 11906, height: 16838, orientation: D.PageOrientation.LANDSCAPE }, margin: { top: 1300, right: 1134, bottom: 1000, left: 1134, header: 500, footer: 500 } };
 
 const STILE = {

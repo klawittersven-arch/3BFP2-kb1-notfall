@@ -70,7 +70,7 @@ var STUNDE = {
       id: 'einstieg', abschnitt: 'Einstieg', kurz: 'Wie hätten Sie gehandelt?', typ: 'abstimmung', runde: 1,
       titel: 'Wie hätten Sie gehandelt?',
       unter: 'Ihre Vermutungen, bitte!',
-      punkte: ['Sechs kurze Notfälle – der letzte ist **Frau Maler um 11 Uhr**. Sie kommen **nacheinander** an den Beamer.', 'Tippen Sie am Handy Ihre Vermutung an – und ob Sie sich **sicher** sind oder **nur vermuten**.', 'Danach sehen Sie, wie die Klasse abgestimmt hat. **Aufgelöst wird erst am Ende der Stunde.**', '**Falsch liegen ist ausdrücklich erlaubt:** Genau diese Entscheidungen lernen Sie heute.'],
+      punkte: ['Vier kurze Notfälle – der letzte ist **Frau Maler um 11 Uhr**. Sie kommen **nacheinander** an den Beamer.', 'Tippen Sie am Handy Ihre Vermutung an – und ob Sie sich **sicher** sind oder **nur vermuten**.', 'Danach sehen Sie, wie die Klasse abgestimmt hat. **Aufgelöst wird erst am Ende der Stunde.**', '**Falsch liegen ist ausdrücklich erlaubt:** Genau diese Entscheidungen lernen Sie heute.'],
       handy: { typ: 'abstimmung', titel: 'Wie hätten Sie gehandelt?', start: 'Gleich zeigt Ihre Lehrkraft den ersten Notfall am Beamer. Dann tippen Sie hier Ihre Vermutung an.' }
     },
     {
@@ -92,12 +92,12 @@ var STUNDE = {
       impuls: '„Ist jeder Schock gleich – und muss ich deshalb immer gleich handeln?“',
       lernziel: 'Sie vergleichen den hypovolämischen, den anaphylaktischen und den neurogenen Schock und begründen Sofortmaßnahmen und Lagerung anhand des Leitsymptoms. Sie unterscheiden, was Sie selbst tun dürfen und was nur nach ärztlicher Anordnung.',
       plan: [
-        { emoji: '🧩', text: 'Gruppenpuzzle: drei Schockformen', zeit: '52 min' },
-        { emoji: '🧘', text: 'Lagerung nach Leitsymptom', zeit: '23 min' },
-        { emoji: '⚖️', text: 'Wer darf was? Adrenalin oder Antihistaminikum?', zeit: '14 min' },
-        { emoji: '📝', text: 'Klausurtraining wie in der KA', zeit: '11 min' },
+        { emoji: '🧩', text: 'Gruppenpuzzle: drei Schockformen', zeit: '48 min' },
+        { emoji: '🧘', text: 'Lagerung nach Leitsymptom', zeit: '18 min' },
+        { emoji: '⚖️', text: 'Wer darf was? Adrenalin oder Antihistaminikum?', zeit: '13 min' },
+        { emoji: '📝', text: 'Klausurtraining wie in der KA', zeit: '13 min' },
         { emoji: '🔎', text: 'Zurück zu Frau Maler', zeit: '5 min' },
-        { emoji: '✅', text: 'Hätten Sie richtig gehandelt?', zeit: '12 min' }
+        { emoji: '✅', text: 'Hätten Sie richtig gehandelt?', zeit: '10 min' }
       ],
       handy: { typ: 'vorne', titel: 'Heute: Schock ist nicht gleich Schock', text: 'Schauen Sie nach vorne – gleich geht es mit dem Gruppenpuzzle los.' }
     },
@@ -121,7 +121,7 @@ var STUNDE = {
       id: 'aa1', abschnitt: 'Gruppenpuzzle', kurz: 'Expertenrunde (AA1)', typ: 'experten',
       titel: 'AA1 · Expertenteams',
       text: '🚶 **Setzen Sie sich mit Ihrem Expertenteam zusammen** – die Namen stehen auf Ihrem Handy.',
-      auftraege: ['Fall markieren (Handy) → **Merksatz AA1** (AB)', 'Klausuraufgabe **1.1** (AB, allein)', 'Infotext lesen (Handy oder Papier am Pult)', 'Experten-Check (Handy)', 'Gemeinsam die **Spalte** der Tabelle (AB) → „Unsere Spalte ist fertig“'],
+      auftraege: ['Fall markieren (Handy) → **Merksatz AA1** (AB)', 'Infotext lesen (Handy oder Papier am Pult)', 'Experten-Check (Handy)', 'Gemeinsam die **Spalte** der Tabelle (AB) → „Unsere Spalte ist fertig“'],
       uhr: [{ label: 'Expertenrunde', sek: 900 }],
       alleFertig: 'Alle Expertenteams fertig – gleich prüfen wir den Merksatz AA1, dann geht es in die Stammgruppen.',
       handy: { typ: 'experte' }
@@ -153,10 +153,9 @@ var STUNDE = {
       titel: 'Als Nächstes: Schockform-Detektiv',
       unter: 'Aus Befunden auf die Schockform schließen',
       punkte: [
-        '**Sechs kurze Fälle** am Handy – jede Person für sich.',
+        '**Vier kurze Fälle** am Handy – jede Person für sich.',
         'Bestimmen Sie die **Schockform** und tippen Sie die **zwei Befunde** an, die sie belegen. Befund = was Sie beobachten oder messen.',
-        'Erst wählen, dann **„Prüfen“**. Der Merksatz erscheint nur, wenn genug Fälle beim ersten Versuch stimmen.',
-        'Zum Schluss: **zwei Patienten im Vergleich** – woran unterscheiden Sie die Schockformen am sichersten?'
+        'Erst wählen, dann **„Prüfen“**. Fertig sind Sie erst, wenn genug Fälle beim ersten Versuch stimmen.'
       ],
       warumTitel: 'Warum brauche ich das als Pflegefachperson?',
       warum: [
@@ -168,15 +167,8 @@ var STUNDE = {
     {
       id: 'aa2b', abschnitt: 'Gruppenpuzzle', kurz: 'Schockform-Detektiv (AA2b)', typ: 'fortschritt', seite: 'w2-detektiv', jeGruppe: true,
       titel: 'AA2b · Schockform-Detektiv',
-      text: 'Sechs kurze Fälle: **Schockform bestimmen** und die **zwei Befunde** markieren, die sie belegen. Jede Person am eigenen Handy – sitzen bleiben in der Stammgruppe.',
+      text: 'Vier kurze Fälle: **Schockform bestimmen** und die **zwei Befunde** markieren, die sie belegen. Jede Person am eigenen Handy – sitzen bleiben in der Stammgruppe.',
       handy: { typ: 'modul', modul: 'detektiv', gruppeZeigen: true }
-    },
-    {
-      id: 'aa2b-merksatz', abschnitt: 'Gruppenpuzzle', kurz: 'Merksatz AA2 prüfen', typ: 'merksatz', merksatz: 'aa2',
-      titel: 'Merksatz AA2 – richtig notiert?',
-      text: 'Was haben Sie in die Lücken geschrieben?',
-      tipp: 'Lücke anklicken = aufdecken · noch einmal = ganzer Merksatz groß',
-      handy: { typ: 'vorne', titel: 'Merksatz AA2 prüfen', text: 'Überprüfen Sie am Beamer, ob Sie den **Merksatz AA2** richtig notiert haben. Verbessern Sie, falls nötig – am besten in einer anderen Farbe.' }
     },
     {
       id: 'aa2c', abschnitt: 'Gruppenpuzzle', kurz: 'Klausurtraining 2.1/2.2', typ: 'aufgabe',
@@ -243,13 +235,13 @@ var STUNDE = {
       bild: 'bilder/lagerung_nicht_bewegen.svg',
       wann: ['Verdacht auf **Wirbelsäulenverletzung**', 'z. B. Sturz aus der Höhe, Kopfsprung; Nackenschmerz, Kribbeln, Lähmung'],
       warum: ['Jede Bewegung kann das **Rückenmark** weiter schädigen'],
-      so: ['In der vorgefundenen Lage lassen', '**Kopf mit beiden Händen** halten', 'Die Person bitten, sich nicht zu bewegen (mehr dazu in Woche 4)'],
+      so: ['In der vorgefundenen Lage lassen', '**Kopf mit beiden Händen** halten', 'Die Person bitten, sich nicht zu bewegen'],
       handy: { typ: 'bild', titel: 'Nicht bewegen – Kopf halten', bild: 'bilder/lagerung_nicht_bewegen.svg', text: 'Wann? Verdacht auf **Wirbelsäulenverletzung**.' }
     },
     {
-      id: 'aa3', abschnitt: 'Lagerung', kurz: 'Lagerungsparcours (AA3)', typ: 'fortschritt', seite: 'w2-lagerung',
-      titel: 'AA3 · Lagerungsparcours',
-      punkte: ['Zu zweit auf der Yogamatte: Das Handy zieht eine **Situationskarte**.', 'Person A lagert Person B in 60 Sekunden und begründet: „Ich lagere …, **weil** …“', 'Aufdecken, vergleichen, **Rollen tauschen**.', 'Hilfe: die **Bilder der vier Lagerungen** auf dem Arbeitsblatt (S. 4) und am Handy.', 'Sicherheit: behutsam lagern, nicht heben. Wer nicht gelagert werden möchte, begründet.'],
+      id: 'aa3', abschnitt: 'Lagerung', kurz: 'Lagerungs-Quiz (AA3)', typ: 'fortschritt', seite: 'w2-lagerung',
+      titel: 'AA3 a) · Lagerungs-Quiz',
+      punkte: ['Jede Person für sich am Handy: **kurze Situationen**.', 'Was ist das **Leitsymptom**? Tippen Sie an, wie Sie lagern – dann **Aufdecken** und die Begründung lesen.', 'Hilfe: die **Bilder der vier Lagerungen** auf dem Arbeitsblatt (S. 3) und am Handy.', 'Am Ende: **Merksatz AA3** auf dem Arbeitsblatt ergänzen.'],
       handy: { typ: 'modul', modul: 'lagerung' }
     },
     {
@@ -260,28 +252,16 @@ var STUNDE = {
       handy: { typ: 'vorne', titel: 'Merksatz AA3 prüfen', text: 'Überprüfen Sie am Beamer, ob Sie den **Merksatz AA3** richtig notiert haben. Verbessern Sie, falls nötig – am besten in einer anderen Farbe.' }
     },
     {
-      id: 'aa3bc', abschnitt: 'Lagerung', kurz: 'Entscheidungsweg und 3.1/3.2', typ: 'aufgabe',
-      titel: 'AA3 b) und c) · Auf dem Arbeitsblatt',
-      bloecke: [
-        { art: 'text', text: '**b) Entscheidungsweg:** Ergänzen Sie, wie Sie lagern. Prüfen Sie die Fragen **von oben nach unten** – die erste Frage, die Sie mit „Ja“ beantworten, entscheidet.' },
-        { art: 'weg' },
-        { art: 'text', text: '**c) Klausurtraining:**' },
-        { art: 'aufgaben', nrs: ['3.1', '3.2'] }
-      ],
-      los: '✍️ Bearbeiten Sie jetzt **AA3 b) Entscheidungsweg** und **AA3 c) Klausurtraining (3.1 und 3.2)** allein auf dem Arbeitsblatt.',
-      losPunkte: ['Danach vergleichen wir mit der Musterlösung.'],
+      id: 'aa3b', abschnitt: 'Lagerung', kurz: 'Klausurtraining 3.1/3.2', typ: 'aufgabe',
+      titel: 'AA3 b) · Klausurtraining',
+      bloecke: [{ art: 'aufgaben', nrs: ['3.1', '3.2'] }],
+      los: '✍️ Bearbeiten Sie jetzt **3.1 und 3.2** allein auf dem Arbeitsblatt.',
+      losPunkte: ['Hilfe: die Bilder der vier Lagerungen und der **Merksatz AA3**.', 'Danach vergleichen wir mit der Musterlösung.'],
       uhr: [{ label: 'Schreiben', sek: 300 }],
-      handy: { typ: 'papier', titel: 'AA3 b) und c) auf dem Arbeitsblatt', text: 'Bearbeiten Sie jetzt den **Entscheidungsweg** und die Aufgaben **3.1 und 3.2** allein auf dem Arbeitsblatt. Die Zeit läuft vorne.' }
+      handy: { typ: 'papier', titel: 'Klausurtraining 3.1 und 3.2', text: 'Bearbeiten Sie jetzt die Aufgaben **3.1 und 3.2** allein auf dem Arbeitsblatt. Die Zeit läuft vorne.' }
     },
     {
-      id: 'aa3b-loesung', abschnitt: 'Lagerung', kurz: 'Musterlösung Entscheidungsweg', typ: 'loesung',
-      titel: 'AA3 b) Entscheidungsweg – Musterlösung',
-      bloecke: [{ art: 'weg' }],
-      tipp: 'Zeile anklicken = aufdecken · noch einmal = groß',
-      handy: { typ: 'papier', titel: 'Musterlösung vorne', text: 'Vergleichen Sie Ihren Entscheidungsweg mit der Musterlösung am Beamer. Verbessern Sie, falls nötig – am besten in einer anderen Farbe.' }
-    },
-    {
-      id: 'aa3c-loesung', abschnitt: 'Lagerung', kurz: 'Musterlösung 3.1/3.2', typ: 'loesung',
+      id: 'aa3b-loesung', abschnitt: 'Lagerung', kurz: 'Musterlösung 3.1/3.2', typ: 'loesung',
       titel: 'Klausurtraining 3.1 und 3.2 – Musterlösung',
       aufgaben: ['3.1', '3.2'],
       tipp: 'Zeile anklicken = aufdecken · noch einmal = groß',
@@ -317,7 +297,7 @@ var STUNDE = {
         { wer: 'Lina, Auszubildende', text: '„Aber in unserer Notfall-SOP steht Adrenalin ganz oben …“' }
       ],
       los: '✍️ Bearbeiten Sie jetzt **4.1** auf dem Arbeitsblatt.',
-      losPunkte: ['**Think** (2,5 Min.): allein schreiben – Infotext und Adrenalin-Tabelle helfen.', '**Pair** (1,5 Min.): zu zweit vergleichen und ergänzen.', 'Danach: Musterlösung.'],
+      losPunkte: ['**Think** (2,5 Min.): allein schreiben – die zwei Sätze zu Adrenalin helfen.', '**Pair** (1,5 Min.): zu zweit vergleichen und ergänzen.', 'Danach: Musterlösung.'],
       uhr: [{ label: 'Think', sek: 150 }, { label: 'Pair', sek: 90 }],
       handy: { typ: 'papier', titel: 'Wer hat recht? – 4.1', text: '**Think:** Schreiben Sie Ihre Stellungnahme zu 4.1 allein auf das Arbeitsblatt. **Pair:** Vergleichen und ergänzen Sie zu zweit. Die Zeit läuft vorne.' }
     },
@@ -341,7 +321,7 @@ var STUNDE = {
       bloecke: [{ art: 'fall', schluessel: 'transferfall', titel: 'Fallsituation' }, { art: 'aufgaben', nrs: ['5.1', '5.2'] }],
       los: '✍️ Bearbeiten Sie jetzt **5.1 und 5.2** – **allein und ohne Unterlagen**.',
       losPunkte: ['Legen Sie das Handy umgedreht hin – die Zeit läuft vorne.', 'Danach: Peer-Korrektur mit einer Person aus einer **anderen Stammgruppe**.'],
-      uhr: [{ label: 'Klausurtraining', sek: 360 }],
+      uhr: [{ label: 'Klausurtraining', sek: 480 }],
       handy: { typ: 'papier', titel: 'Klausurtraining: 5.1 und 5.2', text: 'Allein und ohne Unterlagen. Legen Sie das Handy umgedreht hin – die Zeit läuft vorne.' }
     },
     {
@@ -356,7 +336,7 @@ var STUNDE = {
     {
       id: 'aufloesung', abschnitt: 'Frau Maler', kurz: 'Zurück zu Frau Maler (AA6)', typ: 'kausalkette',
       titel: 'AA6 · Woher kam Frau Malers Luftnot?',
-      text: 'Was kommt als Nächstes? Ergänzen Sie die Kausalkette auf dem Arbeitsblatt.',
+      text: 'Was kommt als Nächstes? Ergänzen Sie die Kausalkette auf **Seite 1** des Arbeitsblatts.',
       kette: [
         { titel: 'Immobilität', text: 'Nach der Hüft-TEP liegt sie aus Angst vor einer Luxation fast nur im Bett.' },
         { titel: 'Tiefe Beinvenenthrombose', text: 'Morgens: rechte Wade dick, Schmerz beim Auftreten.' },
@@ -368,14 +348,14 @@ var STUNDE = {
       antwort: 'Die Luftnot kam von einer **Lungenembolie**. Um 11 Uhr: **Oberkörper hoch** (Luftnot steht im Vordergrund), **nicht mobilisieren**, nicht allein lassen, **sofort Hilfe holen** und engmaschig überwachen.',
       aufdecken: 'Nächstes Glied',
       tipp: 'Aufgedecktes Glied anklicken = groß',
-      handy: { typ: 'vorne', titel: 'Zurück zu Frau Maler', text: 'Ergänzen Sie die **Kausalkette** auf dem Arbeitsblatt (AA6), während sie vorne Schritt für Schritt aufgedeckt wird.' }
+      handy: { typ: 'vorne', titel: 'Zurück zu Frau Maler', text: 'Ergänzen Sie die **Kausalkette** und die Antwort auf die Leitfrage auf **Seite 1** des Arbeitsblatts, während vorne Schritt für Schritt aufgedeckt wird.' }
     },
     {
       id: 'checkout-intro', abschnitt: 'Abschluss', kurz: 'Was haben wir heute gelernt?', typ: 'info', emoji: '🎯',
       titel: 'Was haben wir heute gelernt?',
       unter: 'Können Sie jetzt besser einschätzen, was in den Notfällen zu tun ist?',
       punkte: [
-        'Zu Beginn der Stunde haben Sie bei **sechs Notfällen** vermutet, wie Sie handeln würden – ohne Auflösung.',
+        'Zu Beginn der Stunde haben Sie bei **vier Notfällen** vermutet, wie Sie handeln würden – ohne Auflösung.',
         'Jetzt lösen Sie **dieselben Notfälle** noch einmal – mit Ihrem **neuen Fachwissen**.',
         'Nach jedem Notfall gibt es die **Auflösung** – und Sie sehen, wie die Klasse **am Anfang** und **jetzt** abgestimmt hat.'
       ],
@@ -386,13 +366,13 @@ var STUNDE = {
         '**Wer darf was?** Selbst handeln – oder nur nach Anordnung bzw. SOP',
         '**Adrenalin i. m.** ist bei Anaphylaxie das Mittel der ersten Wahl'
       ],
-      handy: { typ: 'vorne', titel: 'Was haben wir heute gelernt?', text: 'Gleich lösen Sie die sechs Notfälle vom Stundenbeginn noch einmal – mit Ihrem neuen Fachwissen.' }
+      handy: { typ: 'vorne', titel: 'Was haben wir heute gelernt?', text: 'Gleich lösen Sie die vier Notfälle vom Stundenbeginn noch einmal – mit Ihrem neuen Fachwissen.' }
     },
     {
       id: 'checkout', abschnitt: 'Abschluss', kurz: 'Hätten Sie richtig gehandelt?', typ: 'abstimmung', runde: 2,
       titel: 'Hätten Sie richtig gehandelt?',
       unter: 'Prüfen Sie Ihre Vermutungen',
-      punkte: ['Jetzt wissen Sie mehr: Entscheiden Sie **dieselben sechs Notfälle** noch einmal – Notfall für Notfall am Handy.', 'Nach jedem Notfall: die **Auflösung** – und wie die Klasse **am Anfang** und **jetzt** abgestimmt hat.'],
+      punkte: ['Jetzt wissen Sie mehr: Entscheiden Sie **dieselben vier Notfälle** noch einmal – Notfall für Notfall am Handy.', 'Nach jedem Notfall: die **Auflösung** – und wie die Klasse **am Anfang** und **jetzt** abgestimmt hat.'],
       handy: { typ: 'abstimmung', titel: 'Hätten Sie richtig gehandelt?', start: 'Gleich zeigt Ihre Lehrkraft den ersten Notfall noch einmal. Entscheiden Sie jetzt mit Ihrem neuen Fachwissen.' }
     },
     {
@@ -404,7 +384,7 @@ var STUNDE = {
     {
       id: 'ende', abschnitt: 'Abschluss', kurz: 'Hausaufgabe und Nachlesen', typ: 'ende',
       titel: 'Hausaufgabe und Nachlesen',
-      punkte: ['**Hausaufgabe:** Klausurtraining (20 Punkte) – Selbstkontrolle über den QR-Code im Arbeitsblatt. Freiwillig: 6.1 und 6.2 zu Frau Maler.', '**Nachlesen:** Alles aus dieser Stunde über den QR-Code auf der letzten Seite des Arbeitsblatts.'],
+      punkte: ['**Hausaufgabe:** Klausurtraining (13 Punkte) – Selbstkontrolle über den QR-Code im Arbeitsblatt.', '**Nachlesen:** Alles aus dieser Stunde über den QR-Code auf der letzten Seite des Arbeitsblatts.'],
       frei: '📖 Die Nachlese-Seite ist jetzt freigeschaltet.',
       handy: { typ: 'ende', titel: 'Die Stunde ist beendet', text: '**Hausaufgabe:** Klausurtraining – Selbstkontrolle über den QR-Code im Arbeitsblatt. Alles aus dieser Stunde können Sie jetzt nachlesen: QR-Code auf der letzten Seite des Arbeitsblatts.' }
     }
@@ -523,20 +503,16 @@ var STUNDE = {
     expTitel: 'Ihr Expertenteam {team}',
     expSetzen: '🚶 **Setzen Sie sich mit {namen} an einen Tisch.**',
     expAllein: '🚶 Sie sind allein in Ihrem Team – arbeiten Sie die Aufträge allein durch.',
-    expAuftraege: ['**a)** Fall unten markieren – danach den **Merksatz AA1** auf dem Arbeitsblatt ergänzen.', '**b)** Klausuraufgabe **1.1** auf dem Arbeitsblatt – allein.', '**c)** Infotext lesen.', '**d)** Experten-Check.', '**e)** Gemeinsam **Ihre Spalte {b}** der Vergleichstabelle ausfüllen – dann „Unsere Spalte ist fertig“.'],
-    expWeiter: '⬇ **Merksatz AA1** auf dem Arbeitsblatt ergänzt? Dann geht es hier weiter: **b)** Aufgabe 1.1, danach **c)** den Infotext lesen. Lieber auf Papier? Bitten Sie Ihre Lehrkraft am Pult um das Expertenblatt „{b} · {form}“.',
-    exp11Titel: 'b) Klausuraufgabe 1.1 – allein, auf dem Arbeitsblatt',
-    exp11Text: 'Begründen Sie anhand von **4 Symptomen** aus dem Fall von {person} (oben), dass ein **{adjektiv} Schock** vorliegt.',
-    exp11Tipp: 'Tipp wie in der Klassenarbeit: Ordnen Sie jedes Symptom zu (z. B. Kreislauf, Haut, Atemwege) und erklären Sie kurz, was es zeigt. Ohne Kreislaufzeichen gibt es nicht die volle Punktzahl.',
-    expTabelleTitel: 'e) Jetzt gemeinsam: Ihre Spalte der Vergleichstabelle',
-    expTabelleText: 'Füllen Sie mit Ihrem Expertenteam die Spalte **{b} – {kurz}** der Vergleichstabelle auf dem Arbeitsblatt aus, alle sechs Zeilen: **Ursache · Entstehung (kurz) · Puls · Haut · weitere typische Zeichen · Darauf achte ich besonders**. Die Informationen stehen im Infotext – aber ohne Überschriften und in anderer Reihenfolge.',
+    expAuftraege: ['**a)** Fall unten markieren – danach den **Merksatz AA1** auf dem Arbeitsblatt ergänzen.', '**b)** Infotext lesen.', '**c)** Experten-Check.', '**d)** Gemeinsam **Ihre Spalte {b}** der Vergleichstabelle ausfüllen – dann „Unsere Spalte ist fertig“.'],
+    expWeiter: '⬇ **Merksatz AA1** auf dem Arbeitsblatt ergänzt? Dann geht es hier weiter: **b)** den Infotext lesen. Lieber auf Papier? Bitten Sie Ihre Lehrkraft am Pult um das Expertenblatt „{b} · {form}“.',
+    expTabelleTitel: 'd) Jetzt gemeinsam: Ihre Spalte der Vergleichstabelle',
+    expTabelleText: 'Füllen Sie mit Ihrem Expertenteam die Spalte **{b} – {kurz}** der Vergleichstabelle auf dem Arbeitsblatt aus, alle sechs Zeilen: **Ursache · Entstehung (kurz) · Puls · Haut · weitere typische Zeichen · Darauf achte ich besonders**. Die Informationen stehen alle im Infotext!',
     expTabelleFertig: 'Wenn die Spalte bei allen im Team fertig ausgefüllt ist: „Unsere Spalte ist fertig“ drücken.',
-    exp11Kontrolle: 'Solange Sie warten – Selbstkontrolle zu 1.1: Diese Symptome mit Zuordnung wären möglich (4 genügen):',
     expFall: 'a) Fall: {person}',
-    expInfo: 'c) Infotext: {form}',
+    expInfo: 'b) Infotext: {form}',
     expWoerter: 'Wörterhilfe',
     expPapier: 'Lieber auf Papier? Bitten Sie Ihre Lehrkraft am Pult um das Expertenblatt „{b} · {form}“.',
-    checkTitel: 'd) Experten-Check',
+    checkTitel: 'c) Experten-Check',
     checkText: 'Können Sie Ihre Schockform erklären? Beantworten Sie alle drei Fragen richtig.',
     checkRichtig: 'Richtig!',
     checkFalsch: 'Noch nicht – lesen Sie im Infotext nach und versuchen Sie es noch einmal.',
@@ -607,62 +583,37 @@ var STUNDE = {
 
   /* ---------- Expertentexte (gleich wie im Arbeitsblatt: werkzeuge/ab_w2_texte.js → EXPERTEN) ----------
      info: Infotext ohne Überschriften, bewusst nicht in der Reihenfolge der Vergleichstabelle.
-     nennen: mögliche Symptome für Klausuraufgabe 1.1 (Selbstkontrolle nach „Unsere Spalte ist fertig“). */
+*/
   experten: {
     a: {
       info: [
-        'Bei einem hypovolämischen Schock hat die Person meist einen schnellen, schwachen Puls und eine blasse, kalte, schweißige Haut. Viele haben großen Durst, sind unruhig, ängstlich oder plötzlich verwirrt, atmen schnell und scheiden wenig Urin aus. Der Blutdruck fällt oft erst spät – aussagekräftig ist der Vergleich mit dem Vorwert (Schockindex).',
-        'Pflegefachpersonen behalten vor allem im Blick, wo Blut verloren gehen könnte (Stuhl, Erbrochenes, Verband, Drainage). Sie kontrollieren Puls und Blutdruck im Verlauf, das Bewusstsein und die Urinausscheidung.',
-        'Ausgelöst wird der hypovolämische Schock durch einen Verlust von Blut oder Flüssigkeit: durch eine Blutung – sichtbar nach außen oder verborgen im Körper wie bei einer Magen-Darm-Blutung –, durch Verbrennungen oder durch starken Durchfall und Erbrechen. Gerinnungshemmer erhöhen das Blutungsrisiko. Schwarzer, klebriger Stuhl (Teerstuhl) weist auf eine Blutung im Magen oder Zwölffingerdarm hin.',
-        'Im Notfall: Hilfe holen, Ärztin oder Arzt informieren; die Person nicht aufsetzen oder aufstehen lassen; flach lagern, Beine hoch (wenn keine Atemnot); Wärme erhalten; nichts essen oder trinken lassen (mögliche Untersuchung oder Operation); engmaschig überwachen. Volumen gibt es nur nach ärztlicher Anordnung.',
-        'Im Körper läuft dabei eine Kette ab: Weniger Volumen → weniger Blut fließt zum Herzen zurück → das Herz kann weniger auswerfen (das Schlagvolumen sinkt) → der Blutdruck droht zu fallen. Der Sympathikus gleicht aus: Der Puls steigt, die Gefäße in Haut, Muskeln, Niere und Darm verengen sich (Zentralisation, siehe Woche 1). Hält der Verlust an, gerät der Körper in die Schockspirale.'
+        'Bei einem hypovolämischen Schock ist der Puls schnell und schwach. Die Haut ist blass, kalt und schweißig. Viele Menschen haben großen Durst, sind unruhig oder verwirrt und atmen schnell. Der Blutdruck fällt oft erst spät. Wichtig ist der Vergleich mit dem Vorwert (Schockindex).',
+        'Pflegefachpersonen achten darauf, wo Blut verloren geht: Stuhl, Erbrochenes, Verband, Drainage. Sie kontrollieren Puls, Blutdruck, Bewusstsein und Urin im Verlauf.',
+        'Ausgelöst wird er durch einen Verlust von Blut oder Flüssigkeit: eine Blutung nach außen oder im Körper, z. B. im Magen-Darm-Trakt, oder starker Durchfall und Erbrechen. Gerinnungshemmer erhöhen das Blutungsrisiko. Schwarzer, klebriger Stuhl (Teerstuhl) zeigt eine Blutung im Magen oder Zwölffingerdarm.',
+        'Im Notfall: Hilfe holen. Flach lagern, Beine hoch (ohne Atemnot). Nicht aufsetzen. Wärme erhalten, überwachen.',
+        'Im Körper: weniger Volumen → weniger Blut fließt zum Herzen → der Blutdruck droht zu fallen. Der Sympathikus steuert gegen: Der Puls steigt, und die Gefäße in Haut, Niere und Darm werden eng (Zentralisation, siehe Woche 1).'
       ],
-      woerter: 'hypovolämisch = mit zu wenig Volumen | Teerstuhl = schwarzer Stuhl durch verdautes Blut | Zentralisation = Umverteilung des Blutes zu Gehirn und Herz',
-      nennen: [
-        'Ursache: schwarzer, klebriger Stuhl (Teerstuhl) unter Gerinnungshemmer → Blutung im Magen-Darm-Trakt',
-        'Kreislauf: Puls 116/min – Anstieg von 78/min (Tachykardie, Gegenregulation)',
-        'Kreislauf: Blutdruck 98/72 mmHg – Abfall von 145/85 mmHg, kleine Amplitude; Schockindex 116 : 98 ≈ 1,2',
-        'Haut: blass, Stirn kalt und feucht (Zentralisation)',
-        'Volumenmangel: Durst (bittet mehrmals um etwas zu trinken)',
-        'Gehirn: Unruhe, neue Verwirrtheit, „schwarz vor Augen“ (Minderdurchblutung)',
-        'Atmung: Atemfrequenz 24/min (Frühzeichen)'
-      ]
+      woerter: 'hypovolämisch = mit zu wenig Volumen | Teerstuhl = schwarzer Stuhl durch verdautes Blut | Zentralisation = Umverteilung des Blutes zu Gehirn und Herz'
     },
     b: {
       info: [
-        'Kommt der Körper mit dem Allergen in Kontakt, setzen Mastzellen schlagartig Histamin und weitere Botenstoffe frei. Die Gefäße werden weit und durchlässig: Flüssigkeit tritt ins Gewebe aus (Quaddeln, Schwellungen), im Gefäßsystem fehlt Volumen (relativer Volumenmangel) → der Blutdruck fällt. Gleichzeitig schwellen die Schleimhäute an (z. B. im Kehlkopf) und die Bronchien verengen sich → Atemnot und Sauerstoffmangel. Das Herz versucht, mit einem schnellen Puls auszugleichen.',
-        'Im Notfall: Allergen stoppen, Hilfe holen, nach Leitsymptom lagern, Adrenalin i. m. nach Anordnung oder SOP geben (Mittel der ersten Wahl), überwachen, dokumentieren – mehr dazu in AA3 bis AA5.',
-        'Die Beschwerden betreffen oft mehrere Organe gleichzeitig: Juckreiz, Rötung, Quaddeln und Schwellungen der Haut; Heiserkeit, Kloßgefühl, pfeifende Atmung, Atemnot und sinkende Sauerstoffsättigung; ein schneller Puls, Blutdruckabfall, Schwindel und Bewusstseinsstörungen; Übelkeit, Erbrechen und Bauchkrämpfe. Achtung: Die Haut kann auch blass sein – die Veränderungen an der Haut sind nicht immer deutlich.',
-        'Der anaphylaktische Schock ist eine allergische Sofortreaktion des Immunsystems auf einen eigentlich harmlosen Stoff (Allergen), z. B. Medikamente, Insektengift (Wespe, Biene) oder Nahrungsmittel (Nüsse, Erdnüsse, Sellerie, Fisch). Die Reaktion beginnt Sekunden bis Minuten nach dem Kontakt.',
-        'Pflegefachpersonen beobachten vor allem die Atemwege und die Atmung (Heiserkeit, Atemfrequenz, Sauerstoffsättigung) sowie den Kreislauf. Nach Stunden kann eine zweite Reaktion folgen (zweigipfliger Verlauf) – deshalb ist eine Nachbeobachtung nötig.'
+        'Bei Kontakt mit dem Allergen setzen Mastzellen schlagartig Histamin frei. Die Gefäße werden weit und durchlässig. Flüssigkeit tritt ins Gewebe aus (Quaddeln, Schwellungen). Im Gefäßsystem fehlt dann Volumen → der Blutdruck fällt. Die Schleimhäute schwellen an, die Bronchien werden eng → Atemnot. Der Puls wird schnell.',
+        'Im Notfall: Allergen stoppen, Hilfe holen, nach Leitsymptom lagern. Adrenalin i. m. nach Anordnung oder SOP ist das Mittel der ersten Wahl.',
+        'Oft sind mehrere Organe betroffen: Haut (Juckreiz, Quaddeln, Schwellungen), Atemwege (Heiserkeit, pfeifende Atmung, Atemnot), Kreislauf (schneller Puls, niedriger Blutdruck, Schwindel) und Magen-Darm (Übelkeit, Bauchkrämpfe). Achtung: Die Haut kann auch blass sein.',
+        'Der anaphylaktische Schock ist eine schwere allergische Sofortreaktion, z. B. auf Medikamente, Insektengift oder Nüsse. Sie beginnt Sekunden bis Minuten nach dem Kontakt.',
+        'Pflegefachpersonen beobachten vor allem Atmung (Heiserkeit, Atemfrequenz, Sauerstoffsättigung) und Kreislauf. Nach Stunden kann eine zweite Reaktion folgen (zweigipfliger Verlauf). Deshalb ist eine Nachbeobachtung nötig.'
       ],
-      woerter: 'Allergen = Auslöser einer Allergie | Mastzellen = Abwehrzellen im Gewebe, die Histamin speichern | Quaddeln = juckende, erhabene Hautschwellungen | anaphylaktisch = durch eine schwere allergische Reaktion',
-      nennen: [
-        'zeitlicher Zusammenhang: Beginn etwa 10 Minuten nach dem Haselnusskuchen (Allergen)',
-        'Haut: Juckreiz, Quaddeln an Hals und Brust, Schwellung von Lippen und Augenlidern',
-        'Atemwege: heisere Stimme (Schwellung der Kehlkopfschleimhaut), Atemfrequenz 26/min, SpO₂ 93 %',
-        'Kreislauf: Blutdruck 88/50 mmHg – deutlich unter ihrem üblichen Wert (120/70); Puls 128/min (Tachykardie)',
-        'Magen-Darm: Übelkeit, Bauchkrämpfe',
-        'Gehirn/Kreislauf: Schwindel'
-      ]
+      woerter: 'Allergen = Auslöser einer Allergie | Mastzellen = Abwehrzellen im Gewebe, die Histamin speichern | Quaddeln = juckende, erhabene Hautschwellungen | anaphylaktisch = durch eine schwere allergische Reaktion'
     },
     c: {
       info: [
-        'Den neurogenen Schock erkennt man an einem niedrigen Blutdruck bei langsamem oder normalem Puls. Unterhalb der Verletzung ist die Haut warm, trocken und rosig; dort bestehen Lähmungen und Gefühlsstörungen (Kribbeln, Taubheit). Oft klagt die Person über Nacken- oder Rückenschmerzen, der Körper kühlt leicht aus, und bei sehr hoher Verletzung ist auch die Atmung gestört. Achtung: Die Person wirkt „stabil“ – ruhiger Puls, rosige Haut –, ist aber im Schock.',
-        'Pflegefachpersonen kontrollieren vor allem die Atmung, Blutdruck und Puls im Verlauf, die Körpertemperatur sowie Lähmungen und Gefühl im Verlauf. Nach einem Unfall kann zusätzlich eine Blutung vorliegen.',
-        'Im Rückenmark verlaufen auch die Nervenbahnen des Sympathikus. Sind sie unterbrochen, fehlt den Gefäßen unterhalb der Verletzung die Spannung: Sie werden weit, das Blut „versackt“, es kommt zu einem relativen Volumenmangel → der Blutdruck fällt. Weil der Sympathikus ausfällt, kann der Körper nicht gegensteuern: Der Puls steigt nicht an (oft ist er sogar langsam), und es gibt keine Zentralisation.',
-        'Im Notfall: Notruf veranlassen; den Kopf mit beiden Händen in der vorgefundenen Lage halten; nicht aufsetzen, nicht bewegen; Wärme erhalten; Atmung und Puls überwachen (mehr in Woche 4).',
-        'Der neurogene Schock folgt auf eine Verletzung des Rückenmarks, meist im Bereich der Halswirbelsäule oder der oberen Brustwirbelsäule – z. B. nach einem Kopfsprung in flaches Wasser, einem Sturz aus der Höhe oder einem Verkehrsunfall.'
+        'Beim neurogenen Schock ist der Blutdruck niedrig, aber der Puls langsam oder normal. Unterhalb der Verletzung ist die Haut warm, trocken und rosig. Dort bestehen Lähmungen und Gefühlsstörungen (Kribbeln). Oft hat die Person Nackenschmerzen. Bei hoher Verletzung ist auch die Atmung gestört. Achtung: Die Person wirkt „stabil“, ist aber im Schock.',
+        'Pflegefachpersonen kontrollieren vor allem Atmung, Blutdruck, Puls, Körpertemperatur (Auskühlung) und Lähmungen im Verlauf.',
+        'Im Rückenmark verlaufen Nervenbahnen des Sympathikus. Sind sie unterbrochen, werden die Gefäße unterhalb der Verletzung weit. Das Blut „versackt“ → der Blutdruck fällt. Der Puls steigt nicht, und es gibt keine Zentralisation.',
+        'Im Notfall: Notruf. Den Kopf mit beiden Händen in der vorgefundenen Lage halten, nicht bewegen. Wärme erhalten, Atmung und Puls überwachen.',
+        'Auslöser ist eine Verletzung des Rückenmarks, meist an der Halswirbelsäule – z. B. nach einem Kopfsprung in flaches Wasser oder einem Sturz aus der Höhe.'
       ],
-      woerter: 'neurogen = vom Nervensystem ausgehend | Rückenmark = Nervenstrang im Wirbelkanal | Sympathikus = Teil des Nervensystems, der Puls und Gefäßspannung steigert',
-      nennen: [
-        'Ursache: Kopfsprung in flaches Wasser, starke Nackenschmerzen → Verletzung der Halswirbelsäule',
-        'Kreislauf: Blutdruck 82/45 mmHg (niedrig)',
-        'Kreislauf: langsamer Puls 52/min trotz niedrigem Blutdruck – der Sympathikus fällt aus',
-        'Haut: an den Beinen warm, trocken, rosig (keine Zentralisation)',
-        'Nerven: Lähmungen (Arme und Beine kaum beweglich), „Ich spür meine Beine nicht“, Kribbeln in den Händen',
-        'Atmung: flach (hohe Verletzung)'
-      ]
+      woerter: 'neurogen = vom Nervensystem ausgehend | Rückenmark = Nervenstrang im Wirbelkanal | Sympathikus = Teil des Nervensystems, der Puls und Gefäßspannung steigert'
     }
   }
 };

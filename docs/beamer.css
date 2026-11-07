@@ -419,11 +419,6 @@ b, strong { font-weight: 800; }
 .aufgabe-blatt .dialog-blasen { margin: 0; gap: 20px; }
 .aufgabe-blatt .sprechblase { padding: 14px 20px; }
 .aufgabe-blatt .sprechblase .was { font-size: 24px; }
-.weg { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-.weg-kopf { font-weight: 900; font-size: 18px; padding: 6px 12px; background: #F2B48C; border-radius: 8px; }
-.weg-frage { font-size: 21px; line-height: 1.3; padding: 8px 12px; background: #fff; border-radius: 8px; border: 1px solid #F0C9AE; }
-.weg-leer { background: #fff; border-radius: 8px; border: 1px dashed #C9D3D8; min-height: 42px; }
-.weg-antwort { font-size: 21px; }
 .a-vorsatz + p, .loesung-aufgabe p { margin: 0; }
 .loesung-aufgabe .a-vorsatz { font-size: 18px; }
 .loesung-mit-uhr { grid-template-columns: 1fr 360px; }

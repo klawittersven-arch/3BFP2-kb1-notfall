@@ -28,30 +28,29 @@ geben ihren Vornamen ein – und ihr Handy zeigt ab dann automatisch, was zur ak
 |---|---|---|---|
 | 1 | Willkommen | großer QR-Code, Namen der Angemeldeten | Vorname eingeben → „Sie sind dabei“ |
 | 2 | Frau Maler | Fallauszug, Leitfrage | Leitfrage |
-| 3 | Wie hätten Sie gehandelt? | Auftrag, dann **Notfall für Notfall**: Notfall groß, „x von y haben abgestimmt“ → „Ergebnisse anzeigen“ (Verteilung, **keine Auflösung**) | derselbe Notfall: Vermutung antippen, sicher / vermute nur; danach „Ergebnis vorne“ |
-| 4 | Ergebnis | Übersicht: 6 Karten, ★ = größte Uneinigkeit, Karte anklicken = groß | „Ergebnis vorne“ |
+| 3 | Wie hätten Sie gehandelt? | Auftrag, dann **Notfall für Notfall** (4 Notfälle, der letzte = Frau Maler): Notfall groß, „x von y haben abgestimmt“ → „Ergebnisse anzeigen“ (Verteilung, **keine Auflösung**) | derselbe Notfall: Vermutung antippen, sicher / vermute nur; danach „Ergebnis vorne“ |
+| 4 | Ergebnis | Übersicht: 4 Karten, ★ = größte Uneinigkeit, Karte anklicken = groß | „Ergebnis vorne“ |
 | 5 | Murmeln | umstrittenste Frage groß, 1-Minuten-Uhr (startet selbst) | Frage + eigene Vermutung |
 | 6 | Lernziel | Lernziel, Fahrplan der Stunde | – |
 | 7 | Gruppen einteilen | **„Gruppen zufällig einteilen“**, Gruppenkarten mit Emoji | eigene Stammgruppe in Gruppenfarbe, Buchstabe, Expertenteam |
-| 8 | Expertenrunde (AA1) | Expertenteams mit ✓, Uhr 15 min | Namen des Teams, Schritte a–e: Fall markieren (Raten-Schutz), 1.1 (KA-Aufgabe), Infotext, Experten-Check, **eigene Tabellenspalte ausfüllen** → „Unsere Spalte ist fertig“; Beamer: „✓ Tabelle fertig!“ |
+| 8 | Expertenrunde (AA1) | Expertenteams mit ✓, Uhr 15 min | Namen des Teams, Schritte a–d: Fall markieren (3 Ablenker, Raten-Schutz), Infotext (kurze Sätze), Experten-Check, **eigene Tabellenspalte ausfüllen** → „Unsere Spalte ist fertig“; Beamer: „✓ Tabelle fertig!“ |
 | 9 | Merksatz AA1 prüfen | Merksatz, **Lücke anklicken = aufdecken** (kommt automatisch, wenn alle Teams fertig sind) | „Überprüfen Sie am Beamer …“ |
 | 10 | Stammgruppen (AA2a) | Stammgruppen mit ✓, **Erklär-Uhr** A → B → C | Namen der Stammgruppe, „Jetzt erklärt …“, „Unsere Tabelle ist vollständig“ |
 | 11 | Vergleichstabelle sichern | Tabelle wie im AB, **Zelle anklicken = Lösung aufdecken**, noch einmal = groß; Spaltenkopf = ganze Spalte groß | „Vergleichen Sie Ihre Tabelle …“ |
-| 12–13 | Schockform-Detektiv | Erklärfolie (was und warum), dann Fortschritt je Stammgruppe | Detektiv (Befunde antippen und Form wählen, „Prüfen“; 2 Versuche) |
-| 14 | Merksatz AA2 prüfen | Lücken aufdecken | „Überprüfen Sie am Beamer …“ |
-| 15–16 | Klausurtraining 2.1/2.2 | **Aufgabenfolie** wie im AB → „Jetzt bearbeiten“ (Auftrag + Uhr 5 min) → Musterlösung zum Aufdecken | erst „Schauen Sie nach vorne“, dann die Fälle Mia, Weber, Albrecht zum Nachlesen |
-| 17–21 | Lagerung | Impuls „immer Beine hoch?“, dann **4 Lagerungsfolien** (Bild, Wann? Warum? So geht’s) | dasselbe Bild |
-| 22 | Lagerungsparcours (AA3) | Fortschritt | Lagerungskarten, Bilder der vier Lagerungen als Hilfe |
-| 23 | Merksatz AA3 prüfen | Lücken aufdecken | „Überprüfen Sie am Beamer …“ |
-| 24–26 | AA3 b) und c) | Aufgabenfolie (Entscheidungsweg, 3.1/3.2) → „Jetzt bearbeiten“ → zwei Musterlösungen | „Auf Papier“ |
-| 27 | Wer darf was? (AA4a) | jeder Klick: nächste Maßnahme (6), „x von y haben abgestimmt“, dann Lösung **mit der Verteilung der Stimmen** und „Das hatten X von Y richtig!“ | 🟢 / 🟡 / 🔴 antippen, nach der Lösung: richtig oder falsch |
-| 28–30 | Wer hat recht? (AA4b) | Aufgabenfolie mit Dialog und 4.1 → Think/Pair-Uhr → Musterlösung → **Merksatz AA4** (erst ergänzen, dann aufdecken) | „Auf Papier“ |
-| 31–32 | Klausurtraining (AA5) | Transferfall wie im AB → Countdown 6 min → Peer-Korrektur (4 min) mit Musterlösung zum Aufdecken | „Handy umgedreht“, dann Bewertungsraster |
-| 33 | Frau Maler (AA6) | Kausalkette Schritt für Schritt (aufgedecktes Glied anklicken = groß), dann Antwort auf die Leitfrage | „Ergänzen Sie die Kausalkette …“ |
-| 34 | Was haben wir heute gelernt? | Erklärfolie: was wir gelernt haben, gleich dieselben Notfälle mit neuem Fachwissen | „Schauen Sie nach vorne“ |
-| 35 | Hätten Sie richtig gehandelt? | Notfall für Notfall: abstimmen → „Auflösung zeigen“ (richtige Antwort, Erklärung, **Beginn und jetzt** nebeneinander) | derselbe Notfall; danach Auflösung mit eigener Vermutung und Entscheidung |
-| 36 | Vorher – nachher | Übersicht aller 6 Notfälle mit Lösung | eigene Bilanz (richtig zu Beginn / jetzt) |
-| 37 | Hausaufgabe und Nachlesen | Hausaufgabe, Nachlesen – **gibt die Nachlese-Seite frei** | „Die Stunde ist beendet“, Hausaufgabe |
+| 12–13 | Schockform-Detektiv | Erklärfolie (was und warum), dann Fortschritt je Stammgruppe | Detektiv: 4 Fälle (Befunde antippen und Form wählen, „Prüfen“; 2 Versuche), am Ende „Geschafft!“ |
+| 14–15 | Klausurtraining 2.1/2.2 | **Aufgabenfolie** wie im AB → „Jetzt bearbeiten“ (Auftrag + Uhr 5 min) → Musterlösung zum Aufdecken | erst „Schauen Sie nach vorne“, dann die Fälle Mia, Weber, Albrecht zum Nachlesen |
+| 16–20 | Lagerung | Impuls „immer Beine hoch?“, dann **4 Lagerungsfolien** (Bild, Wann? Warum? So geht’s) | dasselbe Bild |
+| 21 | Lagerungs-Quiz (AA3) | Fortschritt | Quiz allein am Handy (ohne Matte, ohne Timer), Bilder der vier Lagerungen als Hilfe |
+| 22 | Merksatz AA3 prüfen | Lücken aufdecken | „Überprüfen Sie am Beamer …“ |
+| 23–24 | Klausurtraining 3.1/3.2 (AA3 b) | Aufgabenfolie → „Jetzt bearbeiten“ (Uhr 5 min) → Musterlösung | „Auf Papier“ |
+| 25 | Wer darf was? (AA4a) | jeder Klick: nächste Maßnahme (6), „x von y haben abgestimmt“, dann Lösung **mit der Verteilung der Stimmen** und „Das hatten X von Y richtig!“ | 🟢 / 🟡 / 🔴 antippen, nach der Lösung: richtig oder falsch |
+| 26–28 | Wer hat recht? (AA4b) | Aufgabenfolie mit Dialog und 4.1 → Think/Pair-Uhr → Musterlösung → **Merksatz AA4** (erst ergänzen, dann aufdecken) | „Auf Papier“ |
+| 29–30 | Klausurtraining (AA5) | Transferfall wie im AB → Countdown 8 min → Peer-Korrektur (4 min) mit Musterlösung zum Aufdecken | „Handy umgedreht“, dann Bewertungsraster |
+| 31 | Frau Maler (AA6) | Kausalkette Schritt für Schritt (aufgedecktes Glied anklicken = groß), dann Antwort auf die Leitfrage | „Ergänzen Sie die Kausalkette auf Seite 1 …“ |
+| 32 | Was haben wir heute gelernt? | Erklärfolie: was wir gelernt haben, gleich dieselben Notfälle mit neuem Fachwissen | „Schauen Sie nach vorne“ |
+| 33 | Hätten Sie richtig gehandelt? | Notfall für Notfall: abstimmen → „Auflösung zeigen“ (richtige Antwort, Erklärung, **Beginn und jetzt** nebeneinander) | derselbe Notfall; danach Auflösung mit eigener Vermutung und Entscheidung |
+| 34 | Vorher – nachher | Übersicht aller 4 Notfälle mit Lösung | eigene Bilanz (richtig zu Beginn / jetzt) |
+| 35 | Hausaufgabe und Nachlesen | Hausaufgabe, Nachlesen – **gibt die Nachlese-Seite frei** | „Die Stunde ist beendet“, Hausaufgabe |
 
 **Sicherungsfolien:** Nach jedem Merksatz kommt eine Folie zum Aufdecken der Lücken, nach jeder Papieraufgabe
 eine Aufgabenfolie (erst erklären, dann „✍️ Jetzt bearbeiten“ – das startet die Uhr) und eine Musterlösung zum
@@ -60,8 +59,10 @@ groß über der Folie – zum Abschreiben (Klick daneben, ✕ oder Esc schließt
 Lösungszeilen bleiben aufgedeckt, auch wenn der Beamer neu geladen wird; „Alle verdecken“ verdeckt wieder.
 Lange Folien werden automatisch etwas kleiner gesetzt, damit alles auf die Bühne passt.
 
-**Zeitplan:** 0–8 Einstieg · 8–60 Gruppenpuzzle · 60–83 Lagerung · (Pause) · 83–97 AA4 · 97–108 AA5 ·
-108–113 AA6 · **113–123 Puffer** · 123–135 Abschluss. Die Notfall-Simulation ist gestrichen; eine Pausenfolie gibt es nicht.
+**Zeitplan:** 0–10 Einstieg · 10–27 Expertenteams · 27–44 Stammgruppen · 44–58 Detektiv und 2.1/2.2 ·
+58–76 Lagerung · (Pause) · 76–89 AA4 · 89–102 AA5 · 102–107 AA6 · **107–125 Puffer** · 125–135 Abschluss.
+Gerafft für langsam lesende Klassen: Das Arbeitsblatt hat **6 Seiten** (3 Blätter, beidseitig); alle Aufgaben
+im KA-Format bleiben. Eine Pausenfolie gibt es nicht.
 
 Aufgedeckte Zellen und Lösungszeilen bleiben aufgedeckt, auch wenn der Beamer neu geladen wird.
 
@@ -149,7 +150,7 @@ tests/               ← automatische Tests; tests/seiten/ = Testgerüst der Üb
   changes“ → nach 1–2 Minuten online. Nur Text **zwischen den Hochkommas** ändern; `**Wort**` = fett.
   Die Kennungen der Folien (`id: 'aa1'` …) nicht ändern.
 - **Übungen:** `docs/inhalte.js`.
-- **Merksätze, Einstiegsfragen (E1–E6), Lagerungskarten, Expertentexte** stehen auch im Arbeitsblatt
+- **Merksätze, Einstiegsfragen (E1–E4), Lagerungskarten, Expertentexte** stehen auch im Arbeitsblatt
   (`werkzeuge/ab_w2_texte.js`). Bei Änderungen beide Stellen anpassen; `tests/inhalte.test.js` meldet Abweichungen.
 - **Lösungen im Arbeitsblatt** (`werkzeuge/ab_w2.js`) danach neu erzeugen – das aktualisiert auch die Nachlese-Seite.
 - Nach größeren Änderungen in `docs/sw.js` `VERSION` erhöhen (Offline-Speicher).

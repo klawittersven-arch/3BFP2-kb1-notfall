@@ -6,49 +6,24 @@ var NACHLESEN = {
    "buchstabe": "A",
    "form": "Hypovolämischer Schock",
    "fall": [
-    "Herr Gerhard Albrecht (81) lebt seit vier Jahren im Pflegeheim „Am Kocherufer“. Wegen eines Vorhofflimmerns nimmt er einen Gerinnungshemmer. Er hört schlecht und trägt deshalb zwei Hörgeräte. Am Vormittag hatte er schwarzen, klebrigen Stuhlgang. Danach hat er mit seinem Zimmernachbarn Karten gespielt.",
-    "Als Sie ihn um 11:30 Uhr zum Mittagessen an die Bettkante setzen wollen, sagt er: „Mir wird ganz schwarz vor Augen.“ Er ist blass, seine Stirn ist kalt und feucht. Auf seinem Nachttisch steht ein Foto seiner Enkelin. Mehrmals bittet er um etwas zu trinken. Er wirkt unruhig und fragt, wo seine Frau sei, obwohl er sonst gut orientiert ist. Sie messen: Puls 116/min, Blutdruck 98/72 mmHg, Atemfrequenz 24/min. Bei der Morgenrunde lagen die Werte bei Puls 78/min und Blutdruck 145/85 mmHg. Seine Tochter hat sich für den Nachmittag zum Besuch angemeldet."
-   ],
-   "nennen": [
-    "Ursache: schwarzer, klebriger Stuhl (Teerstuhl) unter Gerinnungshemmer → Blutung im Magen-Darm-Trakt",
-    "Kreislauf: Puls 116/min – Anstieg von 78/min (Tachykardie, Gegenregulation)",
-    "Kreislauf: Blutdruck 98/72 mmHg – Abfall von 145/85 mmHg, kleine Amplitude; Schockindex 116 : 98 ≈ 1,2",
-    "Haut: blass, Stirn kalt und feucht (Zentralisation)",
-    "Volumenmangel: Durst (bittet mehrmals um etwas zu trinken)",
-    "Gehirn: Unruhe, neue Verwirrtheit, „schwarz vor Augen“ (Minderdurchblutung)",
-    "Atmung: Atemfrequenz 24/min (Frühzeichen)"
+    "Herr Gerhard Albrecht (81) lebt seit vier Jahren im Pflegeheim „Am Kocherufer“. Wegen eines Vorhofflimmerns nimmt er einen Gerinnungshemmer. Am Vormittag hatte er schwarzen, klebrigen Stuhlgang. Danach hat er mit seinem Zimmernachbarn Karten gespielt.",
+    "Als Sie ihn um 11:30 Uhr zum Mittagessen an die Bettkante setzen wollen, sagt er: „Mir wird ganz schwarz vor Augen.“ Er ist blass, seine Stirn ist kalt und feucht. Mehrmals bittet er um etwas zu trinken. Er wirkt unruhig und fragt, wo seine Frau sei, obwohl er sonst gut orientiert ist. Sie messen: Puls 116/min, Blutdruck 98/72 mmHg, Atemfrequenz 24/min. Bei der Morgenrunde lagen die Werte bei Puls 78/min und Blutdruck 145/85 mmHg. Seine Tochter hat sich für den Nachmittag zum Besuch angemeldet."
    ]
   },
   "b": {
    "buchstabe": "B",
    "form": "Anaphylaktischer Schock",
    "fall": [
-    "Mia (19) ist Auszubildende im ersten Ausbildungsdrittel und mit Ihnen auf einer internistischen Station eingesetzt. Es ist ihr dritter Tag auf der Station. In der Pause isst sie ein Stück Geburtstagskuchen, das Haselnüsse enthält. Dabei erzählt sie von ihrem Wochenende im Kletterpark. Mia erwähnt, dass es bei Nüssen „schon mal im Mund gekribbelt“ habe.",
-    "Zehn Minuten später kratzt sie sich an Hals und Händen, auf Hals und Brust bilden sich Quaddeln. Ihre Lippen und Augenlider schwellen an. Auf dem Stationsflur ist es gerade ruhig. Mit heiserer Stimme sagt sie: „Mir ist schlecht, und mir ist so schwindelig.“ Sie hat Bauchkrämpfe. Ihre Kollegin misst: Puls 128/min, Blutdruck 88/50 mmHg, Atemfrequenz 26/min, Sauerstoffsättigung 93 %. Sie notiert die Werte auf einem Zettel. Mia sagt, ihr Blutdruck sei sonst „immer so 120 zu 70“."
-   ],
-   "nennen": [
-    "zeitlicher Zusammenhang: Beginn etwa 10 Minuten nach dem Haselnusskuchen (Allergen)",
-    "Haut: Juckreiz, Quaddeln an Hals und Brust, Schwellung von Lippen und Augenlidern",
-    "Atemwege: heisere Stimme (Schwellung der Kehlkopfschleimhaut), Atemfrequenz 26/min, SpO₂ 93 %",
-    "Kreislauf: Blutdruck 88/50 mmHg – deutlich unter ihrem üblichen Wert (120/70); Puls 128/min (Tachykardie)",
-    "Magen-Darm: Übelkeit, Bauchkrämpfe",
-    "Gehirn/Kreislauf: Schwindel"
+    "Mia (19) ist Auszubildende im ersten Ausbildungsdrittel und mit Ihnen auf einer internistischen Station eingesetzt. In der Pause isst sie ein Stück Geburtstagskuchen, das Haselnüsse enthält. Dabei erzählt sie von ihrem Wochenende im Kletterpark. Mia erwähnt, dass es bei Nüssen „schon mal im Mund gekribbelt“ habe.",
+    "Zehn Minuten später kratzt sie sich an Hals und Händen, auf Hals und Brust bilden sich Quaddeln. Ihre Lippen und Augenlider schwellen an. Mit heiserer Stimme sagt sie: „Mir ist schlecht, und mir ist so schwindelig.“ Sie hat Bauchkrämpfe. Ihre Kollegin misst: Puls 128/min, Blutdruck 88/50 mmHg, Atemfrequenz 26/min, Sauerstoffsättigung 93 %. Sie notiert die Werte auf einem Zettel. Mia sagt, ihr Blutdruck sei sonst „immer so 120 zu 70“."
    ]
   },
   "c": {
    "buchstabe": "C",
    "form": "Neurogener Schock",
    "fall": [
-    "An einem Sonntagnachmittag sind Sie privat mit Freunden am Baggersee. Tobias Weber (24) springt kopfüber vom Steg ins Wasser – an einer Stelle, an der das Wasser nur hüfttief ist. Seine Freunde ziehen ihn sofort ans Ufer. Kurz vorher hatte er sich noch mit Sonnencreme eingecremt. Er studiert Sport und spielt in einem Volleyballverein.",
-    "Herr Weber ist wach und sagt: „Ich spür meine Beine nicht. Und meine Hände kribbeln.“ Er klagt über starke Nackenschmerzen. Am Steg läuft laute Musik. Arme und Beine kann er kaum bewegen. Seine Atmung ist flach. Sie tasten einen langsamen Puls von 52/min. Die Haut an seinen Beinen ist warm, trocken und rosig. Er fragt, ob jemand sein Handy gesehen hat. Der Rettungsdienst misst später einen Blutdruck von 82/45 mmHg."
-   ],
-   "nennen": [
-    "Ursache: Kopfsprung in flaches Wasser, starke Nackenschmerzen → Verletzung der Halswirbelsäule",
-    "Kreislauf: Blutdruck 82/45 mmHg (niedrig)",
-    "Kreislauf: langsamer Puls 52/min trotz niedrigem Blutdruck – der Sympathikus fällt aus",
-    "Haut: an den Beinen warm, trocken, rosig (keine Zentralisation)",
-    "Nerven: Lähmungen (Arme und Beine kaum beweglich), „Ich spür meine Beine nicht“, Kribbeln in den Händen",
-    "Atmung: flach (hohe Verletzung)"
+    "An einem Sonntagnachmittag sind Sie privat mit Freunden am Baggersee. Tobias Weber (24) springt kopfüber vom Steg ins Wasser – an einer Stelle, an der das Wasser nur hüfttief ist. Seine Freunde ziehen ihn sofort ans Ufer. Kurz vorher hatte er sich noch mit Sonnencreme eingecremt.",
+    "Herr Weber ist wach und sagt: „Ich spür meine Beine nicht. Und meine Hände kribbeln.“ Er klagt über starke Nackenschmerzen. Arme und Beine kann er kaum bewegen. Seine Atmung ist flach. Sie tasten einen langsamen Puls von 52/min. Die Haut an seinen Beinen ist warm, trocken und rosig. Er fragt, ob jemand sein Handy gesehen hat. Der Rettungsdienst misst später einen Blutdruck von 82/45 mmHg."
    ]
   }
  },
@@ -96,47 +71,25 @@ var NACHLESEN = {
    "bild": "lagerung_oberkoerper_hoch.png",
    "titel": "Oberkörper hoch (halbsitzend)",
    "wann": "**Wann?** Atemnot steht im Vordergrund.",
-   "warum": "**Warum?** Die Atemhilfsmuskulatur kann besser arbeiten, die Bauchorgane drücken nicht gegen das Zwerchfell."
+   "warum": "**Warum?** Die Atemhilfsmuskulatur kann besser arbeiten."
   },
   {
    "bild": "lagerung_beine_hoch.png",
    "titel": "Flach, Beine hoch (Schocklage)",
    "wann": "**Wann?** Schockzeichen ohne Atemnot.",
-   "warum": "**Warum?** Blut aus den Beinen fließt zum Körperstamm, das Herz bekommt mehr Blut. Nicht bei Atemnot und nicht bei Verletzungen an Beinen, Becken oder Wirbelsäule."
+   "warum": "**Warum?** Blut aus den Beinen fließt zum Herzen. Nicht bei Atemnot oder Verletzungen an Beinen, Becken, Wirbelsäule."
   },
   {
    "bild": "lagerung_seitenlage.png",
    "titel": "Stabile Seitenlage",
    "wann": "**Wann?** Bewusstlos, Atmung normal.",
-   "warum": "**Warum?** Die Atemwege bleiben frei, Erbrochenes kann abfließen. Nach einem Unfall nur achsengerecht drehen."
+   "warum": "**Warum?** Die Atemwege bleiben frei, Erbrochenes kann abfließen."
   },
   {
    "bild": "lagerung_nicht_bewegen.png",
    "titel": "Nicht bewegen",
    "wann": "**Wann?** Verdacht auf Wirbelsäulenverletzung.",
-   "warum": "**Warum?** Jede Bewegung kann das Rückenmark weiter schädigen. Kopf mit beiden Händen halten (Woche 4)."
-  }
- ],
- "weg": [
-  {
-   "frage": "1. Atmet die Person **nicht normal**?",
-   "antwort": "Reanimation beginnen (KB III)"
-  },
-  {
-   "frage": "2. Ist sie **bewusstlos**, atmet aber normal?",
-   "antwort": "stabile Seitenlage (nach Unfall achsengerecht)"
-  },
-  {
-   "frage": "3. Gibt es Hinweise auf eine **Wirbelsäulenverletzung**?",
-   "antwort": "nicht bewegen, Kopf mit beiden Händen halten"
-  },
-  {
-   "frage": "4. Steht **Atemnot** im Vordergrund?",
-   "antwort": "Oberkörper hoch (halbsitzend)"
-  },
-  {
-   "frage": "5. **Schockzeichen** ohne Atemnot?",
-   "antwort": "flach, Beine hoch"
+   "warum": "**Warum?** Jede Bewegung kann das Rückenmark schädigen. Kopf mit beiden Händen halten."
   }
  ],
  "werDarfWas": [
@@ -145,45 +98,19 @@ var NACHLESEN = {
   "Diagnose „anaphylaktischer Schock“ stellen"
  ],
  "verantwortung": [
-  "**Eigenverantwortlich:** Gefahr erkennen, Hilfe holen, Allergen stoppen, lagern, überwachen, dokumentieren.",
-  "**Nur nach ärztlicher Anordnung (n. ä. A.) oder SOP:** Medikamente – auch Adrenalin –, Sauerstoff und Infusionen. Eine **Notfall-SOP** ist eine schriftliche, ärztlich freigegebene Handlungsanweisung der Einrichtung für eine bestimmte Notfallsituation. Pflegende „wirken … an der Durchführung ärztlich veranlasster Maßnahmen … mit“ (III.2.b).",
-  "**Als Auszubildende/r:** unter Anleitung handeln, sofort eine Pflegefachperson holen, die eigenen Grenzen kennen."
- ],
- "adrenalin": [
-  [
-   "Gefäße weit → Blutdruck fällt",
-   "Gefäße eng → Blutdruck steigt"
-  ],
-  [
-   "Schleimhäute geschwollen (Kehlkopf, Lippen)",
-   "Schleimhäute schwellen ab"
-  ],
-  [
-   "Bronchien eng → Atemnot",
-   "Bronchien weit"
-  ],
-  [
-   "Herz muss mehr leisten",
-   "Herz schlägt kräftiger"
-  ],
-  [
-   "Mastzellen setzen weiter Histamin frei",
-   "weniger Histamin wird freigesetzt"
-  ]
+  "**Selbst:** Gefahr erkennen, Hilfe holen, Allergen stoppen, lagern, überwachen, dokumentieren.",
+  "**Nur n. ä. A. oder SOP:** Medikamente – auch Adrenalin –, Sauerstoff, Infusionen. **SOP** = schriftliche, ärztlich freigegebene Notfall-Anweisung.",
+  "**Als Auszubildende/r:** unter Anleitung handeln und sofort eine Pflegefachperson holen."
  ],
  "adrenalinText": [
-  "Adrenalin wirkt von allen Notfallmedikamenten bei Anaphylaxie **am schnellsten**. Erwachsene erhalten 0,3–0,5 mg in den Muskel an der **Außenseite des Oberschenkels** (auch als Fertigspritze, sog. Autoinjektor); nach 5–10 Minuten kann die Gabe wiederholt werden. **Antihistaminika** blockieren nur die Histamin-Wirkung, wirken langsamer und haben keine belegte Wirkung auf Kreislauf und Bronchien. **Glukokortikoide** (Kortison) wirken erst nach Stunden. Beide kommen erst **nach** Adrenalin – sie ersetzen es nicht."
+  "**Adrenalin i. m.** ist bei Anaphylaxie das Mittel der ersten Wahl: Es wirkt am schnellsten, stellt die Gefäße eng (Blutdruck ↑), lässt die Schleimhäute abschwellen und weitet die Bronchien.",
+  "**Antihistaminika** und **Kortison** wirken langsamer und nicht ausreichend auf Kreislauf und Atmung – sie kommen erst **nach** Adrenalin."
  ],
  "transferfall": [
   "Sie sind in der Tagespflege „Sonnenhof“ eingesetzt. Herr Klaus Martens (74) hat einen Diabetes mellitus Typ 2 und eine Herzinsuffizienz. Gegen 14:15 Uhr sitzt er mit anderen Gästen auf der Terrasse beim Kaffee. Plötzlich schreit er auf: Eine Wespe hat ihn in die Oberlippe gestochen.",
   "Nach etwa fünf Minuten ist seine Oberlippe stark geschwollen, am Hals bilden sich Quaddeln. Mit kloßiger Stimme sagt er: „Mir ist so eng im Hals.“ Beim Einatmen hören Sie ein pfeifendes Geräusch. Sie messen: Atemfrequenz 28/min, Puls 124/min, Blutdruck 92/60 mmHg (am Morgen: 150/85 mmHg). In der Tagespflege ist keine Ärztin anwesend. Ein Notfallset hat Herr Martens nicht dabei."
  ],
  "aufgaben": {
-  "1.1": {
-   "nr": "1.1",
-   "text": "Begründen Sie anhand von 4 Symptomen aus Ihrem Expertenfall (am Handy: A Herr Albrecht · B Mia · C Herr Weber), dass bei der Person ein hypovolämischer, anaphylaktischer bzw. neurogener Schock vorliegt.",
-   "punkte": 4
-  },
   "2.1": {
    "nr": "2.1",
    "text": "Erläutern Sie, wie es bei Mia zum Schock kommt. – Tipp: Denken Sie in einer Pfeilkette – Auslöser → Botenstoff → Gefäße → Blutdruck; die Atemwege extra.",
@@ -219,24 +146,14 @@ var NACHLESEN = {
    "nr": "5.2",
    "text": "Kennzeichnen Sie in Ihrer Antwort zu 5.1 jede Maßnahme, die Sie nur nach ärztlicher Anordnung durchführen dürfen, mit „n. ä. A.“.",
    "punkte": 1
-  },
-  "6.1": {
-   "nr": "6.1",
-   "text": "Erläutern Sie in Bezug auf die Situation von Frau Maler, wie es von ihrer Immobilität bis zum Kreislaufstillstand kommen konnte.",
-   "punkte": 5
-  },
-  "6.2": {
-   "nr": "6.2",
-   "text": "Beschreiben Sie 3 Maßnahmen, die um 11 Uhr hätten eingeleitet werden müssen. Begründen Sie die Positionierung von Frau Maler.",
-   "punkte": 4
   }
  },
  "loesungen": {
-  "1.1": [
-   "A) Herr Albrecht: Ursache: schwarzer, klebriger Stuhl (Teerstuhl) unter Gerinnungshemmer → Blutung im Magen-Darm-Trakt · Kreislauf: Puls 116/min – Anstieg von 78/min (Tachykardie, Gegenregulation) · Kreislauf: Blutdruck 98/72 mmHg – Abfall von 145/85 mmHg, kleine Amplitude; Schockindex 116 : 98 ≈ 1,2 · Haut: blass, Stirn kalt und feucht (Zentralisation) · Volumenmangel: Durst (bittet mehrmals um etwas zu trinken) · Gehirn: Unruhe, neue Verwirrtheit, „schwarz vor Augen“ (Minderdurchblutung) · Atmung: Atemfrequenz 24/min (Frühzeichen)",
-   "B) Mia: zeitlicher Zusammenhang: Beginn etwa 10 Minuten nach dem Haselnusskuchen (Allergen) · Haut: Juckreiz, Quaddeln an Hals und Brust, Schwellung von Lippen und Augenlidern · Atemwege: heisere Stimme (Schwellung der Kehlkopfschleimhaut), Atemfrequenz 26/min, SpO₂ 93 % · Kreislauf: Blutdruck 88/50 mmHg – deutlich unter ihrem üblichen Wert (120/70); Puls 128/min (Tachykardie) · Magen-Darm: Übelkeit, Bauchkrämpfe · Gehirn/Kreislauf: Schwindel",
-   "C) Herr Weber: Ursache: Kopfsprung in flaches Wasser, starke Nackenschmerzen → Verletzung der Halswirbelsäule · Kreislauf: Blutdruck 82/45 mmHg (niedrig) · Kreislauf: langsamer Puls 52/min trotz niedrigem Blutdruck – der Sympathikus fällt aus · Haut: an den Beinen warm, trocken, rosig (keine Zentralisation) · Nerven: Lähmungen (Arme und Beine kaum beweglich), „Ich spür meine Beine nicht“, Kribbeln in den Händen · Atmung: flach (hohe Verletzung)",
-   "(je Symptom mit Zuordnung 1 P.; Werte nur mit Vorwert-Vergleich voll werten; für die volle Punktzahl muss die Kreislaufbeteiligung genannt sein – vgl. Erwartungshorizont KA, Aufg. 3.1)"
+  "Kausalkette": [
+   "Immobilität → tiefe Beinvenenthrombose → Lungenembolie → obstruktiver Schock → Kreislaufstillstand"
+  ],
+  "Leitfrage": [
+   "Die Luftnot kommt von einer Lungenembolie: Ein Gerinnsel aus der Beinvene hat die Lungenstrombahn verlegt → obstruktiver Schock. Um 11 Uhr: Oberkörper hoch (Luftnot im Vordergrund), nicht mobilisieren, nicht allein lassen, sofort Hilfe holen und engmaschig überwachen."
   ],
   "2.1": [
    "Die Haselnuss (Allergen) löst eine allergische Sofortreaktion aus: Mastzellen setzen Histamin und weitere Botenstoffe frei.",
@@ -270,25 +187,6 @@ var NACHLESEN = {
    "Adrenalin i. m. (n. ä. A.) – gibt hier die Notärztin, da keine Anordnung und kein Notfallset vorliegen; Sauerstoff (n. ä. A.).",
    "Uhrzeit, Werte und Maßnahmen notieren; bei Bewusstlosigkeit mit normaler Atmung stabile Seitenlage, ohne normale Atmung Reanimation (KB III).",
    "5.1: je beschriebene Maßnahme 1 P. (max. 5), Begründung der Positionierung 1 P.; Schocklage trotz Atemnot oder Antihistaminikum statt Adrenalin wird nicht gewertet. 5.2: 1 P., wenn alle Medikamenten- und Sauerstoff-Maßnahmen mit „n. ä. A.“ gekennzeichnet sind."
-  ],
-  "Kausalkette": [
-   "Immobilität → tiefe Beinvenenthrombose → Lungenembolie → obstruktiver Schock → Kreislaufstillstand"
-  ],
-  "Leitfrage": [
-   "Die Luftnot kommt von einer Lungenembolie: Ein Gerinnsel aus der Beinvene hat die Lungenstrombahn verlegt → obstruktiver Schock. Um 11 Uhr: Oberkörper hoch (Luftnot im Vordergrund), nicht mobilisieren, nicht allein lassen, sofort Hilfe holen und engmaschig überwachen."
-  ],
-  "6.1": [
-   "Nach der Hüft-TEP liegt Frau Maler aus Angst vor einer Luxation fast nur im Bett (Immobilität) → das Blut fließt in den Beinvenen langsamer und gerinnt nach der Operation leichter → tiefe Beinvenenthrombose (rechte Wade dick, schmerzt beim Auftreten) – trotz Heparin.",
-   "Ein Teil des Gerinnsels löst sich (möglicherweise beim Aufsetzen an der Bettkante) und wird über das rechte Herz in die Lungenarterie geschwemmt → Lungenembolie: Das Blut kann nicht mehr ungehindert durch die Lunge fließen.",
-   "Das linke Herz bekommt zu wenig Blut, das Herzzeitvolumen sinkt → obstruktiver Schock (11 Uhr: Luftnot, Puls 118/min, Blässe, kalter Schweiß, Unruhe; Schockindex ≈ 1,1).",
-   "Ohne Behandlung dekompensiert der Kreislauf → Kreislaufstillstand (Mittag: Zyanose, kein Puls). (je schlüssiges Glied mit Fallbezug 1 P., max. 5 P.)"
-  ],
-  "6.2": [
-   "z. B.: Sofort eine Pflegefachkraft holen bzw. Ärztin oder Notruf – Verdacht auf Lungenembolie mit Schockzeichen, nicht abwarten.",
-   "Oberkörper hoch lagern, weil die Luftnot im Vordergrund steht (Atemhilfsmuskulatur); keine Schocklage.",
-   "Nicht aufstehen oder mobilisieren lassen (weitere Gerinnsel könnten sich lösen); nicht allein lassen.",
-   "Vitalzeichen engmaschig: Puls, Blutdruck, Atemfrequenz, SpO₂, Bewusstsein; Sauerstoff n. ä. A. oder SOP; Beobachtungen mit Uhrzeit dokumentieren und weitergeben.",
-   "(je Maßnahme 1 P., Begründung der Positionierung 1 P.)"
   ]
  }
 };

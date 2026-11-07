@@ -112,12 +112,12 @@ const textDa = (h, text) => bis(h, (t) => document.body.innerText.includes(t), t
     }
     await weiter();
     H.pruefe(await folieIst(lap, 'einstieg-ergebnis'), 'Folie 4: Ergebnis');
-    H.pruefe((await lap.$$('.abst-frage')).length === 6 && (await lap.$$('.abst-frage.stern')).length === 1, '6 Karten, eine als „größte Uneinigkeit“ markiert');
+    H.pruefe(S.fragen.length === 4 && (await lap.$$('.abst-frage')).length === 4 && (await lap.$$('.abst-frage.stern')).length === 1, '4 Karten, eine als „größte Uneinigkeit“ markiert');
     H.pruefe((await lap.$$('.abst-option.richtig')).length === 0, 'Einstieg: keine Auflösung');
-    await lap.click('.abst-frage >> nth=5');
+    await lap.click('.abst-frage >> nth=3');
     H.pruefe((await lap.$$('.abst-frage.gross')).length === 1, 'Karte anklicken → groß');
     await lap.keyboard.press('Escape');
-    H.pruefe((await lap.$$('.abst-frage')).length === 6, 'Esc → zurück zu allen Karten');
+    H.pruefe((await lap.$$('.abst-frage')).length === 4, 'Esc → zurück zu allen Karten');
     await weiter();
     H.pruefe(await folieIst(lap, 'murmeln'), 'Folie 5: Murmeln');
     H.pruefe(await bis(lap, () => /Murmeln/i.test((document.querySelector('.uhr-label') || {}).textContent || '')), 'Murmel-Uhr startet automatisch');
@@ -221,9 +221,7 @@ const textDa = (h, text) => bis(h, (t) => document.body.innerText.includes(t), t
     H.pruefe(await titelIst(handys[0], 'Detektiv'), 'Handy lädt den Schockform-Detektiv');
     H.pruefe(await bis(handys[0], () => !!document.querySelector('.gruppe-mini')), 'Handy zeigt dazu die Stammgruppe');
     await weiter();
-    H.pruefe(await folieIst(lap, 'aa2b-merksatz'), 'nach dem Detektiv: Merksatz AA2 prüfen');
-    await weiter();
-    H.pruefe(await folieIst(lap, 'aa2c'), 'Klausurtraining 2.1/2.2');
+    H.pruefe(await folieIst(lap, 'aa2c'), 'nach dem Detektiv direkt: Klausurtraining 2.1/2.2 (kein Merksatz AA2)');
     H.pruefe((await lap.$$('.a-tabelle .a-nr')).length === 2 && !(await lap.$('.aufgabe-los')), 'Aufgabenfolie: erst die Aufgaben wie im AB, noch ohne Auftrag');
     H.pruefe(await textDa(handys[0], 'erklärt gleich die Aufgabe'), 'Handy: nach vorne schauen, die Lehrkraft erklärt');
     H.pruefe((await lap.textContent('#weiter')).includes('Jetzt bearbeiten'), 'Weiter-Knopf heißt „Jetzt bearbeiten“');
@@ -244,7 +242,7 @@ const textDa = (h, text) => bis(h, (t) => document.body.innerText.includes(t), t
     await weiter();
     H.pruefe(await folieIst(lap, 'aa3-impuls'), 'weiter zu „Schock → Beine hoch?“');
 
-    console.log('\n== Vier Lagerungen, Parcours, Merksatz, Aufgaben');
+    console.log('\n== Vier Lagerungen, Quiz, Merksatz, Aufgaben');
     await weiter();
     H.pruefe(await folieIst(lap, 'lagerung-1'), 'danach: Lagerung 1 von 4');
     H.pruefe(await bis(lap, () => { const b = document.querySelector('.lagerung-bild'); return b && b.complete && b.naturalWidth > 0; }), 'Beamer: Bild der Lagerung wird angezeigt');
@@ -252,13 +250,13 @@ const textDa = (h, text) => bis(h, (t) => document.body.innerText.includes(t), t
     for (let n = 2; n <= 4; n++) { await weiter(); H.pruefe(await folieIst(lap, 'lagerung-' + n), 'Lagerung ' + n + ' von 4'); }
     await lap.screenshot({ path: path.join(ORDNER, 'stunde_21_lagerung.png') });
     await weiter();
-    H.pruefe(await titelIst(handys[1], 'Lagerung'), 'Handy lädt den Lagerungsparcours');
+    H.pruefe(await titelIst(handys[1], 'Lagerungs-Quiz'), 'Handy lädt das Lagerungs-Quiz');
     await weiter();
-    H.pruefe(await folieIst(lap, 'aa3-merksatz'), 'nach dem Parcours: Merksatz AA3 prüfen');
+    H.pruefe(await folieIst(lap, 'aa3-merksatz'), 'nach dem Quiz: Merksatz AA3 prüfen');
     await weiter();
-    H.pruefe(await folieIst(lap, 'aa3bc') && (await lap.$$('.weg .weg-frage')).length === 5, 'AA3 b) und c): Entscheidungsweg und 3.1/3.2 wie im AB');
+    H.pruefe(await folieIst(lap, 'aa3b') && (await lap.$$('.a-tabelle .a-nr')).length === 2 && (await lap.$$('.weg')).length === 0, 'AA3 b): nur 3.1/3.2 wie im AB, kein Entscheidungsweg');
     await weiter();
-    H.pruefe(await bis(handys[2], () => document.body.innerText.includes('Entscheidungsweg')), 'Handy: jetzt auf dem Arbeitsblatt arbeiten');
+    H.pruefe(await bis(handys[2], () => document.body.innerText.includes('3.1 und 3.2')), 'Handy: jetzt auf dem Arbeitsblatt arbeiten');
 
     console.log('\n== Zurück, Menü, Unterschritte');
     await lap.click('#zurueck');
@@ -266,8 +264,8 @@ const textDa = (h, text) => bis(h, (t) => document.body.innerText.includes(t), t
     await lap.click('#zurueck');
     H.pruefe(await folieIst(lap, 'aa3-merksatz'), 'Zurück: eine Folie zurück');
     await lap.click('#menue-knopf');
-    await lap.click('.menue-folie:has-text("Musterlösung Entscheidungsweg")');
-    H.pruefe(await folieIst(lap, 'aa3b-loesung') && (await lap.$$('.weg .aufdeck')).length === 5, 'Musterlösung Entscheidungsweg: 5 Antworten zum Aufdecken');
+    await lap.click('.menue-folie:has-text("Musterlösung 3.1/3.2")');
+    H.pruefe(await folieIst(lap, 'aa3b-loesung') && (await lap.$$('.loesungen .aufdeck')).length > 0, 'Menü: Sprung zur Musterlösung 3.1/3.2');
     await lap.click('#menue-knopf');
     await lap.click('.menue-folie:has-text("Wer darf was?")');
     H.pruefe(await folieIst(lap, 'aa4a'), 'Menü: Sprung zu „Wer darf was?“');
@@ -328,8 +326,8 @@ const textDa = (h, text) => bis(h, (t) => document.body.innerText.includes(t), t
     await weiter();
     H.pruefe(await folieIst(lap, 'checkout-ergebnis'), 'vorher – nachher');
     H.pruefe((await lap.$$('.abst-option.richtig')).length === S.fragen.length, 'Lösung ist markiert');
-    H.pruefe((await lap.$$('.abst-kopf')).length >= 12, 'zwei Spalten je Karte (Beginn, Ende)');
-    H.pruefe(await textDa(handys[0], 'Richtig zu Beginn: 0 von 6 · jetzt: 6 von 6') && await textDa(handys[1], 'Richtig zu Beginn: 6 von 6 · jetzt: 6 von 6'), 'Handy: eigene Bilanz (Beginn und jetzt)');
+    H.pruefe((await lap.$$('.abst-kopf')).length >= 2 * S.fragen.length, 'zwei Spalten je Karte (Beginn, Ende)');
+    H.pruefe(await textDa(handys[0], 'Richtig zu Beginn: 0 von 4 · jetzt: 4 von 4') && await textDa(handys[1], 'Richtig zu Beginn: 4 von 4 · jetzt: 4 von 4'), 'Handy: eigene Bilanz (Beginn und jetzt)');
     await lap.screenshot({ path: path.join(ORDNER, 'stunde_23_vorher_nachher.png') });
 
     console.log('\n== Ende gibt die Nachlese frei');

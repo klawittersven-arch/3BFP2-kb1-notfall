@@ -1,44 +1,39 @@
 /* AA2 · Schockform-Detektiv (Programmlogik – Texte in inhalte.js → detektiv).
    Je Fall: zwei Befunde antippen und die Schockform wählen (Reihenfolge egal) → „Prüfen“.
    Schutz gegen Raten: „Prüfen“ zählt erst nach einer Mindest-Lesezeit; höchstens zwei Versuche je Fall,
-   danach wird die Lösung gezeigt. Merksatz AA2 nur, wenn genug Fälle beim ersten Versuch stimmen.
-   Zum Schluss: zwei Patienten im Vergleich – die zwei Zeilen wählen, die die Formen sicher unterscheiden. */
+   danach wird die Lösung gezeigt. „Geschafft“ nur, wenn genug Fälle beim ersten Versuch stimmen. */
 (function () {
   'use strict';
   var K = window.KB1;
   var el = K.element;
   var T = K.seiteVorbereiten('detektiv');
   var SEITE = 'w2-detektiv';
-  var SCHL = 'kb1nf_detektiv2';
+  var SCHL = 'kb1nf_detektiv3';
   var platz = document.getElementById('uebung');
   var N = T.faelle.length;
-  var GESAMT = N + 1; // Fälle + Vergleich
   var MAX_VERSUCHE = 2;
 
   function leer() {
     return {
       fall: 0,
-      faelle: T.faelle.map(function () { return { form: null, belege: [], versuche: 0, geloest: false, gezeigt: false, meldung: null }; }),
-      vergleich: { gewaehlt: [], versuche: 0, geloest: false, gezeigt: false, meldung: null }
+      faelle: T.faelle.map(function () { return { form: null, belege: [], versuche: 0, geloest: false, gezeigt: false, meldung: null }; })
     };
   }
   var z = K.Speicher.sitzung.lesen(SCHL);
-  if (!z || !Array.isArray(z.faelle) || z.faelle.length !== N || !z.vergleich) z = leer();
+  if (!z || !Array.isArray(z.faelle) || z.faelle.length !== N) z = leer();
   function speichern() { K.Speicher.sitzung.schreiben(SCHL, z); }
 
   function erledigt(f) { return f.geloest || f.gezeigt; }
-  function bearbeitet() {
-    return z.faelle.filter(erledigt).length + (erledigt(z.vergleich) ? 1 : 0);
-  }
+  function bearbeitet() { return z.faelle.filter(erledigt).length; }
   function ersterVersuch() {
     return z.faelle.filter(function (f) { return f.geloest && f.versuche === 1; }).length;
   }
   function stand() {
     var g = bearbeitet();
-    K.fortschrittSetzen(g, GESAMT);
-    var fertig = g === GESAMT;
+    K.fortschrittSetzen(g, N);
+    var fertig = g === N;
     var status = fertig ? (ersterVersuch() >= T.mindestensErsterVersuch ? 'fertig' : 'durchklicken') : 'arbeitet';
-    K.melden(SEITE, g, GESAMT, status);
+    K.melden(SEITE, g, N, status);
   }
   function formText(k) { return T.formen.filter(function (f) { return f.kuerzel === k; })[0].text; }
   function neuStart() { z = leer(); speichern(); stand(); fallZeigen(); }
@@ -93,7 +88,7 @@
     var weiter = K.knopf(INHALTE.allgemein.weiter + ' →', '', function () {
       z.fall = i + 1;
       speichern();
-      if (z.fall < N) fallZeigen(); else vergleichZeigen();
+      if (z.fall < N) fallZeigen(); else ende();
       K.scrollen(document.querySelector('.inhalt'));
     });
     platz.appendChild(weiter);
@@ -182,97 +177,22 @@
     darstellen();
   }
 
-  /* ---------- Zwei Patienten im Vergleich ---------- */
-  function vergleichZeigen() {
+  /* ---------- Ende: geschafft oder noch einmal ---------- */
+  function ende() {
     platz.textContent = '';
-    angezeigt = Date.now();
-    var M = T.monitor;
-    var vz = z.vergleich;
-    var box = el('section', 'karte');
-    box.appendChild(el('h2', null, M.titel));
-    box.appendChild(K.formatiert('p', null, M.text));
-    var tab = el('div', 'monitorvergleich');
-    var kopf = el('div', 'mv-zeile mv-kopf');
-    kopf.appendChild(el('span', null, ''));
-    kopf.appendChild(el('span', null, M.links));
-    kopf.appendChild(el('span', null, M.rechts));
-    tab.appendChild(kopf);
-    var zeilen = M.zeilen.map(function (zz, i) {
-      var b = el('button', 'mv-zeile');
-      b.type = 'button';
-      b.appendChild(el('strong', null, zz.name));
-      b.appendChild(el('span', null, zz.l));
-      b.appendChild(el('span', null, zz.r));
-      b.addEventListener('click', function () { tippen(i); });
-      tab.appendChild(b);
-      return b;
-    });
-    box.appendChild(tab);
-    var pruefKnopf = K.knopf(T.pruefen, 'knopf-breit', pruefen);
-    box.appendChild(pruefKnopf);
-    var rueck = el('div');
-    rueck.setAttribute('aria-live', 'polite');
-    box.appendChild(rueck);
-    platz.appendChild(box);
-    var ende = el('div');
-    platz.appendChild(ende);
+    var box = el('section', 'karte detektiv-ende');
+    if (ersterVersuch() >= T.mindestensErsterVersuch) {
+      box.appendChild(el('h2', null, T.geschafftTitel));
+      box.appendChild(el('p', 'rueckmeldung richtig', K.ersetzen(INHALTE.allgemein.ersterVersuch, { x: ersterVersuch(), y: N })));
+      box.appendChild(K.formatiert('p', null, T.geschafftText));
+      K.Erledigt.merken(SEITE);
+      platz.appendChild(box);
+    } else {
+      platz.appendChild(K.durchklickenElement(ersterVersuch(), N, T.mindestensErsterVersuch, neuStart, T.durchklickenText));
+    }
     platz.appendChild(K.knopf(INHALTE.allgemein.nochEinmal, 'knopf-leise', neuStart));
-
-    function tippen(i) {
-      if (erledigt(vz)) return;
-      var pos = vz.gewaehlt.indexOf(i);
-      if (pos >= 0) vz.gewaehlt.splice(pos, 1); else if (vz.gewaehlt.length < 2) vz.gewaehlt.push(i);
-      vz.meldung = null;
-      speichern();
-      darstellen(false);
-    }
-    function pruefen() {
-      if (erledigt(vz)) return;
-      if (vz.gewaehlt.length !== 2) { vz.meldung = { art: 'fehlt' }; darstellen(false); return; }
-      if (zuSchnell()) { vz.meldung = { art: 'schnell' }; darstellen(false); return; }
-      vz.versuche++;
-      var falsche = vz.gewaehlt.filter(function (x) { return !M.zeilen[x].richtig; });
-      if (!falsche.length) vz.geloest = true;
-      else if (vz.versuche >= MAX_VERSUCHE) vz.gezeigt = true;
-      else { vz.meldung = { art: 'falsch', falsche: falsche }; vz.gewaehlt = vz.gewaehlt.filter(function (x) { return falsche.indexOf(x) === -1; }); }
-      speichern();
-      darstellen(true);
-      stand();
-    }
-    function darstellen(gerade) {
-      zeilen.forEach(function (b, i) {
-        b.className = 'mv-zeile';
-        if (erledigt(vz)) { if (M.zeilen[i].richtig) b.classList.add('ok'); }
-        else if (vz.gewaehlt.indexOf(i) >= 0) b.classList.add('gewaehlt');
-        if (!erledigt(vz) && vz.meldung && vz.meldung.falsche && vz.meldung.falsche.indexOf(i) >= 0) b.classList.add('falsch');
-        b.disabled = erledigt(vz);
-      });
-      rueck.textContent = '';
-      var m = vz.meldung;
-      if (m && m.art === 'fehlt') rueck.appendChild(el('p', 'rueckmeldung falsch', T.auswahlFehlt.replace('die Schockform und genau zwei Befunde', 'genau zwei Zeilen')));
-      if (m && m.art === 'schnell') rueck.appendChild(el('p', 'rueckmeldung falsch', '✋ ' + T.zuSchnell));
-      if (m && m.art === 'falsch') {
-        m.falsche.forEach(function (i) { rueck.appendChild(el('p', 'rueckmeldung falsch', M.zeilen[i].name + ': ' + M.zeilen[i].w)); });
-        rueck.appendChild(el('p', null, T.zweiterVersuch));
-      }
-      pruefKnopf.hidden = erledigt(vz);
-      ende.textContent = '';
-      if (erledigt(vz)) {
-        rueck.appendChild(el('p', vz.geloest ? 'rueckmeldung richtig' : 'rueckmeldung falsch', vz.geloest ? '✓ ' + M.fertig : T.loesungGezeigt));
-        M.zeilen.filter(function (x) { return x.richtig; }).forEach(function (x) { rueck.appendChild(el('p', null, x.name + ': ' + x.w)); });
-        if (ersterVersuch() >= T.mindestensErsterVersuch) {
-          var mk = K.merksatzElement('aa2', 'Merksatz AA2');
-          ende.appendChild(mk);
-          K.Erledigt.merken(SEITE);
-          if (gerade) setTimeout(function () { K.scrollen(mk); }, 50);
-        } else {
-          ende.appendChild(K.durchklickenElement(ersterVersuch(), N, T.mindestensErsterVersuch, neuStart));
-        }
-      }
-    }
-    darstellen(false);
   }
 
   stand();
-  if (z.fall < N) fallZeigen(); else vergleichZeigen();
+  if (z.fall < N) fallZeigen(); else ende();
 })();
