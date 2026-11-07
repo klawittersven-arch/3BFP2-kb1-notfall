@@ -324,7 +324,7 @@ var STUNDE = {
     {
       id: 'aa4a', abschnitt: 'Verantwortung', kurz: 'Wer darf was? (AA4a)', typ: 'aufstellung', runde: 3,
       titel: 'AA4a · Wer darf was?',
-      text: 'Stimmen Sie **am Handy** ab: Wer darf die Maßnahme durchführen? Nach jeder Lösung: Maßnahme in die **Tabelle** (AB) eintragen.',
+      text: 'Stimmen Sie **am Handy** ab: Wer darf die Maßnahme durchführen? Die **Tabelle** auf Ihrem Arbeitsblatt (Seite 4) hilft Ihnen.',
       ecken: [
         { emoji: '🟢', text: 'mache ich selbst' },
         { emoji: '🟡', text: 'nur n. ä. A. oder SOP' },
@@ -340,7 +340,7 @@ var STUNDE = {
       ],
       zeigen: 'Lösung zeigen',
       naechste: 'Nächste Maßnahme',
-      handy: { typ: 'aufstellung', titel: 'Wer darf was?', start: 'Gleich zeigt Ihre Lehrkraft Maßnahmen am Beamer. Tippen Sie dann hier an, wer sie durchführen darf. Nach jeder Lösung: Maßnahme in die Tabelle auf dem Arbeitsblatt eintragen.' }
+      handy: { typ: 'aufstellung', titel: 'Wer darf was?', start: 'Gleich zeigt Ihre Lehrkraft Maßnahmen am Beamer. Tippen Sie dann hier an, wer sie durchführen darf. Die Tabelle auf Ihrem Arbeitsblatt (Seite 4) hilft Ihnen.' }
     },
     {
       id: 'aa4-merksatz', abschnitt: 'Verantwortung', kurz: 'Merksatz AA4 lesen', typ: 'merksatz', merksatz: 'aa4',
@@ -636,7 +636,6 @@ var STUNDE = {
     aufstellungRichtig: '✓ Richtig – das hatten Sie!',
     aufstellungFalsch: '✗ Nicht ganz. Richtig ist: {ecke}',
     aufstellungKeine: 'Sie haben nicht abgestimmt. Richtig ist: {ecke}',
-    aufstellungEintragen: '✍️ Tragen Sie die Maßnahme jetzt in die Tabelle auf dem Arbeitsblatt ein.',
     nichtEingeteilt: 'Sie sind noch keiner Gruppe zugeteilt. Bitte melden Sie sich bei Ihrer Lehrkraft.'
   },
 

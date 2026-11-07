@@ -201,7 +201,9 @@ pruefe(!Object.keys(NL.loesungen).some((k) => /^Aufgabe/.test(k)), 'keine Hausau
 pruefe(!JSON.stringify(NL.loesungen).match(/\d\s*P\.|Punkt/), 'Musterlösungen (Folien, Nachlese) ohne Hinweise zur Punktevergabe', JSON.stringify(NL.loesungen).match(/.{40}\d\s*P\..{10}/));
 pruefe(/\(Beurteilung 1 P\./.test(fs.readFileSync(path.join(WURZEL, 'werkzeuge', 'ab_w2.js'), 'utf8')), 'Lehrerversion behält die Punktevergabe');
 pruefe(NL.vergleich.length === 6 && NL.pikto.length === 4 && NL.werDarfWas.length === 3, 'Tabelle, Lagerung und Verantwortung vollständig');
-pruefe(!NL.weg && !NL.adrenalin && NL.verantwortung.length === 3 && NL.adrenalinText.length === 2, 'kein Entscheidungsweg; Verantwortung in 3 Zeilen, Adrenalin in 2 Sätzen');
+pruefe(!NL.weg && !NL.adrenalin && !NL.verantwortung && NL.adrenalinText.length === 2, 'kein Entscheidungsweg, kein Info-Kasten Verantwortung; Adrenalin in 2 Sätzen');
+pruefe(/Gefahr erkennen/.test(NL.werDarfWas[0]) && /dokumentieren/.test(NL.werDarfWas[0]) && /Adrenalin/.test(NL.werDarfWas[1]) && /SOP/.test(NL.werDarfWas[1]) && /Diagnose/.test(NL.werDarfWas[2]) && /Auszubildende/.test(NL.werDarfWasAzubi), 'Wer darf was?: Tabelle vorausgefüllt, mit allen Punkten des früheren Info-Kastens');
+pruefe(!/eintragen/i.test(JSON.stringify(S.folien.find((f) => f.id === 'aa4a'))) && !S.handy.aufstellungEintragen, 'Wer darf was?: keine Aufforderung mehr, Maßnahmen einzutragen');
 S.folien.find((f) => f.id === 'aa2c').handy.aufgaben.forEach((a) => pruefe(NL.aufgaben[a.nr] && NL.aufgaben[a.nr].text.startsWith(a.text), 'Handy-Text zu ' + a.nr + ' wie im Arbeitsblatt'));
 S.folien.filter((f) => f.typ === 'loesung').forEach((f) => {
   (f.aufgaben || []).forEach((a) => {

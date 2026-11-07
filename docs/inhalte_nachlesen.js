@@ -93,15 +93,11 @@ var NACHLESEN = {
   }
  ],
  "werDarfWas": [
-  "Infusion stoppen, Zugang belassen; nach Leitsymptom lagern",
-  "Adrenalin i. m.; Sauerstoff; Antihistaminikum",
-  "Diagnose „anaphylaktischer Schock“ stellen"
+  "Gefahr erkennen · Hilfe holen · Allergen stoppen (z. B. Infusion stoppen, Zugang belassen) · nach Leitsymptom lagern · überwachen · dokumentieren",
+  "Medikamente: **Adrenalin i. m.**, Antihistaminikum · Sauerstoff · Infusionen · **SOP** = schriftliche, ärztlich freigegebene Notfall-Anweisung",
+  "Diagnose stellen, z. B. „anaphylaktischer Schock“"
  ],
- "verantwortung": [
-  "**Selbst:** Gefahr erkennen, Hilfe holen, Allergen stoppen, lagern, überwachen, dokumentieren.",
-  "**Nur n. ä. A. oder SOP:** Medikamente – auch Adrenalin –, Sauerstoff, Infusionen. **SOP** = schriftliche, ärztlich freigegebene Notfall-Anweisung.",
-  "**Als Auszubildende/r:** unter Anleitung handeln und sofort eine Pflegefachperson holen."
- ],
+ "werDarfWasAzubi": "**Als Auszubildende/r:** unter Anleitung handeln und sofort eine Pflegefachperson holen.",
  "adrenalinText": [
   "**Adrenalin i. m.** ist das Mittel der ersten Wahl: Es wirkt am schnellsten, stellt die Gefäße eng (Blutdruck ↑), lässt Schleimhäute abschwellen, weitet die Bronchien.",
   "**Antihistaminika** und **Kortison** wirken langsamer und zu schwach – sie kommen erst **nach** Adrenalin."

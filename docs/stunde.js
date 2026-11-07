@@ -803,7 +803,6 @@
     rm.appendChild(el('p', 'rueck-titel', meine === richtig ? H.aufstellungRichtig : K.ersetzen(meine ? H.aufstellungFalsch : H.aufstellungKeine, { ecke: ecke })));
     rm.appendChild(el('p', null, m.warum));
     box.appendChild(rm);
-    box.appendChild(el('p', 'aufstellung-hinweis', H.aufstellungEintragen));
   }
 
 

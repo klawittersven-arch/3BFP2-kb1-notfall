@@ -193,22 +193,23 @@ function schuelerTeil(B, { lsg }) {
   /* ---------- Teil B · AA4 ---------- */
   push(
     B.abschnitt('Teil B · Anaphylaxie – wer darf was?'),
-    B.aa([IC.beurteilen, IC.handy], 'AA4: Unterscheiden – Wer darf was?', '**a) Abstimmung am Handy:** Ihre Lehrkraft zeigt Maßnahmen am Beamer. Tippen Sie an, wer sie durchführen darf. **Begründen** Sie Ihre Wahl, wenn Sie aufgerufen werden. Tragen Sie jede Maßnahme nach der Lösung in die Tabelle ein.'),
+    B.aa([IC.beurteilen, IC.handy], 'AA4: Unterscheiden – Wer darf was?', '**a) Abstimmung am Handy:** Ihre Lehrkraft zeigt Maßnahmen am Beamer. Tippen Sie an, wer sie durchführen darf. Die Tabelle hilft Ihnen.'),
     B.meta(`13 min (a mit Merksatz AA4 als Lesefolie, Blatt 3 austeilen, b mit Musterlösung) · Einzelarbeit (Abstimmung am Handy) → Plenum → Partnerarbeit → Plenum · AFB II–III · KA-Bezug KB 1, Aufg. 3.3 · Kompetenz III.2.b · Folien ${FN('aa4a')}–${FN('aa4b-loesung')}`)
   );
+  // Wer darf was? – fertig ausgefüllt (enthält auch die Punkte des früheren Kastens „Info: Verantwortung im Notfall“)
+  const WER_DARF_WAS = sammle('werDarfWas', [
+    ['Gefahr erkennen', 'Hilfe holen', 'Allergen stoppen (z. B. Infusion stoppen, Zugang belassen)', 'nach Leitsymptom lagern', 'überwachen', 'dokumentieren'],
+    ['Medikamente: **Adrenalin i. m.**, Antihistaminikum', 'Sauerstoff', 'Infusionen', '**SOP** = schriftliche, ärztlich freigegebene Notfall-Anweisung'],
+    ['Diagnose stellen, z. B. „anaphylaktischer Schock“']
+  ]);
+  const AZUBI = sammle('werDarfWasAzubi', '**Als Auszubildende/r:** unter Anleitung handeln und sofort eine Pflegefachperson holen.');
   const vw = Math.floor(BREITE_HOCH / 3);
-  push(B.tabelle([{ text: '🟢 mache ich selbst (eigenverantwortlich)', w: vw }, { text: '🟡 nur nach ärztlicher Anordnung (n. ä. A.) oder SOP', w: vw }, { text: '🔴 ärztliche Aufgabe', w: BREITE_HOCH - 2 * vw }], sammle('werDarfWas', [[
-    { lsg: 'Infusion stoppen, Zugang belassen; nach Leitsymptom lagern' },
-    { lsg: 'Adrenalin i. m.; Sauerstoff; Antihistaminikum' },
-    { lsg: 'Diagnose „anaphylaktischer Schock“ stellen' }
-  ]]), { hoehe: 900, schrift: 19, kopfFill: F.LACHS_KOPF }));
+  const liste = (punkte) => ({ absaetze: punkte.map((t, i) => new Paragraph({ spacing: { after: i === punkte.length - 1 ? 0 : 30, line: 240 }, children: [B.t('• ', { size: 19 }), ...B.runs(t, { size: 19 })] })) });
+  push(B.tabelle([{ text: '🟢 mache ich selbst (eigenverantwortlich)', w: vw }, { text: '🟡 nur nach ärztlicher Anordnung (n. ä. A.) oder SOP', w: vw }, { text: '🔴 ärztliche Aufgabe', w: BREITE_HOCH - 2 * vw }], [
+    WER_DARF_WAS.map(liste),
+    [{ colSpan: 3, text: AZUBI }]
+  ], { schrift: 19, kopfFill: F.LACHS_KOPF }));
   push(
-    B.leer(80),
-    B.kasten([
-      pS('verantwortung', '**Selbst:** Gefahr erkennen, Hilfe holen, Allergen stoppen, lagern, überwachen, dokumentieren.'),
-      pS('verantwortung', '**Nur n. ä. A. oder SOP:** Medikamente – auch Adrenalin –, Sauerstoff, Infusionen. **SOP** = schriftliche, ärztlich freigegebene Notfall-Anweisung.'),
-      pS('verantwortung', '**Als Auszubildende/r:** unter Anleitung handeln und sofort eine Pflegefachperson holen.', { spacing: { after: 0 } })
-    ], { kopf: 'Info: Verantwortung im Notfall' }),
     B.leer(100),
     merk('Merksatz AA4 – Sofortmaßnahmen bei Anaphylaxie', 'aa4'),
     blattKopf(B, 3, { pageBreakBefore: true }),
@@ -375,7 +376,7 @@ function verlaufsplan(B) {
     ueber('„Sie wissen jetzt, wie sich die Schockformen unterscheiden. Aber wie lagern Sie? Aus dem Erste-Hilfe-Kurs kennen Sie: ‚Beine hoch.‘ Prüfen wir, ob das immer stimmt.“'),
     z('58–76', `Erarbeitung IV: Lagerung nach Leitsymptom (AA3, Folien ${FN('aa3-impuls')}–${FN('aa3b-loesung-32')})`, `${FOLIE('aa3-impuls')} Impuls „Bei einem Schock immer Beine hoch?“ – Meinungen sammeln. **Folien ${FN('lagerung-1')}–${FN('lagerung-4')}:** die vier Lagerungen mit Bild, Wann? Warum? So geht’s (je ca. 1 min). ${FOLIE('aa3')} Lagerungs-Quiz allein am Handy (ca. 4 min), Fortschritt am Beamer. ${FOLIE('aa3-merksatz')} Merksatz AA3 gemeinsam lesen (Lesefolie). ${FOLIE('aa3b')} 3.1/3.2 zeigen und erklären, „Jetzt bearbeiten“ (Uhr 5 min). **Folien ${FN('aa3b-loesung-31')}–${FN('aa3b-loesung-32')}:** Musterlösung 3.1 und 3.2 (je eine Folie) aufdecken.`, 'Lagerungen ansehen; Quiz am Handy: Leitsymptom erkennen, Lagerung wählen, aufdecken (Bilder auf dem AB und am Handy); Merksatz AA3 mitlesen; 3.1/3.2 allein, mit der Musterlösung vergleichen und verbessern.', 'Plenum → EA (Handy) → EA → Plenum', 'Handy, Blatt 2', 'Fehlvorstellung „immer Beine hoch“ korrigieren; Lagerungsbegründung als K.-o.-Kriterium in KA 3.3; 3.2 übt das Korrigieren falscher Aussagen. AFB II'),
     ueber(`Pause (falls im Stundenraster vorgesehen). – „Sie wissen jetzt, wie Sie lagern. Aber was dürfen Sie im Notfall selbst – und wofür brauchen Sie eine Anordnung?“`),
-    z('76–89', `Vertiefung: Wer darf was? (AA4, Folien ${FN('aa4a')}–${FN('aa4b-loesung')})`, `${FOLIE('aa4a')} Jeder Klick zeigt die nächste Maßnahme; die SuS stimmen am Handy ab (🟢/🟡/🔴), der Beamer zeigt nur, wie viele schon abgestimmt haben. Der nächste Klick zeigt die Lösung mit der Verteilung der Stimmen und „Das hatten X von Y richtig!“, die Handys melden richtig/falsch zurück (6 Maßnahmen); bei vielen falschen Stimmen nachfragen und begründen lassen; nach jeder Lösung eintragen lassen. ${FOLIE('aa4-merksatz')} Merksatz AA4 gemeinsam lesen (Lesefolie) – er bündelt Tabelle und Info. ${FOLIE('blatt3')} **Blatt 3 austeilen.** ${FOLIE('aa4b')} Dialog und 4.1 zeigen, „Jetzt bearbeiten“: Think 2,5 min, Pair 1,5 min (Uhr). ${FOLIE('aa4b-loesung')} Musterlösung 4.1 aufdecken.`, 'Am Handy abstimmen, die Wahl begründen, jede Maßnahme in die Tabelle eintragen; Merksatz AA4 mitlesen; Stellungnahme zu Herrn Brandt schreiben, zu zweit vergleichen, mit der Musterlösung verbessern.', 'EA (Handy) → Plenum → PA → Plenum', 'Blatt 2 (S. 4), Blatt 3, Handy', 'Verantwortungsgrenzen (III.2.b; KA 3.3: „n. ä. A./SOP“); Fehlvorstellung „Antihistaminikum statt Adrenalin“ korrigieren (KA 3.3); Merksatz bündelt die Sofortmaßnahmen. AFB II–III'),
+    z('76–89', `Vertiefung: Wer darf was? (AA4, Folien ${FN('aa4a')}–${FN('aa4b-loesung')})`, `${FOLIE('aa4a')} Jeder Klick zeigt die nächste Maßnahme; die SuS stimmen am Handy ab (🟢/🟡/🔴), der Beamer zeigt nur, wie viele schon abgestimmt haben. Der nächste Klick zeigt die Lösung mit der Verteilung der Stimmen und „Das hatten X von Y richtig!“, die Handys melden richtig/falsch zurück (6 Maßnahmen); bei vielen falschen Stimmen nachfragen und begründen lassen; die Lösung steht vorausgefüllt in der Tabelle auf dem AB. ${FOLIE('aa4-merksatz')} Merksatz AA4 gemeinsam lesen (Lesefolie) – er bündelt die Tabelle. ${FOLIE('blatt3')} **Blatt 3 austeilen.** ${FOLIE('aa4b')} Dialog und 4.1 zeigen, „Jetzt bearbeiten“: Think 2,5 min, Pair 1,5 min (Uhr). ${FOLIE('aa4b-loesung')} Musterlösung 4.1 aufdecken.`, 'Am Handy abstimmen (die Tabelle auf dem AB hilft), die Wahl begründen; Merksatz AA4 mitlesen; Stellungnahme zu Herrn Brandt schreiben, zu zweit vergleichen, mit der Musterlösung verbessern.', 'EA (Handy) → Plenum → PA → Plenum', 'Blatt 2 (S. 4), Blatt 3, Handy', 'Verantwortungsgrenzen (III.2.b; KA 3.3: „n. ä. A./SOP“); Fehlvorstellung „Antihistaminikum statt Adrenalin“ korrigieren (KA 3.3); Merksatz bündelt die Sofortmaßnahmen. AFB II–III'),
     ueber('„Jetzt wenden Sie alles an: ein neuer Fall – allein, nur mit den Merksätzen AA3 und AA4, mit Punkten.“'),
     z('89–102', `Sicherung: Transferfall – Wissen anwenden (AA5, Folien ${FN('aa5')}–${FN('aa5-peer-2')})`, `${FOLIE('aa5')} Transferfall zeigen, „Jetzt bearbeiten“: Countdown 8 min. ${FOLIE('aa5-peer')} Tauschpartnerin oder Tauschpartner aus einer anderen Stammgruppe; das Raster erscheint am Handy (Uhr 4 min); dazu die Musterlösung Zeile für Zeile aufdecken – sie steht groß auf zwei Folien, die Uhr läuft auf der zweiten weiter; Rückmeldesatz einfordern.`, 'Transferfall (5.1, 5.2) allein lösen; Lösung der Partnerin oder des Partners mit dem App-Raster bewerten und mit der Musterlösung vergleichen.', 'EA → PA', 'Blatt 3, Handy', 'Transfer auf einen neuen Fall im KA-Format (KA 3.3); Peer-Feedback nach Erwartungshorizont. AFB III'),
     z('102–107', `Transfer: Zurück zu Frau Maler (AA6, Folie ${FN('aufloesung')})`, `${FOLIE('aufloesung')} Kausalkette im Unterrichtsgespräch: vor jedem Klick fragen „Was kommt als Nächstes?“, dann aufdecken; zum Schluss die Antwort auf die Leitfrage.`, 'Nächstes Glied vermuten, Kausalkette auf S. 1 ergänzen, Leitfrage beantworten.', 'Plenum', 'Blatt 1 (S. 1)', 'Leitfall abschließen; Brücke zur Thromboseprophylaxe (1. AJ). AFB II–III'),
@@ -492,8 +493,7 @@ function nachleseSchreiben() {
     experten: Object.fromEntries(['a', 'b', 'c'].map((k) => [k, { buchstabe: T.EXPERTEN[k].buchstabe, form: T.EXPERTEN[k].form, fall: T.EXPERTEN[k].fall }])),
     vergleich: N.vergleich, gemeinsamkeit: N.gemeinsamkeit,
     pikto: N.pikto.map((x) => ({ bild: x[0], titel: x[1], wann: x[2], warum: x[3] })),
-    werDarfWas: N.werDarfWas[0].map((c) => c.lsg),
-    verantwortung: N.verantwortung, adrenalinText: N.adrenalinText,
+    werDarfWas: N.werDarfWas.map((l) => l.join(' · ')), werDarfWasAzubi: N.werDarfWasAzubi, adrenalinText: N.adrenalinText,
     transferfall: N.transferfall,
     aufgaben: N.aufgaben, loesungen: ohnePunkte(N.loesungen)
   };
