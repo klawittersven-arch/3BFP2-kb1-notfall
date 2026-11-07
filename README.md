@@ -75,6 +75,12 @@ das Arbeitsblatt übernimmt die Überschrift von dort).
 
 Aufgedeckte Zellen und Lösungszeilen bleiben aufgedeckt, auch wenn der Beamer neu geladen wird.
 
+**Nicht fertig geworden?** In der Folgewoche mit Arbeitsblatt 2 oder 3 weitermachen: `beamer.html` → „Neuen Raum
+starten“ → Menü ⚙ → Folie „Weiter mit Arbeitsblatt 2“ (bzw. 3). Den **kleinen QR-Code unten links anklicken** – er
+erscheint groß mit Raumcode, die SuS scannen ihn (das geht auf jeder Folie, auch für Nachzügler). Die Übungen ab
+Arbeitsblatt 2 brauchen keine Gruppen aus der Vorwoche. Nur der Vergleich mit dem Einstieg entfällt: Beamer und Handy
+zeigen beim Check-out dann nur die Entscheidung am Ende.
+
 ## Analoge Fassung ohne Handys und Beamer
 
 Dieselbe Stunde komplett auf Papier – für Lehrkräfte, die nicht nebenher den Beamer steuern und die Handys im Blick

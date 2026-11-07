@@ -474,6 +474,11 @@ var STUNDE = {
     handys: '{n} Handys',
     handyEins: '1 Handy',
     raumcode: 'Raumcode',
+    // kleiner QR-Code unten auf jeder Folie; anklicken = groß
+    spaeterDazu: 'Später dazu? QR-Code scannen ·',
+    qrAnklicken: 'QR-Code anklicken = groß',
+    qrGrossTitel: 'Mit dem Handy dazukommen',
+    qrGrossText: 'QR-Code scannen und Vornamen eingeben – Ihr Handy wechselt dann automatisch mit dem Beamer.',
     starten: 'Neuen Raum starten',
     startText: 'Der Laptop am Beamer steuert die Stunde. Die Handys der Schülerinnen und Schüler wechseln automatisch mit.',
     startFehler: 'Der Raum konnte nicht gestartet werden. Bitte prüfen Sie die Internetverbindung.',
@@ -629,6 +634,8 @@ var STUNDE = {
     abstBeginnKeine: 'Zu Beginn haben Sie nicht abgestimmt.',
     abstEndeKeine: 'Jetzt haben Sie nicht abgestimmt.',
     bilanz: 'Richtig zu Beginn: {a} von {y} · jetzt: {e} von {y}',
+    // ohne Abstimmung zu Beginn (z. B. Stunde in der Folgewoche mit Arbeitsblatt 2 fortgesetzt)
+    bilanzOhneBeginn: 'Richtig: {e} von {y}',
     bilanzBeginn: 'Beginn',
     bilanzEnde: 'jetzt',
     aufstellungNr: 'Maßnahme {n} von {y}',

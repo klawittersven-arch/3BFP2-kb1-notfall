@@ -505,13 +505,15 @@
     var FR = INHALTE.entscheidung.fragen;
     function richtig(r, fr) { return z.runden[r].antworten[fr.nr] === fr.richtig; }
     function zaehle(r) { return FR.filter(function (fr) { return richtig(r, fr); }).length; }
-    var box = bildschirm('📊', h.titel, h.text);
-    box.appendChild(el('p', 'bilanz-zahl', K.ersetzen(H.bilanz, { a: zaehle(1), e: zaehle(2), y: FR.length })));
+    // Ohne eigene Abstimmung zu Beginn (z. B. neuer Raum in der Folgewoche) nur die Entscheidung von jetzt
+    var ohneBeginn = !Object.keys(z.runden[1].antworten).length;
+    var box = bildschirm('📊', h.titel, ohneBeginn ? '' : h.text);
+    box.appendChild(el('p', 'bilanz-zahl', K.ersetzen(ohneBeginn ? H.bilanzOhneBeginn : H.bilanz, { a: zaehle(1), e: zaehle(2), y: FR.length })));
     var liste = el('div', 'bilanz-liste');
     FR.forEach(function (fr) {
       var zeile = el('div', 'bilanz-zeile');
       zeile.appendChild(el('strong', null, fr.nr));
-      zeile.appendChild(el('span', null, H.bilanzBeginn + ' ' + (richtig(1, fr) ? '✓' : '✗') + ' · ' + H.bilanzEnde + ' ' + (richtig(2, fr) ? '✓' : '✗')));
+      zeile.appendChild(el('span', null, (ohneBeginn ? '' : H.bilanzBeginn + ' ' + (richtig(1, fr) ? '✓' : '✗') + ' · ') + H.bilanzEnde + ' ' + (richtig(2, fr) ? '✓' : '✗')));
       zeile.appendChild(el('span', 'klein-grau', K.ersetzen(H.abstRichtigIst, { a: optionText(fr, fr.richtig) })));
       liste.appendChild(zeile);
     });
