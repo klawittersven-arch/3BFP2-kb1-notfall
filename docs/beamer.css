@@ -491,3 +491,4 @@ button.antwort-karte { font: inherit; font-size: 27px; text-align: left; border:
 .fehler-liste { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
 .fehler-liste li { display: grid; grid-template-columns: 54px 1fr; gap: 10px; align-items: start; font-size: 18px; line-height: 1.35; }
 .fehler-zahl { font-weight: 900; font-size: 22px; color: #7A4300; text-align: right; }
+.start-sprung { margin-top: 26px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }

@@ -153,7 +153,7 @@ var INHALTE = {
         mindestensErsterVersuch: 3,
         merksatz: 'aa2',
         merksatzTitel: 'Merksatz AA2',
-        ende: '↻ Der Körper misst immer weiter. So entsteht ein **Regelkreis**.',
+        ende: '↑ Zurück zu Schritt 2: Die Barorezeptoren messen immer weiter. Ist der Druck noch zu niedrig, bleibt der Sympathikus aktiv. So entsteht ein **Regelkreis**.',
         schritte: [
           { id: 'rs1', text: 'Der **Blutdruck fällt**.' },
           { id: 'rs2', text: 'Die **Barorezeptoren** in der Aorta und in der Halsschlagader melden: „Der Druck sinkt.“', tipp: 'Wer merkt zuerst, dass der Druck sinkt?' },

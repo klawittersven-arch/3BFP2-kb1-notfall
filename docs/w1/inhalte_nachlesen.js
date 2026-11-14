@@ -62,13 +62,14 @@ var NACHLESEN = {
    "④ Das Herz schlägt **schneller** → HZV ↑",
    "⑤ Die Gefäße in Haut, Muskeln, Niere und Darm werden **eng** = **Zentralisation**",
    "⑥ RAAS und ADH halten **Wasser** und Natrium zurück",
-   "⑦ Der Blutdruck bleibt fast normal = **Kompensation**"
+   "⑦ Der Blutdruck bleibt fast normal = **Kompensation**",
+   "⑦ → ② Die Barorezeptoren messen weiter: Ist der Druck noch zu niedrig, bleibt der Sympathikus aktiv – ein **Regelkreis**."
   ],
   "AA2 b": [
    "Puls 118/min → **C**: Der Sympathikus lässt das Herz schneller schlagen.",
    "blass → **B**: Die Gefäße der Haut sind eng: Zentralisation.",
    "kalter Schweiß auf der Stirn → **E**: Der Sympathikus regt die Schweißdrüsen an.",
-   "Blutdruck 105/70 mmHg (fast normal) → **A**: Der Ausgleich wirkt noch: Kompensation.",
+   "Blutdruck 105/70 (fast normal) → **A**: Der Ausgleich wirkt noch: Kompensation.",
    "unruhig → **D**: Stresshormone; das Gehirn bekommt weniger Sauerstoff."
   ],
   "Schockformen": [

@@ -357,6 +357,16 @@
       namen.appendChild(c);
     });
     rechts.appendChild(namen);
+    // z. B. „Heute mit Arbeitsblatt 2 beginnen“ (Stunde geteilt): springt direkt zu dieser Folie
+    if (f.sprung) {
+      var ziel = FOLIEN.map(function (x) { return x.id; }).indexOf(f.sprung.folie);
+      if (ziel >= 0) {
+        var sp = el('p', 'start-sprung');
+        sp.appendChild(knopf(f.sprung.text, 'knopf-klein', function () { gehe(ziel); }));
+        if (f.sprung.tipp) sp.appendChild(el('span', 'tipp', f.sprung.tipp));
+        rechts.appendChild(sp);
+      }
+    }
     box.appendChild(rechts);
     w.appendChild(box);
   }
@@ -393,7 +403,7 @@
     kopf.appendChild(el('span', 'notfall-nr', K.ersetzen(T.notfallNr, { n: k, y: FRAGEN.length })));
     w.appendChild(kopf);
     if (s % 2 === 0) {
-      w.appendChild(abstKarte(frage, f.runde === 2 ? [1, 2] : [1], f.runde === 2, true, false));
+      w.appendChild(abstKarte(frage, rundenFuer(f), f.runde === 2, true, false));
       if (f.runde !== 2) w.appendChild(el('p', 'abgestimmt', T.aufloesungSpaeter));
       return;
     }
@@ -409,7 +419,14 @@
     w.appendChild(el('p', 'abgestimmt', K.ersetzen(T.abgestimmt, { x: n, y: stand.online || 0 })));
   }
 
-  // Eine Abstimmungskarte; runden = [1] oder [1, 2]
+  // Welche Runden zeigt eine Folie? Check-out (Runde 2) mit Beginn und Ende – fehlen die Stimmen vom Beginn
+  // in diesem Raum (z. B. Stunde geteilt, nächste Woche neuer Raum), nur das Ende.
+  function rundenFuer(f) {
+    if (f.runde !== 2) return [1];
+    var r1 = stand.stimmen && stand.stimmen[1];
+    return r1 && r1.n ? [1, 2] : [2];
+  }
+  // Eine Abstimmungskarte; runden = [1], [2] oder [1, 2]
   function abstKarte(frage, runden, loesung, istGross, stern) {
     var karte = el('section', 'abst-frage' + (istGross ? ' gross' : '') + (stern ? ' stern' : ''));
     if (stern && !istGross) karte.appendChild(el('span', 'abst-stern', T.groessteUneinigkeit));
@@ -444,11 +461,12 @@
   }
 
   function folieErgebnis(f, w) {
-    var runden = f.runde === 2 ? [1, 2] : [1];
+    var runden = rundenFuer(f);
     var loesung = loesungAn[f.id] !== undefined ? loesungAn[f.id] : !!f.loesung;
     var kopf = el('div', 'ergebnis-kopf');
-    kopf.appendChild(fmt('h1', 'f-titel', f.titel));
-    kopf.appendChild(fmt('p', 'f-unter', f.unter));
+    var nurEnde = runden.length === 1 && runden[0] === 2;   // Stunde geteilt: keine Stimmen vom Beginn
+    kopf.appendChild(fmt('h1', 'f-titel', nurEnde && f.titelNurEnde ? f.titelNurEnde : f.titel));
+    kopf.appendChild(fmt('p', 'f-unter', nurEnde && f.unterNurEnde ? f.unterNurEnde : f.unter));
     if (f.runde === 2) kopf.appendChild(knopf(loesung ? T.loesungVerbergen : T.loesungZeigen, 'knopf-klein', function () { loesungAn[f.id] = !loesung; zeichnen(); }));
     w.appendChild(kopf);
     var stern = f.runde === 1 ? umstrittenste() : null;
@@ -469,8 +487,8 @@
       w.appendChild(wrap);
       return;
     }
-    var r1 = stand.stimmen && stand.stimmen[1];
-    if (!r1 || !r1.n) { w.appendChild(absatz(T.keineStimmen)); return; }
+    var r0 = stand.stimmen && stand.stimmen[runden[0]];
+    if (!r0 || !r0.n) { w.appendChild(absatz(T.keineStimmen)); return; }
     var raster = el('div', 'abst ohne-erklaerung' + (runden.length === 2 ? ' zwei' : ''));
     FRAGEN.forEach(function (fr, i) {
       var k = abstKarte(fr, runden, loesung, false, fr.nr === stern);

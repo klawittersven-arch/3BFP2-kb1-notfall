@@ -106,7 +106,7 @@ function schuelerTeil(B, { lsg }) {
   /* ---------- Seite 2: Informationstext 1, AA2 Regelkreis und Befunde erklären ---------- */
   push(
     B.kasten([
-      ...T.INFO1.map((x, i) => B.p(x, { spacing: { after: i === T.INFO1.length - 1 ? 40 : 50, line: 252 }, ...(x.startsWith('•') ? { indent: { left: 200 } } : {}) })),
+      ...T.INFO1.map((x, i) => B.p(x, { spacing: { after: i === T.INFO1.length - 1 ? 40 : 30, line: 252 }, ...(x.startsWith('•') ? { indent: { left: 200 } } : {}) })),
       new Paragraph({ spacing: { after: 0 }, children: [B.i('Quelle: nach Lecturio (2023): Regulation des arteriellen Blutdrucks; MSD Manual Profi-Ausgabe (2025): Schock; sprachlich vereinfacht.', { size: 15, color: F.GRAU_T })] })
     ], { kopf: 'Informationstext 1: So hält der Körper den Blutdruck' }),
     new Paragraph({ spacing: { before: 40, after: 60 }, children: [B.b('Wörterhilfe: ', { size: 17 }), B.t(T.WOERTER1, { size: 17 })] })
@@ -114,7 +114,7 @@ function schuelerTeil(B, { lsg }) {
   pageBreakVor(k, 0);   // Informationstext 1 beginnt Seite 2
   const aa2aText = 'Füllen Sie die Lücken im Regelkreis aus. Wortspeicher: Kompensation · eng · Sympathikus · Wasser · Barorezeptoren · Zentralisation · schneller';
   auf('AA2 a', aa2aText);
-  loes('AA2 a', ['② Die **Barorezeptoren** melden: „Der Druck sinkt.“', '③ Das Gehirn macht den **Sympathikus** aktiv.', '④ Das Herz schlägt **schneller** → HZV ↑', '⑤ Die Gefäße in Haut, Muskeln, Niere und Darm werden **eng** = **Zentralisation**', '⑥ RAAS und ADH halten **Wasser** und Natrium zurück', '⑦ Der Blutdruck bleibt fast normal = **Kompensation**']);
+  loes('AA2 a', ['② Die **Barorezeptoren** melden: „Der Druck sinkt.“', '③ Das Gehirn macht den **Sympathikus** aktiv.', '④ Das Herz schlägt **schneller** → HZV ↑', '⑤ Die Gefäße in Haut, Muskeln, Niere und Darm werden **eng** = **Zentralisation**', '⑥ RAAS und ADH halten **Wasser** und Natrium zurück', '⑦ Der Blutdruck bleibt fast normal = **Kompensation**', '⑦ → ② Die Barorezeptoren messen weiter: Ist der Druck noch zu niedrig, bleibt der Sympathikus aktiv – ein **Regelkreis**.']);
   push(
     B.aa([IC.handy, IC.schreiben], 'AA2: Erklären – So hält der Körper den Blutdruck:', '**a)** Bauen Sie am Handy den **Regelkreis**. Dann: ' + aa2aText.replace('Wortspeicher:', '**Wortspeicher:**')),
     B.meta(`17 min (4 min Infotext lesen, 5 min Handy, 3 min Regelkreis sichern, 4 min AA2 b mit Lösung, 1 min Merksatz) · PA (Lesen) → EA (Handy) → EA → Plenum · AFB I–II · Ich-kann-Liste W1 Nr. 2 · KA-Bezug KB 1, Aufg. 5.4 · ${FOLIEN_T('w1-info1', 'w1-aa2-merksatz')}`),
@@ -124,7 +124,7 @@ function schuelerTeil(B, { lsg }) {
     ['1  Puls 118/min', 'C', 'A  Der Ausgleich wirkt noch: Kompensation.'],
     ['2  blass', 'B', 'B  Die Gefäße der Haut sind eng: Zentralisation.'],
     ['3  kalter Schweiß auf der Stirn', 'E', 'C  Der Sympathikus lässt das Herz schneller schlagen.'],
-    ['4  Blutdruck 105/70 mmHg (fast normal)', 'A', 'D  Stresshormone; das Gehirn bekommt weniger Sauerstoff.'],
+    ['4  Blutdruck 105/70 (fast normal)', 'A', 'D  Stresshormone; das Gehirn bekommt weniger Sauerstoff.'],
     ['5  unruhig', 'D', 'E  Der Sympathikus regt die Schweißdrüsen an.']
   ];
   const aa2bText = 'Ordnen Sie zu: Welche Erklärung passt zu welchem Befund von Frau Maler? Schreiben Sie den Buchstaben.';
@@ -147,6 +147,10 @@ function schuelerTeil(B, { lsg }) {
   loes('Schockformen', T.SCHOCKFORMEN.map((z) => `**${z[0]}** – ${z[1]} (z. B. ${z[2]})`));
   push(
     blattKopf(B, 2, { pageBreakBefore: true }),
+    // derselbe QR-Code wie auf Blatt 1 – falls die Stunde mit Blatt 2 beginnt und Blatt 1 nicht dabei ist
+    B.handy(T.SEITEN.stunde, [
+      B.p('**Stunden-App:** Scannen Sie den QR-Code **am Beamer** und geben Sie Ihren Vornamen ein. Nur falls das nicht klappt: diesen QR-Code scannen und den **Raumcode vom Beamer** eingeben.', { spacing: { after: 0, line: 252 } })
+    ], { linkBasis: T.LINK_BASIS, qrDatei: QR, qrCm: 1.7 }),
     B.kasten([
       ...T.INFO2.map((x, i) => B.p(x, { spacing: { after: 50, line: 252 } })),
       new Paragraph({ spacing: { after: 0 }, children: [B.i('Quelle: nach MSD Manual Profi-Ausgabe (2025): Schock; Lecturio (2023): Schock – Überblick; sprachlich vereinfacht.', { size: 15, color: F.GRAU_T })] })
@@ -204,21 +208,47 @@ function schuelerTeil(B, { lsg }) {
   loes('5.1', l51); loes('5.2', l52); loes('5.3', l53);
   loes('5.1 und 5.2', [...l51.map((z) => '5.1 ' + z), ...l52.map((z, i) => (i ? '' : '5.2 ') + z)]);
   push(
-    B.aufgaben([a51, a52, a53]),
-    zw(B, '5.1'), linien(B, 2, lsg ? l51 : []),
-    zw(B, '5.2'), linien(B, 4, lsg ? l52 : []),
-    zw(B, '5.3', 'Punkte gesamt: ____ / 7'), linien(B, 1, lsg ? l53 : [])
+    aufgabenMitSumme(B, [a51, a52, a53]),
+    ...(lsg
+      ? [zw(B, '5.1'), linien(B, 2, l51), zw(B, '5.2'), linien(B, 4, l52), zw(B, '5.3'), linien(B, 1, l53)]
+      : [linienMitNr(B, [['5.1', 2], ['5.2', 4], ['5.3', 1]])])
   );
   return k;
 }
 // Schreiblinien etwas enger als in ab_bausteine (Seite 4 muss reichen); in der LSG: Lösung im Kasten
-function linien(B, anzahl, loesung, hoehe = 400) {
+// nr (nur SV): Aufgabennummer fett am Anfang der ersten Linie – spart eine eigene Zeile über den Linien
+function linien(B, anzahl, loesung, nr, hoehe = 400) {
   if (B.lsg && loesung.length) return B.linien(anzahl, loesung);
   const rl = { style: D.BorderStyle.SINGLE, size: 4, color: '8C8C8C' };
+  const inhalt = (i) => new Paragraph({ spacing: { after: 0 }, children: i === 0 && nr ? [B.b(nr + ' ', { size: 20 })] : [] });
   return new Table({
     width: { size: BREITE_HOCH, type: WidthType.DXA }, columnWidths: [BREITE_HOCH], layout: TableLayoutType.FIXED,
-    rows: Array.from({ length: anzahl }, () => new TableRow({ height: { value: hoehe, rule: HeightRule.EXACT }, children: [new TableCell({ width: { size: BREITE_HOCH, type: WidthType.DXA }, borders: { top: keinRand, left: keinRand, right: keinRand, bottom: rl }, children: [new Paragraph({ children: [] })] })] }))
+    rows: Array.from({ length: anzahl }, (_, i) => new TableRow({ height: { value: hoehe, rule: HeightRule.EXACT }, children: [new TableCell({ width: { size: BREITE_HOCH, type: WidthType.DXA }, verticalAlign: VerticalAlign.BOTTOM, borders: { top: keinRand, left: keinRand, right: keinRand, bottom: rl }, children: [inhalt(i)] })] }))
   });
+}
+// Alle Schreiblinien in einer Tabelle (ohne Abstand dazwischen); die Nummer steht fett am Anfang der ersten Linie
+function linienMitNr(B, teile, hoehe = 400) {
+  const rl = { style: D.BorderStyle.SINGLE, size: 4, color: '8C8C8C' };
+  const zeilen = [];
+  teile.forEach(([nr, anzahl]) => {
+    for (let i = 0; i < anzahl; i++) {
+      zeilen.push(new TableRow({ cantSplit: true, height: { value: hoehe, rule: HeightRule.EXACT }, children: [new TableCell({
+        width: { size: BREITE_HOCH, type: WidthType.DXA }, verticalAlign: VerticalAlign.BOTTOM, borders: { top: keinRand, left: keinRand, right: keinRand, bottom: rl },
+        children: [new Paragraph({ spacing: { after: 0 }, children: i === 0 ? [B.b(nr + ' ', { size: 20 })] : [] })]
+      })] }));
+    }
+  });
+  return new Table({ width: { size: BREITE_HOCH, type: WidthType.DXA }, columnWidths: [BREITE_HOCH], layout: TableLayoutType.FIXED, rows: zeilen });
+}
+// Aufgabentabelle wie B.aufgaben, mit Zeile „Punkte gesamt“
+function aufgabenMitSumme(B, liste) {
+  const w1 = 620, w3 = 1150, w2 = BREITE_HOCH - w1 - w3;
+  const summe = liste.reduce((x, a) => x + a.punkte, 0);
+  return B.tabelle(
+    [{ text: 'Nr.', w: w1 }, { text: 'Aufgabe', w: w2 }, { text: 'Punkte', w: w3 }],
+    [...liste.map((a) => [{ text: `**${a.nr}**` }, a.text, `___ / ${a.punkte}`]), ['', '**Punkte gesamt**', `**___ / ${summe}**`]],
+    { kopfFill: F.LACHS_KOPF }
+  );
 }
 function zw(B, text, rechts) {
   return new Paragraph({
@@ -252,15 +282,18 @@ function regelkreis(B, L) {
   const k5 = kasten(['**⑤** Die Gefäße in Haut, Muskeln, Niere und Darm werden ', lz('eng', 6), ' = ', lz('Zentralisation', 13)]);
   const k6 = kasten(['**⑥** RAAS und ADH halten ', lz('Wasser', 9), ' und Natrium zurück → Durst, wenig Urin']);
   const k7 = kasten(['**⑦** Der Blutdruck bleibt fast normal = ', lz('Kompensation', 13)], 'E2F3E7');
-  const notiz = B.zelle([new Paragraph({ spacing: { after: 0, line: 230 }, children: [B.b('↻ ', { size: 26, color: '2E75B6' }), ...B.runs('Die Barorezeptoren messen weiter: ein **Regelkreis**.', { size: 16, color: F.GRAU_T })] })], wK + wP,
-    { borders: { top: keinRand, bottom: keinRand, left: keinRand, right: keinRand }, verticalAlign: VerticalAlign.CENTER, columnSpan: 2 });
+  const ohne = { top: keinRand, bottom: keinRand, left: keinRand, right: keinRand };
+  // Der Kreis schließt sich: ⑦ → ② (die Barorezeptoren messen weiter). ① steht außerhalb – der Auslöser.
+  const hoch = B.zelle([new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 0 }, children: [B.b('↑', { size: 28, color: '2E75B6' }), B.t(' messen weiter', { size: 16, color: '2E75B6' })] })], wK, { borders: ohne, verticalAlign: VerticalAlign.CENTER });
+  const mitte = B.zelle([new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 0 }, children: [B.b('Regelkreis', { size: 22, color: '2E75B6' })] })], wP + wK + wP, { borders: ohne, verticalAlign: VerticalAlign.CENTER, columnSpan: 3 });
+  const runter = B.zelle([new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 0 }, children: [B.b('↓', { size: 28, color: '2E75B6' })] })], wK, { borders: ohne });
   const breiten = [wK, wP, wK, wP, wK, wP, wK];
   return new Table({
     width: { size: breiten.reduce((a, b) => a + b, 0), type: WidthType.DXA }, columnWidths: breiten, layout: TableLayoutType.FIXED,
     rows: [
       new TableRow({ cantSplit: true, height: { value: 760, rule: HeightRule.ATLEAST }, children: [k1, pfeil('→'), k2, pfeil('→'), k3, pfeil('→'), k4] }),
-      new TableRow({ cantSplit: true, children: [leer(wK), leer(wP), leer(wK), leer(wP), leer(wK), leer(wP), B.zelle([new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 0 }, children: [B.b('↓', { size: 28, color: '2E75B6' })] })], wK, { borders: { top: keinRand, bottom: keinRand, left: keinRand, right: keinRand } })] }),
-      new TableRow({ cantSplit: true, height: { value: 760, rule: HeightRule.ATLEAST }, children: [notiz, k7, pfeil('←'), k6, pfeil('←'), k5] })
+      new TableRow({ cantSplit: true, children: [leer(wK), leer(wP), hoch, mitte, runter] }),
+      new TableRow({ cantSplit: true, height: { value: 760, rule: HeightRule.ATLEAST }, children: [leer(wK), leer(wP), k7, pfeil('←'), k6, pfeil('←'), k5] })
     ]
   });
 }
@@ -344,6 +377,7 @@ function hinweise(B) {
     punkt('**Beamer:** https://klawittersven-arch.github.io/3BFP2-kb1-notfall/beamer-w1.html → „Neuen Raum starten“. Die SuS scannen den QR-Code am Beamer (öffnet **w1.html** mit dem Raumcode) und geben den Vornamen ein. Der QR-Code auf Blatt 1 ist nur Ersatz (Raumcode dann von Hand).'),
     punkt('**Probe:** beamer-w1.html?demo=1 zeigt alle Folien mit erfundenen Namen und Fehlern (ohne Internet). „Probestunde mit erfundener Klasse“ startet einen echten Raum mit 20 erfundenen SuS – mit dem eigenen Handy mitmachen.'),
     punkt('**Häufige Fehler:** Auf den Folien zu AA1, AA2 a, AA3 und AA4 a zeigt der Beamer rechts die häufigsten Fehler beim ersten Versuch (falsch markiert / übersehen / Fehlerkarte gewählt / falsch zugeordnet). Sie eignen sich als Impuls für die anschließende Sicherung. **↻ neu** hinter einem Namen: beim ersten Versuch zu viel falsch („durchgeklickt“) – die Übung beginnt am Handy neu.'),
+    punkt('**Stunde geteilt (Blatt 1 heute, Blatt 2 nächste Woche):** Nächste Woche einfach einen **neuen Raum** starten (der alte ist nach 6 Stunden gelöscht) und auf der Willkommensfolie **„Heute mit Arbeitsblatt 2 beginnen“** wählen. Die SuS scannen den QR-Code **am Beamer** (Blatt 1 brauchen sie dafür nicht; Ersatz-QR auch auf Blatt 2). Der Check-out zeigt dann nur die Entscheidungen „jetzt“ (die Vermutungen vom Einstieg lagen im alten Raum). Sinnvoller Schnitt: nach Merksatz AA2 (Folie ' + FN('w1-aa2-merksatz') + '); Blatt 2 beginnt mit Folie ' + FN('blatt2') + '.'),
     punkt('**Ohne Handy:** Alle Handy-Aufgaben lassen sich auch auf Papier lösen (AA1: Fallauszug auf S. 1; AA2 a, AA3: Lückentexte mit Wortspeicher; AA4 a: Tabelle). SuS ohne Handy arbeiten mit einer Partnerin oder einem Partner.'),
     B.zwischen('Bezug zur Klassenarbeit und zum Examen (nur für Lehrkräfte)'),
     punkt('**KA KB 1, Aufg. 5.4** („Erläutern Sie, wie der Körper … in dieser Phase den Blutdruck aufrechterhält. Begründen Sie, warum der fast normale Blutdruck einen Schock nicht ausschließt.“): Das Wissen bauen AA2 (Regelkreis, Befunde erklären) und AA4 (Spätzeichen Blutdruck, Schockindex) auf; **AA5, 5.2** übt eine fast gleich formulierte Aufgabe an einem anderen Fall (Frau Berger, Nachblutung nach Cholezystektomie, mit Vorwerten). Der KA-Fall (Sturz, Heckenschere) wird nicht vorweggenommen.'),
@@ -374,8 +408,32 @@ function trenne(children) {
 }
 const sektionHoch = (children) => ({ properties: { page: SEITE_HOCH }, headers: { default: kopf(BREITE_HOCH) }, footers: { default: fuss(FUSS) }, children: trenne(children) });
 
+/* Zeilenabstand für Word festschreiben: docx schreibt „line“ ohne lineRule. LibreOffice liest das als „genau“,
+   Word als „mehrfach“ (Faktor × natürliche Zeilenhöhe von Calibri) – in Word wird das Blatt dann rund 12 % länger
+   (7 statt 4 Seiten). Deshalb überall ausdrücklich: „genau“ (exact); Absätze mit Bildern (Symbole, QR-Code)
+   „mindestens“ (atLeast), damit Word die Bilder nicht abschneidet. */
+function zeilenabstandFest(xml) {
+  return xml.replace(/<w:p(?=[ >])[\s\S]*?<\/w:p>/g, (absatz) => {
+    // größte Schrift im Absatz (halbe Punkt; ohne Angabe 11 pt) – ist sie zu groß für „genau“, ebenfalls „mindestens“
+    const groessen = [...absatz.matchAll(/<w:sz w:val="(\d+)"\/>/g)].map((m) => Number(m[1]) / 2);
+    const zeile = Number((absatz.match(/\bw:line="(\d+)"/) || [])[1] || 0) / 20;
+    const zuGross = groessen.some((g) => g * 1.15 > zeile);
+    const regel = /<w:drawing[ >]/.test(absatz) || /Segoe UI (Emoji|Symbol)/.test(absatz) || zuGross ? 'atLeast' : 'exact';
+    return absatz.replace(/<w:spacing ((?:(?!\/>)[^>])*?\bw:line="\d+"(?:(?!\/>)[^>])*?)\/>/g, (sp, attr) => (/w:lineRule=/.test(attr) ? sp : `<w:spacing ${attr} w:lineRule="${regel}"/>`));
+  });
+}
+
+// Zellen: Innenabstand oben/unten 3 pt → 2 pt (Woche 1 braucht den Platz; links/rechts unverändert)
+function zellraender(xml) {
+  return xml.replace(/<w:(top|bottom) w:type="dxa" w:w="60"\/>/g, '<w:$1 w:type="dxa" w:w="40"/>');
+}
+
 async function speichern(doc, name) {
-  const buf = await Packer.toBuffer(doc);
+  const zip = Packer.compiler.compile(doc, undefined, []);
+  for (const datei of Object.keys(zip.files).filter((n) => /^word\/(document|header\d*|footer\d*)\.xml$/.test(n))) {
+    zip.file(datei, zellraender(zeilenabstandFest(await zip.file(datei).async('string'))));
+  }
+  const buf = await zip.generateAsync({ type: 'nodebuffer', mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', compression: 'DEFLATE' });
   fs.mkdirSync(AUS, { recursive: true });
   fs.writeFileSync(path.join(AUS, name), buf);
   console.log('geschrieben:', path.join(AUS, name));
@@ -401,12 +459,26 @@ function ohnePunkte(loesungen) {
   return aus;
 }
 
+/* Woche 1: Symbole kleiner als in Woche 2. Bilder stehen in der Zeile; Word macht diese Zeile so hoch wie das
+   Bild (Zeilenabstand „mindestens“, siehe zeilenabstandFest) – kleine Symbole sparen auf jeder Seite Platz. */
+function kleineSymbole(B) {
+  B.aa = (symbole, kopfText, text, o = {}) => new Paragraph({
+    keepNext: true, spacing: { before: 160, after: 60, line: 264 },
+    children: [...symbole.flatMap((x) => [bild(x, 0.55, 0.55), B.t(' ')]), B.b(kopfText + ' '), ...B.runs(text)], ...o
+  });
+  B.teil = (symbole, text, o = {}) => new Paragraph({
+    keepNext: true, spacing: { before: 100, after: 60, line: 264 },
+    children: [...symbole.flatMap((x) => [bild(x, 0.48, 0.48), B.t(' ')]), ...B.runs(text)], ...o
+  });
+  return B;
+}
+
 async function main() {
-  const SV = bausteine({ lsg: false, breite: BREITE_HOCH });
+  const SV = kleineSymbole(bausteine({ lsg: false, breite: BREITE_HOCH }));
   await speichern(new Document({ creator: 'KB I · 3BFP2', title: 'KB1 W1 Kreislauf und Schock – Schülerversion', styles: STILE, sections: [sektionHoch(mitUmbruechen(schuelerTeil(SV, { lsg: false })))] }), 'KB1_W1_Kreislauf_Schock_SV.docx');
 
-  const LQ = bausteine({ lsg: true, breite: BREITE_QUER });
-  const LH = bausteine({ lsg: true, breite: BREITE_HOCH });
+  const LQ = kleineSymbole(bausteine({ lsg: true, breite: BREITE_QUER }));
+  const LH = kleineSymbole(bausteine({ lsg: true, breite: BREITE_HOCH }));
   await speichern(new Document({
     creator: 'KB I · 3BFP2', title: 'KB1 W1 Kreislauf und Schock – Lehrerversion mit Lösungen', styles: STILE,
     numbering: { config: [] },
