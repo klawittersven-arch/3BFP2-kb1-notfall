@@ -68,7 +68,7 @@ var NACHLESEN = {
    "Puls 118/min → **C**: Der Sympathikus lässt das Herz schneller schlagen.",
    "blass → **B**: Die Gefäße der Haut sind eng: Zentralisation.",
    "kalter Schweiß auf der Stirn → **E**: Der Sympathikus regt die Schweißdrüsen an.",
-   "Blutdruck 105/70 mmHg (fast normal) → **A**: Der Ausgleich wirkt noch: Kompensation.",
+   "Blutdruck 105/70 (fast normal) → **A**: Der Ausgleich wirkt noch: Kompensation.",
    "unruhig → **D**: Stresshormone; das Gehirn bekommt weniger Sauerstoff."
   ],
   "Schockformen": [

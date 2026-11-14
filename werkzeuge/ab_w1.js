@@ -106,7 +106,7 @@ function schuelerTeil(B, { lsg }) {
   /* ---------- Seite 2: Informationstext 1, AA2 Regelkreis und Befunde erklären ---------- */
   push(
     B.kasten([
-      ...T.INFO1.map((x, i) => B.p(x, { spacing: { after: i === T.INFO1.length - 1 ? 40 : 50, line: 252 }, ...(x.startsWith('•') ? { indent: { left: 200 } } : {}) })),
+      ...T.INFO1.map((x, i) => B.p(x, { spacing: { after: i === T.INFO1.length - 1 ? 40 : 30, line: 252 }, ...(x.startsWith('•') ? { indent: { left: 200 } } : {}) })),
       new Paragraph({ spacing: { after: 0 }, children: [B.i('Quelle: nach Lecturio (2023): Regulation des arteriellen Blutdrucks; MSD Manual Profi-Ausgabe (2025): Schock; sprachlich vereinfacht.', { size: 15, color: F.GRAU_T })] })
     ], { kopf: 'Informationstext 1: So hält der Körper den Blutdruck' }),
     new Paragraph({ spacing: { before: 40, after: 60 }, children: [B.b('Wörterhilfe: ', { size: 17 }), B.t(T.WOERTER1, { size: 17 })] })
@@ -124,7 +124,7 @@ function schuelerTeil(B, { lsg }) {
     ['1  Puls 118/min', 'C', 'A  Der Ausgleich wirkt noch: Kompensation.'],
     ['2  blass', 'B', 'B  Die Gefäße der Haut sind eng: Zentralisation.'],
     ['3  kalter Schweiß auf der Stirn', 'E', 'C  Der Sympathikus lässt das Herz schneller schlagen.'],
-    ['4  Blutdruck 105/70 mmHg (fast normal)', 'A', 'D  Stresshormone; das Gehirn bekommt weniger Sauerstoff.'],
+    ['4  Blutdruck 105/70 (fast normal)', 'A', 'D  Stresshormone; das Gehirn bekommt weniger Sauerstoff.'],
     ['5  unruhig', 'D', 'E  Der Sympathikus regt die Schweißdrüsen an.']
   ];
   const aa2bText = 'Ordnen Sie zu: Welche Erklärung passt zu welchem Befund von Frau Maler? Schreiben Sie den Buchstaben.';
@@ -204,21 +204,47 @@ function schuelerTeil(B, { lsg }) {
   loes('5.1', l51); loes('5.2', l52); loes('5.3', l53);
   loes('5.1 und 5.2', [...l51.map((z) => '5.1 ' + z), ...l52.map((z, i) => (i ? '' : '5.2 ') + z)]);
   push(
-    B.aufgaben([a51, a52, a53]),
-    zw(B, '5.1'), linien(B, 2, lsg ? l51 : []),
-    zw(B, '5.2'), linien(B, 4, lsg ? l52 : []),
-    zw(B, '5.3', 'Punkte gesamt: ____ / 7'), linien(B, 1, lsg ? l53 : [])
+    aufgabenMitSumme(B, [a51, a52, a53]),
+    ...(lsg
+      ? [zw(B, '5.1'), linien(B, 2, l51), zw(B, '5.2'), linien(B, 4, l52), zw(B, '5.3'), linien(B, 1, l53)]
+      : [linienMitNr(B, [['5.1', 2], ['5.2', 4], ['5.3', 1]])])
   );
   return k;
 }
 // Schreiblinien etwas enger als in ab_bausteine (Seite 4 muss reichen); in der LSG: Lösung im Kasten
-function linien(B, anzahl, loesung, hoehe = 400) {
+// nr (nur SV): Aufgabennummer fett am Anfang der ersten Linie – spart eine eigene Zeile über den Linien
+function linien(B, anzahl, loesung, nr, hoehe = 400) {
   if (B.lsg && loesung.length) return B.linien(anzahl, loesung);
   const rl = { style: D.BorderStyle.SINGLE, size: 4, color: '8C8C8C' };
+  const inhalt = (i) => new Paragraph({ spacing: { after: 0 }, children: i === 0 && nr ? [B.b(nr + ' ', { size: 20 })] : [] });
   return new Table({
     width: { size: BREITE_HOCH, type: WidthType.DXA }, columnWidths: [BREITE_HOCH], layout: TableLayoutType.FIXED,
-    rows: Array.from({ length: anzahl }, () => new TableRow({ height: { value: hoehe, rule: HeightRule.EXACT }, children: [new TableCell({ width: { size: BREITE_HOCH, type: WidthType.DXA }, borders: { top: keinRand, left: keinRand, right: keinRand, bottom: rl }, children: [new Paragraph({ children: [] })] })] }))
+    rows: Array.from({ length: anzahl }, (_, i) => new TableRow({ height: { value: hoehe, rule: HeightRule.EXACT }, children: [new TableCell({ width: { size: BREITE_HOCH, type: WidthType.DXA }, verticalAlign: VerticalAlign.BOTTOM, borders: { top: keinRand, left: keinRand, right: keinRand, bottom: rl }, children: [inhalt(i)] })] }))
   });
+}
+// Alle Schreiblinien in einer Tabelle (ohne Abstand dazwischen); die Nummer steht fett am Anfang der ersten Linie
+function linienMitNr(B, teile, hoehe = 400) {
+  const rl = { style: D.BorderStyle.SINGLE, size: 4, color: '8C8C8C' };
+  const zeilen = [];
+  teile.forEach(([nr, anzahl]) => {
+    for (let i = 0; i < anzahl; i++) {
+      zeilen.push(new TableRow({ cantSplit: true, height: { value: hoehe, rule: HeightRule.EXACT }, children: [new TableCell({
+        width: { size: BREITE_HOCH, type: WidthType.DXA }, verticalAlign: VerticalAlign.BOTTOM, borders: { top: keinRand, left: keinRand, right: keinRand, bottom: rl },
+        children: [new Paragraph({ spacing: { after: 0 }, children: i === 0 ? [B.b(nr + ' ', { size: 20 })] : [] })]
+      })] }));
+    }
+  });
+  return new Table({ width: { size: BREITE_HOCH, type: WidthType.DXA }, columnWidths: [BREITE_HOCH], layout: TableLayoutType.FIXED, rows: zeilen });
+}
+// Aufgabentabelle wie B.aufgaben, mit Zeile „Punkte gesamt“
+function aufgabenMitSumme(B, liste) {
+  const w1 = 620, w3 = 1150, w2 = BREITE_HOCH - w1 - w3;
+  const summe = liste.reduce((x, a) => x + a.punkte, 0);
+  return B.tabelle(
+    [{ text: 'Nr.', w: w1 }, { text: 'Aufgabe', w: w2 }, { text: 'Punkte', w: w3 }],
+    [...liste.map((a) => [{ text: `**${a.nr}**` }, a.text, `___ / ${a.punkte}`]), ['', '**Punkte gesamt**', `**___ / ${summe}**`]],
+    { kopfFill: F.LACHS_KOPF }
+  );
 }
 function zw(B, text, rechts) {
   return new Paragraph({
@@ -374,8 +400,32 @@ function trenne(children) {
 }
 const sektionHoch = (children) => ({ properties: { page: SEITE_HOCH }, headers: { default: kopf(BREITE_HOCH) }, footers: { default: fuss(FUSS) }, children: trenne(children) });
 
+/* Zeilenabstand für Word festschreiben: docx schreibt „line“ ohne lineRule. LibreOffice liest das als „genau“,
+   Word als „mehrfach“ (Faktor × natürliche Zeilenhöhe von Calibri) – in Word wird das Blatt dann rund 12 % länger
+   (7 statt 4 Seiten). Deshalb überall ausdrücklich: „genau“ (exact); Absätze mit Bildern (Symbole, QR-Code)
+   „mindestens“ (atLeast), damit Word die Bilder nicht abschneidet. */
+function zeilenabstandFest(xml) {
+  return xml.replace(/<w:p(?=[ >])[\s\S]*?<\/w:p>/g, (absatz) => {
+    // größte Schrift im Absatz (halbe Punkt; ohne Angabe 11 pt) – ist sie zu groß für „genau“, ebenfalls „mindestens“
+    const groessen = [...absatz.matchAll(/<w:sz w:val="(\d+)"\/>/g)].map((m) => Number(m[1]) / 2);
+    const zeile = Number((absatz.match(/\bw:line="(\d+)"/) || [])[1] || 0) / 20;
+    const zuGross = groessen.some((g) => g * 1.15 > zeile);
+    const regel = /<w:drawing[ >]/.test(absatz) || /Segoe UI (Emoji|Symbol)/.test(absatz) || zuGross ? 'atLeast' : 'exact';
+    return absatz.replace(/<w:spacing ((?:(?!\/>)[^>])*?\bw:line="\d+"(?:(?!\/>)[^>])*?)\/>/g, (sp, attr) => (/w:lineRule=/.test(attr) ? sp : `<w:spacing ${attr} w:lineRule="${regel}"/>`));
+  });
+}
+
+// Zellen: Innenabstand oben/unten 3 pt → 2 pt (Woche 1 braucht den Platz; links/rechts unverändert)
+function zellraender(xml) {
+  return xml.replace(/<w:(top|bottom) w:type="dxa" w:w="60"\/>/g, '<w:$1 w:type="dxa" w:w="40"/>');
+}
+
 async function speichern(doc, name) {
-  const buf = await Packer.toBuffer(doc);
+  const zip = Packer.compiler.compile(doc, undefined, []);
+  for (const datei of Object.keys(zip.files).filter((n) => /^word\/(document|header\d*|footer\d*)\.xml$/.test(n))) {
+    zip.file(datei, zellraender(zeilenabstandFest(await zip.file(datei).async('string'))));
+  }
+  const buf = await zip.generateAsync({ type: 'nodebuffer', mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', compression: 'DEFLATE' });
   fs.mkdirSync(AUS, { recursive: true });
   fs.writeFileSync(path.join(AUS, name), buf);
   console.log('geschrieben:', path.join(AUS, name));
@@ -401,12 +451,26 @@ function ohnePunkte(loesungen) {
   return aus;
 }
 
+/* Woche 1: Symbole kleiner als in Woche 2. Bilder stehen in der Zeile; Word macht diese Zeile so hoch wie das
+   Bild (Zeilenabstand „mindestens“, siehe zeilenabstandFest) – kleine Symbole sparen auf jeder Seite Platz. */
+function kleineSymbole(B) {
+  B.aa = (symbole, kopfText, text, o = {}) => new Paragraph({
+    keepNext: true, spacing: { before: 160, after: 60, line: 264 },
+    children: [...symbole.flatMap((x) => [bild(x, 0.55, 0.55), B.t(' ')]), B.b(kopfText + ' '), ...B.runs(text)], ...o
+  });
+  B.teil = (symbole, text, o = {}) => new Paragraph({
+    keepNext: true, spacing: { before: 100, after: 60, line: 264 },
+    children: [...symbole.flatMap((x) => [bild(x, 0.48, 0.48), B.t(' ')]), ...B.runs(text)], ...o
+  });
+  return B;
+}
+
 async function main() {
-  const SV = bausteine({ lsg: false, breite: BREITE_HOCH });
+  const SV = kleineSymbole(bausteine({ lsg: false, breite: BREITE_HOCH }));
   await speichern(new Document({ creator: 'KB I · 3BFP2', title: 'KB1 W1 Kreislauf und Schock – Schülerversion', styles: STILE, sections: [sektionHoch(mitUmbruechen(schuelerTeil(SV, { lsg: false })))] }), 'KB1_W1_Kreislauf_Schock_SV.docx');
 
-  const LQ = bausteine({ lsg: true, breite: BREITE_QUER });
-  const LH = bausteine({ lsg: true, breite: BREITE_HOCH });
+  const LQ = kleineSymbole(bausteine({ lsg: true, breite: BREITE_QUER }));
+  const LH = kleineSymbole(bausteine({ lsg: true, breite: BREITE_HOCH }));
   await speichern(new Document({
     creator: 'KB I · 3BFP2', title: 'KB1 W1 Kreislauf und Schock – Lehrerversion mit Lösungen', styles: STILE,
     numbering: { config: [] },
