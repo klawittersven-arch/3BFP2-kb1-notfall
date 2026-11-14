@@ -1,4 +1,6 @@
-/* AA1 · Befunde markieren (Programmlogik – Texte in inhalte.js → markieren).
+/* Befunde markieren (Programmlogik – Texte in inhalte.js → markieren; Woche 1: w1/inhalte.js).
+   Woche 2: AA1 im Expertenteam · Woche 1: AA1 „Frühzeichen finden“ (Fall Frau Maler).
+   Einstellbar in den Texten: seite (Kennung für den Beamer), merksatz/merksatzTitel, pflicht/fehltPflicht.
    Ablauf: Fall (in der Stunden-App aus der Gruppeneinteilung) → Textstellen antippen → „Prüfen“ →
    Rückmeldung (gefunden / übersehen / falsch) → so lange verbessern, bis alles stimmt → Merksatz AA1.
    Schutz gegen Raten: Mehr als T.hoechstensFalsch falsche Markierungen → alles gelöscht, nichts verraten.
@@ -8,7 +10,9 @@
   var K = window.KB1;
   var el = K.element;
   var T = K.seiteVorbereiten('markieren');
-  var SEITE = 'w2-markieren';
+  var SEITE = T.seite || 'w2-markieren';
+  var PFLICHT = T.pflicht || 'schock';                       // ohne diese Kategorie: Hinweis beim Prüfen
+  var PFLICHT_TEXT = T.fehltPflicht || T.fehltKreislauf;
   var platz = document.getElementById('uebung');
 
   var fallId = K.urlParam('fall');
@@ -17,7 +21,7 @@
   /* ---------- Zustand je Fall (übersteht Neuladen) ---------- */
   function schluessel() { return 'kb1nf_markieren_' + fallId; }
   function leer(fall) {
-    return { gewaehlt: fall.teile.map(function () { return false; }), geprueft: false, versuche: 0, ersteFalsch: null, fertig: false };
+    return { gewaehlt: fall.teile.map(function () { return false; }), geprueft: false, versuche: 0, ersteFalsch: null, ersteFehler: null, fertig: false };
   }
   function laden(fall) {
     var z = K.Speicher.sitzung.lesen(schluessel());
@@ -95,7 +99,7 @@
       var gefunden = 0, falsch = 0, kreislauf = false;
       fall.teile.forEach(function (teil, i) {
         if (!istTipp(teil) || !z.gewaehlt[i]) return;
-        if (teil.k) { gefunden++; if (teil.k === 'schock') kreislauf = true; } else falsch++;
+        if (teil.k) { gefunden++; if (teil.k === PFLICHT) kreislauf = true; } else falsch++;
       });
       return { gefunden: gefunden, falsch: falsch, kreislauf: kreislauf };
     }
@@ -110,7 +114,7 @@
         z.geprueft = false;
         speichern(z);
         darstellen(false);
-        K.melden(SEITE, 0, hinweise, 'arbeitet');
+        K.melden(SEITE, 0, hinweise, 'arbeitet', z.ersteFehler);
         K.scrollen(rueck);
         return;
       }
@@ -118,6 +122,15 @@
       z.geprueft = true;
       z.versuche++;
       if (z.ersteFalsch === null) z.ersteFalsch = e.falsch;
+      // Fehler beim ersten Prüfen (für „Häufige Fehler“ am Beamer): x = falsch markiert, u = übersehen
+      if (!Array.isArray(z.ersteFehler)) {
+        z.ersteFehler = [];
+        fall.teile.forEach(function (teil, i) {
+          if (!istTipp(teil)) return;
+          if (z.gewaehlt[i] && !teil.k) z.ersteFehler.push('x' + i);
+          if (!z.gewaehlt[i] && teil.k) z.ersteFehler.push('u' + i);
+        });
+      }
       if (e.gefunden === hinweise && e.falsch === 0) z.fertig = true;
       speichern(z);
       darstellen(true);
@@ -153,7 +166,7 @@
       }
       if (z.geprueft || z.fertig) {
         rueck.appendChild(el('p', 'rueckmeldung ' + (z.fertig ? 'richtig' : 'falsch'), K.ersetzen(T.ergebnis, { x: e.gefunden, y: hinweise, f: e.falsch })));
-        if (!z.fertig && !e.kreislauf) rueck.appendChild(el('p', 'rueckmeldung falsch', T.fehltKreislauf));
+        if (!z.fertig && !e.kreislauf && PFLICHT_TEXT) rueck.appendChild(el('p', 'rueckmeldung falsch', PFLICHT_TEXT));
         if (!z.fertig) rueck.appendChild(el('p', null, T.weiterSuchen));
         // Erklärungen zu markierten Stellen (richtig und falsch)
         fall.teile.forEach(function (teil, i) {
@@ -166,13 +179,13 @@
       }
       if (z.fertig) {
         ende.appendChild(el('p', 'rueckmeldung richtig', T.geschafft));
-        var m = K.merksatzElement('aa1', 'Merksatz AA1');
+        var m = K.merksatzElement(T.merksatz || 'aa1', T.merksatzTitel || 'Merksatz AA1');
         ende.appendChild(m);
         K.Erledigt.merken(SEITE);
-        K.melden(SEITE, hinweise, hinweise, 'fertig');
+        K.melden(SEITE, hinweise, hinweise, 'fertig', z.ersteFehler);
         if (nachPruefen) setTimeout(function () { K.scrollen(m); }, 50);
       } else if (nachPruefen) {
-        K.melden(SEITE, e.gefunden, hinweise, 'arbeitet');
+        K.melden(SEITE, e.gefunden, hinweise, 'arbeitet', z.ersteFehler);
         K.scrollen(rueck);
       }
     }

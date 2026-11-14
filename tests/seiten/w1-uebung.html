@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Test: Übung Woche 1</title>
+<link rel="stylesheet" href="style.css">
+<!-- Testgerüst (nur für tests/w1.test.js): eine Übung von Woche 1 ohne Stunden-App und ohne Worker.
+     ?modul=markieren|kette|karten|raster, dazu die Parameter der Übung (z. B. &kette=regelkreis).
+     Meldungen an den Beamer werden in window.MELDUNGEN gesammelt. -->
+<script>window.MELDUNGEN = []; window.KB1Melden = { stand: function () { window.MELDUNGEN.push([].slice.call(arguments)); } };</script>
+</head>
+<body data-seite="w1-uebung">
+<header class="kopf">
+  <p class="kopfzeile" id="kopfzeile"></p>
+  <h1 id="titel"></h1>
+</header>
+<div class="fortschritt" role="status">
+  <span id="fortschritt-text"></span>
+  <span class="fortschritt-spur" aria-hidden="true"><span class="fortschritt-balken" id="fortschritt-balken"></span></span>
+</div>
+<main class="inhalt">
+  <p class="anweisung" id="anweisung"></p>
+  <div id="uebung"></div>
+</main>
+<script src="w1/inhalte.js"></script>
+<script src="config.js"></script>
+<script src="gemeinsam.js"></script>
+<script>
+  (function () {
+    var m = new URLSearchParams(location.search).get('modul') || '';
+    if (/^(markieren|kette|karten|raster)$/.test(m)) document.write('<script src="' + m + '.js"><\/script>');
+  })();
+</script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 /* Alle Folien passen auf die Beamer-Bühne (1600 × 900) – auch mit allen Unterschritten und
  * vollständig aufgedeckten Lösungen. Läuft im Vorführmodus (beamer.html?demo=1), ohne Worker.
- * Start (im Ordner tests/): node folien.test.js */
+ * Start (im Ordner tests/): node folien.test.js  (Woche 2)  ·  node folien.test.js w1  (Woche 1) */
 'use strict';
 const path = require('path');
 const fs = require('fs');
@@ -8,9 +8,10 @@ const vm = require('vm');
 const H = require('./hilfen');
 
 const ORDNER = path.join(__dirname, 'ergebnisse');
+const W1 = process.argv[2] === 'w1';
 const k = { window: {} };
 vm.createContext(k);
-vm.runInContext(fs.readFileSync(path.join(H.DOCS, 'inhalte_stunde.js'), 'utf8') + '\nthis.STUNDE = STUNDE;', k);
+vm.runInContext(fs.readFileSync(path.join(H.DOCS, W1 ? 'w1/inhalte_stunde.js' : 'inhalte_stunde.js'), 'utf8') + '\nthis.STUNDE = STUNDE;', k);
 const F = k.STUNDE.folien;
 
 (async () => {
@@ -21,7 +22,7 @@ const F = k.STUNDE.folien;
   try {
     const p = await browser.newPage({ viewport: { width: 1600, height: 900 } });
     H.beobachten(p, protokoll, 'beamer');
-    await p.goto(basis + 'beamer.html?demo=1');
+    await p.goto(basis + (W1 ? 'beamer-w1.html' : 'beamer.html') + '?demo=1');
     for (let i = 0; i < F.length; i++) {
       const f = F[i];
       await p.click('#menue-knopf');

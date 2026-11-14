@@ -1,4 +1,5 @@
-/* Handy-App der Beamer-Stunde (w2.html) – Programmlogik, Texte in inhalte_stunde.js.
+/* Handy-App der Beamer-Stunde (w1.html, w2.html) – Programmlogik, Texte in inhalte_stunde.js
+ * (Woche 1: w1/inhalte_stunde.js).
  *
  * Ein QR-Code für die ganze Stunde. Das Handy meldet sich mit Vornamen im Raum an und zeigt
  * dann immer den Bildschirm, der zur Folie am Beamer passt. Übungen (Markieren,
@@ -63,7 +64,9 @@
     if (!a || !seiten.length || sendetGerade) return;
     var seite = seiten[0], s = offen[seite];
     sendetGerade = true;
-    KB1Verbindung.senden(BASIS, '/api/melden', { raum: a.raum, geraeteId: a.geraeteId, name: a.name, seite: seite, geloest: s.geloest, gesamt: s.gesamt, status: s.status })
+    var koerper = { raum: a.raum, geraeteId: a.geraeteId, name: a.name, seite: seite, geloest: s.geloest, gesamt: s.gesamt, status: s.status };
+    if (s.fehler && s.fehler.length) koerper.fehler = s.fehler.slice(0, 20);
+    KB1Verbindung.senden(BASIS, '/api/melden', koerper)
       .then(function (x) {
         sendetGerade = false;
         if (x.status >= 500) throw new Error('später');
@@ -79,8 +82,8 @@
   }
   function planen(ms) { clearTimeout(sendeTimer); sendeTimer = setTimeout(meldenSenden, ms); }
   window.KB1Melden = {
-    stand: function (seite, geloest, gesamt, status) {
-      offen[seite] = { geloest: geloest, gesamt: gesamt, status: status };
+    stand: function (seite, geloest, gesamt, status, fehler) {
+      offen[seite] = { geloest: geloest, gesamt: gesamt, status: status, fehler: Array.isArray(fehler) ? fehler : null };
       planen(300);
     }
   };
@@ -106,7 +109,8 @@
       var fall = S.rollen[m.puzzle.rolle].fall;
       return { schl: 'modul:markieren:' + fall, modul: 'markieren', params: { fall: fall }, extra: 'experte' };
     }
-    if (h.typ === 'modul') return { schl: 'modul:' + h.modul, modul: h.modul, params: {}, extra: h.gruppeZeigen ? 'gruppe' : null };
+    // params (optional): Werte für die Übung, z. B. { fall: 'maler' } oder { kette: 'regelkreis' }
+    if (h.typ === 'modul') return { schl: 'modul:' + h.modul + (h.params ? ':' + JSON.stringify(h.params) : ''), modul: h.modul, params: h.params || {}, extra: h.gruppeZeigen ? 'gruppe' : null };
     return { schl: h.typ };
   }
 

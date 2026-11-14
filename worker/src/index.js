@@ -11,7 +11,8 @@
  *   POST /api/lehrer   { raum, schluessel, typ, … }   Folie, Uhr, Gruppen einteilen …
  *   POST /api/anmelden { raum, geraeteId, name }
  *   POST /api/aktion   { raum, geraeteId, typ: 'fertig', schritt: 'team'|'stamm', wert }
- *   POST /api/melden   { raum, geraeteId, name, seite, geloest, gesamt, status }   Fortschritt einer Übung
+ *   POST /api/melden   { raum, geraeteId, name, seite, geloest, gesamt, status, fehler? }   Fortschritt einer Übung
+ *                      (fehler: optional, Kennungen der Fehler beim ersten Versuch – Beamer zeigt „Häufige Fehler“)
  *   POST /api/stimme   { raum, geraeteId, runde, antworten, sicher }               Abstimmung ohne Namen (Runde 3: „Wer darf was?“)
  *   GET  /api/nachlesen                    { frei }: gesperrt, solange irgendwo eine Beamer-Stunde läuft
  *
@@ -32,6 +33,8 @@ const RAUM_MUSTER = /^\d{4}$/;
 const ID_MUSTER = /^[a-z0-9]{8,40}$/;
 const PERSON_MUSTER = /^[a-z0-9]{8,40}$/;
 const SEITE_MUSTER = /^[a-z0-9-]{1,30}$/;
+const FEHLER_MUSTER = /^[a-z0-9-]{1,16}$/;   // Kennung eines Fehlers (z. B. „x7“, „rf2“)
+const MAX_FEHLER = 20;
 const SCHLUESSEL_MUSTER = /^[A-Za-z0-9]{20,64}$/;
 const NAME_MUSTER = /^[A-Za-z0-9ÄÖÜäöüßÀ-ÖØ-öø-ÿ _.-]+$/;
 const FRAGE_MUSTER = /^[EM][1-9]$/;          // E1–E9: Einstieg/Check-out · M1–M9: „Wer darf was?“
@@ -100,7 +103,18 @@ export function meldungPruefen(d) {
   const status = STATUS.includes(d.status) ? d.status : null;
   if (!RAUM_MUSTER.test(raum) || !ID_MUSTER.test(geraeteId) || !SEITE_MUSTER.test(seite) || !name) return null;
   if (gesamt === null || geloest === null || geloest > gesamt || !status) return null;
-  return { raum, geraeteId, name, seite, geloest, gesamt, status };
+  const m = { raum, geraeteId, name, seite, geloest, gesamt, status };
+  if (d.fehler !== undefined && d.fehler !== null) {
+    if (!Array.isArray(d.fehler) || d.fehler.length > MAX_FEHLER) return null;
+    const fehler = [];
+    for (const f of d.fehler) {
+      const k = String(f);
+      if (!FEHLER_MUSTER.test(k)) return null;
+      if (!fehler.includes(k)) fehler.push(k);
+    }
+    if (fehler.length) m.fehler = fehler;
+  }
+  return m;
 }
 
 // Prüft eine Stimme vom Handy; liefert die bereinigte Stimme oder null.
@@ -234,7 +248,7 @@ export default {
  *   stunde        { folie, schritt, uhr, frage, version }
  *   puzzle        Gruppeneinteilung (siehe stunde.js)
  *   ohne          [{ id, name }]   Personen ohne Handy (von der Lehrkraft eingetragen)
- *   g:<geraeteId> { name, seiten: { <seite>: { geloest, gesamt, status, um } }, um }
+ *   g:<geraeteId> { name, seiten: { <seite>: { geloest, gesamt, status, um, fehler? } }, um }
  *   x:<geraeteId> true   (von der Lehrkraft entfernt)
  *   s<runde>:<geraeteId> { antworten, sicher }   (Abstimmung, ohne Namen) */
 export class Raum extends DurableObject {
@@ -480,6 +494,7 @@ export class Raum extends DurableObject {
     if (!eintrag.seiten[m.seite] && Object.keys(eintrag.seiten).length >= MAX_SEITEN) return { ok: false, grund: 'ungueltig' };
     const jetzt = Date.now();
     eintrag.seiten[m.seite] = { geloest: m.geloest, gesamt: m.gesamt, status: m.status, um: jetzt };
+    if (m.fehler) eintrag.seiten[m.seite].fehler = m.fehler;
     eintrag.um = jetzt;
     await this.ctx.storage.put(schl, eintrag);
     this.planen(false);
