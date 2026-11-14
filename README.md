@@ -3,8 +3,10 @@
 Arbeitsblätter und Beamer-Stunde mit Smartphone-App für den Themenblock 2 „Notfallsituationen“ im Fach KB I
 (generalistische Pflegeausbildung, 2. Ausbildungsjahr, Leitfall „Reanimation – und nicht nur ich war hilflos“).
 Die Arbeitsblätter entstehen im Wechsel (Lohner / Klawitter); dieses Repository enthält bisher
-**Woche 2 (SW 7): „Schock ist nicht gleich Schock – vergleichen und nach Leitsymptom handeln“**
-(3 UStd. am Stück).
+- **Woche 1 (SW 6): „Wenn der Kreislauf kämpft – vom Ausgleich zur Schockspirale“** (90 min) –
+  Beamer `beamer-w1.html`, Handy `w1.html`
+- **Woche 2 (SW 7): „Schock ist nicht gleich Schock – vergleichen und nach Leitsymptom handeln“**
+  (3 UStd. am Stück) – Beamer `beamer.html`, Handy `w2.html`
 
 ## So läuft die Stunde
 
@@ -21,6 +23,14 @@ geben ihren Vornamen ein – und ihr Handy zeigt ab dann automatisch, was zur ak
 | …/w2.html | Handy über den QR-Code auf Seite 1 des AB (Raumcode von Hand), falls der Beamer-QR nicht klappt |
 | …/w2-transfer.html | Hausaufgabe: Selbstkontrolle (QR-Code im AB) |
 | …/w2-nachlesen.html | Nachlesen nach der Stunde (QR-Code auf der letzten AB-Seite) |
+| …/beamer-w1.html | **Beamer Woche 1** – „Neuen Raum starten“ (eigener Raumspeicher, unabhängig von Woche 2) |
+| …/beamer-w1.html?demo=1 | Probeansicht Woche 1 (erfundene Namen, Stimmen und Fehler) |
+| …/w1.html?raum=1234 · …/w1.html | Handy Woche 1 (QR-Code am Beamer bzw. auf Blatt 1 des AB) |
+
+**Woche 1 – Häufige Fehler:** Auf den Folien zu AA1 (Frühzeichen markieren), AA2 a (Regelkreis), AA3
+(Schockspirale) und AA4 a (Früh- oder Spätzeichen?) zeigt der Beamer rechts die häufigsten Fehler beim
+**ersten Versuch** (falsch markiert / übersehen / zu früh gewählt / Fehlerkarte / falsch zugeordnet).
+Die Handys melden dafür nur Kennungen der Karten (z. B. `rf2`), keine Texte.
 
 ### Folien
 
@@ -118,6 +128,8 @@ alles von selbst online:
 
 ```
 arbeitsblatt/
+  KB1_W1_Kreislauf_Schock_SV.docx      Woche 1: Schülerversion (2 Blätter, 4 Seiten; QR-Code zur Stunden-App)
+  KB1_W1_Kreislauf_Schock_LV_LSG.docx  Woche 1: Lehrerversion (Verlaufsplan mit Foliennummern, Hinweise, Lösungen)
   KB1_W2_Schockformen_SV.docx        Schülerversion (3 QR-Codes: Stunden-App, Hausaufgabe, Nachlesen)
   KB1_W2_Schockformen_Anlagen.docx   Expertenblätter A/B/C (nur Reserve, falls Handys oder WLAN ausfallen)
   KB1_W2_Schockformen_LV_LSG.docx    Lehrerversion: Verlaufsplan mit Foliennummern, Hinweise, Lösungen
@@ -132,19 +144,24 @@ docs/                ← alles, was GitHub Pages veröffentlicht
   w2-nachlesen.html, nachlesen.js/css   Nachlese-Seite
   w2-transfer.html     Hausaufgabe (Selbstkontrolle)
   markieren.js, detektiv.js, lagerung.js, raster.js   Übungen (Einstieg/Check-out stecken in stunde.js)
+  kette.js, karten.js  Übungen von Woche 1: Kette bauen (Regelkreis, Schockspirale), Kartenquiz (Früh/Spät)
+  beamer-w1.html, w1.html   Beamer und Handy von Woche 1 (gleiche Programme, andere Texte:)
+  w1/inhalte_stunde.js, w1/inhalte.js, w1/inhalte_nachlesen.js   Texte von Woche 1
   bilder/lagerung_*.svg  Lagerungsbilder (Beamer, Handy, Nachlese)
   config.js            Adresse des Workers, Sperrwörter für Vornamen
 worker/src/          ← Cloudflare-Worker: index.js (Räume, Live-Verbindung, Nachlese-Sperre), stunde.js (Gruppenpuzzle)
 wrangler.jsonc       ← Cloudflare-Konfiguration (Projekt „kb1-notfall“)
-qr/                  ← QR-Codes fürs Arbeitsblatt (Stunden-App, Hausaufgabe, Nachlesen)
+qr/                  ← QR-Codes fürs Arbeitsblatt (Woche 2: Stunden-App, Hausaufgabe, Nachlesen; Woche 1: qr_w1_stunde.png)
 werkzeuge/           ← ab_w2.js, ab_w2_texte.js, ab_bausteine.js (Arbeitsblätter + inhalte_nachlesen.js),
+                       ab_w1.js, ab_w1_texte.js, qr_w1.js (Woche 1),
                        qr_erzeugen.py, lagerung_bilder.js (SVG → PNG fürs AB), bilder/
 tests/               ← automatische Tests; tests/seiten/ = Testgerüst der Übungen (nicht veröffentlicht)
 ```
 
 ## Datenschutz
 
-- Anmeldung: Raumcode, Zufalls-Geräte-ID, **Vorname**. Übungen melden nur „x von y gelöst“ und den Status.
+- Anmeldung: Raumcode, Zufalls-Geräte-ID, **Vorname**. Übungen melden nur „x von y gelöst“ und den Status,
+  in Woche 1 zusätzlich die Kennungen der Fehler beim ersten Versuch (höchstens 20, z. B. `x7`, `rf2`).
 - Abstimmungen (Einstieg, Check-out, „Wer darf was?“): Raumcode, Geräte-ID, Runde, Antwortbuchstaben, sicher/unsicher – der Beamer erhält nur Summen,
   **ohne Namen**.
 - Gruppenpuzzle: Ein Handy erhält nur die **Vornamen der eigenen Stammgruppe und des eigenen Expertenteams**;
@@ -162,6 +179,9 @@ tests/               ← automatische Tests; tests/seiten/ = Testgerüst der Üb
 - **Merksätze, Einstiegsfragen (E1–E4), Lagerungskarten, Expertentexte** stehen auch im Arbeitsblatt
   (`werkzeuge/ab_w2_texte.js`). Bei Änderungen beide Stellen anpassen; `tests/inhalte.test.js` meldet Abweichungen.
 - **Lösungen im Arbeitsblatt** (`werkzeuge/ab_w2.js`) danach neu erzeugen – das aktualisiert auch die Nachlese-Seite.
+- **Woche 1:** Folien `docs/w1/inhalte_stunde.js`, Übungen `docs/w1/inhalte.js`; Merksätze und Einstiegsfragen
+  auch in `werkzeuge/ab_w1_texte.js` (`tests/w1.test.js` meldet Abweichungen). Der Text des Fallbeispiels
+  (Christins Bericht) ist wörtlich übernommen und bleibt unverändert.
 - Nach größeren Änderungen in `docs/sw.js` `VERSION` erhöhen (Offline-Speicher).
 
 ## Arbeitsblätter neu erzeugen
@@ -171,6 +191,8 @@ pip install segno zxing-cpp pillow
 python werkzeuge/qr_erzeugen.py
 node werkzeuge/lagerung_bilder.js
 node werkzeuge/ab_w2.js
+node werkzeuge/qr_w1.js        # Woche 1: QR-Code (ohne Python, mit Playwright)
+node werkzeuge/ab_w1.js        # Woche 1: SV, LV_LSG und docs/w1/inhalte_nachlesen.js
 soffice --headless --convert-to pdf --outdir arbeitsblatt arbeitsblatt/*.docx
 ```
 
@@ -182,7 +204,9 @@ cd tests
 node worker.test.js        # Worker: Raum, Live-Verbindung, Gruppen, automatischer Wechsel, Nachlese-Sperre
 node inhalte.test.js       # Arbeitsblatt ↔ App, Foliensatz, Nachlese-Daten, Offline-Liste, QR-Codes
 node uebungen.test.js      # alle Übungen in Handygröße 390 × 844
-node folien.test.js       # jede Folie passt auf die Beamer-Bühne (auch voll aufgedeckt), Bilder laden
+node folien.test.js        # jede Folie passt auf die Beamer-Bühne (auch voll aufgedeckt), Bilder laden
+node folien.test.js w1     # dasselbe für Woche 1 (beamer-w1.html)
+node w1.test.js            # Woche 1: AB ↔ App, Foliensatz, Übungen in Handygröße (Meldungen inkl. Fehler)
 node stunde.test.js        # ganze Stunde: Beamer + 6 Handys (eins ohne Live-Verbindung)
 node probe.test.js         # Probestunde: erfundene Klasse + ein Handy der Lehrkraft
 ```

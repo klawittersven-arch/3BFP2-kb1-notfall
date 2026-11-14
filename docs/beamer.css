@@ -247,6 +247,8 @@ b, strong { font-weight: 800; }
 .g-balken { margin-left: auto; width: 90px; height: 10px; background: var(--hell); border-radius: 6px; overflow: hidden; flex: none; }
 .g-balken span { display: block; height: 100%; background: var(--petrol); }
 .g-balken span.fertig { background: var(--gruen); }
+.g-balken span.nochmal { background: #D98B00; }
+.g-zahl.nochmal { color: #7A4300; font-weight: 700; }
 .g-zahl { font-size: 14px; color: var(--leise); width: 46px; text-align: right; flex: none; font-variant-numeric: tabular-nums; }
 
 .status-zeile { display: flex; align-items: center; gap: 22px; margin: 4px 0 16px; }
@@ -480,3 +482,12 @@ button.antwort-karte { font: inherit; font-size: 27px; text-align: left; border:
 .notfall-optionen { display: grid; gap: 12px; }
 .notfall-option { font-size: 32px; font-weight: 700; padding: 12px 20px; border-radius: 14px; background: var(--hell); }
 .folie-abstimmung .abgestimmt { margin-top: 18px; }
+
+/* ---------- Woche 1: Fortschritt mit „Häufige Fehler“ ---------- */
+.fortschritt-rechts { display: grid; gap: 18px; align-content: start; }
+.fehler-box { background: #fff; border-radius: 18px; box-shadow: var(--schatten); padding: 16px 20px; border-left: 10px solid #D98B00; }
+.fehler-box h2 { margin: 0 0 10px; font-size: 22px; color: var(--dunkelpetrol); }
+.fehler-keine { margin: 0; font-size: 18px; color: var(--leise); }
+.fehler-liste { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.fehler-liste li { display: grid; grid-template-columns: 54px 1fr; gap: 10px; align-items: start; font-size: 18px; line-height: 1.35; }
+.fehler-zahl { font-weight: 900; font-size: 22px; color: #7A4300; text-align: right; }

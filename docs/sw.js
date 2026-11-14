@@ -7,13 +7,18 @@
  * Nach größeren Änderungen VERSION erhöhen – dann wird der Speicher erneuert. */
 'use strict';
 
-var VERSION = 'v30';
+var VERSION = 'v31';
 var CACHE = 'kb1-notfall-' + VERSION;
 var ZEITLIMIT_MS = 4000;
 
 var DATEIEN = [
   './',
   'index.html',
+  'w1.html',
+  'beamer-w1.html',
+  'w1/inhalte.js',
+  'w1/inhalte_stunde.js',
+  'w1/inhalte_nachlesen.js',
   'w2.html',
   'w2-transfer.html',
   'w2-nachlesen.html',
@@ -35,6 +40,8 @@ var DATEIEN = [
   'detektiv.js',
   'lagerung.js',
   'raster.js',
+  'kette.js',
+  'karten.js',
   'vendor/qrcode.min.js',
   'bilder/kbs-logo.png',
   'bilder/lagerung_beine_hoch.svg',

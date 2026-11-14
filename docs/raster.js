@@ -8,7 +8,7 @@
   var el = K.element;
   var istTransfer = document.body.getAttribute('data-seite') === 'w2-transfer';
   var T = K.seiteVorbereiten(istTransfer ? 'transfer' : 'raster');
-  var SCHL = istTransfer ? 'kb1nf_transfer' : 'kb1nf_raster';
+  var SCHL = T.speicher || (istTransfer ? 'kb1nf_transfer' : 'kb1nf_raster');
   var platz = document.getElementById('uebung');
 
   var z = K.Speicher.sitzung.lesen(SCHL);

@@ -139,7 +139,7 @@
   }
 
 
-  /* ---------- Bausteine für die Übungsseiten (Woche 2) ---------- */
+  /* ---------- Bausteine für die Übungsseiten ---------- */
   var A = (window.INHALTE && INHALTE.allgemein) || {};
 
   // Kopf, Titel und Anweisung aus INHALTE[bereich] setzen
@@ -196,11 +196,12 @@
     return box;
   }
 
-  function melden(seite, geloest, gesamt, status) {
-    if (window.KB1Melden) window.KB1Melden.stand(seite, geloest, gesamt, status);
+  // fehler (optional): Kennungen der Fehler beim ersten Versuch – der Beamer zeigt daraus die häufigsten Fehler
+  function melden(seite, geloest, gesamt, status, fehler) {
+    if (window.KB1Melden) window.KB1Melden.stand(seite, geloest, gesamt, status, fehler);
   }
 
-  // In der Beamer-Stunde (w2.html) setzt die App die Werte selbst (window.KB1_PARAMS), sonst die Adresse
+  // In der Beamer-Stunde (w1.html, w2.html) setzt die App die Werte selbst (window.KB1_PARAMS), sonst die Adresse
   function urlParam(name) {
     if (window.KB1_PARAMS && Object.prototype.hasOwnProperty.call(window.KB1_PARAMS, name)) return String(window.KB1_PARAMS[name]);
     try { return new URLSearchParams(location.search).get(name); } catch (e) { return null; }

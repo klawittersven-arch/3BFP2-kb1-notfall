@@ -74,7 +74,7 @@ for (const s of Object.values(AB.SEITEN)) {
   pruefe(qr.includes(name), `QR-Code vorhanden: ${name}`);
   pruefe(fs.existsSync(path.join(DOCS, s.split('?')[0])), `Zielseite existiert: ${s}`);
 }
-const qrDateien = qr.filter((d) => d.endsWith('.png'));
+const qrDateien = qr.filter((d) => d.startsWith('qr_w2_') && d.endsWith('.png'));
 const erwartet = Object.values(AB.SEITEN).length;
 pruefe(qrDateien.length === erwartet, `genau ${erwartet} QR-Codes, keine veralteten`, qrDateien);
 

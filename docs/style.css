@@ -368,3 +368,15 @@ a { color: var(--petrol); }
 .muster { background: var(--gruen-hell); border-left: 6px solid var(--gruen); border-radius: 8px; padding: 8px 12px; margin: 0 0 10px; }
 .muster h3 { margin: 0 0 4px; font-size: 16px; color: var(--gruen); }
 .muster p { margin: 0; font-size: 16px; }
+
+/* ==========================================================================
+   Woche 1: Kette bauen (Regelkreis, Schockspirale) und Karten-Quiz (Früh- oder Spätzeichen)
+   ========================================================================== */
+.gelegt-text { display: flex; flex-direction: column; gap: 2px; }
+.gelegt-warum { font-size: 15px; font-weight: 500; color: #2A5A36; }
+.kette-ende { margin: 4px 0 0; padding: 8px 10px; background: #fff; border-radius: 8px; font-weight: 700; color: var(--dunkelpetrol); }
+.reihe-auswahl .antwort.falsch { text-decoration: line-through; }
+.quiz-karte { background: #fff; border: 3px solid var(--petrol); }
+.quiz-text { font-size: 21px; font-weight: 700; line-height: 1.35; margin: 4px 0 14px; }
+.quiz-optionen { margin-bottom: 4px; }
+.quiz-weiter { margin-top: 14px; }

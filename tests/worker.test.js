@@ -55,6 +55,15 @@ const warte = (ms) => new Promise((r) => setTimeout(r, ms));
     const fremd = await post('/api/lehrer', { raum: raum.raum, schluessel: 'X'.repeat(32), typ: 'folie', folie: 'fall' });
     H.pruefe(fremd.status === 403, 'Folienwechsel ohne Schlüssel wird abgelehnt');
 
+    console.log('\n== Fortschritt mit Fehlern des ersten Versuchs (Woche 1: „Häufige Fehler“)');
+    const mBasis = { raum: raum.raum, geraeteId: ids[0], name: 'Person 1', seite: 'w1-regelkreis', geloest: 2, gesamt: 6, status: 'arbeitet' };
+    H.pruefe((await post('/api/melden', { ...mBasis, fehler: ['rf2', 'rs5', 'rf2'] })).status === 200, 'Meldung mit Fehlerkennungen wird angenommen');
+    H.pruefe((await post('/api/melden', { ...mBasis, fehler: ['<b>'] })).status === 400, 'ungültige Fehlerkennung wird abgelehnt');
+    H.pruefe((await post('/api/melden', { ...mBasis, fehler: Array.from({ length: 21 }, (_, i) => 'k' + i) })).status === 400, 'mehr als 20 Fehlerkennungen werden abgelehnt');
+    const sf = await get(`/api/stand?raum=${raum.raum}&schluessel=${raum.schluessel}`);
+    const g0 = sf.d.geraete.find((x) => x.geraeteId === ids[0]);
+    H.pruefe(g0 && JSON.stringify(g0.seiten['w1-regelkreis'].fehler) === '["rf2","rs5"]', 'Beamer-Stand enthält die Fehler (ohne Doppelte)', g0 && g0.seiten);
+
     console.log('\n== Folienwechsel');
     await L('folie', { folie: 'fall', schritt: 0 });
     await warte(400);

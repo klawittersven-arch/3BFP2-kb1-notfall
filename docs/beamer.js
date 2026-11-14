@@ -1,4 +1,5 @@
-/* Beamer-Stunde: Foliensatz mit „Weiter“ und „Zurück“ (Programmlogik – Texte in inhalte_stunde.js).
+/* Beamer-Stunde: Foliensatz mit „Weiter“ und „Zurück“ (Programmlogik – Texte in inhalte_stunde.js;
+ * Woche 1: beamer-w1.html mit w1/inhalte_stunde.js – die Handys öffnen dann w1.html).
  *
  * Der Laptop startet einen Raum, zeigt pro Unterrichtsabschnitt eine Folie und schickt jeden
  * Folienwechsel an den Worker. Die Handys folgen automatisch (siehe stunde.js).
@@ -16,7 +17,8 @@
   var FRAGEN = (INHALTE.entscheidung && INHALTE.entscheidung.fragen) || [];
   var C = window.CONFIG || {};
   var BASIS = String(C.FORTSCHRITT_URL || '').replace(/\/+$/, '');
-  var SCHL_RAUM = 'kb1nf_lehrer_raum';
+  // Woche 1 und Woche 2 merken sich ihren Raum getrennt (STUNDE.speicher, z. B. 'w1')
+  var SCHL_RAUM = 'kb1nf_lehrer_raum' + (S.speicher ? '_' + S.speicher : '');
   var SCHL_NAMEN = 'kb1nf_lehrer_namen_aus';
   var demo = K.urlParam('demo') === '1';
 
@@ -239,7 +241,7 @@
 
   /* ---------- QR-Code (Handy-Adresse mit Raumcode) ---------- */
   function handyAdresse() {
-    return new URL('w2.html?raum=' + raum.raum, location.href).href;
+    return new URL((S.handySeite || 'w2.html') + '?raum=' + raum.raum, location.href).href;
   }
   function qrBauen(groesse) {
     var d = el('div');
@@ -563,11 +565,12 @@
     var g = geraet(id);
     var s = g && g.seiten && g.seiten[seite];
     var b = el('span', 'g-balken');
-    var i = el('span', s && s.status === 'fertig' ? 'fertig' : '');
+    var i = el('span', s && s.status === 'fertig' ? 'fertig' : s && s.status === 'durchklicken' ? 'nochmal' : '');
     i.style.width = s ? Math.round(100 * s.geloest / s.gesamt) + '%' : '0%';
     b.appendChild(i);
     platz.appendChild(b);
-    platz.appendChild(el('span', 'g-zahl', s ? (s.status === 'fertig' ? '✓' : s.geloest + '/' + s.gesamt) : '–'));
+    // ↻ = beim ersten Versuch zu viel falsch („durchgeklickt“) – die Übung beginnt am Handy neu
+    platz.appendChild(el('span', 'g-zahl' + (s && s.status === 'durchklicken' ? ' nochmal' : ''), s ? (s.status === 'fertig' ? '✓' : s.status === 'durchklicken' ? '↻ neu' : s.geloest + '/' + s.gesamt) : '–'));
   }
 
   function folieePuzzleKnoepfe(f, w, eingeteilt) {
@@ -699,7 +702,7 @@
   function folieFortschritt(f, w) {
     w.appendChild(titel(f));
     if (f.text) w.appendChild(fmt('p', 'f-text', f.text));
-    var box = el('div', f.punkte ? 'seite-mit-punkten' : '');
+    var box = el('div', f.punkte || f.fehlerArt ? 'seite-mit-punkten' : '');
     var links = el('div');
     var p = stand.puzzle;
     var g = stand.geraete || [];
@@ -719,8 +722,76 @@
       links.appendChild(liste);
     }
     box.appendChild(links);
-    if (f.punkte) box.appendChild(punkteListe(f.punkte));
+    if (f.punkte || f.fehlerArt) {
+      var rechts = el('div', 'fortschritt-rechts');
+      if (f.punkte) rechts.appendChild(punkteListe(f.punkte));
+      if (f.fehlerArt) rechts.appendChild(haeufigeFehler(f, g));
+      box.appendChild(rechts);
+    }
     w.appendChild(box);
+  }
+
+  /* ---------- Häufige Fehler (erster Versuch) – die Handys melden Kennungen, hier werden sie gezählt ---------- */
+  function fehlerText(f, id) {
+    var t = null, vorlage = null;
+    if (f.fehlerArt === 'markieren') {
+      var fall = INHALTE.markieren && INHALTE.markieren.faelle[f.fall];
+      var teil = fall && fall.teile[Number(id.slice(1))];
+      if (teil && typeof teil === 'object') { t = teil.t; vorlage = id.charAt(0) === 'x' ? T.fehlerMarkiert : T.fehlerUebersehen; }
+    } else if (f.fehlerArt === 'kette') {
+      var kt = INHALTE.kette && INHALTE.kette.ketten[f.kette];
+      (kt ? kt.schritte : []).forEach(function (x) { if (x.id === id) { t = x.text; vorlage = T.fehlerZuFrueh; } });
+      (kt ? kt.ablenker || [] : []).forEach(function (x) { if (x.id === id) { t = x.text; vorlage = T.fehlerKarte; } });
+    } else if (f.fehlerArt === 'karten') {
+      var q = INHALTE.karten && INHALTE.karten.quiz[f.quiz];
+      (q ? q.karten : []).forEach(function (x) { if (x.id === id) { t = x.text; vorlage = T.fehlerQuiz; } });
+    }
+    return t === null ? null : K.ersetzen(vorlage || '{t}', { t: ohneSterne(t) });
+  }
+  function haeufigeFehler(f, geraete) {
+    var zaehler = {};
+    geraete.forEach(function (x) {
+      var s = x.seiten && x.seiten[f.seite];
+      ((s && s.fehler) || []).forEach(function (id) { zaehler[id] = (zaehler[id] || 0) + 1; });
+    });
+    var liste = Object.keys(zaehler).map(function (id) { return { id: id, n: zaehler[id], text: fehlerText(f, id) }; })
+      .filter(function (x) { return x.text; })
+      .sort(function (a, b) { return b.n - a.n; })
+      .slice(0, f.fehlerAnzahl || 4);
+    var box = el('section', 'fehler-box');
+    box.appendChild(el('h2', null, T.fehlerTitel));
+    if (!liste.length) { box.appendChild(el('p', 'fehler-keine', T.fehlerKeine)); return box; }
+    var ul = el('ul', 'fehler-liste');
+    liste.forEach(function (x) {
+      var li = el('li');
+      li.appendChild(el('span', 'fehler-zahl', K.ersetzen(T.fehlerAnzahl, { n: x.n })));
+      li.appendChild(el('span', 'fehler-text', x.text));
+      ul.appendChild(li);
+    });
+    box.appendChild(ul);
+    return box;
+  }
+  // alle möglichen Fehlerkennungen einer Folie (für Probeansicht und Probestunde)
+  function fehlerKennungen(f) {
+    var ids = [];
+    if (f.fehlerArt === 'markieren') {
+      var fall = INHALTE.markieren.faelle[f.fall];
+      fall.teile.forEach(function (t, i) { if (typeof t === 'object') ids.push((t.k ? 'u' : 'x') + i); });
+    } else if (f.fehlerArt === 'kette') {
+      var kt = INHALTE.kette.ketten[f.kette];
+      kt.schritte.slice(3).forEach(function (x) { ids.push(x.id); });
+      (kt.ablenker || []).forEach(function (x) { ids.push(x.id); });
+    } else if (f.fehlerArt === 'karten') {
+      INHALTE.karten.quiz[f.quiz].karten.forEach(function (x) { ids.push(x.id); });
+    }
+    return ids;
+  }
+  function zufallsFehler(f) {
+    var ids = fehlerKennungen(f);
+    if (!ids.length) return [];
+    // einige Fehler kommen häufiger vor als andere (wie in einer echten Klasse)
+    return K.mischen(ids.slice(0, Math.min(3, ids.length)).concat(ids)).slice(0, 1 + Math.floor(Math.random() * 2))
+      .filter(function (x, i, a) { return a.indexOf(x) === i; });
   }
 
   function foliePapier(f, w) {
@@ -847,7 +918,7 @@
     box.appendChild(fmt('h1', 'f-titel', f.titel));
     if (f.text) box.appendChild(fmt('p', 'f-text', f.text));
     if (f.punkte) box.appendChild(punkteListe(f.punkte));
-    box.appendChild(fmt('p', 'ende-frei', f.frei));
+    if (f.frei) box.appendChild(fmt('p', 'ende-frei', f.frei));
     w.appendChild(box);
   }
 
@@ -1040,7 +1111,7 @@
         if (a.vorsatz) tx.appendChild(fmt('p', 'a-vorsatz', a.vorsatz));
         tx.appendChild(fmt('p', null, a.text || ''));
         t.appendChild(tx);
-        t.appendChild(el('div', 'a-punkte', '___ / ' + (a.punkte || '')));
+        t.appendChild(el('div', 'a-punkte', a.punkte ? '___ / ' + a.punkte : ''));
       });
       return t;
     }
@@ -1206,8 +1277,9 @@
     });
     k.appendChild(ul);
     var r = el('div', 'ebene-knoepfe');
-    r.appendChild(knopf(FOLIEN.filter(function (f) { return f.typ === 'puzzle'; })[0].ohneHandy, 'knopf-klein', function () {
-      eingabe(FOLIEN.filter(function (f) { return f.typ === 'puzzle'; })[0].ohneHandyFrage).then(function (name) { if (name) lehrer('ohneHandy', { name: name }).then(teilnehmende); else teilnehmende(); });
+    var pz = FOLIEN.filter(function (f) { return f.typ === 'puzzle'; })[0] || { ohneHandy: T.ohneHandyKnopf, ohneHandyFrage: T.ohneHandyFrage };
+    if (pz.ohneHandy) r.appendChild(knopf(pz.ohneHandy, 'knopf-klein', function () {
+      eingabe(pz.ohneHandyFrage).then(function (name) { if (name) lehrer('ohneHandy', { name: name }).then(teilnehmende); else teilnehmende(); });
     }));
     r.appendChild(knopf(T.ok, 'knopf-gross', ebeneZu));
     k.appendChild(r);
@@ -1384,10 +1456,10 @@
       var f = folie();
       if (f.seite || f.typ === 'experten') {
         var seite = f.seite || 'w2-markieren';
-        var gesamt = { 'w2-markieren': 11, 'w2-detektiv': 7, 'w2-lagerung': INHALTE.lagerung.karten.length }[seite] || 5;
+        var gesamt = f.gesamt || { 'w2-markieren': 11, 'w2-detektiv': 7, 'w2-lagerung': INHALTE.lagerung ? INHALTE.lagerung.karten.length : 5 }[seite] || 5;
         stand.geraete.forEach(function (g) {
           if (Math.random() > 0.3) return;
-          var s = g.seiten[seite] || (g.seiten[seite] = { geloest: 0, gesamt: gesamt, status: 'arbeitet' });
+          var s = g.seiten[seite] || (g.seiten[seite] = { geloest: 0, gesamt: gesamt, status: 'arbeitet', fehler: f.fehlerArt ? zufallsFehler(f) : undefined });
           if (s.geloest < s.gesamt) s.geloest++;
           if (s.geloest === s.gesamt) s.status = 'fertig';
         });
@@ -1425,7 +1497,9 @@
         var fall = rolle(id) ? S.rollen[rolle(id)].fall : 'a';
         return INHALTE.markieren.faelle[fall].teile.filter(function (t) { return typeof t === 'object' && t.k; }).length;
       }
-      return { 'w2-detektiv': INHALTE.detektiv.faelle.length, 'w2-lagerung': INHALTE.lagerung.karten.length }[seite] || 5;
+      var f = FOLIEN.filter(function (x) { return x.seite === seite; })[0];
+      if (f && f.gesamt) return f.gesamt;
+      return { 'w2-detektiv': INHALTE.detektiv ? INHALTE.detektiv.faelle.length : 5, 'w2-lagerung': INHALTE.lagerung ? INHALTE.lagerung.karten.length : 5 }[seite] || 5;
     }
     // eine erfundene Stimme zum Notfall i (die bisherigen Antworten der Person werden mitgeschickt)
     function abstimmen(p, runde, i) {
@@ -1471,7 +1545,9 @@
           var g = gesamt(seite, p.id), schl = seite + ':' + p.id;
           var x = Math.min(g, (z.prog[schl] || 0) + 1);
           z.prog[schl] = x;
-          post('/api/melden', { geraeteId: p.id, name: p.name, seite: seite, geloest: x, gesamt: g, status: x >= g ? 'fertig' : 'arbeitet' });
+          var meldung = { geraeteId: p.id, name: p.name, seite: seite, geloest: x, gesamt: g, status: x >= g ? 'fertig' : 'arbeitet' };
+          if (f.fehlerArt) { z.fe = z.fe || {}; z.fe[schl] = z.fe[schl] || zufallsFehler(f); meldung.fehler = z.fe[schl]; }
+          post('/api/melden', meldung);
         });
       }
       if (f.typ === 'experten') {
