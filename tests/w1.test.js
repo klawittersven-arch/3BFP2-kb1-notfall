@@ -79,6 +79,10 @@ pruefe(new Set(ids).size === ids.length, 'jede Folie hat eine eigene Kennung');
 pruefe(!ids.includes('aa1') && ids.every((id) => /^[a-z0-9-]{1,24}$/.test(id)), 'Kennungen gültig, keine Sonderfolie „aa1“ aus Woche 2');
 pruefe(ids[ids.length - 1] === 'ende', 'letzte Folie „ende“');
 pruefe(S.handySeite === 'w1.html' && S.speicher === 'w1', 'eigene Handyseite und eigener Raumspeicher');
+const start = S.folien[0];
+pruefe(start.id === 'start' && start.sprung && start.sprung.folie === 'blatt2' && ids.includes('blatt2'), 'Willkommen: Knopf „Heute mit Arbeitsblatt 2 beginnen“ führt zu blatt2');
+const ergebnisFolie = S.folien.find((f) => f.id === 'checkout-ergebnis');
+pruefe(ergebnisFolie.titelNurEnde && ergebnisFolie.unterNurEnde && ergebnisFolie.handy.textNurEnde && S.handy.bilanzNurEnde, 'Check-out auch ohne Stimmen vom Einstieg (Stunde geteilt)');
 const beamerJs = fs.readFileSync(path.join(DOCS, 'beamer.js'), 'utf8');
 const modulSeiten = { markieren: I.markieren.seite, kette: null, karten: null, raster: null };
 for (const f of S.folien) {

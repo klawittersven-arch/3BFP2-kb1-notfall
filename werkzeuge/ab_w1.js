@@ -147,6 +147,10 @@ function schuelerTeil(B, { lsg }) {
   loes('Schockformen', T.SCHOCKFORMEN.map((z) => `**${z[0]}** – ${z[1]} (z. B. ${z[2]})`));
   push(
     blattKopf(B, 2, { pageBreakBefore: true }),
+    // derselbe QR-Code wie auf Blatt 1 – falls die Stunde mit Blatt 2 beginnt und Blatt 1 nicht dabei ist
+    B.handy(T.SEITEN.stunde, [
+      B.p('**Stunden-App:** Scannen Sie den QR-Code **am Beamer** und geben Sie Ihren Vornamen ein. Nur falls das nicht klappt: diesen QR-Code scannen und den **Raumcode vom Beamer** eingeben.', { spacing: { after: 0, line: 252 } })
+    ], { linkBasis: T.LINK_BASIS, qrDatei: QR, qrCm: 1.7 }),
     B.kasten([
       ...T.INFO2.map((x, i) => B.p(x, { spacing: { after: 50, line: 252 } })),
       new Paragraph({ spacing: { after: 0 }, children: [B.i('Quelle: nach MSD Manual Profi-Ausgabe (2025): Schock; Lecturio (2023): Schock – Überblick; sprachlich vereinfacht.', { size: 15, color: F.GRAU_T })] })
@@ -373,6 +377,7 @@ function hinweise(B) {
     punkt('**Beamer:** https://klawittersven-arch.github.io/3BFP2-kb1-notfall/beamer-w1.html → „Neuen Raum starten“. Die SuS scannen den QR-Code am Beamer (öffnet **w1.html** mit dem Raumcode) und geben den Vornamen ein. Der QR-Code auf Blatt 1 ist nur Ersatz (Raumcode dann von Hand).'),
     punkt('**Probe:** beamer-w1.html?demo=1 zeigt alle Folien mit erfundenen Namen und Fehlern (ohne Internet). „Probestunde mit erfundener Klasse“ startet einen echten Raum mit 20 erfundenen SuS – mit dem eigenen Handy mitmachen.'),
     punkt('**Häufige Fehler:** Auf den Folien zu AA1, AA2 a, AA3 und AA4 a zeigt der Beamer rechts die häufigsten Fehler beim ersten Versuch (falsch markiert / übersehen / Fehlerkarte gewählt / falsch zugeordnet). Sie eignen sich als Impuls für die anschließende Sicherung. **↻ neu** hinter einem Namen: beim ersten Versuch zu viel falsch („durchgeklickt“) – die Übung beginnt am Handy neu.'),
+    punkt('**Stunde geteilt (Blatt 1 heute, Blatt 2 nächste Woche):** Nächste Woche einfach einen **neuen Raum** starten (der alte ist nach 6 Stunden gelöscht) und auf der Willkommensfolie **„Heute mit Arbeitsblatt 2 beginnen“** wählen. Die SuS scannen den QR-Code **am Beamer** (Blatt 1 brauchen sie dafür nicht; Ersatz-QR auch auf Blatt 2). Der Check-out zeigt dann nur die Entscheidungen „jetzt“ (die Vermutungen vom Einstieg lagen im alten Raum). Sinnvoller Schnitt: nach Merksatz AA2 (Folie ' + FN('w1-aa2-merksatz') + '); Blatt 2 beginnt mit Folie ' + FN('blatt2') + '.'),
     punkt('**Ohne Handy:** Alle Handy-Aufgaben lassen sich auch auf Papier lösen (AA1: Fallauszug auf S. 1; AA2 a, AA3: Lückentexte mit Wortspeicher; AA4 a: Tabelle). SuS ohne Handy arbeiten mit einer Partnerin oder einem Partner.'),
     B.zwischen('Bezug zur Klassenarbeit und zum Examen (nur für Lehrkräfte)'),
     punkt('**KA KB 1, Aufg. 5.4** („Erläutern Sie, wie der Körper … in dieser Phase den Blutdruck aufrechterhält. Begründen Sie, warum der fast normale Blutdruck einen Schock nicht ausschließt.“): Das Wissen bauen AA2 (Regelkreis, Befunde erklären) und AA4 (Spätzeichen Blutdruck, Schockindex) auf; **AA5, 5.2** übt eine fast gleich formulierte Aufgabe an einem anderen Fall (Frau Berger, Nachblutung nach Cholezystektomie, mit Vorwerten). Der KA-Fall (Sturz, Heckenschere) wird nicht vorweggenommen.'),

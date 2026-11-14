@@ -494,9 +494,11 @@
       return;
     }
     var beginn = z.runden[1].antworten[frage.nr];
+    // ohne eine einzige Stimme zu Beginn (z. B. Stunde geteilt, neuer Raum): keine Zeile „Beginn“
+    var ohneBeginn = !Object.keys(z.runden[1].antworten).length;
     var rm = el('div', 'rueckmeldung ' + (meine === frage.richtig ? 'ist-richtig' : 'ist-falsch'));
     rm.appendChild(el('p', 'rueck-titel', '✓ ' + K.ersetzen(H.abstRichtigIst, { a: optionText(frage, frage.richtig) })));
-    rm.appendChild(el('p', 'abst-beginn', beginn ? K.ersetzen(H.abstBeginn, { a: optionText(frage, beginn) }) + (beginn === frage.richtig ? ' ✓' : ' ✗') : H.abstBeginnKeine));
+    if (!ohneBeginn) rm.appendChild(el('p', 'abst-beginn', beginn ? K.ersetzen(H.abstBeginn, { a: optionText(frage, beginn) }) + (beginn === frage.richtig ? ' ✓' : ' ✗') : H.abstBeginnKeine));
     rm.appendChild(el('p', 'abst-ende', meine ? K.ersetzen(H.abstEnde, { a: optionText(frage, meine) }) + (meine === frage.richtig ? ' ✓' : ' ✗') : H.abstEndeKeine));
     rm.appendChild(el('p', null, frage.erklaerung));
     box.appendChild(rm);
@@ -509,13 +511,14 @@
     var FR = INHALTE.entscheidung.fragen;
     function richtig(r, fr) { return z.runden[r].antworten[fr.nr] === fr.richtig; }
     function zaehle(r) { return FR.filter(function (fr) { return richtig(r, fr); }).length; }
-    var box = bildschirm('📊', h.titel, h.text);
-    box.appendChild(el('p', 'bilanz-zahl', K.ersetzen(H.bilanz, { a: zaehle(1), e: zaehle(2), y: FR.length })));
+    var ohneBeginn = !Object.keys(z.runden[1].antworten).length && H.bilanzNurEnde;
+    var box = bildschirm('📊', h.titel, ohneBeginn ? h.textNurEnde || h.text : h.text);
+    box.appendChild(el('p', 'bilanz-zahl', K.ersetzen(ohneBeginn ? H.bilanzNurEnde : H.bilanz, { a: zaehle(1), e: zaehle(2), y: FR.length })));
     var liste = el('div', 'bilanz-liste');
     FR.forEach(function (fr) {
       var zeile = el('div', 'bilanz-zeile');
       zeile.appendChild(el('strong', null, fr.nr));
-      zeile.appendChild(el('span', null, H.bilanzBeginn + ' ' + (richtig(1, fr) ? '✓' : '✗') + ' · ' + H.bilanzEnde + ' ' + (richtig(2, fr) ? '✓' : '✗')));
+      zeile.appendChild(el('span', null, (ohneBeginn ? '' : H.bilanzBeginn + ' ' + (richtig(1, fr) ? '✓' : '✗') + ' · ') + H.bilanzEnde + ' ' + (richtig(2, fr) ? '✓' : '✗')));
       zeile.appendChild(el('span', 'klein-grau', K.ersetzen(H.abstRichtigIst, { a: optionText(fr, fr.richtig) })));
       liste.appendChild(zeile);
     });

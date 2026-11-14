@@ -43,6 +43,8 @@ var STUNDE = {
       id: 'start', abschnitt: 'Ankommen', kurz: 'Willkommen', typ: 'start',
       titel: 'Willkommen!',
       schritte: ['Scannen Sie den QR-Code.', 'Geben Sie Ihren **Vornamen** ein.', 'Fertig – Ihr Handy wechselt ab jetzt **automatisch mit dem Beamer**.'],
+      // Stunde geteilt (Blatt 1 schon bearbeitet): Knopf für die Lehrkraft, springt zu „Weiter mit Arbeitsblatt 2“
+      sprung: { text: 'Heute mit Arbeitsblatt 2 beginnen →', folie: 'blatt2', tipp: 'falls Arbeitsblatt 1 schon in der letzten Stunde dran war' },
       handy: { typ: 'vorne', titel: 'Sie sind dabei, {name}!', text: 'Ihr Handy wechselt ab jetzt automatisch mit dem Beamer. Schauen Sie nach vorne.' }
     },
     {
@@ -305,7 +307,10 @@ var STUNDE = {
       id: 'checkout-ergebnis', abschnitt: 'Abschluss', kurz: 'Vorher – nachher', typ: 'ergebnis', runde: 2, loesung: true,
       titel: 'Vorher – nachher',
       unter: 'Karte anklicken = groß, mit Erklärung · Bei welcher Frage hat sich die Klasse am stärksten verändert?',
-      handy: { typ: 'bilanz', titel: 'Ihre Bilanz', text: 'Vergleichen Sie am Beamer: Bei welcher Frage hat sich die Klasse am stärksten verändert?' }
+      // falls die Stunde geteilt wurde (neuer Raum, keine Stimmen vom Einstieg):
+      titelNurEnde: 'So hat die Klasse entschieden',
+      unterNurEnde: 'Karte anklicken = groß, mit Erklärung · Welche Frage war am schwersten?',
+      handy: { typ: 'bilanz', titel: 'Ihre Bilanz', text: 'Vergleichen Sie am Beamer: Bei welcher Frage hat sich die Klasse am stärksten verändert?', textNurEnde: 'Vergleichen Sie am Beamer: Welche Frage war für die Klasse am schwersten?' }
     },
     {
       id: 'ende', abschnitt: 'Abschluss', kurz: 'Ende der Stunde', typ: 'ende',
@@ -494,6 +499,7 @@ var STUNDE = {
     bilanz: 'Richtig zu Beginn: {a} von {y} · jetzt: {e} von {y}',
     bilanzBeginn: 'Beginn',
     bilanzEnde: 'jetzt',
+    bilanzNurEnde: 'Richtig: {e} von {y}',
     aufstellungNr: 'Maßnahme {n} von {y}',
     aufstellungFrage: 'Wer darf diese Maßnahme durchführen? Tippen Sie an.',
     aufstellungGewaehlt: 'Ihre Wahl ist angekommen. Bis zur Lösung können Sie sie noch ändern.',
