@@ -114,7 +114,7 @@ function schuelerTeil(B, { lsg }) {
   pageBreakVor(k, 0);   // Informationstext 1 beginnt Seite 2
   const aa2aText = 'Füllen Sie die Lücken im Regelkreis aus. Wortspeicher: Kompensation · eng · Sympathikus · Wasser · Barorezeptoren · Zentralisation · schneller';
   auf('AA2 a', aa2aText);
-  loes('AA2 a', ['② Die **Barorezeptoren** melden: „Der Druck sinkt.“', '③ Das Gehirn macht den **Sympathikus** aktiv.', '④ Das Herz schlägt **schneller** → HZV ↑', '⑤ Die Gefäße in Haut, Muskeln, Niere und Darm werden **eng** = **Zentralisation**', '⑥ RAAS und ADH halten **Wasser** und Natrium zurück', '⑦ Der Blutdruck bleibt fast normal = **Kompensation**']);
+  loes('AA2 a', ['② Die **Barorezeptoren** melden: „Der Druck sinkt.“', '③ Das Gehirn macht den **Sympathikus** aktiv.', '④ Das Herz schlägt **schneller** → HZV ↑', '⑤ Die Gefäße in Haut, Muskeln, Niere und Darm werden **eng** = **Zentralisation**', '⑥ RAAS und ADH halten **Wasser** und Natrium zurück', '⑦ Der Blutdruck bleibt fast normal = **Kompensation**', '⑦ → ② Die Barorezeptoren messen weiter: Ist der Druck noch zu niedrig, bleibt der Sympathikus aktiv – ein **Regelkreis**.']);
   push(
     B.aa([IC.handy, IC.schreiben], 'AA2: Erklären – So hält der Körper den Blutdruck:', '**a)** Bauen Sie am Handy den **Regelkreis**. Dann: ' + aa2aText.replace('Wortspeicher:', '**Wortspeicher:**')),
     B.meta(`17 min (4 min Infotext lesen, 5 min Handy, 3 min Regelkreis sichern, 4 min AA2 b mit Lösung, 1 min Merksatz) · PA (Lesen) → EA (Handy) → EA → Plenum · AFB I–II · Ich-kann-Liste W1 Nr. 2 · KA-Bezug KB 1, Aufg. 5.4 · ${FOLIEN_T('w1-info1', 'w1-aa2-merksatz')}`),
@@ -278,15 +278,18 @@ function regelkreis(B, L) {
   const k5 = kasten(['**⑤** Die Gefäße in Haut, Muskeln, Niere und Darm werden ', lz('eng', 6), ' = ', lz('Zentralisation', 13)]);
   const k6 = kasten(['**⑥** RAAS und ADH halten ', lz('Wasser', 9), ' und Natrium zurück → Durst, wenig Urin']);
   const k7 = kasten(['**⑦** Der Blutdruck bleibt fast normal = ', lz('Kompensation', 13)], 'E2F3E7');
-  const notiz = B.zelle([new Paragraph({ spacing: { after: 0, line: 230 }, children: [B.b('↻ ', { size: 26, color: '2E75B6' }), ...B.runs('Die Barorezeptoren messen weiter: ein **Regelkreis**.', { size: 16, color: F.GRAU_T })] })], wK + wP,
-    { borders: { top: keinRand, bottom: keinRand, left: keinRand, right: keinRand }, verticalAlign: VerticalAlign.CENTER, columnSpan: 2 });
+  const ohne = { top: keinRand, bottom: keinRand, left: keinRand, right: keinRand };
+  // Der Kreis schließt sich: ⑦ → ② (die Barorezeptoren messen weiter). ① steht außerhalb – der Auslöser.
+  const hoch = B.zelle([new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 0 }, children: [B.b('↑', { size: 28, color: '2E75B6' }), B.t(' messen weiter', { size: 16, color: '2E75B6' })] })], wK, { borders: ohne, verticalAlign: VerticalAlign.CENTER });
+  const mitte = B.zelle([new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 0 }, children: [B.b('Regelkreis', { size: 22, color: '2E75B6' })] })], wP + wK + wP, { borders: ohne, verticalAlign: VerticalAlign.CENTER, columnSpan: 3 });
+  const runter = B.zelle([new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 0 }, children: [B.b('↓', { size: 28, color: '2E75B6' })] })], wK, { borders: ohne });
   const breiten = [wK, wP, wK, wP, wK, wP, wK];
   return new Table({
     width: { size: breiten.reduce((a, b) => a + b, 0), type: WidthType.DXA }, columnWidths: breiten, layout: TableLayoutType.FIXED,
     rows: [
       new TableRow({ cantSplit: true, height: { value: 760, rule: HeightRule.ATLEAST }, children: [k1, pfeil('→'), k2, pfeil('→'), k3, pfeil('→'), k4] }),
-      new TableRow({ cantSplit: true, children: [leer(wK), leer(wP), leer(wK), leer(wP), leer(wK), leer(wP), B.zelle([new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 0 }, children: [B.b('↓', { size: 28, color: '2E75B6' })] })], wK, { borders: { top: keinRand, bottom: keinRand, left: keinRand, right: keinRand } })] }),
-      new TableRow({ cantSplit: true, height: { value: 760, rule: HeightRule.ATLEAST }, children: [notiz, k7, pfeil('←'), k6, pfeil('←'), k5] })
+      new TableRow({ cantSplit: true, children: [leer(wK), leer(wP), hoch, mitte, runter] }),
+      new TableRow({ cantSplit: true, height: { value: 760, rule: HeightRule.ATLEAST }, children: [leer(wK), leer(wP), k7, pfeil('←'), k6, pfeil('←'), k5] })
     ]
   });
 }

@@ -32,7 +32,7 @@ const INFO1 = [
   '• Das Herz schlägt **schneller** und kräftiger → das HZV steigt.',
   '• Die Gefäße in **Haut, Muskeln, Niere und Darm** werden **eng**. Das Blut fließt vor allem zu **Herz und Gehirn**: **Zentralisation**. Die Haut wird **blass und kalt**, der Sympathikus macht **kalten Schweiß**.',
   'In Minuten bis Stunden hilft die **Niere**: Das **Renin-Angiotensin-Aldosteron-System (RAAS)** macht die Gefäße eng und hält **Wasser und Natrium** zurück. Das Hormon **ADH** hält zusätzlich Wasser zurück. Die Person hat **Durst** und scheidet **wenig Urin** aus.',
-  'Reicht dieser Ausgleich, bleibt der Blutdruck **fast normal**: **Kompensation**. Ein fast normaler Blutdruck heißt also **nicht**, dass alles in Ordnung ist!'
+  'Die Barorezeptoren **messen immer weiter**: Ist der Druck noch zu niedrig, bleibt der Sympathikus aktiv. So entsteht ein **Regelkreis**. Reicht dieser Ausgleich, bleibt der Blutdruck **fast normal**: **Kompensation**. Ein fast normaler Blutdruck heißt also **nicht**, dass alles in Ordnung ist!'
 ];
 const WOERTER1 = 'Barorezeptoren = Druckfühler in der Gefäßwand · Sympathikus = Teil des Nervensystems für Leistung und Gefahr · Zentralisation = das Blut fließt vor allem zu Herz und Gehirn · Kompensation = Ausgleich · ADH = Hormon, das Wasser im Körper hält';
 

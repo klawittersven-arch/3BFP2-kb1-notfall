@@ -62,7 +62,8 @@ var NACHLESEN = {
    "④ Das Herz schlägt **schneller** → HZV ↑",
    "⑤ Die Gefäße in Haut, Muskeln, Niere und Darm werden **eng** = **Zentralisation**",
    "⑥ RAAS und ADH halten **Wasser** und Natrium zurück",
-   "⑦ Der Blutdruck bleibt fast normal = **Kompensation**"
+   "⑦ Der Blutdruck bleibt fast normal = **Kompensation**",
+   "⑦ → ② Die Barorezeptoren messen weiter: Ist der Druck noch zu niedrig, bleibt der Sympathikus aktiv – ein **Regelkreis**."
   ],
   "AA2 b": [
    "Puls 118/min → **C**: Der Sympathikus lässt das Herz schneller schlagen.",
