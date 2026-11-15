@@ -32,6 +32,14 @@ geben ihren Vornamen ein – und ihr Handy zeigt ab dann automatisch, was zur ak
 **ersten Versuch** (falsch markiert / übersehen / zu früh gewählt / Fehlerkarte / falsch zugeordnet).
 Die Handys melden dafür nur Kennungen der Karten (z. B. `rf2`), keine Texte.
 
+**Woche 1 – Schutz gegen Raten (wie im ILS):** Beim Markieren (AA1), bei den Ketten (AA2 a, AA3) und beim Quiz (AA4 a)
+gibt es **2 Leben ❤️❤️**: Jeder Fehler (falsche Karte, falsche Antwort, „Prüfen“ mit Fehlern) kostet eines. Beim 3. Fehler
+kommt eine **Lesepause** (20 s, mit Hinweis, was man noch einmal lesen soll), danach beginnt die Aufgabe von vorn – am Beamer
+steht dann „↻ neu“. Wer schneller antwortet, als man lesen kann (1 s + 0,15 s je Wort, höchstens 8 s; beim Markieren
+höchstens 15 s), bekommt eine **Warnung** und die Antwort zählt nicht; nach 3 Warnungen 15 s Lesepause, dann geht es an
+derselben Stelle weiter. Nach einer falschen Quiz-Antwort ist „Nächste Karte“ 4 s gesperrt (Erklärung lesen). Alle Werte und
+Texte: `docs/w1/inhalte.js` → `allgemein.schutz`. Woche 2 ist davon nicht betroffen.
+
 **Woche 1 geteilt (Blatt 1 heute, Blatt 2 nächste Woche):** Nächste Woche einen neuen Raum starten (der alte ist
 nach 6 Stunden gelöscht) und auf der Willkommensfolie „Heute mit Arbeitsblatt 2 beginnen“ wählen. Die SuS scannen
 den QR-Code am Beamer (Ersatz-QR auf Blatt 1 und Blatt 2). Der Check-out zeigt dann nur die Entscheidungen „jetzt“.

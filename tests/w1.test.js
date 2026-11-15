@@ -144,6 +144,7 @@ pruefe(fs.existsSync(path.join(DOCS, AB.SEITEN.stunde)), `Ziel des QR-Codes exis
     const teilIndex = (j) => fall.teile.indexOf(stellen[j]);
     pruefe(letzte[0] === 'w1-befunde' && letzte[3] === 'arbeitet', 'Meldung an den Beamer: Seite w1-befunde, arbeitet', letzte);
     pruefe(gleich((letzte[4] || []).slice().sort(), ['u' + teilIndex(iRR), 'x' + teilIndex(iAblenker)].sort()), 'erster Versuch: falsch markiert (x…) und übersehen (u…) gemeldet', letzte[4]);
+    pruefe((await s.textContent('.herzen')) === '❤️🤍', 'Prüfen mit Fehlern → ein Leben weg (❤️🤍)');
     // korrigieren
     await (await s.$$('.markierbar'))[iAblenker].click();
     await (await s.$$('.markierbar'))[iRR].click();
@@ -156,47 +157,92 @@ pruefe(fs.existsSync(path.join(DOCS, AB.SEITEN.stunde)), `Ziel des QR-Codes exis
     await s.close();
 
     /* AA2 a Regelkreis: einmal falsch, sonst richtig */
-    for (const [name, mitFehlern] of [['regelkreis', 1], ['spirale', 99]]) {
-      const kt = I.kette.ketten[name];
-      console.log(`Handy: Kette ${name}` + (mitFehlern > 1 ? ' (Durchklicken, dann neu)' : ''));
+    // Regelkreis: ein Fehler (ein Leben weg), sonst richtig
+    {
+      const name = 'regelkreis', kt = I.kette.ketten[name];
+      console.log('Handy: Kette regelkreis');
       s = await kontext.newPage();
       beobachten(s, protokoll, 'kette-' + name);
       await s.goto(basis + `w1-uebung.html?modul=kette&kette=${name}`);
       pruefe((await s.textContent('h1')) === kt.titel, 'Titel der Kette');
-      let falschGewaehlt = 0, fehlerkarte = false, zuFrueh = false;
+      pruefe((await s.textContent('.schutz-regel')).includes('2 Leben') && (await s.textContent('.herzen')) === '❤️❤️', 'Regel „2 Leben“ und ❤️❤️ sichtbar');
+      pruefe(!(await s.$('.knopf-leise')), 'kein „Noch einmal üben“ mitten in der Aufgabe');
+      let fehlerkarte = false, zuFrueh = false;
       for (let schritt = 1; schritt < kt.schritte.length; schritt++) {
         const opt = await s.$$eval('.reihe-auswahl button', (b) => b.map((x) => x.dataset.karte));
         pruefe(opt.length === 3 && opt.includes(kt.schritte[schritt].id), `Schritt ${schritt + 1}: drei Karten, die richtige ist dabei`);
-        if (falschGewaehlt < mitFehlern) {
+        if (schritt === 1) {
           const falsch = opt.find((id) => id !== kt.schritte[schritt].id);
           await s.click(`.reihe-auswahl button[data-karte="${falsch}"]`);
           const rm = await s.textContent('.rueckmeldung.ist-falsch');
           if (rm.includes(I.kette.fehlerkarte)) fehlerkarte = true; else zuFrueh = true;
-          falschGewaehlt++;
+          pruefe((await s.textContent('.herzen')) === '❤️🤍', 'Fehler → ein Leben weg (❤️🤍)');
         }
         await s.click(`.reihe-auswahl button[data-karte="${kt.schritte[schritt].id}"]`);
       }
       pruefe(await breitOk(s), 'nichts ragt seitlich heraus');
       m = await meldungen(s); letzte = m[m.length - 1];
-      if (mitFehlern === 1) {
-        pruefe(fehlerkarte || zuFrueh, 'falsche Karte → Rückmeldung mit Begründung oder Tipp');
-        await s.waitForSelector('.merksatz');
-        pruefe((await s.textContent('.merksatz')).includes(I.merksaetze[kt.merksatz][1].l), `fertig → Merksatz ${kt.merksatz.toUpperCase()}`);
-        pruefe(letzte[0] === kt.seite && letzte[1] === 6 && letzte[2] === 6 && letzte[3] === 'fertig' && letzte[4].length === 1, 'Meldung: 6 von 6, fertig, ein Fehler', letzte);
-        await s.screenshot({ path: path.join(ORDNER, `w1_kette_${name}.png`), fullPage: true });
-      } else {
-        // jede Karte zählt je Person nur einmal (dieselbe „zu frühe“ Karte kann in mehreren Schritten vorkommen)
-        const gemeldet = letzte[4];
-        pruefe(letzte[3] === 'durchklicken' && gemeldet.length >= 3 && new Set(gemeldet).size === gemeldet.length, 'jeder erste Versuch falsch → „durchklicken“, Fehler ohne Doppelte gemeldet', letzte);
-        pruefe(!(await s.$('.merksatz')), 'kein Merksatz beim Durchklicken');
-        await s.click('.inhalt button:not(.knopf-leise)');
-        const neu = await s.$$eval('.reihe-gelegt li', (l) => l.length);
-        pruefe(neu === 1, 'neu starten → nur der erste Schritt liegt');
-        for (let schritt = 1; schritt < kt.schritte.length; schritt++) await s.click(`.reihe-auswahl button[data-karte="${kt.schritte[schritt].id}"]`);
-        await s.waitForSelector('.merksatz');
-        m = await meldungen(s); letzte = m[m.length - 1];
-        pruefe(letzte[3] === 'fertig' && gleich(letzte[4], gemeldet), 'zweiter Durchgang richtig → fertig, Fehler des ersten Durchgangs bleiben', letzte);
+      pruefe(fehlerkarte || zuFrueh, 'falsche Karte → Rückmeldung mit Begründung oder Tipp');
+      await s.waitForSelector('.merksatz');
+      pruefe((await s.textContent('.merksatz')).includes(I.merksaetze[kt.merksatz][1].l), 'fertig → Merksatz AA2');
+      pruefe(letzte[0] === kt.seite && letzte[1] === 6 && letzte[2] === 6 && letzte[3] === 'fertig' && letzte[4].length === 1, 'Meldung: 6 von 6, fertig, ein Fehler', letzte);
+      pruefe(!!(await s.$('.knopf-leise')), 'nach dem Merksatz: „Noch einmal üben“');
+      await s.screenshot({ path: path.join(ORDNER, 'w1_kette_regelkreis.png'), fullPage: true });
+      await s.close();
+    }
+
+    // Schockspirale: drei Fehler → alle Leben verbraucht → Lesepause → von vorn
+    {
+      const name = 'spirale', kt = I.kette.ketten[name];
+      console.log('Handy: Kette spirale (3 Fehler → Lesepause → von vorn)');
+      s = await kontext.newPage();
+      beobachten(s, protokoll, 'kette-' + name);
+      await s.goto(basis + `w1-uebung.html?modul=kette&kette=${name}`);
+      const gewaehlt = [];
+      for (let schritt = 1; schritt <= 3; schritt++) {
+        const opt = await s.$$eval('.reihe-auswahl button', (b) => b.map((x) => x.dataset.karte));
+        const falsch = opt.find((id) => id !== kt.schritte[schritt].id);
+        gewaehlt.push(falsch);
+        await s.click(`.reihe-auswahl button[data-karte="${falsch}"]`);
+        if (schritt < 3) await s.click(`.reihe-auswahl button[data-karte="${kt.schritte[schritt].id}"]`);
       }
+      await s.waitForSelector('.schutz-pause');
+      pruefe((await s.textContent('.schutz-pause h2')).includes('Zu viele Fehler') && (await s.textContent('.schutz-pause')).includes('Informationstext 2'), '3. Fehler → Lesepause mit Hinweis „Informationstext 2“');
+      m = await meldungen(s); letzte = m[m.length - 1];
+      pruefe(letzte[3] === 'durchklicken' && gleich(letzte[4], [...new Set(gewaehlt)]), 'Beamer: „↻ neu“ (durchklicken), Fehler gemeldet', letzte);
+      await s.screenshot({ path: path.join(ORDNER, 'w1_lesepause.png') });
+      await s.click('.schutz-pause button');
+      await s.waitForSelector('.reihe-auswahl');
+      pruefe((await s.$$eval('.reihe-gelegt li', (l) => l.length)) === 1 && (await s.textContent('.herzen')) === '❤️❤️', 'nach der Pause: von vorn, wieder ❤️❤️');
+      for (let schritt = 1; schritt < kt.schritte.length; schritt++) await s.click(`.reihe-auswahl button[data-karte="${kt.schritte[schritt].id}"]`);
+      await s.waitForSelector('.merksatz');
+      m = await meldungen(s); letzte = m[m.length - 1];
+      pruefe(letzte[3] === 'fertig' && gleich(letzte[4], [...new Set(gewaehlt)]), 'zweiter Durchgang richtig → fertig, Fehler des ersten Durchgangs bleiben', letzte);
+      await s.close();
+    }
+
+    // Zu schnell getippt (Lesezeit wie im Unterricht): Warnung, Wahl zählt nicht; 3× → kurze Lesepause, dann dieselbe Stelle
+    {
+      console.log('Handy: zu schnell getippt (Lesezeiten wie im Unterricht)');
+      s = await kontext.newPage();
+      beobachten(s, protokoll, 'zu-schnell');
+      await s.goto(basis + 'w1-uebung.html?modul=karten&quiz=frueh&zeit=1');
+      await s.click('.quiz-optionen button >> nth=0');
+      pruefe((await s.textContent('.schutz-warnung')).includes('Langsam') && (await s.textContent('.schutz-warnung')).includes('Warnung 1 von 3'), 'sofort getippt → „Langsam! … Warnung 1 von 3“');
+      pruefe(!(await s.$('.quiz-karte .rueckmeldung:not(.schutz-warnung)')) && (await meldungen(s)).every((x) => x[1] === 0), 'die Antwort zählt nicht');
+      await s.click('.quiz-optionen button >> nth=0');
+      await s.click('.quiz-optionen button >> nth=0');
+      await s.waitForSelector('.schutz-pause');
+      pruefe((await s.textContent('.schutz-pause h2')).includes('Zu schnell') && await s.isDisabled('.schutz-pause button'), '3× zu schnell → Lesepause, Knopf gesperrt');
+      pruefe(/noch \d+ Sekunden/.test(await s.textContent('.schutz-countdown')), 'Countdown der Lesepause');
+      await s.screenshot({ path: path.join(ORDNER, 'w1_zu_schnell.png') });
+      await s.close();
+      // Markieren: „Prüfen“ sofort → Warnung, nichts geprüft
+      s = await kontext.newPage();
+      beobachten(s, protokoll, 'zu-schnell-markieren');
+      await s.goto(basis + 'w1-uebung.html?modul=markieren&fall=maler&zeit=1');
+      await s.click(`button:has-text("${I.markieren.pruefen}")`);
+      pruefe((await s.textContent('.schutz-warnung')).includes('Langsam') && !(await s.$('.markierbar.fehlt')), 'Markieren: sofort „Prüfen“ → Warnung, nichts verraten');
       await s.close();
     }
 

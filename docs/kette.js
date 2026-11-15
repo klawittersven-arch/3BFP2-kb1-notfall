@@ -4,7 +4,9 @@
    der richtige nächste Schritt, ein späterer Schritt (zu früh, frühestens der übernächste) und – wo es passt – eine Fehlerkarte.
    Richtig → die Karte wandert in die Kette. Falsch → Begründung, noch einmal wählen.
    Am Ende: Merksatz (wie auf dem Arbeitsblatt). Schutz gegen Durchklicken: zu wenige Schritte beim
-   ersten Versuch richtig → neu starten. Fehler beim ersten Versuch gehen an den Beamer („Häufige Fehler“). */
+   ersten Versuch richtig → neu starten. Fehler beim ersten Versuch gehen an den Beamer („Häufige Fehler“).
+   Woche 1 zusätzlich (K.schutz, wie im ILS): Leben ❤️ – zu viele falsche Karten → Lesepause, dann von vorn;
+   zu schnell getippt → Warnung, die Wahl zählt nicht. */
 (function () {
   'use strict';
   var K = window.KB1;
@@ -37,6 +39,10 @@
   var z = K.Speicher.sitzung.lesen(SCHL);
   if (!z || typeof z.k !== 'number' || z.k < 1 || z.k > S.length) z = leer();
   function speichern() { K.Speicher.sitzung.schreiben(SCHL, z); }
+  var SCH = K.schutz(function () { return z; }, speichern);   // null = ohne Leben und Lesetempo (Woche 2)
+  var aktuelleFrage = null;                                  // Kasten mit den drei Karten (für die Warnung „zu schnell“)
+  // von vorn – die Fehler für den Beamer und der Stand des Schutzes (Leben, Neustarts) bleiben
+  function vonVorn() { var f = z.fehler, s = z.s; z = leer(); z.fehler = f; if (s) z.s = s; speichern(); }
 
   function karte(id) {
     for (var i = 0; i < S.length; i++) if (S[i].id === id) return { karte: S[i], nr: i, fehler: false };
@@ -62,11 +68,22 @@
 
   function melden() {
     var status = z.fertig ? (z.ersteRichtig >= KT.mindestensErsterVersuch ? 'fertig' : 'durchklicken') : 'arbeitet';
+    if (SCH && SCH.inPause() && SCH.grund() === 'fehler') status = 'durchklicken';   // Beamer: „↻ neu“
     K.melden(SEITE, Math.min(z.k - 1, N), N, status, z.fehler);
   }
 
   function waehlen(k, id) {
     if (z.fertig || k !== z.k) return;
+    if (SCH) {
+      if (SCH.inPause()) return;
+      if (SCH.zuSchnell()) {                                   // zu schnell: zählt nicht
+        if (SCH.inPause()) { zeigen(); melden(); return; }
+        var alt = aktuelleFrage && aktuelleFrage.querySelector('.schutz-warnung');
+        if (alt) alt.parentNode.removeChild(alt);
+        if (aktuelleFrage) { var w = SCH.warnungElement(); aktuelleFrage.appendChild(w); K.scrollen(w); }
+        return;
+      }
+    }
     var falsch = z.falsch[k] = z.falsch[k] || [];
     if (id === S[k].id) {
       if (!falsch.length) z.ersteRichtig++;
@@ -81,6 +98,7 @@
       if (!falsch.length && z.fehler.indexOf(id) < 0) z.fehler.push(id);   // nur der erste Fehlversuch je Schritt zählt
       falsch.push(id);
     }
+    if (SCH && SCH.fehler()) { vonVorn(); zeigen(); melden(); return; }   // alle Leben verbraucht
     speichern();
     zeigen(false, id);
     melden();
@@ -88,7 +106,13 @@
 
   function zeigen(nachRichtig, zuletztFalsch) {
     platz.textContent = '';
+    aktuelleFrage = null;
     K.fortschrittSetzen(Math.min(z.k - 1, N), N);
+    if (SCH && SCH.inPause()) {
+      platz.appendChild(SCH.pauseElement(KT.hilfe, function () { zeigen(); melden(); K.scrollen(document.querySelector('.inhalt')); }));
+      return;
+    }
+    if (SCH && !z.fertig) platz.appendChild(SCH.regel());
     var box = el('section', 'reihe' + (z.fertig ? ' ist-richtig' : ''));
     box.appendChild(el('p', 'reihe-label', KT.ketteTitel || T.ketteTitel));
     var ol = el('ol', 'reihe-gelegt');
@@ -109,6 +133,8 @@
 
     var k = z.k;
     var frage = el('section', 'karte');
+    aktuelleFrage = frage;
+    if (SCH) frage.appendChild(SCH.kopf(K.ersetzen(T.schrittVon, { n: k - 1, y: N })));
     frage.appendChild(el('h2', null, K.ersetzen(T.frage, { n: k + 1 })));
     var opt = el('div', 'reihe-auswahl');
     var falsch = z.falsch[k] || [];
@@ -136,6 +162,11 @@
       frage.insertBefore(ok, opt);
     }
     platz.appendChild(frage);
+    if (SCH) {
+      // Lesezeit: neue Karten ganz lesen; nach einem Fehler nur die Rückmeldung
+      if (zuletztFalsch) SCH.lesen(frage.querySelector('.rueckmeldung').textContent, true);
+      else SCH.lesen(optionenFuer(k).map(function (id) { var x = karte(id); return x ? x.karte.text : ''; }).join(' '));
+    }
     if (zuletztFalsch || nachRichtig) K.scrollen(frage);
     unten();
   }
@@ -157,8 +188,9 @@
     unten();
   }
 
-  function neu() { var f = z.fehler; z = leer(); z.fehler = f; speichern(); zeigen(); melden(); K.scrollen(document.querySelector('.inhalt')); }
+  function neu() { vonVorn(); zeigen(); melden(); K.scrollen(document.querySelector('.inhalt')); }
   function unten() {
+    if (SCH && !z.fertig) return;      // mit Leben: kein „Noch einmal“ mitten in der Aufgabe (sonst Leben zurück ohne Pause)
     var p = el('p', 'klein');
     p.appendChild(K.knopf(INHALTE.allgemein.nochEinmal, 'knopf-leise', neu));
     platz.appendChild(p);
