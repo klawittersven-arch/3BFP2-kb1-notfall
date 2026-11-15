@@ -71,6 +71,8 @@ var INHALTE = {
   /* ------------------------------------------------------------------------
      MERKSÄTZE – erscheinen am Ende einer Übung und stehen fertig auf dem AB.
      { l: '…' } = Schlüsselwort (auf dem AB fett, am Beamer hervorgehoben)
+     Schlüssel aa1–aa4 = Reihenfolge in der Stunde. Auf dem AB heißen die Kästen: Blatt 1 „Merksatz AA1“ (aa1)
+     und „Merksatz AA2“ (aa2), Blatt 2 „Merksatz AA2“ (aa3) und „Merksatz AA3“ (aa4).
      ------------------------------------------------------------------------ */
   merksaetze: {
     aa1: ['Frühzeichen eines Schocks finde ich im Fall an drei Stellen: ', { l: 'Aussagen und Verhalten' }, ', ', { l: 'Beobachtungen' }, ' und ', { l: 'Messwerte' }, '. Werte lese ich immer mit ', { l: 'Uhrzeit' }, ' und ', { l: 'Vorwert' }, ' – wichtig ist der ', { l: 'Verlauf' }, '.'],
@@ -153,7 +155,7 @@ var INHALTE = {
   },
 
   /* ------------------------------------------------------------------------
-     KETTE BAUEN: AA2 a Regelkreis · AA3 Schockspirale
+     KETTE BAUEN: AA2 a Regelkreis (Blatt 1) · AA2 Schockspirale (Blatt 2 – dort beginnt die Nummerierung wieder bei AA1)
      schritte: in der richtigen Reihenfolge (der erste steht fest).
      ablenker: Fehlerkarten; bei = bei welchen Schritten (0 = erster Schritt) sie zur Wahl stehen.
      ------------------------------------------------------------------------ */
@@ -199,13 +201,13 @@ var INHALTE = {
       },
       spirale: {
         seite: 'w1-spirale',
-        titel: 'AA3 · Die Schockspirale',
+        titel: 'AA2 · Die Schockspirale',
         anweisung: 'Was passiert, wenn der Ausgleich **nicht mehr reicht**? Bauen Sie die **Schockspirale**: Tippen Sie immer den **nächsten Schritt** an. Achtung: Es gibt **Fehlerkarten**! Hilfe: **Informationstext 2**.',
         ketteTitel: 'Die Schockspirale',
         hilfe: '**Informationstext 2** auf Ihrem Arbeitsblatt (Schock und Schockspirale).',
         mindestensErsterVersuch: 3,
         merksatz: 'aa3',
-        merksatzTitel: 'Merksatz AA3',
+        merksatzTitel: 'Merksatz AA2',   // Kasten auf Blatt 2 (Schlüssel bleibt aa3)
         ende: '↻ Jede Folge verstärkt die Ursache: ein **Teufelskreis** – die **Schockspirale**.',
         schritte: [
           { id: 'ss1', text: 'Volumenmangel oder Kreislaufstörung: Der **Blutdruck droht zu fallen**.' },
@@ -228,7 +230,7 @@ var INHALTE = {
   },
 
   /* ------------------------------------------------------------------------
-     KARTEN-QUIZ: AA4 Frühzeichen oder Spätzeichen? (nach Pflegias Band 2, S. 801, Tab. 1)
+     KARTEN-QUIZ: AA3 a (Blatt 2) Frühzeichen oder Spätzeichen? (nach Pflegias Band 2, S. 801, Tab. 1)
      richtig: Kürzel einer Option (F oder S)
      ------------------------------------------------------------------------ */
   karten: {
@@ -244,13 +246,13 @@ var INHALTE = {
     quiz: {
       frueh: {
         seite: 'w1-frueh',
-        titel: 'AA4 · Frühzeichen oder Spätzeichen?',
+        titel: 'AA3 a · Frühzeichen oder Spätzeichen?',
         anweisung: 'Ist das ein **Frühzeichen** (der Körper gleicht noch aus) oder ein **Spätzeichen** (der Ausgleich reicht nicht mehr)? Tippen Sie an.',
         optionen: [{ k: 'F', text: '🟡 Frühzeichen' }, { k: 'S', text: '🔴 Spätzeichen' }],
         hilfe: 'die Tabelle **„Frühzeichen und Spätzeichen“** auf Ihrem Arbeitsblatt.',
         mindestensErsterVersuch: 6,
         merksatz: 'aa4',
-        merksatzTitel: 'Merksatz AA4',
+        merksatzTitel: 'Merksatz AA3',   // Kasten auf Blatt 2 (Schlüssel bleibt aa4)
         karten: [
           { id: 'k1', text: 'Puls 108/min, schnell und schwach', richtig: 'F', warum: 'Frühzeichen: Der Puls steigt früh (über 100/min). So hält das Herz den Blutdruck.' },
           { id: 'k2', text: 'Blutdruck 82/50 mmHg (systolisch unter 100)', richtig: 'S', warum: 'Spätzeichen: Der Blutdruck fällt erst, wenn der Ausgleich nicht mehr reicht (Dekompensation).' },
@@ -267,12 +269,12 @@ var INHALTE = {
   },
 
   /* ------------------------------------------------------------------------
-     AA5: BEWERTUNGSRASTER (Peer-Korrektur des Transferfalls)
+     AA4 (Blatt 2): BEWERTUNGSRASTER (Peer-Korrektur des Transferfalls)
      punkte: je Kriterium; max: Höchstpunktzahl der Gruppe; pflicht: ohne dieses Kriterium höchstens max − 1;
      fehler: ein angehakter Fehler setzt die genannten Kriterien auf 0 (sperrt).
      ------------------------------------------------------------------------ */
   raster: {
-    titel: 'AA5 · Bewertungsraster',
+    titel: 'AA4 · Bewertungsraster',
     anweisung: 'Lesen Sie die Lösung Ihrer Partnerin oder Ihres Partners. **Haken Sie an, was dort steht.** Die App zählt die Punkte.',
     speicher: 'kb1nf_w1_raster',
     gesamt: 'Punkte: {x} von {y}',
@@ -281,7 +283,7 @@ var INHALTE = {
     gesperrt: 'zählt nicht (Fehler angehakt)',
     zuruecksetzen: 'Alles zurücksetzen',
     gruppen: [
-      { titel: '5.1 Befunde (je Befund 0,5 P., höchstens 2 P.)', max: 2, kriterien: [
+      { titel: '4.1 Befunde (je Befund 0,5 P., höchstens 2 P.)', max: 2, kriterien: [
         { id: 'angst', text: 'Verhalten: ängstlich, „Mir ist so komisch.“', punkte: 0.5 },
         { id: 'durst', text: 'Durst: fragt mehrmals, ob sie etwas trinken darf', punkte: 0.5 },
         { id: 'haut', text: 'Haut blass und feucht, Hände kalt', punkte: 0.5 },
@@ -289,7 +291,7 @@ var INHALTE = {
         { id: 'rr', text: 'Blutdruck von 135/80 auf 112/90 mmHg gefallen (mit Vorwert)', punkte: 0.5 },
         { id: 'af', text: 'Atemfrequenz 24/min (schnell)', punkte: 0.5 }
       ] },
-      { titel: '5.2 Kompensation (je Aspekt 1 P., höchstens 3 P.)', max: 3, pflicht: 'spaet',
+      { titel: '4.2 Kompensation (je Aspekt 1 P., höchstens 3 P.)', max: 3, pflicht: 'spaet',
         pflichtHinweis: 'Ohne die Begründung „Der Blutdruck fällt erst spät“ höchstens 2 Punkte.',
         kriterien: [
           { id: 'baro', text: 'Barorezeptoren melden den Druckabfall → der Sympathikus wird aktiv', punkte: 1 },
@@ -297,7 +299,7 @@ var INHALTE = {
           { id: 'raas', text: 'RAAS und ADH halten Wasser und Natrium zurück (Durst)', punkte: 1 },
           { id: 'spaet', text: 'Begründung: Durch die Kompensation bleibt der Blutdruck anfangs fast normal, er fällt erst spät.', punkte: 1 }
         ] },
-      { titel: '5.3 Schockindex (2 P.)', max: 2, kriterien: [
+      { titel: '4.3 Schockindex (2 P.)', max: 2, kriterien: [
         { id: 'rechnung', text: 'Rechnung: 118 : 112 ≈ 1,05', punkte: 1 },
         { id: 'bewertung', text: 'Bewertung: über 1 (normal ca. 0,5) → spricht für einen Schock', punkte: 1 }
       ] }

@@ -19,33 +19,33 @@ var NACHLESEN = {
    "text": "Ordnen Sie zu: Welche Erklärung passt zu welchem Befund von Frau Maler? Schreiben Sie den Buchstaben."
   },
   "Schockformen": {
-   "nr": "Schockformen",
+   "nr": "AA1",
    "text": "Schreiben Sie den Namen der Schockform in die erste Spalte. Wortspeicher: kardiogen · obstruktiv · hypovolämisch · distributiv"
   },
-  "AA3": {
-   "nr": "AA3",
+  "Schockspirale": {
+   "nr": "AA2",
    "text": "Füllen Sie die Lücken in der Schockspirale aus. Wortspeicher: versackt · Laktat · Dekompensation · Urin · sauer · Zentralisation · weit"
   },
-  "AA4 b": {
-   "nr": "AA4 b",
+  "Schockindex": {
+   "nr": "AA3 b",
    "text": "Berechnen und bewerten Sie den Schockindex von Frau Maler um 11 Uhr (Puls 118/min, Blutdruck 105/70 mmHg)."
   },
   "Leitfrage": {
    "nr": "Leitfrage",
    "text": "Der Blutdruck ist doch fast normal. Warum ist Frau Maler trotzdem in Gefahr?"
   },
-  "5.1": {
-   "nr": "5.1",
+  "4.1": {
+   "nr": "4.1",
    "text": "Nennen Sie vier Befunde aus der Situation um 10:30 Uhr, die auf einen beginnenden Schock hinweisen. Berücksichtigen Sie die Vorwerte.",
    "punkte": 2
   },
-  "5.2": {
-   "nr": "5.2",
+  "4.2": {
+   "nr": "4.2",
    "text": "Erläutern Sie, wie der Körper von Frau Berger um 10:30 Uhr den Blutdruck aufrechterhält. Begründen Sie, warum ein Blutdruck von 112/90 mmHg einen Schock nicht ausschließt.",
    "punkte": 3
   },
-  "5.3": {
-   "nr": "5.3",
+  "4.3": {
+   "nr": "4.3",
    "text": "Bewerten Sie den Schockindex von Frau Berger um 10:30 Uhr.",
    "punkte": 2
   }
@@ -78,13 +78,13 @@ var NACHLESEN = {
    "**kardiogen** – das Herz pumpt nicht genug (z. B. Herzinfarkt)",
    "**obstruktiv** – der Blutfluss ist behindert (z. B. Lungenembolie)"
   ],
-  "AA3": [
+  "Schockspirale": [
    "② Gefäße in Haut, Muskeln und Darm werden eng = **Zentralisation**",
    "③ es entsteht **Laktat** → das Blut wird **sauer** (Laktatazidose)",
    "④ die Gefäße werden **weit** und durchlässig → das Blut **versackt** → der Blutdruck fällt = **Dekompensation**",
    "⑤ Niere: kaum **Urin** · Lunge: Atemnot · Gehirn: Verwirrtheit, Bewusstlosigkeit"
   ],
-  "AA4 b": [
+  "Schockindex": [
    "Schockindex = 118 : 105 ≈ **1,1**",
    "→ über 1 (normal ca. 0,5) → **spricht für einen Schock** – obwohl der Blutdruck fast normal ist."
   ],
@@ -93,21 +93,20 @@ var NACHLESEN = {
    "Das zeigen ihr Puls von **118/min**, die blasse Haut und der **kalte Schweiß** (dazu Unruhe und schnelle Atmung).",
    "Ihr Schockindex ist **1,1** – also über 1. Reicht der Ausgleich nicht mehr, fällt der Blutdruck: Schockspirale."
   ],
-  "5.1": [
+  "4.1": [
    "z. B.: ängstlich, „Mir ist so komisch.“ (Unruhe) · Durst: fragt mehrmals, ob sie etwas trinken darf · Haut blass und feucht, Hände kalt · Puls von 84 auf 118/min gestiegen · Blutdruck von 135/80 auf 112/90 mmHg gefallen – die Blutdruckamplitude ist von 55 auf 22 mmHg kleiner geworden · Atemfrequenz 24/min."
   ],
-  "5.2": [
+  "4.2": [
    "Die Barorezeptoren (Aortenbogen, Halsschlagader) melden den Druckabfall, der Sympathikus wird aktiviert (Adrenalin, Noradrenalin): Die Herzfrequenz steigt (118/min), die Gefäße in Haut, Muskeln und Darm werden eng (Zentralisation) → blasse, kalte, feuchte Haut.",
    "RAAS und ADH halten Wasser und Natrium zurück und verengen die Gefäße (Durst).",
    "Durch diese Kompensation bleibt der Blutdruck anfangs fast normal; er fällt erst, wenn der Ausgleich nicht mehr reicht. Der Blutdruck ist deshalb ein Spätzeichen – Frühzeichen sind Tachykardie, schnelle Atmung, Unruhe, Blässe und kalter Schweiß."
   ],
-  "5.3": [
+  "4.3": [
    "Schockindex = 118 : 112 ≈ 1,05 → über 1 (normal ca. 0,5) → spricht für einen Schock. Sofort die Pflegefachkraft bzw. Ärztin oder Arzt informieren und engmaschig überwachen (Verdacht auf Nachblutung)."
   ],
-  "5.1 und 5.2": [
-   "5.1 z. B.: ängstlich, „Mir ist so komisch.“ (Unruhe) · Durst: fragt mehrmals, ob sie etwas trinken darf · Haut blass und feucht, Hände kalt · Puls von 84 auf 118/min gestiegen · Blutdruck von 135/80 auf 112/90 mmHg gefallen – die Blutdruckamplitude ist von 55 auf 22 mmHg kleiner geworden · Atemfrequenz 24/min.",
-   "5.1",
-   "5.2 Die Barorezeptoren (Aortenbogen, Halsschlagader) melden den Druckabfall, der Sympathikus wird aktiviert (Adrenalin, Noradrenalin): Die Herzfrequenz steigt (118/min), die Gefäße in Haut, Muskeln und Darm werden eng (Zentralisation) → blasse, kalte, feuchte Haut.",
+  "4.1 und 4.2": [
+   "4.1 z. B.: ängstlich, „Mir ist so komisch.“ (Unruhe) · Durst: fragt mehrmals, ob sie etwas trinken darf · Haut blass und feucht, Hände kalt · Puls von 84 auf 118/min gestiegen · Blutdruck von 135/80 auf 112/90 mmHg gefallen – die Blutdruckamplitude ist von 55 auf 22 mmHg kleiner geworden · Atemfrequenz 24/min.",
+   "4.2 Die Barorezeptoren (Aortenbogen, Halsschlagader) melden den Druckabfall, der Sympathikus wird aktiviert (Adrenalin, Noradrenalin): Die Herzfrequenz steigt (118/min), die Gefäße in Haut, Muskeln und Darm werden eng (Zentralisation) → blasse, kalte, feuchte Haut.",
    "RAAS und ADH halten Wasser und Natrium zurück und verengen die Gefäße (Durst).",
    "Durch diese Kompensation bleibt der Blutdruck anfangs fast normal; er fällt erst, wenn der Ausgleich nicht mehr reicht. Der Blutdruck ist deshalb ein Spätzeichen – Frühzeichen sind Tachykardie, schnelle Atmung, Unruhe, Blässe und kalter Schweiß."
   ]

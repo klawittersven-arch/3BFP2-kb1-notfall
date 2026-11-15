@@ -27,12 +27,20 @@ geben ihren Vornamen ein – und ihr Handy zeigt ab dann automatisch, was zur ak
 | …/beamer-w1.html?demo=1 | Probeansicht Woche 1 (erfundene Namen, Stimmen und Fehler) |
 | …/w1.html?raum=1234 · …/w1.html | Handy Woche 1 (QR-Code am Beamer bzw. auf Blatt 1 des AB) |
 
-**Woche 1 – Häufige Fehler:** Auf den Folien zu AA1 (Frühzeichen markieren), AA2 a (Regelkreis), AA3
-(Schockspirale) und AA4 a (Früh- oder Spätzeichen?) zeigt der Beamer rechts die häufigsten Fehler beim
+**Woche 1 – Nummerierung:** Jedes der beiden Arbeitsblätter beginnt bei AA1. Blatt 1 („Schock: Wie der Körper den
+Blutdruck hält“): AA1 Frühzeichen markieren, AA2 a/b Regelkreis. Blatt 2 („Schock: Wenn der Ausgleich nicht mehr reicht“):
+AA1 Schockformen, AA2 Schockspirale, AA3 a/b Früh-/Spätzeichen und Schockindex, AA4 neuer Fall (4.1–4.3, ohne Punkte auf
+dem AB – die Punkte zählt das Bewertungsraster). In `docs/w1/inhalte_nachlesen.js` haben die Aufgaben von Blatt 2 eigene
+Schlüssel (`Schockformen`, `Schockspirale`, `Schockindex`), angezeigt wird `nr` (AA1, AA2, AA3 b). Die Merksatz-Schlüssel
+bleiben `aa1`–`aa4`; der Kastenname steht in `kasten` bzw. `merksatzTitel`. Am Beamer und am Handy heißen die Blätter nur
+mit Titel (nicht „Arbeitsblatt 1/2“).
+
+**Woche 1 – Häufige Fehler:** Auf den Folien zu AA1 (Frühzeichen markieren) und AA2 a (Regelkreis) von Blatt 1 sowie
+AA2 (Schockspirale) und AA3 a (Früh- oder Spätzeichen?) von Blatt 2 zeigt der Beamer rechts die häufigsten Fehler beim
 **ersten Versuch** (falsch markiert / übersehen / zu früh gewählt / Fehlerkarte / falsch zugeordnet).
 Die Handys melden dafür nur Kennungen der Karten (z. B. `rf2`), keine Texte.
 
-**Woche 1 – Schutz gegen Raten (wie im ILS):** Beim Markieren (AA1), bei den Ketten (AA2 a, AA3) und beim Quiz (AA4 a)
+**Woche 1 – Schutz gegen Raten (wie im ILS):** Beim Markieren, bei den Ketten (Regelkreis, Schockspirale) und beim Quiz (Früh- oder Spätzeichen?)
 gibt es **2 Leben ❤️❤️**: Jeder Fehler (falsche Karte, falsche Antwort, „Prüfen“ mit Fehlern) kostet eines. Beim 3. Fehler
 kommt eine **Lesepause** (20 s, mit Hinweis, was man noch einmal lesen soll), danach beginnt die Aufgabe von vorn – am Beamer
 steht dann „↻ neu“. Wer schneller antwortet, als man lesen kann (1 s + 0,15 s je Wort, höchstens 8 s; beim Markieren
@@ -41,7 +49,7 @@ derselben Stelle weiter. Nach einer falschen Quiz-Antwort ist „Nächste Karte�
 Texte: `docs/w1/inhalte.js` → `allgemein.schutz`. Woche 2 ist davon nicht betroffen.
 
 **Woche 1 geteilt (Blatt 1 heute, Blatt 2 nächste Woche):** Nächste Woche einen neuen Raum starten (der alte ist
-nach 6 Stunden gelöscht) und auf der Willkommensfolie „Heute mit Arbeitsblatt 2 beginnen“ wählen. Die SuS scannen
+nach 6 Stunden gelöscht) und auf der Willkommensfolie „Heute mit dem zweiten Arbeitsblatt beginnen“ wählen. Die SuS scannen
 den QR-Code am Beamer (Ersatz-QR auf Blatt 1 und Blatt 2). Der Check-out zeigt dann nur die Entscheidungen „jetzt“.
 
 ### Folien
