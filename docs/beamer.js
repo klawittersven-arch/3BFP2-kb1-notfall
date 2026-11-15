@@ -1025,7 +1025,7 @@
     var kopf = el('div', klasse || 'loesung-aufgabe');
     if (a.vorsatz) kopf.appendChild(fmt('p', 'a-vorsatz', a.vorsatz));
     var p = el('p');
-    p.appendChild(el('strong', null, nr + ' '));
+    p.appendChild(el('strong', null, (a.nr || nr) + ' '));
     p.appendChild(fmt('span', null, a.text || ''));
     if (a.punkte) p.appendChild(el('span', 'loesung-punkte', ' (' + a.punkte + ' P.)'));
     kopf.appendChild(p);
@@ -1042,15 +1042,17 @@
     (f.aufgaben || []).forEach(function (eintrag) {
       var nrs = typeof eintrag === 'string' ? [eintrag] : eintrag.nrs;
       var lsg = typeof eintrag === 'string' ? eintrag : eintrag.loesung;
+      // Nummer wie auf dem Arbeitsblatt (Schlüssel und Nummer können verschieden sein, z. B. „Schockspirale“ = AA2)
+      var lsgNr = ((NL.aufgaben || {})[lsg] || {}).nr || lsg;
       var teil = el('section', 'loesung-teil');
       nrs.forEach(function (nr) { teil.appendChild(aufgabeKopf(nr, (NL.aufgaben || {})[nr] || {})); });
-      if (eintrag.weiter) teil.appendChild(el('p', 'loesung-weiter', K.ersetzen(T.loesungZu, { nr: lsg }) + ' · ' + T.loesungWeiter));
+      if (eintrag.weiter) teil.appendChild(el('p', 'loesung-weiter', K.ersetzen(T.loesungZu, { nr: lsgNr }) + ' · ' + T.loesungWeiter));
       var bereich = eintrag.zeilen || [0, 99];   // lange Lösungen auf zwei Folien: Zeilen von … bis (ohne)
       ((NL.loesungen || {})[lsg] || []).forEach(function (zeile, i) {
         if (i < bereich[0] || i >= bereich[1]) return;
         var schl = f.id + ':' + lsg + ':' + i;
         alle.push(schl);
-        teil.appendChild(aufdeckZelle(schl, zeile, 'l-zeile', K.ersetzen(T.loesungZu, { nr: lsg })));
+        teil.appendChild(aufdeckZelle(schl, zeile, 'l-zeile', K.ersetzen(T.loesungZu, { nr: lsgNr })));
       });
       box.appendChild(teil);
     });
@@ -1070,7 +1072,8 @@
   // Merksatz zum gemeinsamen Lesen: ganzer Satz wie auf dem AB, Schlüsselwörter hervorgehoben; anklicken = groß
   function folieMerksatz(f, w) {
     w.appendChild(titel(f, f.text));
-    var name = 'Merksatz ' + f.merksatz.toUpperCase();
+    // kasten: Name wie auf dem Arbeitsblatt, falls er vom Schlüssel abweicht (z. B. aa3 → „Merksatz AA2“ auf Blatt 2)
+    var name = f.kasten || ('Merksatz ' + f.merksatz.toUpperCase());
     var teile = (INHALTE.merksaetze || {})[f.merksatz] || [];
     function satz(klasse) {
       var p = el('p', klasse);
@@ -1120,16 +1123,18 @@
   function aufgabeBlock(f, b, NL) {
     if (b.art === 'text') return fmt('p', 'a-text', b.text);
     if (b.art === 'aufgaben') {
-      var t = el('div', 'a-tabelle');
-      ['Nr.', 'Aufgabe', 'Punkte'].forEach(function (x) { t.appendChild(el('div', 'a-kopf', x)); });
+      // Spalte „Punkte“ nur, wenn sie auch auf dem Arbeitsblatt steht (punkte: false = AB ohne Punkte)
+      var mitPunkten = b.punkte !== false && b.nrs.some(function (nr) { return ((NL.aufgaben || {})[nr] || {}).punkte; });
+      var t = el('div', 'a-tabelle' + (mitPunkten ? '' : ' ohne-punkte'));
+      (mitPunkten ? ['Nr.', 'Aufgabe', 'Punkte'] : ['Nr.', 'Aufgabe']).forEach(function (x) { t.appendChild(el('div', 'a-kopf', x)); });
       b.nrs.forEach(function (nr) {
         var a = (NL.aufgaben || {})[nr] || {};
-        t.appendChild(el('div', 'a-nr', nr));
+        t.appendChild(el('div', 'a-nr', a.nr || nr));
         var tx = el('div', 'a-auftrag');
         if (a.vorsatz) tx.appendChild(fmt('p', 'a-vorsatz', a.vorsatz));
         tx.appendChild(fmt('p', null, a.text || ''));
         t.appendChild(tx);
-        t.appendChild(el('div', 'a-punkte', a.punkte ? '___ / ' + a.punkte : ''));
+        if (mitPunkten) t.appendChild(el('div', 'a-punkte', a.punkte ? '___ / ' + a.punkte : ''));
       });
       return t;
     }

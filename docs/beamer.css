@@ -395,6 +395,8 @@ b, strong { font-weight: 800; }
 .blatt-nr { font-size: 112px; font-weight: 900; line-height: 1; color: var(--dunkelpetrol); letter-spacing: -.02em; }
 .blatt-titel { margin: 4px 0 6px; font-size: 46px; font-weight: 900; line-height: 1.15; color: var(--akzent); }
 .blatt-von { font-size: 26px; color: #4A5A60; }
+.blatt-von:empty { display: none; }
+.blatt-nr + .blatt-von { margin-top: 12px; }
 .blatt-darauf { margin: 18px 0 8px; font-size: 24px; font-weight: 800; color: var(--dunkelpetrol); }
 .blatt-folie .punkte li { font-size: 26px; }
 
@@ -431,10 +433,11 @@ b, strong { font-weight: 800; }
 .aufgabe-los .punkte li::before { top: 9px; width: 13px; height: 13px; }
 .aufgabe-los .uhr { width: 100%; }
 .a-text { margin: 0; font-size: 23px; line-height: 1.35; }
-.a-tabelle { display: grid; grid-template-columns: 80px 1fr 120px; border: 2px solid #E3A57A; border-radius: 10px; overflow: hidden; background: #fff; }
+.a-tabelle { display: grid; grid-template-columns: minmax(80px, max-content) 1fr 120px; border: 2px solid #E3A57A; border-radius: 10px; overflow: hidden; background: #fff; }
+.a-tabelle.ohne-punkte { grid-template-columns: minmax(80px, max-content) 1fr; }
 .a-tabelle > div { padding: 8px 12px; font-size: 21px; line-height: 1.35; border-top: 1px solid #F0C9AE; }
 .a-kopf { background: #F2B48C; font-weight: 900; border-top: 0 !important; }
-.a-nr { font-weight: 900; }
+.a-nr { font-weight: 900; white-space: nowrap; }
 .a-punkte { color: var(--leise); white-space: nowrap; }
 .a-auftrag p { margin: 0; }
 .a-vorsatz { font-style: italic; color: var(--leise); margin-bottom: 4px !important; }

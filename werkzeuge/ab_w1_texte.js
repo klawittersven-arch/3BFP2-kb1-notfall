@@ -38,7 +38,7 @@ const WOERTER1 = 'Barorezeptoren = Druckfühler in der Gefäßwand · Sympathiku
 
 const INFO2 = [
   'Ein **Schock** ist ein **akutes Kreislaufversagen**: Die Organe bekommen **nicht genug Sauerstoff**. Es besteht **Lebensgefahr**! Nach der Ursache gibt es **vier Schockformen** (Tabelle unten).',
-  'Zu Beginn gleicht der Körper aus: **kompensierter Schock** (Arbeitsblatt 1). Hält die Ursache an, reicht der Ausgleich nicht mehr: **dekompensierter Schock**. Ohne Sauerstoff entsteht im Gewebe **Laktat**, das Blut wird **sauer**, die Gefäße werden **weit**, der **Blutdruck fällt**, die **Organe versagen**. Ein **Teufelskreis**: die **Schockspirale** (AA3).'
+  'Zu Beginn gleicht der Körper aus: **kompensierter Schock** (Arbeitsblatt „Schock: Wie der Körper den Blutdruck hält“). Hält die Ursache an, reicht der Ausgleich nicht mehr: **dekompensierter Schock**. Ohne Sauerstoff entsteht im Gewebe **Laktat**, das Blut wird **sauer**, die Gefäße werden **weit**, der **Blutdruck fällt**, die **Organe versagen**. Ein **Teufelskreis**: die **Schockspirale** (AA2).'
 ];
 const WOERTER2 = 'hypovolämisch = zu wenig Volumen · distributiv = falsch verteilt · kardiogen = vom Herzen aus · obstruktiv = durch ein Hindernis · Laktat = Milchsäure · Azidose = Blut zu sauer';
 

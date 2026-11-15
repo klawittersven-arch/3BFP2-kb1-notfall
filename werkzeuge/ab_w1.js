@@ -36,7 +36,7 @@ function blattKopf(B, nr, o = {}) {
   return new Paragraph({
     keepNext: true, spacing: { before: 0, after: 80 },
     shading: { type: ShadingType.CLEAR, color: 'auto', fill: '2E75B6' },
-    children: [B.emoji(' 📄 ', { size: 24 }), B.b(`Schock: ${f.ueberschrift}`, { size: 25, color: 'FFFFFF' })],
+    children: [B.emoji(' 📄 ', { size: 24 }), B.b(f.ueberschrift, { size: 25, color: 'FFFFFF' })],
     ...o
   });
 }
@@ -50,7 +50,8 @@ function schuelerTeil(B, { lsg }) {
   const merk = (titel, key) => B.merksatz(titel, [T.MERKSAETZE[key]]);
   const L = (wort, n) => B.luecke(wort, n);
   // Aufgabe für die Folien registrieren (Text wie auf dem AB)
-  const auf = (nr, text, punkte, vorsatz) => { N.aufgaben[nr] = { nr, text, ...(punkte ? { punkte } : {}), ...(vorsatz ? { vorsatz } : {}) }; };
+  // schluessel: intern (inhalte_stunde.js); anzeige: Nummer wie auf dem Arbeitsblatt (AA1 gibt es auf beiden Blättern)
+  const auf = (schluessel, text, punkte, vorsatz, anzeige) => { N.aufgaben[schluessel] = { nr: anzeige || schluessel, text, ...(punkte ? { punkte } : {}), ...(vorsatz ? { vorsatz } : {}) }; };
   const loes = (nr, zeilen) => { N.loesungen[nr] = zeilen; };
   const klein = (text) => new Paragraph({ spacing: { after: 60, line: 240 }, children: B.runs(text, { size: 17, color: F.GRAU_T }) });
 
@@ -66,12 +67,12 @@ function schuelerTeil(B, { lsg }) {
     ], { kopf: 'Fallbezug: „Reanimation – und nicht nur ich war hilflos“ (Auszug)', fill: 'FFFFFF', kopfFill: 'FFFFFF', rand: '000000' }),
     B.leer(80),
     B.leitfrage(T.LEITFRAGE),
-    new Paragraph({ spacing: { before: 100, after: 40 }, keepNext: true, children: [B.b('Antwort auf die Leitfrage '), B.i('(am Ende der Stunde, nach AA4 b):', { size: 19 })] }),
+    new Paragraph({ spacing: { before: 100, after: 40 }, keepNext: true, children: [B.b('Antwort auf die Leitfrage '), B.i('(am Ende der Stunde, nach AA3 b auf dem Arbeitsblatt „Schock: Wenn der Ausgleich nicht mehr reicht“):', { size: 19 })] }),
     new Paragraph({ spacing: { after: 120, line: 360 }, children: [
       B.t('Frau Maler ist in Gefahr, weil ihr Körper den Blutdruck nur durch '), L('Kompensation', 18), B.t(' hält. Das zeigen ihr Puls von '), L('118/min', 9),
       B.t(', die blasse Haut und der '), L('kalte Schweiß', 16), B.t('. Ihr Schockindex ist '), L('1,1', 6), B.t(' – also über 1.')
     ] }),
-    B.meta(`Die SuS füllen den Lückensatz nach AA4 b aus (${FOLIE_T('w1-aa4b')}: Auftrag, ${FOLIE_T('w1-leitfrage')}: Lösung).`),
+    B.meta(`Die SuS füllen den Lückensatz nach AA3 b (zweites Arbeitsblatt) aus (${FOLIE_T('w1-aa4b')}: Auftrag, ${FOLIE_T('w1-leitfrage')}: Lösung).`),
     B.handy(T.SEITEN.stunde, [
       B.p('**So läuft die Stunde:** Scannen Sie den QR-Code **am Beamer** und geben Sie Ihren Vornamen ein. Ihr Handy wechselt dann **automatisch mit dem Beamer**.'),
       B.p('Nur falls das nicht klappt: diesen QR-Code scannen und den **Raumcode vom Beamer** eingeben.', { spacing: { after: 0, line: 264 } })
@@ -141,9 +142,9 @@ function schuelerTeil(B, { lsg }) {
     merk('Merksatz AA2', 'aa2')
   );
 
-  /* ---------- Seite 3: Informationstext 2, Schockformen, AA3 Schockspirale ---------- */
+  /* ---------- Seite 3 (Blatt 2 – Nummerierung beginnt wieder bei AA1): Informationstext 2, AA1 Schockformen, AA2 Schockspirale ---------- */
   const formenText = 'Schreiben Sie den Namen der Schockform in die erste Spalte. Wortspeicher: kardiogen · obstruktiv · hypovolämisch · distributiv';
-  auf('Schockformen', formenText);
+  auf('Schockformen', formenText, 0, null, 'AA1');
   loes('Schockformen', T.SCHOCKFORMEN.map((z) => `**${z[0]}** – ${z[1]} (z. B. ${z[2]})`));
   push(
     blattKopf(B, 2, { pageBreakBefore: true }),
@@ -156,33 +157,33 @@ function schuelerTeil(B, { lsg }) {
       new Paragraph({ spacing: { after: 0 }, children: [B.i('Quelle: nach MSD Manual Profi-Ausgabe (2025): Schock; Lecturio (2023): Schock – Überblick; sprachlich vereinfacht.', { size: 15, color: F.GRAU_T })] })
     ], { kopf: 'Informationstext 2: Schock und Schockspirale' }),
     new Paragraph({ spacing: { before: 40, after: 60 }, children: [B.b('Wörterhilfe: ', { size: 17 }), B.t(T.WOERTER2, { size: 17 })] }),
-    B.teil([IC.schreiben], '**Die vier Schockformen:** ' + formenText.replace('Wortspeicher:', '**Wortspeicher:**')),
+    B.aa([IC.schreiben], 'AA1: Die vier Schockformen:', formenText.replace('Wortspeicher:', '**Wortspeicher:**')),
     B.meta(`7 min (5 min lesen und ausfüllen, 2 min Lösung) · PA → Plenum · AFB I · Ich-kann-Liste W1 Nr. 3 · ${FOLIEN_T('w1-info2', 'w1-formen-loesung')}`),
     B.tabelle([{ text: 'Schockform', w: 2200 }, { text: 'Das Problem – Beispiele', w: BREITE_HOCH - 2200 }],
       T.SCHOCKFORMEN.map((z) => [{ lsg: z[0] }, `**${z[1]}** – z. B. ${z[2]}`]), { schrift: 19 })
   );
-  auf('AA3', 'Füllen Sie die Lücken in der Schockspirale aus. Wortspeicher: versackt · Laktat · Dekompensation · Urin · sauer · Zentralisation · weit');
-  loes('AA3', ['② Gefäße in Haut, Muskeln und Darm werden eng = **Zentralisation**', '③ es entsteht **Laktat** → das Blut wird **sauer** (Laktatazidose)', '④ die Gefäße werden **weit** und durchlässig → das Blut **versackt** → der Blutdruck fällt = **Dekompensation**', '⑤ Niere: kaum **Urin** · Lunge: Atemnot · Gehirn: Verwirrtheit, Bewusstlosigkeit']);
+  auf('Schockspirale', 'Füllen Sie die Lücken in der Schockspirale aus. Wortspeicher: versackt · Laktat · Dekompensation · Urin · sauer · Zentralisation · weit', 0, null, 'AA2');
+  loes('Schockspirale', ['② Gefäße in Haut, Muskeln und Darm werden eng = **Zentralisation**', '③ es entsteht **Laktat** → das Blut wird **sauer** (Laktatazidose)', '④ die Gefäße werden **weit** und durchlässig → das Blut **versackt** → der Blutdruck fällt = **Dekompensation**', '⑤ Niere: kaum **Urin** · Lunge: Atemnot · Gehirn: Verwirrtheit, Bewusstlosigkeit']);
   push(
-    B.aa([IC.handy, IC.schreiben], 'AA3: Beschreiben – die Schockspirale:', 'Bauen Sie am Handy die **Schockspirale** (Achtung: Fehlerkarten!). Dann: Füllen Sie die Lücken aus. **Wortspeicher:** versackt · Laktat · Dekompensation · Urin · sauer · Zentralisation · weit'),
+    B.aa([IC.handy, IC.schreiben], 'AA2: Beschreiben – die Schockspirale:', 'Bauen Sie am Handy die **Schockspirale** (Achtung: Fehlerkarten!). Dann: Füllen Sie die Lücken aus. **Wortspeicher:** versackt · Laktat · Dekompensation · Urin · sauer · Zentralisation · weit'),
     B.meta(`10 min (6 min Handy, 3 min sichern, 1 min Merksatz) · EA (Handy) → EA → Plenum · AFB I–II · Ich-kann-Liste W1 Nr. 4 · Fehlerkarten nach Lohner („Spirale schließen“) · ${FOLIEN_T('w1-aa3', 'w1-aa3-merksatz')}`),
     spirale(B, L),
     B.leer(20),
-    merk('Merksatz AA3', 'aa3')
+    merk('Merksatz AA2', 'aa3')
   );
 
-  /* ---------- Seite 4: AA4 Früh-/Spätzeichen und Schockindex, AA5 neuer Fall ---------- */
+  /* ---------- Seite 4: AA3 Früh-/Spätzeichen und Schockindex, AA4 neuer Fall ---------- */
   push(
-    B.aa([IC.handy, IC.beurteilen], 'AA4: Frühzeichen und Schockindex:', '**a)** Quiz am Handy: **Früh- oder Spätzeichen?** Hilfe: Tabelle.', { pageBreakBefore: true, spacing: { before: 0, after: 40, line: 252 } }),
-    B.meta(`9 min (4 min Quiz, 1 min Merksatz, 3 min AA4 b und Leitfrage, Lösungen) · EA (Handy) → EA → Plenum · AFB II–III · Ich-kann-Liste W1 Nr. 5 · ${FOLIEN_T('w1-aa4', 'w1-leitfrage')}`),
+    B.aa([IC.handy, IC.beurteilen], 'AA3: Frühzeichen und Schockindex:', '**a)** Quiz am Handy: **Früh- oder Spätzeichen?** Hilfe: Tabelle.', { pageBreakBefore: true, spacing: { before: 0, after: 40, line: 252 } }),
+    B.meta(`9 min (4 min Quiz, 1 min Merksatz, 3 min AA3 b und Leitfrage, Lösungen) · EA (Handy) → EA → Plenum · AFB II–III · Ich-kann-Liste W1 Nr. 5 · ${FOLIEN_T('w1-aa4', 'w1-leitfrage')}`),
     B.tabelle([{ text: '', w: 2000 }, { text: '🟡 Frühzeichen (Kompensation)', w: 3819 }, { text: '🔴 Spätzeichen (Dekompensation)', w: BREITE_HOCH - 5819 }],
       [...T.FRUEH_SPAET.map((z) => [{ text: `**${z[0]}**`, fill: F.LACHS }, z[1], z[2]]),
         [{ colSpan: 3, text: 'Quelle: nach Pflegias – Generalistische Pflegeausbildung, Band 2 (Cornelsen), S. 801, Tab. 1 „Typische Symptome bei Schock“ (Erwachsene).', o: { size: 14, color: F.GRAU_T } }]], { schrift: 18 })
   );
 
-  push(merk('Merksatz AA4', 'aa4'));
-  auf('AA4 b', 'Berechnen und bewerten Sie den Schockindex von Frau Maler um 11 Uhr (Puls 118/min, Blutdruck 105/70 mmHg).');
-  loes('AA4 b', ['Schockindex = 118 : 105 ≈ **1,1**', '→ über 1 (normal ca. 0,5) → **spricht für einen Schock** – obwohl der Blutdruck fast normal ist.']);
+  push(merk('Merksatz AA3', 'aa4'));
+  auf('Schockindex', 'Berechnen und bewerten Sie den Schockindex von Frau Maler um 11 Uhr (Puls 118/min, Blutdruck 105/70 mmHg).', 0, null, 'AA3 b');
+  loes('Schockindex', ['Schockindex = 118 : 105 ≈ **1,1**', '→ über 1 (normal ca. 0,5) → **spricht für einen Schock** – obwohl der Blutdruck fast normal ist.']);
   auf('Leitfrage', T.LEITFRAGE);
   loes('Leitfrage', ['Frau Maler ist in Gefahr, weil ihr Körper den Blutdruck nur durch **Kompensation** hält.', 'Das zeigen ihr Puls von **118/min**, die blasse Haut und der **kalte Schweiß** (dazu Unruhe und schnelle Atmung).', 'Ihr Schockindex ist **1,1** – also über 1. Reicht der Ausgleich nicht mehr, fällt der Blutdruck: Schockspirale.']);
   const kreuz = (an) => (lsg && an ? B.loes('☒') : B.t('☐'));
@@ -193,25 +194,25 @@ function schuelerTeil(B, { lsg }) {
     ] })
   );
   push(
-    B.aa([IC.schreiben], 'AA5: Ein neuer Fall:', '**Allein** (9 Min.), Hilfe: nur **Merksatz AA2 und AA4**. Dann Peer-Korrektur.', { spacing: { before: 120, after: 40, line: 252 } }),
-    B.meta('14 min (9 min schreiben, 5 min Peer-Korrektur) · EA → PA mit App-Raster und Musterlösung am Beamer · AFB I–III · Aufgabenform und Operatoren wie KA KB 1, Aufg. 5.4 (5.2 fast wortgleich, anderer Fall) · Fall nach Lohner (Frau Berger) · Examensvorbild 5.1: „Nennen Sie vier in der Fallsituation beschriebene Symptome, die auf … hinweisen“ (Mai 2023 Tag 3, 4.2)'),
+    B.aa([IC.schreiben], 'AA4: Ein neuer Fall:', '**Allein** (9 Min.)', { spacing: { before: 120, after: 40, line: 252 } }),
+    B.meta('14 min (9 min schreiben, 5 min Peer-Korrektur) · EA → PA mit App-Raster und Musterlösung am Beamer · AFB I–III · Aufgabenform und Operatoren wie KA KB 1, Aufg. 5.4 (4.2 fast wortgleich, anderer Fall) · Fall nach Lohner (Frau Berger) · Examensvorbild 4.1: „Nennen Sie vier in der Fallsituation beschriebene Symptome, die auf … hinweisen“ (Mai 2023 Tag 3, 4.2)'),
     B.kasten(T.TRANSFERFALL.map((x, i) => B.p((i ? '' : '**Fallsituation:** ') + x, i === T.TRANSFERFALL.length - 1 ? { spacing: { after: 0, line: 252 } } : { spacing: { after: 60, line: 252 } })), { fill: F.GRAU_HELL, rand: F.GRAU_R }),
     B.leer(40)
   );
-  const a51 = { nr: '5.1', text: 'Nennen Sie vier Befunde aus der Situation um 10:30 Uhr, die auf einen beginnenden Schock hinweisen. Berücksichtigen Sie die Vorwerte.', punkte: 2 };
-  const a52 = { nr: '5.2', text: 'Erläutern Sie, wie der Körper von Frau Berger um 10:30 Uhr den Blutdruck aufrechterhält. Begründen Sie, warum ein Blutdruck von 112/90 mmHg einen Schock nicht ausschließt.', punkte: 3 };
-  const a53 = { nr: '5.3', text: 'Bewerten Sie den Schockindex von Frau Berger um 10:30 Uhr.', punkte: 2 };
+  const a51 = { nr: '4.1', text: 'Nennen Sie vier Befunde aus der Situation um 10:30 Uhr, die auf einen beginnenden Schock hinweisen. Berücksichtigen Sie die Vorwerte.', punkte: 2 };
+  const a52 = { nr: '4.2', text: 'Erläutern Sie, wie der Körper von Frau Berger um 10:30 Uhr den Blutdruck aufrechterhält. Begründen Sie, warum ein Blutdruck von 112/90 mmHg einen Schock nicht ausschließt.', punkte: 3 };
+  const a53 = { nr: '4.3', text: 'Bewerten Sie den Schockindex von Frau Berger um 10:30 Uhr.', punkte: 2 };
   [a51, a52, a53].forEach((a) => auf(a.nr, a.text, a.punkte));
   const l51 = ['z. B.: ängstlich, „Mir ist so komisch.“ (Unruhe) · Durst: fragt mehrmals, ob sie etwas trinken darf · Haut blass und feucht, Hände kalt · Puls von 84 auf 118/min gestiegen · Blutdruck von 135/80 auf 112/90 mmHg gefallen – die Blutdruckamplitude ist von 55 auf 22 mmHg kleiner geworden · Atemfrequenz 24/min.', '(je Befund 0,5 P., max. 2 P.; Messwerte nur mit Vorwert voll werten)'];
   const l52 = ['Die Barorezeptoren (Aortenbogen, Halsschlagader) melden den Druckabfall, der Sympathikus wird aktiviert (Adrenalin, Noradrenalin): Die Herzfrequenz steigt (118/min), die Gefäße in Haut, Muskeln und Darm werden eng (Zentralisation) → blasse, kalte, feuchte Haut.', 'RAAS und ADH halten Wasser und Natrium zurück und verengen die Gefäße (Durst).', 'Durch diese Kompensation bleibt der Blutdruck anfangs fast normal; er fällt erst, wenn der Ausgleich nicht mehr reicht. Der Blutdruck ist deshalb ein Spätzeichen – Frühzeichen sind Tachykardie, schnelle Atmung, Unruhe, Blässe und kalter Schweiß.', '(je schlüssiger Aspekt 1 P., max. 3 P.; ohne Begründung „Blutdruck fällt spät“ max. 2 P.)'];
   const l53 = ['Schockindex = 118 : 112 ≈ 1,05 → über 1 (normal ca. 0,5) → spricht für einen Schock. Sofort die Pflegefachkraft bzw. Ärztin oder Arzt informieren und engmaschig überwachen (Verdacht auf Nachblutung).', '(Rechnung 1 P., Bewertung 1 P.)'];
-  loes('5.1', l51); loes('5.2', l52); loes('5.3', l53);
-  loes('5.1 und 5.2', [...l51.map((z) => '5.1 ' + z), ...l52.map((z, i) => (i ? '' : '5.2 ') + z)]);
+  loes('4.1', l51); loes('4.2', l52); loes('4.3', l53);
+  loes('4.1 und 4.2', [...l51.map((z, i) => (i ? '' : '4.1 ') + z), ...l52.map((z, i) => (i ? '' : '4.2 ') + z)]);
   push(
-    aufgabenMitSumme(B, [a51, a52, a53]),
+    aufgabenOhnePunkte(B, [a51, a52, a53]),   // wie auf dem Arbeitsblatt: ohne Punkte – die Punkte zählt das Bewertungsraster am Handy
     ...(lsg
-      ? [zw(B, '5.1'), linien(B, 2, l51), zw(B, '5.2'), linien(B, 4, l52), zw(B, '5.3'), linien(B, 1, l53)]
-      : [linienMitNr(B, [['5.1', 2], ['5.2', 4], ['5.3', 1]])])
+      ? [zw(B, '4.1'), linien(B, 2, l51), zw(B, '4.2'), linien(B, 4, l52), zw(B, '4.3'), linien(B, 1, l53)]
+      : [linienMitNr(B, [['4.1', 2], ['4.2', 4], ['4.3', 1]])])
   );
   return k;
 }
@@ -241,12 +242,12 @@ function linienMitNr(B, teile, hoehe = 400) {
   return new Table({ width: { size: BREITE_HOCH, type: WidthType.DXA }, columnWidths: [BREITE_HOCH], layout: TableLayoutType.FIXED, rows: zeilen });
 }
 // Aufgabentabelle wie B.aufgaben, mit Zeile „Punkte gesamt“
-function aufgabenMitSumme(B, liste) {
-  const w1 = 620, w3 = 1150, w2 = BREITE_HOCH - w1 - w3;
-  const summe = liste.reduce((x, a) => x + a.punkte, 0);
+// Aufgabentabelle Nr. | Aufgabe (ohne Punkte – die Punkte vergibt das Bewertungsraster am Handy)
+function aufgabenOhnePunkte(B, liste) {
+  const w1 = 620, w2 = BREITE_HOCH - w1;
   return B.tabelle(
-    [{ text: 'Nr.', w: w1 }, { text: 'Aufgabe', w: w2 }, { text: 'Punkte', w: w3 }],
-    [...liste.map((a) => [{ text: `**${a.nr}**` }, a.text, `___ / ${a.punkte}`]), ['', '**Punkte gesamt**', `**___ / ${summe}**`]],
+    [{ text: 'Nr.', w: w1 }, { text: 'Aufgabe', w: w2 }],
+    liste.map((a) => [{ text: `**${a.nr}**` }, a.text]),
     { kopfFill: F.LACHS_KOPF }
   );
 }
@@ -349,19 +350,19 @@ function verlaufsplan(B) {
   const z = (zeit, phase, l, s, soz, mat, fkt) => [zeit, `**${phase}**`, l, s, soz, mat, fkt];
   const ueber = (text) => [{ colSpan: 7, text, fill: F.GRAU_HELL, o: { italics: true } }];
   const zeilen = [
-    z('vor der Stunde', 'Vorbereitung', `AB als **zwei einzelne Blätter** (je beidseitig) kopieren. Am Laptop **beamer-w1.html** öffnen → „Neuen Raum starten“ (Probe vorher: „Probestunde mit erfundener Klasse“).`, '–', '–', 'Beamer, Blatt 1 und 2', 'Ablauf ohne Umbaupausen; Blatt 2 erst nach AA2'),
+    z('vor der Stunde', 'Vorbereitung', `AB als **zwei einzelne Blätter** (je beidseitig) kopieren. Am Laptop **beamer-w1.html** öffnen → „Neuen Raum starten“ (Probe vorher: „Probestunde mit erfundener Klasse“).`, '–', '–', 'Beamer, Blatt 1 und 2', 'Ablauf ohne Umbaupausen; Blatt 2 erst nach AA2 von Blatt 1 (auf Blatt 2 beginnt die Nummerierung wieder bei AA1)'),
     z('0–4', `Ankommen (${FOLIEN('start', 'blatt1')})`, `${FOLIE('start')} QR-Code am Beamer, Namen erscheinen. ${FOLIE('blatt1')} **Blatt 1 austeilen.**`, 'QR-Code scannen, Vornamen eingeben.', 'EA', 'Beamer, Handy, Blatt 1', 'Technik einmal für die ganze Stunde'),
     z('4–10', `Problemorientierter Einstieg (${FOLIEN('fall', 'ziel')})`, `${FOLIE('fall')} Fallauszug vorlesen, Leitfrage. ${FOLIE('einstieg')} Frage für Frage: „Weiter“ zeigt die Frage, die SuS stimmen ab (sicher / vermute nur), „Ergebnisse anzeigen“ zeigt die Verteilung – **ohne Auflösung**. ${FOLIE('einstieg-ergebnis')} Übersicht (★ = größte Uneinigkeit). ${FOLIE('ziel')} Lernziel und Fahrplan.`, 'Vermutungen am Handy; Ergebnis der Klasse ansehen.', 'EA → Plenum', 'Handy, Beamer', 'Vorwissen (Selbstlernpaket) aktivieren, Fehlvorstellung „Blutdruck normal = alles gut“ sichtbar machen; kognitiver Konflikt. AFB I'),
     ueber('„Sie sind geteilter Meinung – genau das klären wir heute. Am Ende prüfen Sie Ihre Vermutungen.“'),
     z('10–20', `Erarbeitung I: Frühzeichen finden (AA1, ${FOLIEN('w1-aa1', 'w1-aa1-merksatz')})`, `${FOLIE('w1-aa1')} Uhr starten (6 min); Fortschritt je Person und **häufige Fehler** am Beamer beobachten (übersehen / falsch markiert). ${FOLIE('w1-aa1-loesung')} Tabelle sichern: SuS aufrufen, Zeilen aufdecken; dabei die häufigsten Fehler ansprechen (z. B. „Wade dick“ ist kein Schockzeichen – aber wichtig!). ${FOLIE('w1-aa1-merksatz')} Merksatz AA1 lesen.`, 'Christins Bericht am Handy lesen, Befunde antippen, prüfen, verbessern (Schutz gegen Raten); Befunde in die Tabelle AA1 eintragen; vergleichen.', 'EA (Handy) → EA → Plenum', 'Handy, AB S. 1', 'Befunde im Fließtext identifizieren und ordnen (IKL Nr. 1; Klausurformat „Fließtext mit verteilten Befunden“). AFB I'),
     z('20–37', `Erarbeitung II: Regelkreis (AA2, ${FOLIEN('w1-info1', 'w1-aa2-merksatz')})`, `${FOLIE('w1-info1')} Infotext 1 zu zweit lesen (Uhr 4 min). ${FOLIE('w1-aa2a')} Regelkreis am Handy (Uhr 5 min), häufige Fehler beobachten. ${FOLIE('w1-aa2a-loesung')} Lücken im Regelkreis sichern. ${FOLIE('w1-aa2b')} AA2 b zeigen, „Jetzt bearbeiten“ (Uhr 2,5 min). ${FOLIE('w1-aa2b-loesung')} Lösung aufdecken: Jeder Befund wird mit dem Mechanismus erklärt. ${FOLIE('w1-aa2-merksatz')} Merksatz AA2 lesen.`, 'Infotext lesen und Fachwörter unterstreichen; Kette am Handy bauen (Fehlerkarten mit Begründung); Lücken füllen (Wortspeicher); Befunde den Erklärungen zuordnen.', 'PA → EA (Handy) → EA → Plenum', 'AB S. 2, Handy', 'Blutdruckregulation erklären (IKL Nr. 2); Mechanismus ↔ Befund verknüpfen – Kern von KA 5.4. AFB I–II'),
     ueber('„Der Körper ist ein guter Ausgleicher – aber Ausgleich kostet. Was passiert, wenn die Ursache weiterbesteht?“'),
-    z('37–54', `Erarbeitung III: Schock, Schockformen, Schockspirale (AA3, ${FOLIEN('blatt2', 'w1-aa3-merksatz')})`, `${FOLIE('blatt2')} **Blatt 2 austeilen.** ${FOLIE('w1-info2')} Infotext 2 zu zweit lesen, Schockformen eintragen (Uhr 5 min). ${FOLIE('w1-formen-loesung')} Lösung. ${FOLIE('w1-aa3')} Schockspirale am Handy (Uhr 6 min), häufige Fehler (Fehlerkarten). ${FOLIE('w1-aa3-loesung')} Lücken sichern; Wendepunkt Kompensation → Dekompensation zeigen. ${FOLIE('w1-aa3-merksatz')} Merksatz AA3.`, 'Lesen, Schockformen mit Wortspeicher und Wörterhilfe benennen; Spirale am Handy bauen, Fehlerkarten erkennen; Lücken füllen.', 'PA → EA (Handy) → Plenum', 'AB S. 3, Handy', 'Schockdefinition und Schockformen (IKL Nr. 3); Schockspirale in Schritten (IKL Nr. 4), Organfolgen. AFB I–II'),
-    z('54–63', `Erarbeitung IV: Früh-/Spätzeichen, Schockindex (AA4, ${FOLIEN('w1-aa4', 'w1-leitfrage')})`, `${FOLIE('w1-aa4')} Quiz am Handy (Uhr 4 min), häufige Fehler. ${FOLIE('w1-aa4-merksatz')} Merksatz AA4. ${FOLIE('w1-aa4b')} „Jetzt bearbeiten“: Schockindex Frau Maler, dann Lückensatz zur Leitfrage auf Blatt 1 (Uhr 3 min). ${FOLIE('w1-aa4b-loesung')} und ${FOLIE('w1-leitfrage')} Lösungen aufdecken.`, 'Karten zuordnen (Tabelle als Hilfe); Schockindex berechnen und bewerten; Leitfrage im Lückensatz beantworten.', 'EA (Handy) → EA → Plenum', 'AB S. 4 und S. 1, Handy', 'Frühzeichen (Pflegias) und Schockindex bewerten (IKL Nr. 5); Leitfrage beantworten. AFB II–III'),
-    ueber('„Jetzt wenden Sie alles an: ein neuer Fall – allein, nur mit den Merksätzen AA2 und AA4, mit Punkten.“'),
-    z('63–77', `Sicherung: ein neuer Fall (AA5, ${FOLIEN('w1-aa5', 'w1-aa5-peer-2')})`, `${FOLIE('w1-aa5')} Fall und Aufgaben zeigen, „Jetzt bearbeiten“: Countdown 9 min. ${FOLIE('w1-aa5-peer')} Tausch mit der Nachbarin oder dem Nachbarn; das Raster erscheint am Handy (Uhr 5 min); Musterlösung 5.1/5.2 aufdecken. ${FOLIE('w1-aa5-peer-2')} Musterlösung 5.3 (die Uhr läuft weiter).`, '5.1–5.3 allein schreiben; Lösung der Partnerin oder des Partners mit dem App-Raster bewerten (Punkte wie im Erwartungshorizont), Rückmeldung in einem Satz.', 'EA → PA', 'AB S. 4, Handy', 'Transfer auf einen unbekannten Fall im KA-Format; 5.2 ist fast wortgleich mit KA 5.4 (anderer Fall). AFB I–III'),
+    z('37–54', `Erarbeitung III: Schock, Schockformen, Schockspirale (Blatt 2: AA1, AA2, ${FOLIEN('blatt2', 'w1-aa3-merksatz')})`, `${FOLIE('blatt2')} **Blatt 2 austeilen.** ${FOLIE('w1-info2')} Infotext 2 zu zweit lesen, Schockformen eintragen (AA1, Uhr 5 min). ${FOLIE('w1-formen-loesung')} Lösung. ${FOLIE('w1-aa3')} Schockspirale am Handy (Uhr 6 min), häufige Fehler (Fehlerkarten). ${FOLIE('w1-aa3-loesung')} Lücken sichern; Wendepunkt Kompensation → Dekompensation zeigen. ${FOLIE('w1-aa3-merksatz')} Merksatz AA2 (Blatt 2).`, 'Lesen, Schockformen mit Wortspeicher und Wörterhilfe benennen; Spirale am Handy bauen, Fehlerkarten erkennen; Lücken füllen.', 'PA → EA (Handy) → Plenum', 'AB S. 3, Handy', 'Schockdefinition und Schockformen (IKL Nr. 3); Schockspirale in Schritten (IKL Nr. 4), Organfolgen. AFB I–II'),
+    z('54–63', `Erarbeitung IV: Früh-/Spätzeichen, Schockindex (Blatt 2: AA3, ${FOLIEN('w1-aa4', 'w1-leitfrage')})`, `${FOLIE('w1-aa4')} Quiz am Handy (Uhr 4 min), häufige Fehler. ${FOLIE('w1-aa4-merksatz')} Merksatz AA3 (Blatt 2). ${FOLIE('w1-aa4b')} „Jetzt bearbeiten“: Schockindex Frau Maler, dann Lückensatz zur Leitfrage auf Blatt 1 (Uhr 3 min). ${FOLIE('w1-aa4b-loesung')} und ${FOLIE('w1-leitfrage')} Lösungen aufdecken.`, 'Karten zuordnen (Tabelle als Hilfe); Schockindex berechnen und bewerten; Leitfrage im Lückensatz beantworten.', 'EA (Handy) → EA → Plenum', 'AB S. 4 und S. 1, Handy', 'Frühzeichen (Pflegias) und Schockindex bewerten (IKL Nr. 5); Leitfrage beantworten. AFB II–III'),
+    ueber('„Jetzt wenden Sie alles an: ein neuer Fall – allein, nur mit den Merksätzen.“'),
+    z('63–77', `Sicherung: ein neuer Fall (Blatt 2: AA4, ${FOLIEN('w1-aa5', 'w1-aa5-peer-2')})`, `${FOLIE('w1-aa5')} Fall und Aufgaben zeigen, „Jetzt bearbeiten“: Countdown 9 min. ${FOLIE('w1-aa5-peer')} Tausch mit der Nachbarin oder dem Nachbarn; das Raster erscheint am Handy (Uhr 5 min); Musterlösung 4.1/4.2 aufdecken. ${FOLIE('w1-aa5-peer-2')} Musterlösung 4.3 (die Uhr läuft weiter).`, '4.1–4.3 allein schreiben; Lösung der Partnerin oder des Partners mit dem App-Raster bewerten (Punkte wie im Erwartungshorizont), Rückmeldung in einem Satz.', 'EA → PA', 'AB S. 4, Handy', 'Transfer auf einen unbekannten Fall im KA-Format; 4.2 ist fast wortgleich mit KA 5.4 (anderer Fall). AFB I–III'),
     z('77–82', `Abschlusssicherung: Hatten Sie recht? (${FOLIEN('checkout-intro', 'ende')})`, `${FOLIE('checkout-intro')} kurz zusammenfassen. ${FOLIE('checkout')} Frage für Frage: abstimmen, „Auflösung zeigen“ (Anfang und jetzt nebeneinander). ${FOLIE('checkout-ergebnis')} Vorher – nachher. ${FOLIE('ende')} Ende.`, 'Dieselben Fragen erneut entscheiden; eigene Bilanz am Handy.', 'EA (Handy) → Plenum', 'Handy, Beamer', 'Vermutungen überprüfen, Lernzuwachs sichtbar machen; Lernstandsdiagnose.'),
-    z('82–90', 'Puffer (ca. 8 min)', 'Reserve für langsames Lesen und Schreiben und für die Sicherungsfolien. **Wird es knapp:** den Check-out (Folien ' + FN('checkout-intro') + '–' + FN('checkout-ergebnis') + ') weglassen oder die Peer-Korrektur von 5.3 im Plenum machen.', '–', '–', '–', 'Zeitreserve, kein neuer Inhalt')
+    z('82–90', 'Puffer (ca. 8 min)', 'Reserve für langsames Lesen und Schreiben und für die Sicherungsfolien. **Wird es knapp:** den Check-out (Folien ' + FN('checkout-intro') + '–' + FN('checkout-ergebnis') + ') weglassen oder die Peer-Korrektur von 4.3 im Plenum machen.', '–', '–', '–', 'Zeitreserve, kein neuer Inhalt')
   ];
   push(B.tabelle(sp, zeilen, { kopfFill: F.BLAU_D, kopfFarbe: 'FFFFFF', schrift: 16 }));
   return k;
@@ -376,13 +377,13 @@ function hinweise(B) {
     B.zwischen('Technik (Stunden-App wie in Woche 2)'),
     punkt('**Beamer:** https://klawittersven-arch.github.io/3BFP2-kb1-notfall/beamer-w1.html → „Neuen Raum starten“. Die SuS scannen den QR-Code am Beamer (öffnet **w1.html** mit dem Raumcode) und geben den Vornamen ein. Der QR-Code auf Blatt 1 ist nur Ersatz (Raumcode dann von Hand).'),
     punkt('**Probe:** beamer-w1.html?demo=1 zeigt alle Folien mit erfundenen Namen und Fehlern (ohne Internet). „Probestunde mit erfundener Klasse“ startet einen echten Raum mit 20 erfundenen SuS – mit dem eigenen Handy mitmachen.'),
-    punkt('**Häufige Fehler:** Auf den Folien zu AA1, AA2 a, AA3 und AA4 a zeigt der Beamer rechts die häufigsten Fehler beim ersten Versuch (falsch markiert / übersehen / Fehlerkarte gewählt / falsch zugeordnet). Sie eignen sich als Impuls für die anschließende Sicherung. **↻ neu** hinter einem Namen: alle Leben verbraucht (2 Fehler sind erlaubt, beim 3. kommt eine Lesepause von 20 Sekunden) – die Übung beginnt danach am Handy von vorn. Wer schneller tippt, als man lesen kann, bekommt eine Warnung; nach 3 Warnungen gibt es 15 Sekunden Lesepause.'),
-    punkt('**Stunde geteilt (Blatt 1 heute, Blatt 2 nächste Woche):** Nächste Woche einfach einen **neuen Raum** starten (der alte ist nach 6 Stunden gelöscht) und auf der Willkommensfolie **„Heute mit Arbeitsblatt 2 beginnen“** wählen. Die SuS scannen den QR-Code **am Beamer** (Blatt 1 brauchen sie dafür nicht; Ersatz-QR auch auf Blatt 2). Der Check-out zeigt dann nur die Entscheidungen „jetzt“ (die Vermutungen vom Einstieg lagen im alten Raum). Sinnvoller Schnitt: nach Merksatz AA2 (Folie ' + FN('w1-aa2-merksatz') + '); Blatt 2 beginnt mit Folie ' + FN('blatt2') + '.'),
-    punkt('**Ohne Handy:** Alle Handy-Aufgaben lassen sich auch auf Papier lösen (AA1: Fallauszug auf S. 1; AA2 a, AA3: Lückentexte mit Wortspeicher; AA4 a: Tabelle). SuS ohne Handy arbeiten mit einer Partnerin oder einem Partner.'),
+    punkt('**Häufige Fehler:** Auf den Folien zu AA1 und AA2 a (Blatt 1) sowie AA2 und AA3 a (Blatt 2) zeigt der Beamer rechts die häufigsten Fehler beim ersten Versuch (falsch markiert / übersehen / Fehlerkarte gewählt / falsch zugeordnet). Sie eignen sich als Impuls für die anschließende Sicherung. **↻ neu** hinter einem Namen: alle Leben verbraucht (2 Fehler sind erlaubt, beim 3. kommt eine Lesepause von 20 Sekunden) – die Übung beginnt danach am Handy von vorn. Wer schneller tippt, als man lesen kann, bekommt eine Warnung; nach 3 Warnungen gibt es 15 Sekunden Lesepause.'),
+    punkt('**Stunde geteilt (Blatt 1 heute, Blatt 2 nächste Woche):** Nächste Woche einfach einen **neuen Raum** starten (der alte ist nach 6 Stunden gelöscht) und auf der Willkommensfolie **„Heute mit dem zweiten Arbeitsblatt beginnen“** wählen. Die SuS scannen den QR-Code **am Beamer** (Blatt 1 brauchen sie dafür nicht; Ersatz-QR auch auf Blatt 2). Der Check-out zeigt dann nur die Entscheidungen „jetzt“ (die Vermutungen vom Einstieg lagen im alten Raum). Sinnvoller Schnitt: nach Merksatz AA2 von Blatt 1 (Folie ' + FN('w1-aa2-merksatz') + '); Blatt 2 beginnt mit Folie ' + FN('blatt2') + '.'),
+    punkt('**Ohne Handy:** Alle Handy-Aufgaben lassen sich auch auf Papier lösen (Blatt 1 – AA1: Fallauszug auf S. 1; AA2 a: Lückentext mit Wortspeicher; Blatt 2 – AA2: Lückentext mit Wortspeicher; AA3 a: Tabelle). SuS ohne Handy arbeiten mit einer Partnerin oder einem Partner.'),
     B.zwischen('Bezug zur Klassenarbeit und zum Examen (nur für Lehrkräfte)'),
-    punkt('**KA KB 1, Aufg. 5.4** („Erläutern Sie, wie der Körper … in dieser Phase den Blutdruck aufrechterhält. Begründen Sie, warum der fast normale Blutdruck einen Schock nicht ausschließt.“): Das Wissen bauen AA2 (Regelkreis, Befunde erklären) und AA4 (Spätzeichen Blutdruck, Schockindex) auf; **AA5, 5.2** übt eine fast gleich formulierte Aufgabe an einem anderen Fall (Frau Berger, Nachblutung nach Cholezystektomie, mit Vorwerten). Der KA-Fall (Sturz, Heckenschere) wird nicht vorweggenommen.'),
-    punkt('**Ich-kann-Liste W1:** Nr. 1 → AA1, AA5 (5.1) · Nr. 2 → Informationstext 1, AA2 · Nr. 3 → Informationstext 2 (Schockformen) · Nr. 4 → AA3 · Nr. 5 → AA4, AA5 (5.2, 5.3).'),
-    punkt('**Examen (BW):** Operatoren wie im Leitfaden (identifizieren/nennen, erklären/erläutern, begründen, bewerten); 5.1 nach dem Muster „Nennen Sie vier in der Fallsituation beschriebene Symptome, die auf … hinweisen“ (Mai 2023, Tag 3, Aufg. 4.2); Fließtext mit Uhrzeiten und Vorwerten.'),
+    punkt('**KA KB 1, Aufg. 5.4** („Erläutern Sie, wie der Körper … in dieser Phase den Blutdruck aufrechterhält. Begründen Sie, warum der fast normale Blutdruck einen Schock nicht ausschließt.“): Das Wissen bauen AA2 auf Blatt 1 (Regelkreis, Befunde erklären) und AA3 auf Blatt 2 (Spätzeichen Blutdruck, Schockindex) auf; **AA4, 4.2** (Blatt 2) übt eine fast gleich formulierte Aufgabe an einem anderen Fall (Frau Berger, Nachblutung nach Cholezystektomie, mit Vorwerten). Der KA-Fall (Sturz, Heckenschere) wird nicht vorweggenommen.'),
+    punkt('**Ich-kann-Liste W1:** Nr. 1 → Blatt 1 AA1, Blatt 2 AA4 (4.1) · Nr. 2 → Informationstext 1, Blatt 1 AA2 · Nr. 3 → Informationstext 2, Blatt 2 AA1 (Schockformen) · Nr. 4 → Blatt 2 AA2 · Nr. 5 → Blatt 2 AA3, AA4 (4.2, 4.3).'),
+    punkt('**Examen (BW):** Operatoren wie im Leitfaden (identifizieren/nennen, erklären/erläutern, begründen, bewerten); 4.1 nach dem Muster „Nennen Sie vier in der Fallsituation beschriebene Symptome, die auf … hinweisen“ (Mai 2023, Tag 3, Aufg. 4.2); Fließtext mit Uhrzeiten und Vorwerten.'),
     punkt('**Aus dem Entwurf von K. Lohner (KB1_W1_Schockspirale) übernommen:** Informationstexte (gekürzt und vereinfacht), Fehlerkarten der Schockspirale, Aussagen „Stimmt das?“ (als Fehlerkarten und Check-out-Fragen), Transferfall Frau Berger. Weggelassen wegen 90 min: Video, Organ-Expertise mit Elevator Pitch, Kartenspiel zum Ausschneiden.'),
     B.zwischen('Fachliche Hinweise'),
     punkt('**Schockindex** nach Ich-kann-Liste: Puls : systolischer Blutdruck, normal ca. 0,5, über 1 spricht für einen Schock. Frau Maler: 118 : 105 ≈ 1,1; Frau Berger: 118 : 112 ≈ 1,05.'),

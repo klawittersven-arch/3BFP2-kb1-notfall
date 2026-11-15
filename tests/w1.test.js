@@ -42,7 +42,7 @@ pruefe(hinweise.every((t) => I.markieren.kategorien[t.k]), 'jede Kategorie hat e
 pruefe(stellen.every((t) => typeof t.w === 'string' && t.w.length > 5), 'jede Stelle hat eine Erklärung');
 pruefe(I.markieren.hoechstensFalsch < stellen.length - hinweise.length, 'Schutz gegen Raten greift');
 
-console.log('Ketten (AA2 a, AA3)');
+console.log('Ketten (Blatt 1: AA2 a, Blatt 2: AA2)');
 for (const [name, seite, merksatz] of [['regelkreis', 'w1-regelkreis', 'aa2'], ['spirale', 'w1-spirale', 'aa3']]) {
   const kt = I.kette.ketten[name];
   pruefe(kt && kt.seite === seite && kt.merksatz === merksatz, `${name}: Seite ${seite}, Merksatz ${merksatz}`);
@@ -54,24 +54,47 @@ for (const [name, seite, merksatz] of [['regelkreis', 'w1-regelkreis', 'aa2'], [
   pruefe(kt.mindestensErsterVersuch <= kt.schritte.length - 1, `${name}: Mindestzahl erreichbar`);
 }
 
-console.log('Quiz (AA4 a)');
+console.log('Quiz (Blatt 2: AA3 a)');
 const q = I.karten.quiz.frueh;
 pruefe(q.seite === 'w1-frueh' && q.merksatz === 'aa4', 'Seite w1-frueh, Merksatz aa4');
 pruefe(q.karten.length === 9 && q.karten.every((c) => q.optionen.some((o) => o.k === c.richtig) && c.warum), '9 Karten, jede mit gültiger Lösung und Erklärung');
 pruefe(q.karten.some((c) => c.richtig === 'F') && q.karten.some((c) => c.richtig === 'S'), 'Früh- und Spätzeichen kommen vor');
 pruefe(!q.karten.some((c) => /Puls 1[01]\d\b/.test(c.text) && c.richtig === 'S'), 'kein Puls zwischen 100 und 119 als Spätzeichen');
 
-console.log('Raster (AA5)');
-pruefe(I.raster.gruppen.reduce((s, g) => s + g.max, 0) === 7, 'AA5: 7 Punkte');
+console.log('Raster (Blatt 2: AA4)');
+pruefe(I.raster.gruppen.reduce((s, g) => s + g.max, 0) === 7, 'AA4: 7 Punkte');
 const nr = I.raster.gruppen.map((g) => g.titel.slice(0, 3));
-pruefe(nr.join() === '5.1,5.2,5.3', 'Gruppen 5.1, 5.2, 5.3');
+pruefe(nr.join() === '4.1,4.2,4.3', 'Gruppen 4.1, 4.2, 4.3');
 I.raster.gruppen.forEach((g, i) => {
   const a = N.aufgaben[nr[i]];
-  pruefe(a && a.punkte === g.max, `${nr[i]}: Punkte wie auf dem Arbeitsblatt`, [a && a.punkte, g.max]);
+  pruefe(a && a.punkte === g.max, `${nr[i]}: Punkte wie in der Musterlösung`, [a && a.punkte, g.max]);
   pruefe(g.kriterien.reduce((s, x) => s + x.punkte, 0) >= g.max, `${nr[i]}: Höchstpunktzahl erreichbar`);
 });
 pruefe(I.raster.speicher === 'kb1nf_w1_raster', 'eigener Speicher (nicht der von Woche 2)');
-pruefe(/112\/90/.test(N.aufgaben['5.2'].text) && !/in dieser Phase/.test(N.aufgaben['5.2'].text), '5.2 ähnlich, aber nicht wortgleich mit der Klassenarbeit');
+pruefe(/112\/90/.test(N.aufgaben['4.2'].text) && !/in dieser Phase/.test(N.aufgaben['4.2'].text), '4.2 ähnlich, aber nicht wortgleich mit der Klassenarbeit');
+
+console.log('Nummerierung wie auf den Arbeitsblättern (auf Blatt 2 beginnt sie wieder bei AA1)');
+const nrVon = (x) => (N.aufgaben[x] || {}).nr;
+pruefe(nrVon('AA1') === 'AA1' && nrVon('AA2 a') === 'AA2 a' && nrVon('AA2 b') === 'AA2 b', 'Blatt 1: AA1, AA2 a, AA2 b');
+pruefe(nrVon('Schockformen') === 'AA1' && nrVon('Schockspirale') === 'AA2' && nrVon('Schockindex') === 'AA3 b', 'Blatt 2: Schockformen = AA1, Schockspirale = AA2, Schockindex = AA3 b',
+  [nrVon('Schockformen'), nrVon('Schockspirale'), nrVon('Schockindex')]);
+pruefe(['4.1', '4.2', '4.3'].every((x) => nrVon(x) === x) && !Object.keys(N.aufgaben).some((x) => /^5\.|^AA[45]/.test(x)), 'Blatt 2: AA4 mit 4.1–4.3, keine alten Nummern 5.x/AA5');
+pruefe(/\(AA2\)\.?$/.test(AB.INFO2[1]) && !/Arbeitsblatt \d/.test(AB.INFO2.join(' ')), 'Informationstext 2: „Schockspirale (AA2)“, Arbeitsblatt mit Titel statt Nummer');
+pruefe(/^AA2 /.test(I.kette.ketten.spirale.titel) && I.kette.ketten.spirale.merksatzTitel === 'Merksatz AA2', 'Übung Schockspirale: AA2, Merksatz AA2');
+pruefe(/^AA3 a /.test(I.karten.quiz.frueh.titel) && I.karten.quiz.frueh.merksatzTitel === 'Merksatz AA3', 'Quiz: AA3 a, Merksatz AA3');
+pruefe(/^AA4 /.test(I.raster.titel), 'Bewertungsraster: AA4');
+for (const f of S.folien.filter((x) => x.typ === 'merksatz')) {
+  const kasten = f.kasten || 'Merksatz ' + f.merksatz.toUpperCase();
+  const modul = [I.markieren, ...Object.values(I.kette.ketten), ...Object.values(I.karten.quiz)].find((m) => m && m.merksatz === f.merksatz);
+  pruefe(f.titel === kasten && f.handy.titel === kasten && (!modul || modul.merksatzTitel === kasten), `Folie ${f.id}: überall „${kasten}“`, [f.titel, f.handy.titel, modul && modul.merksatzTitel]);
+}
+const fallFolie = S.folien.find((f) => f.id === 'w1-aa5');
+pruefe(fallFolie.bloecke.some((b) => b.art === 'aufgaben' && b.punkte === false), 'AA4: Aufgaben ohne Punkte-Spalte (wie auf dem Arbeitsblatt)');
+const sichtbar = JSON.stringify(S.folien) + JSON.stringify(S.beamer) + JSON.stringify(S.handy);
+const alt = sichtbar.match(/Arbeitsblatt [123]\b|AB\{n\}|AA5|\b5\.[123]\b|AA4 [ab]\b|Merksätze AA/g);
+pruefe(!alt, 'Folien und Handy: keine alten Nummern, kein „Arbeitsblatt 1/2“ (die SuS kennen die Blätter nur mit Titel)', alt);
+const blattTitel = S.folien.filter((f) => f.typ === 'blatt').map((f) => f.ueberschrift);
+pruefe(gleich(blattTitel, ['Schock: Wie der Körper den Blutdruck hält', 'Schock: Wenn der Ausgleich nicht mehr reicht']), 'Austeil-Folien mit den Titeln der Arbeitsblätter', blattTitel);
 
 console.log('Foliensatz (w1/inhalte_stunde.js)');
 const ids = S.folien.map((f) => f.id);
@@ -80,7 +103,7 @@ pruefe(!ids.includes('aa1') && ids.every((id) => /^[a-z0-9-]{1,24}$/.test(id)), 
 pruefe(ids[ids.length - 1] === 'ende', 'letzte Folie „ende“');
 pruefe(S.handySeite === 'w1.html' && S.speicher === 'w1', 'eigene Handyseite und eigener Raumspeicher');
 const start = S.folien[0];
-pruefe(start.id === 'start' && start.sprung && start.sprung.folie === 'blatt2' && ids.includes('blatt2'), 'Willkommen: Knopf „Heute mit Arbeitsblatt 2 beginnen“ führt zu blatt2');
+pruefe(start.id === 'start' && start.sprung && start.sprung.folie === 'blatt2' && ids.includes('blatt2'), 'Willkommen: Knopf „Heute mit dem zweiten Arbeitsblatt beginnen“ führt zu blatt2');
 const ergebnisFolie = S.folien.find((f) => f.id === 'checkout-ergebnis');
 pruefe(ergebnisFolie.titelNurEnde && ergebnisFolie.unterNurEnde && ergebnisFolie.handy.textNurEnde && S.handy.bilanzNurEnde, 'Check-out auch ohne Stimmen vom Einstieg (Stunde geteilt)');
 const beamerJs = fs.readFileSync(path.join(DOCS, 'beamer.js'), 'utf8');
@@ -246,8 +269,8 @@ pruefe(fs.existsSync(path.join(DOCS, AB.SEITEN.stunde)), `Ziel des QR-Codes exis
       await s.close();
     }
 
-    /* AA4 a Quiz */
-    console.log('Handy: AA4 a Früh- oder Spätzeichen');
+    /* AA3 a Quiz (Blatt 2) */
+    console.log('Handy: AA3 a Früh- oder Spätzeichen');
     s = await kontext.newPage();
     beobachten(s, protokoll, 'karten');
     await s.goto(basis + 'w1-uebung.html?modul=karten&quiz=frueh');
@@ -261,14 +284,14 @@ pruefe(fs.existsSync(path.join(DOCS, AB.SEITEN.stunde)), `Ziel des QR-Codes exis
       await s.click('.quiz-weiter');
     }
     await s.waitForSelector('.merksatz');
-    pruefe((await s.textContent('.merksatz')).includes('Schockindex'), 'fertig → Merksatz AA4');
+    pruefe((await s.textContent('.merksatz')).includes('Schockindex'), 'fertig → Merksatz AA3 (Blatt 2)');
     pruefe(await breitOk(s), 'nichts ragt seitlich heraus');
     m = await meldungen(s); letzte = m[m.length - 1];
     pruefe(letzte[0] === 'w1-frueh' && letzte[1] === 9 && letzte[3] === 'fertig' && gleich(letzte[4], [q.karten[0].id]), 'Meldung: 9 von 9, fertig, Fehler = erste Karte', letzte);
     await s.close();
 
-    /* AA5 Raster */
-    console.log('Handy: AA5 Bewertungsraster');
+    /* AA4 (Blatt 2) Raster */
+    console.log('Handy: AA4 Bewertungsraster');
     s = await kontext.newPage();
     beobachten(s, protokoll, 'raster');
     await s.goto(basis + 'w1-uebung.html?modul=raster');

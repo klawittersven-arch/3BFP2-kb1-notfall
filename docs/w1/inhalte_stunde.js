@@ -43,21 +43,21 @@ var STUNDE = {
       id: 'start', abschnitt: 'Ankommen', kurz: 'Willkommen', typ: 'start',
       titel: 'Willkommen!',
       schritte: ['Scannen Sie den QR-Code.', 'Geben Sie Ihren **Vornamen** ein.', 'Fertig – Ihr Handy wechselt ab jetzt **automatisch mit dem Beamer**.'],
-      // Stunde geteilt (Blatt 1 schon bearbeitet): Knopf für die Lehrkraft, springt zu „Weiter mit Arbeitsblatt 2“
-      sprung: { text: 'Heute mit Arbeitsblatt 2 beginnen →', folie: 'blatt2', tipp: 'falls Arbeitsblatt 1 schon in der letzten Stunde dran war' },
+      // Stunde geteilt (Blatt 1 schon bearbeitet): Knopf für die Lehrkraft, springt zur Folie „blatt2“
+      sprung: { text: 'Heute mit dem zweiten Arbeitsblatt beginnen →', folie: 'blatt2', tipp: 'falls das erste Arbeitsblatt („Wie der Körper den Blutdruck hält“) schon in der letzten Stunde dran war' },
       handy: { typ: 'vorne', titel: 'Sie sind dabei, {name}!', text: 'Ihr Handy wechselt ab jetzt automatisch mit dem Beamer. Schauen Sie nach vorne.' }
     },
     {
       id: 'blatt1', abschnitt: 'Ankommen', kurz: 'Blatt 1 austeilen', typ: 'blatt', nr: 1, von: 2,
-      titel: 'Weiter mit Arbeitsblatt 1',
-      ueberschrift: 'Wie der Körper den Blutdruck hält',
+      titel: 'Ihr Arbeitsblatt',
+      ueberschrift: 'Schock: Wie der Körper den Blutdruck hält',
       punkte: [
         'Frau Maler um 11 Uhr und die Leitfrage – die Antwort schreiben Sie am Ende',
         '**Einstieg:** drei Fragen am Handy',
         'AA1: Frühzeichen finden (Handy) und in die Tabelle eintragen',
         'AA2: Regelkreis – so hält der Körper den Blutdruck'
       ],
-      handy: { typ: 'vorne', titel: 'Weiter mit Arbeitsblatt 1', text: 'Weiter mit **Arbeitsblatt 1: Wie der Körper den Blutdruck hält**. Schauen Sie nach vorne.' }
+      handy: { typ: 'vorne', titel: 'Ihr Arbeitsblatt', text: 'Sie bekommen das Arbeitsblatt **„Schock: Wie der Körper den Blutdruck hält“**. Schauen Sie nach vorne.' }
     },
     {
       id: 'fall', abschnitt: 'Einstieg', kurz: 'Frau Maler, 11 Uhr', typ: 'fall',
@@ -167,34 +167,34 @@ var STUNDE = {
     },
     {
       id: 'blatt2', abschnitt: 'Schockspirale', kurz: 'Blatt 2 austeilen', typ: 'blatt', nr: 2, von: 2,
-      titel: 'Weiter mit Arbeitsblatt 2',
-      ueberschrift: 'Wenn der Ausgleich nicht mehr reicht',
+      titel: 'Ein neues Arbeitsblatt',
+      ueberschrift: 'Schock: Wenn der Ausgleich nicht mehr reicht',
       punkte: [
-        'Informationstext 2: Schock und Schockformen',
-        'AA3: die Schockspirale (Handy und Papier)',
-        'AA4: Frühzeichen oder Spätzeichen? Der Schockindex',
-        'AA5: ein neuer Fall – 5.1 bis 5.3'
+        'Informationstext 2 und AA1: die vier Schockformen',
+        'AA2: die Schockspirale (Handy und Papier)',
+        'AA3: Frühzeichen oder Spätzeichen? Der Schockindex',
+        'AA4: ein neuer Fall – 4.1 bis 4.3'
       ],
-      handy: { typ: 'vorne', titel: 'Weiter mit Arbeitsblatt 2', text: 'Weiter mit **Arbeitsblatt 2: Wenn der Ausgleich nicht mehr reicht**. Schauen Sie nach vorne.' }
+      handy: { typ: 'vorne', titel: 'Ein neues Arbeitsblatt', text: 'Sie bekommen das Arbeitsblatt **„Schock: Wenn der Ausgleich nicht mehr reicht“**. Schauen Sie nach vorne.' }
     },
     {
-      id: 'w1-info2', abschnitt: 'Schockspirale', kurz: 'Informationstext 2 lesen', typ: 'papier',
+      id: 'w1-info2', abschnitt: 'Schockspirale', kurz: 'Informationstext 2 und AA1', typ: 'papier',
       titel: 'Was ist ein Schock?',
-      punkte: ['Lesen Sie **Informationstext 2** – zu zweit, abwechselnd laut.', 'Füllen Sie in der Tabelle die **Namen der vier Schockformen** aus. Die **Wörterhilfe** verrät Ihnen, welcher Name passt.'],
+      punkte: ['Lesen Sie **Informationstext 2** – zu zweit, abwechselnd laut.', '**AA1:** Füllen Sie in der Tabelle die **Namen der vier Schockformen** aus. Die **Wörterhilfe** verrät Ihnen, welcher Name passt.'],
       uhr: [{ label: 'Lesen und ausfüllen', sek: 300 }],
-      handy: { typ: 'papier', titel: 'Informationstext 2 lesen', text: 'Lesen Sie **Informationstext 2** zu zweit. Füllen Sie in der Tabelle die Namen der **vier Schockformen** aus – die Wörterhilfe hilft.' }
+      handy: { typ: 'papier', titel: 'Informationstext 2 lesen', text: 'Lesen Sie **Informationstext 2** zu zweit. **AA1:** Füllen Sie in der Tabelle die Namen der **vier Schockformen** aus – die Wörterhilfe hilft.' }
     },
     {
-      id: 'w1-formen-loesung', abschnitt: 'Schockspirale', kurz: 'Lösung Schockformen', typ: 'loesung',
-      titel: 'Die vier Schockformen',
+      id: 'w1-formen-loesung', abschnitt: 'Schockspirale', kurz: 'Lösung Schockformen (AA1)', typ: 'loesung',
+      titel: 'AA1 · Die vier Schockformen',
       aufgaben: ['Schockformen'],
       tipp: 'Zeile anklicken = aufdecken · noch einmal = groß',
       handy: { typ: 'papier', titel: 'Lösung vorne', text: 'Vergleichen Sie die vier Schockformen mit der Lösung am Beamer.' }
     },
     {
-      id: 'w1-aa3', abschnitt: 'Schockspirale', kurz: 'Schockspirale bauen (AA3)', typ: 'fortschritt', seite: 'w1-spirale', gesamt: 6,
+      id: 'w1-aa3', abschnitt: 'Schockspirale', kurz: 'Schockspirale bauen (AA2)', typ: 'fortschritt', seite: 'w1-spirale', gesamt: 6,
       fehlerArt: 'kette', kette: 'spirale', fehlerAnzahl: 3,
-      titel: 'AA3 · Die Schockspirale',
+      titel: 'AA2 · Die Schockspirale',
       text: 'Was passiert, wenn der Ausgleich **nicht mehr reicht**? Tippen Sie am Handy immer den **nächsten Schritt** an. **Achtung: Fehlerkarten!**',
       punkte: ['Danach: die Lücken in der **Schockspirale** auf dem Arbeitsblatt ausfüllen (Wortspeicher).'],
       uhr: [{ label: 'Schockspirale bauen', sek: 360 }],
@@ -203,45 +203,45 @@ var STUNDE = {
     {
       id: 'w1-aa3-loesung', abschnitt: 'Schockspirale', kurz: 'Schockspirale sichern', typ: 'loesung',
       titel: 'Schockspirale sichern',
-      aufgaben: ['AA3'],
+      aufgaben: ['Schockspirale'],
       tipp: 'Zeile anklicken = aufdecken · noch einmal = groß',
       handy: { typ: 'papier', titel: 'Schockspirale vergleichen', text: 'Füllen Sie die Lücken in der **Schockspirale** auf dem Arbeitsblatt aus (Wortspeicher) und vergleichen Sie mit der Lösung am Beamer.' }
     },
     {
-      id: 'w1-aa3-merksatz', abschnitt: 'Schockspirale', kurz: 'Merksatz AA3 lesen', typ: 'merksatz', merksatz: 'aa3',
-      titel: 'Merksatz AA3',
+      id: 'w1-aa3-merksatz', abschnitt: 'Schockspirale', kurz: 'Merksatz AA2 lesen', typ: 'merksatz', merksatz: 'aa3', kasten: 'Merksatz AA2',
+      titel: 'Merksatz AA2',
       text: 'Lesen Sie mit – der Merksatz steht auf Ihrem Arbeitsblatt.',
       tipp: 'Merksatz anklicken = groß',
-      handy: { typ: 'vorne', titel: 'Merksatz AA3', text: 'Lesen Sie mit: **Merksatz AA3** auf Ihrem Arbeitsblatt.' }
+      handy: { typ: 'vorne', titel: 'Merksatz AA2', text: 'Lesen Sie mit: **Merksatz AA2** auf Ihrem Arbeitsblatt „Schock: Wenn der Ausgleich nicht mehr reicht“.' }
     },
     {
-      id: 'w1-aa4', abschnitt: 'Frühzeichen', kurz: 'Früh- oder Spätzeichen? (AA4 a)', typ: 'fortschritt', seite: 'w1-frueh', gesamt: 9,
+      id: 'w1-aa4', abschnitt: 'Frühzeichen', kurz: 'Früh- oder Spätzeichen? (AA3 a)', typ: 'fortschritt', seite: 'w1-frueh', gesamt: 9,
       fehlerArt: 'karten', quiz: 'frueh',
-      titel: 'AA4 a · Frühzeichen oder Spätzeichen?',
+      titel: 'AA3 a · Frühzeichen oder Spätzeichen?',
       text: 'Neun Karten am Handy: **Frühzeichen** (der Körper gleicht noch aus) oder **Spätzeichen** (der Ausgleich reicht nicht mehr)? Hilfe: die **Tabelle** auf Ihrem Arbeitsblatt.',
       uhr: [{ label: 'Quiz', sek: 240 }],
       handy: { typ: 'modul', modul: 'karten', params: { quiz: 'frueh' } }
     },
     {
-      id: 'w1-aa4-merksatz', abschnitt: 'Frühzeichen', kurz: 'Merksatz AA4 lesen', typ: 'merksatz', merksatz: 'aa4',
-      titel: 'Merksatz AA4',
+      id: 'w1-aa4-merksatz', abschnitt: 'Frühzeichen', kurz: 'Merksatz AA3 lesen', typ: 'merksatz', merksatz: 'aa4', kasten: 'Merksatz AA3',
+      titel: 'Merksatz AA3',
       text: 'Lesen Sie mit – der Merksatz steht auf Ihrem Arbeitsblatt.',
       tipp: 'Merksatz anklicken = groß',
-      handy: { typ: 'vorne', titel: 'Merksatz AA4', text: 'Lesen Sie mit: **Merksatz AA4** auf Ihrem Arbeitsblatt.' }
+      handy: { typ: 'vorne', titel: 'Merksatz AA3', text: 'Lesen Sie mit: **Merksatz AA3** auf Ihrem Arbeitsblatt „Schock: Wenn der Ausgleich nicht mehr reicht“.' }
     },
     {
-      id: 'w1-aa4b', abschnitt: 'Frühzeichen', kurz: 'Schockindex und Leitfrage (AA4 b)', typ: 'aufgabe',
-      titel: 'AA4 b · Schockindex – und die Leitfrage',
-      bloecke: [{ art: 'aufgaben', nrs: ['AA4 b', 'Leitfrage'] }],
-      los: '✍️ Berechnen Sie den **Schockindex** von Frau Maler. Dann beantworten Sie die **Leitfrage**: Lückensatz unter der Leitfrage auf **Arbeitsblatt 1**.',
-      losPunkte: ['Hilfe: **Merksatz AA4**.', 'Danach: Lösung am Beamer.'],
+      id: 'w1-aa4b', abschnitt: 'Frühzeichen', kurz: 'Schockindex und Leitfrage (AA3 b)', typ: 'aufgabe',
+      titel: 'AA3 b · Schockindex – und die Leitfrage',
+      bloecke: [{ art: 'aufgaben', nrs: ['Schockindex', 'Leitfrage'] }],
+      los: '✍️ Berechnen Sie den **Schockindex** von Frau Maler. Dann beantworten Sie die **Leitfrage**: Lückensatz auf dem **ersten Arbeitsblatt**.',
+      losPunkte: ['Hilfe: **Merksatz AA3**.', 'Danach: Lösung am Beamer.'],
       uhr: [{ label: 'Schreiben', sek: 180 }],
-      handy: { typ: 'papier', titel: 'Schockindex und Leitfrage', text: 'Berechnen Sie den **Schockindex** von Frau Maler (AA4 b). Dann ergänzen Sie die **Antwort auf die Leitfrage** unter der Leitfrage auf **Arbeitsblatt 1**. Die Zeit läuft vorne.' }
+      handy: { typ: 'papier', titel: 'Schockindex und Leitfrage', text: 'Berechnen Sie den **Schockindex** von Frau Maler (AA3 b). Dann ergänzen Sie die **Antwort auf die Leitfrage** – auf dem **ersten Arbeitsblatt** („Schock: Wie der Körper den Blutdruck hält“), unter der Leitfrage. Die Zeit läuft vorne.' }
     },
     {
       id: 'w1-aa4b-loesung', abschnitt: 'Frühzeichen', kurz: 'Lösung Schockindex', typ: 'loesung',
-      titel: 'Lösung AA4 b – Schockindex',
-      aufgaben: ['AA4 b'],
+      titel: 'Lösung AA3 b – Schockindex',
+      aufgaben: ['Schockindex'],
       tipp: 'Zeile anklicken = aufdecken · noch einmal = groß',
       handy: { typ: 'papier', titel: 'Lösung vorne', text: 'Vergleichen Sie mit der Lösung am Beamer und verbessern Sie – am besten in einer anderen Farbe.' }
     },
@@ -250,30 +250,30 @@ var STUNDE = {
       titel: 'Antwort auf die Leitfrage',
       aufgaben: ['Leitfrage'],
       tipp: 'Zeile anklicken = aufdecken · noch einmal = groß',
-      handy: { typ: 'papier', titel: 'Antwort auf die Leitfrage', text: 'Vergleichen Sie Ihre Antwort auf die Leitfrage (Arbeitsblatt 1) mit der Lösung am Beamer.' }
+      handy: { typ: 'papier', titel: 'Antwort auf die Leitfrage', text: 'Vergleichen Sie Ihre Antwort auf die Leitfrage (Arbeitsblatt „Schock: Wie der Körper den Blutdruck hält“) mit der Lösung am Beamer.' }
     },
     {
-      id: 'w1-aa5', abschnitt: 'Anwenden', kurz: 'Ein neuer Fall (AA5)', typ: 'aufgabe',
-      titel: 'AA5 · Ein neuer Fall: Wissen anwenden',
-      bloecke: [{ art: 'fall', schluessel: 'transferfall', titel: 'Fallsituation' }, { art: 'aufgaben', nrs: ['5.1', '5.2', '5.3'] }],
-      los: '✍️ Bearbeiten Sie jetzt **5.1 bis 5.3** – **allein**. Hilfe: nur die **Merksätze AA2 und AA4**.',
+      id: 'w1-aa5', abschnitt: 'Anwenden', kurz: 'Ein neuer Fall (AA4)', typ: 'aufgabe',
+      titel: 'AA4 · Ein neuer Fall: Wissen anwenden',
+      bloecke: [{ art: 'fall', schluessel: 'transferfall', titel: 'Fallsituation' }, { art: 'aufgaben', nrs: ['4.1', '4.2', '4.3'], punkte: false }],
+      los: '✍️ Bearbeiten Sie jetzt **4.1 bis 4.3** – **allein**. Hilfe: nur die **Merksätze** auf Ihren Arbeitsblättern.',
       losPunkte: ['Legen Sie das Handy umgedreht hin – die Zeit läuft vorne.', 'Danach: Peer-Korrektur zu zweit.'],
       uhr: [{ label: 'Schreiben', sek: 540 }],
-      handy: { typ: 'papier', titel: 'Ein neuer Fall: 5.1 bis 5.3', text: 'Allein. Hilfe: nur **Merksatz AA2** und **Merksatz AA4** auf dem Arbeitsblatt. Legen Sie das Handy umgedreht hin – die Zeit läuft vorne.' }
+      handy: { typ: 'papier', titel: 'Ein neuer Fall: 4.1 bis 4.3', text: 'Allein. Hilfe: nur die **Merksätze** auf Ihren Arbeitsblättern. Legen Sie das Handy umgedreht hin – die Zeit läuft vorne.' }
     },
     {
-      id: 'w1-aa5-peer', abschnitt: 'Anwenden', kurz: 'Peer-Korrektur (AA5) – 5.1 und 5.2', typ: 'loesung',
-      titel: 'AA5 · Peer-Korrektur: 5.1 und 5.2',
+      id: 'w1-aa5-peer', abschnitt: 'Anwenden', kurz: 'Peer-Korrektur (AA4) – 4.1 und 4.2', typ: 'loesung',
+      titel: 'AA4 · Peer-Korrektur: 4.1 und 4.2',
       punkte: ['Tauschen Sie mit Ihrer **Nachbarin** oder Ihrem **Nachbarn**.', 'Haken Sie im **Bewertungsraster am Handy** ab – die App zählt die Punkte.', 'Rückmeldung in **einem Satz**.'],
-      aufgaben: [{ nrs: ['5.1', '5.2'], loesung: '5.1 und 5.2' }],
+      aufgaben: [{ nrs: ['4.1', '4.2'], loesung: '4.1 und 4.2' }],
       uhr: [{ label: 'Peer-Korrektur', sek: 300 }],
       tipp: 'Zeile anklicken = aufdecken · noch einmal = groß',
       handy: { typ: 'modul', modul: 'raster' }
     },
     {
-      id: 'w1-aa5-peer-2', abschnitt: 'Anwenden', kurz: 'Peer-Korrektur (AA5) – 5.3', typ: 'loesung',
-      titel: 'AA5 · Peer-Korrektur: 5.3',
-      aufgaben: ['5.3'],
+      id: 'w1-aa5-peer-2', abschnitt: 'Anwenden', kurz: 'Peer-Korrektur (AA4) – 4.3', typ: 'loesung',
+      titel: 'AA4 · Peer-Korrektur: 4.3',
+      aufgaben: ['4.3'],
       uhr: [{ label: 'Peer-Korrektur', sek: 300 }], uhrVon: 'w1-aa5-peer',
       tipp: 'Zeile anklicken = aufdecken · noch einmal = groß · die Uhr läuft weiter',
       handy: { typ: 'modul', modul: 'raster' }
@@ -315,8 +315,8 @@ var STUNDE = {
     {
       id: 'ende', abschnitt: 'Abschluss', kurz: 'Ende der Stunde', typ: 'ende',
       titel: 'Gut gemacht!',
-      punkte: ['**Zum Wiederholen:** die Merksätze **AA1 bis AA4** und die Tabelle „Frühzeichen und Spätzeichen“ auf Ihrem Arbeitsblatt.', 'Üben Sie zu zweit: Erklären Sie in **einer Minute**, warum ein fast normaler Blutdruck einen Schock **nicht** ausschließt.'],
-      handy: { typ: 'ende', titel: 'Die Stunde ist beendet', text: '**Zum Wiederholen:** die Merksätze AA1 bis AA4 und die Tabelle „Frühzeichen und Spätzeichen“ auf Ihrem Arbeitsblatt.' }
+      punkte: ['**Zum Wiederholen:** alle **Merksätze** und die Tabelle „Frühzeichen und Spätzeichen“ auf Ihren Arbeitsblättern.', 'Üben Sie zu zweit: Erklären Sie in **einer Minute**, warum ein fast normaler Blutdruck einen Schock **nicht** ausschließt.'],
+      handy: { typ: 'ende', titel: 'Die Stunde ist beendet', text: '**Zum Wiederholen:** alle Merksätze und die Tabelle „Frühzeichen und Spätzeichen“ auf Ihren Arbeitsblättern.' }
     }
   ],
 
@@ -378,8 +378,8 @@ var STUNDE = {
     warumTitel: 'Warum?',
     soTitel: 'So geht’s',
     lagerungNr: '{n} von 4',
-    blattKurz: 'AB{n}',
-    blattVon: 'von {y}',
+    blattKurz: '📄',   // ohne Nummer: Die SuS kennen die Arbeitsblätter nur mit Titel
+    blattVon: 'Arbeitsblatt',
     blattDarauf: 'Darauf finden Sie:',
     gruppeFertig: 'Tabelle vollständig!',
     ohneHandyKurz: 'ohne Handy',
