@@ -380,3 +380,12 @@ a { color: var(--petrol); }
 .quiz-text { font-size: 21px; font-weight: 700; line-height: 1.35; margin: 4px 0 14px; }
 .quiz-optionen { margin-bottom: 4px; }
 .quiz-weiter { margin-top: 14px; }
+
+/* Schutz gegen Raten (Woche 1, wie im ILS): Leben ❤️, Warnung „zu schnell“, Lesepause */
+.schutz-regel { margin: 0 0 12px; padding: 8px 12px; border-radius: 10px; background: var(--hellblau); font-size: 15px; line-height: 1.4; }
+.schutz-kopf { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin: 0 0 8px; font-size: 15px; color: var(--petrol); }
+.herzen { font-size: 20px; letter-spacing: 3px; white-space: nowrap; }
+.schutz-warnung { margin-top: 12px; }
+.schutz-pause { border: 2px solid var(--bernstein-rand); background: var(--bernstein-hell); }
+.schutz-pause h2 { margin-top: 0; }
+.schutz-countdown { font-weight: 700; font-size: 20px; text-align: center; margin: 14px 0; }

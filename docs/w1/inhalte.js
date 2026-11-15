@@ -37,7 +37,30 @@ var INHALTE = {
     zurueck: 'Zurück',
     durchklickenTitel: 'Hey, nicht einfach durchklicken!',
     durchklickenText: 'Beim ersten Versuch richtig: {x} von {y} – nötig sind mindestens {z}. Lesen Sie jede Aufgabe genau und überlegen Sie, bevor Sie tippen. Dann erhalten Sie auch Ihren Merksatz.',
-    durchklickenKnopf: 'Aufgabe neu starten'
+    durchklickenKnopf: 'Aufgabe neu starten',
+
+    /* Schutz gegen Raten (wie im ILS): Leben und Lesetempo – gilt für Markieren, Kette und Quiz.
+       leben: so viele Fehler sind erlaubt; beim nächsten Fehler → Lesepause, danach beginnt die Aufgabe von vorn.
+       Lesezeit: lesenBasisMs + Wörter × lesenProWortMs (höchstens lesenMaxMs); nach einer Rückmeldung kürzer (folge…).
+       Wer früher antwortet, bekommt eine Warnung (die Antwort zählt nicht); nach warnungenMax Warnungen → kurze Lesepause. */
+    schutz: {
+      leben: 2,
+      lesenBasisMs: 1000, lesenProWortMs: 150, lesenMaxMs: 8000,
+      folgeBasisMs: 400, folgeProWortMs: 80,
+      warnungenMax: 3, tempoPauseSek: 15, fehlerPauseSek: 20, weiterNachFehlerSek: 4,
+      regel: 'Sie haben **{n} Leben** ❤️. Beim {m}. Fehler gibt es eine kurze Lesepause, danach beginnt die Aufgabe von vorn. Lesen Sie in Ruhe – wer zu schnell tippt, bekommt eine Warnung.',
+      herzenTitel: 'Noch {n} Fehler erlaubt',
+      zuSchnell: '⏳ Langsam! Lesen Sie zuerst alles in Ruhe. Diese Antwort zählt nicht. (Warnung {n} von {m})',
+      tempoTitel: '⏳ Zu schnell getippt',
+      tempoText: 'Sie haben mehrmals geantwortet, bevor man die Aufgabe lesen konnte. Durchklicken bringt nichts – lesen Sie in Ruhe. Danach geht es an derselben Stelle weiter.',
+      fehlerTitel: '📖 Zu viele Fehler',
+      fehlerText: 'Alle Leben sind verbraucht. Kein Problem – genau dafür ist die Übung da. Lesen Sie in der Pause noch einmal: {hilfe} Danach beginnt die Aufgabe von vorn.',
+      pauseNoch: 'Lesepause: noch {s} Sekunden',
+      pauseVorbei: 'Die Lesepause ist vorbei.',
+      weiterTempo: 'Weiter',
+      weiterFehler: 'Von vorn beginnen',
+      erklaerungLesen: 'Erklärung lesen … {s}'
+    }
   },
 
   start: {
@@ -90,6 +113,7 @@ var INHALTE = {
     anweisung: 'Lesen Sie Christins Bericht. Tippen Sie **alle Stellen** an, die zeigen, dass sich **Kreislauf oder Atmung** verändern. Noch einmal tippen = Markierung weg. Dann: „Prüfen“.',
     ohneQr: 'Diese Übung kommt automatisch, wenn die Folie am Beamer erscheint.',
     pruefen: 'Prüfen',
+    hilfe: 'Christins Bericht, Satz für Satz. Welche Stellen zeigen, dass sich **Kreislauf oder Atmung** verändern?',
     kategorien: { verhalten: 'Aussage oder Verhalten', beobachtung: 'Beobachtung', messwert: 'Messwert', '': 'gehört nicht dazu' },
     legende: 'Grün = richtig markiert · Orange gestrichelt = übersehen · Grau durchgestrichen = gehört nicht dazu',
     ergebnis: 'Gefunden: {x} von {y} Befunden. Falsch markiert: {f}.',
@@ -138,6 +162,7 @@ var INHALTE = {
     ohneKette: 'Diese Übung kommt automatisch, wenn die Folie am Beamer erscheint.',
     ketteTitel: 'Ihre Kette',
     frage: 'Schritt {n}: Was passiert als Nächstes?',
+    schrittVon: '{n} von {y} Schritten geschafft',
     richtig: 'Richtig!',
     fehlerkarte: 'Diese Karte ist falsch.',
     zuFrueh: 'Das passiert erst später.',
@@ -150,6 +175,7 @@ var INHALTE = {
         titel: 'AA2 a · Regelkreis: So hält der Körper den Blutdruck',
         anweisung: 'Bauen Sie den **Regelkreis**: Was passiert, wenn der Blutdruck fällt? Tippen Sie immer den **nächsten Schritt** an. Hilfe: **Informationstext 1** auf Ihrem Arbeitsblatt.',
         ketteTitel: 'Der Regelkreis',
+        hilfe: '**Informationstext 1** auf Ihrem Arbeitsblatt (Barorezeptoren, Sympathikus, RAAS).',
         mindestensErsterVersuch: 3,
         merksatz: 'aa2',
         merksatzTitel: 'Merksatz AA2',
@@ -176,6 +202,7 @@ var INHALTE = {
         titel: 'AA3 · Die Schockspirale',
         anweisung: 'Was passiert, wenn der Ausgleich **nicht mehr reicht**? Bauen Sie die **Schockspirale**: Tippen Sie immer den **nächsten Schritt** an. Achtung: Es gibt **Fehlerkarten**! Hilfe: **Informationstext 2**.',
         ketteTitel: 'Die Schockspirale',
+        hilfe: '**Informationstext 2** auf Ihrem Arbeitsblatt (Schock und Schockspirale).',
         mindestensErsterVersuch: 3,
         merksatz: 'aa3',
         merksatzTitel: 'Merksatz AA3',
@@ -220,6 +247,7 @@ var INHALTE = {
         titel: 'AA4 · Frühzeichen oder Spätzeichen?',
         anweisung: 'Ist das ein **Frühzeichen** (der Körper gleicht noch aus) oder ein **Spätzeichen** (der Ausgleich reicht nicht mehr)? Tippen Sie an.',
         optionen: [{ k: 'F', text: '🟡 Frühzeichen' }, { k: 'S', text: '🔴 Spätzeichen' }],
+        hilfe: 'die Tabelle **„Frühzeichen und Spätzeichen“** auf Ihrem Arbeitsblatt.',
         mindestensErsterVersuch: 6,
         merksatz: 'aa4',
         merksatzTitel: 'Merksatz AA4',

@@ -2,7 +2,9 @@
    Woche 1: AA4 „Frühzeichen oder Spätzeichen?“. Welches Quiz: KB1_PARAMS.quiz (aus der Stunden-App).
    Ablauf: eine Karte nach der anderen, Antwort antippen → sofort Rückmeldung mit Begründung → nächste Karte.
    Es zählt die erste Antwort. Am Ende: Merksatz (wie auf dem Arbeitsblatt) oder – bei zu vielen
-   Fehlern – neu starten. Falsch beantwortete Karten gehen an den Beamer („Häufige Fehler“). */
+   Fehlern – neu starten. Falsch beantwortete Karten gehen an den Beamer („Häufige Fehler“).
+   Woche 1 zusätzlich (K.schutz, wie im ILS): Leben ❤️ – zu viele Fehler → Lesepause, dann von vorn;
+   zu schnell getippt → Warnung, die Antwort zählt nicht; nach einem Fehler ist „Nächste Karte“ kurz gesperrt. */
 (function () {
   'use strict';
   var K = window.KB1;
@@ -33,6 +35,9 @@
   var z = K.Speicher.sitzung.lesen(SCHL);
   if (!z || !Array.isArray(z.wahl) || z.wahl.length !== N) z = leer();
   function speichern() { K.Speicher.sitzung.schreiben(SCHL, z); }
+  var SCH = K.schutz(function () { return z; }, speichern);   // null = ohne Leben und Lesetempo
+  var geradeFalsch = false;                                  // „Nächste Karte“ kurz sperren (Erklärung lesen)
+  function vonVorn() { var f = z.fehler, s = z.s; z = leer(); z.fehler = f; if (s) z.s = s; speichern(); }
 
   function beantwortet() { return z.wahl.filter(function (w) { return w !== null; }).length; }
   function richtig() { return Q.karten.filter(function (k, i) { return z.wahl[i] === k.richtig; }).length; }
@@ -40,17 +45,24 @@
   function fertig() { return beantwortet() === N; }
   function melden() {
     var status = fertig() ? (richtig() >= Q.mindestensErsterVersuch ? 'fertig' : 'durchklicken') : 'arbeitet';
+    if (SCH && SCH.inPause() && SCH.grund() === 'fehler') status = 'durchklicken';   // Beamer: „↻ neu“
     K.melden(SEITE, beantwortet(), N, status, z.fehler);
   }
 
   function zeigen() {
     platz.textContent = '';
     K.fortschrittSetzen(beantwortet(), N);
+    if (SCH && SCH.inPause()) {
+      platz.appendChild(SCH.pauseElement(Q.hilfe, function () { zeigen(); melden(); K.scrollen(document.querySelector('.inhalt')); }));
+      return;
+    }
     if (z.karte >= N) { endeZeigen(); return; }
+    if (SCH) platz.appendChild(SCH.regel());
     var i = z.karte;
     var k = Q.karten[i];
     var box = el('section', 'karte quiz-karte');
-    box.appendChild(el('p', 'klein', K.ersetzen(T.karteVon, { n: i + 1, y: N })));
+    if (SCH) box.appendChild(SCH.kopf(K.ersetzen(T.karteVon, { n: i + 1, y: N })));
+    else box.appendChild(el('p', 'klein', K.ersetzen(T.karteVon, { n: i + 1, y: N })));
     box.appendChild(K.formatiert('p', 'quiz-text', k.text));
     var opt = el('div', 'antworten quiz-optionen');
     var gewaehlt = z.wahl[i];
@@ -62,8 +74,21 @@
       }
       var b = K.knopf(o.text, klasse, function () {
         if (z.wahl[i] !== null) return;
+        if (SCH) {
+          if (SCH.inPause()) return;
+          if (SCH.zuSchnell()) {                                  // zu schnell: zählt nicht
+            if (SCH.inPause()) { zeigen(); melden(); return; }
+            var alt = box.querySelector('.schutz-warnung');
+            if (alt) alt.parentNode.removeChild(alt);
+            box.appendChild(SCH.warnungElement());
+            return;
+          }
+        }
         z.wahl[i] = o.k;
-        if (o.k !== k.richtig && z.fehler.indexOf(k.id) < 0) z.fehler.push(k.id);
+        var falsch = o.k !== k.richtig;
+        if (falsch && z.fehler.indexOf(k.id) < 0) z.fehler.push(k.id);
+        if (falsch && SCH && SCH.fehler()) { vonVorn(); zeigen(); melden(); return; }   // alle Leben verbraucht
+        geradeFalsch = falsch;
         speichern();
         zeigen();
         melden();
@@ -80,14 +105,18 @@
       rm.appendChild(el('p', 'rueck-titel', ok ? '✓ ' + T.richtig : '✗ ' + K.ersetzen(T.falsch, { a: optionText(k.richtig) })));
       rm.appendChild(K.formatiert('p', null, k.warum));
       box.appendChild(rm);
-      box.appendChild(K.knopf(i + 1 < N ? T.naechste : T.auswerten, 'knopf-breit quiz-weiter', function () {
+      var weiterKnopf = K.knopf(i + 1 < N ? T.naechste : T.auswerten, 'knopf-breit quiz-weiter', function () {
         z.karte = i + 1;
         speichern();
         zeigen();
         K.scrollen(document.querySelector('.inhalt'));
-      }));
+      });
+      box.appendChild(weiterKnopf);
+      if (SCH && geradeFalsch) SCH.sperren(weiterKnopf);
+      geradeFalsch = false;
     }
     platz.appendChild(box);
+    if (SCH && gewaehlt === null) SCH.lesen(k.text, Q.optionen.map(function (o) { return o.text; }).join(' '));
     if (gewaehlt !== null) K.scrollen(box.querySelector('.rueckmeldung'));
   }
 
@@ -110,7 +139,7 @@
     platz.appendChild(p);
   }
 
-  function neu() { var f = z.fehler; z = leer(); z.fehler = f; speichern(); zeigen(); melden(); K.scrollen(document.querySelector('.inhalt')); }
+  function neu() { vonVorn(); zeigen(); melden(); K.scrollen(document.querySelector('.inhalt')); }
 
   zeigen();
   melden();

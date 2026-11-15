@@ -7,8 +7,10 @@
 <link rel="stylesheet" href="style.css">
 <!-- Testgerüst (nur für tests/w1.test.js): eine Übung von Woche 1 ohne Stunden-App und ohne Worker.
      ?modul=markieren|kette|karten|raster, dazu die Parameter der Übung (z. B. &kette=regelkreis).
-     Meldungen an den Beamer werden in window.MELDUNGEN gesammelt. -->
-<script>window.MELDUNGEN = []; window.KB1Melden = { stand: function () { window.MELDUNGEN.push([].slice.call(arguments)); } };</script>
+     Meldungen an den Beamer werden in window.MELDUNGEN gesammelt.
+     &zeit=1: Lesezeiten und Lesepausen wie im Unterricht (sonst 0 = sofort, damit die Tests schnell durchlaufen). -->
+<script>window.MELDUNGEN = []; window.KB1Melden = { stand: function () { window.MELDUNGEN.push([].slice.call(arguments)); } };
+window.KB1_ZEITFAKTOR = Number(new URLSearchParams(location.search).get('zeit') || 0);</script>
 </head>
 <body data-seite="w1-uebung">
 <header class="kopf">

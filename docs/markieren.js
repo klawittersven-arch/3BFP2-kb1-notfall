@@ -4,7 +4,9 @@
    Ablauf: Fall (in der Stunden-App aus der Gruppeneinteilung) → Textstellen antippen → „Prüfen“ →
    Rückmeldung (gefunden / übersehen / falsch) → so lange verbessern, bis alles stimmt → Merksatz AA1.
    Schutz gegen Raten: Mehr als T.hoechstensFalsch falsche Markierungen → alles gelöscht, nichts verraten.
-   Bewusst KEINE Fallauswahl in der App: Die SuS kommen nur über den QR-Code ihres Expertenblatts zum Fall. */
+   Bewusst KEINE Fallauswahl in der App: Die SuS kommen nur über den QR-Code ihres Expertenblatts zum Fall.
+   Woche 1 zusätzlich (K.schutz, wie im ILS): Jedes „Prüfen“ mit Fehlern kostet ein Leben ❤️; sind alle verbraucht →
+   Lesepause, danach von vorn. „Prüfen“, bevor man den Text lesen konnte → Warnung, es wird nicht geprüft. */
 (function () {
   'use strict';
   var K = window.KB1;
@@ -47,7 +49,16 @@
     var fall = T.faelle[fallId];
     var z = laden(fall);
     var hinweise = fall.teile.filter(istHinweis).length;
+    var SCH = K.schutz(function () { return z; }, function () { speichern(z); }, { maxMs: 15000 });
     platz.textContent = '';
+    if (SCH && SCH.inPause()) {
+      platz.appendChild(SCH.pauseElement(T.hilfe, function () { fallZeigen(); K.scrollen(document.querySelector('.inhalt')); }));
+      K.fortschrittSetzen(0, hinweise);
+      return;
+    }
+    // von vorn: Markierungen weg; Fehler für den Beamer und der Stand des Schutzes bleiben
+    function vonVorn() { var n = leer(fall); n.ersteFehler = z.ersteFehler; n.ersteFalsch = z.ersteFalsch; if (z.s) n.s = z.s; z = n; speichern(z); }
+    if (SCH && !z.fertig) platz.appendChild(SCH.regel());
 
     var karte = el('section', 'karte');
     karte.appendChild(el('h2', null, fall.titel));
@@ -87,13 +98,16 @@
     platz.appendChild(rueck);
     var erklaerungen = el('ul', 'erklaerliste');
     platz.appendChild(erklaerungen);
+    var herzPlatz = el('div');
+    platz.appendChild(herzPlatz);
     var pruefKnopf = K.knopf(T.pruefen, '', pruefen);
     platz.appendChild(pruefKnopf);
     var ende = el('div');
     platz.appendChild(ende);
     var unten = el('p', 'klein');
-    unten.appendChild(K.knopf(INHALTE.allgemein.nochEinmal, 'knopf-leise', function () { speichern(leer(fall)); fallZeigen(); }));
+    unten.appendChild(K.knopf(INHALTE.allgemein.nochEinmal, 'knopf-leise', function () { vonVorn(); fallZeigen(); }));
     platz.appendChild(unten);
+    if (SCH) SCH.lesen(text.textContent);
 
     function zaehlen() {
       var gefunden = 0, falsch = 0, kreislauf = false;
@@ -105,10 +119,25 @@
     }
 
     var geraten = 0;   // > 0: gerade wegen Ratens zurückgesetzt (Anzahl falscher Markierungen)
+    function pausePruefen() {
+      if (!SCH.inPause()) return false;
+      fallZeigen();
+      K.melden(SEITE, 0, hinweise, SCH.grund() === 'fehler' ? 'durchklicken' : 'arbeitet', z.ersteFehler);
+      return true;
+    }
     function pruefen() {
+      if (SCH && SCH.zuSchnell()) {                         // „Prüfen“, bevor man lesen konnte: nicht prüfen
+        if (pausePruefen()) return;
+        rueck.textContent = '';
+        var w = SCH.warnungElement();
+        rueck.appendChild(w);
+        K.scrollen(w);
+        return;
+      }
       var e = zaehlen();
       // Schutz gegen Raten: zu viele falsche Markierungen → alles löschen, nichts verraten, von vorn
       if (e.falsch > T.hoechstensFalsch) {
+        if (SCH && SCH.fehler()) { vonVorn(); pausePruefen(); return; }   // alle Leben verbraucht
         geraten = e.falsch;
         z.gewaehlt = z.gewaehlt.map(function () { return false; });
         z.geprueft = false;
@@ -133,7 +162,9 @@
       }
       if (e.gefunden === hinweise && e.falsch === 0) z.fertig = true;
       speichern(z);
+      if (!z.fertig && SCH && SCH.fehler()) { vonVorn(); pausePruefen(); return; }   // alle Leben verbraucht
       darstellen(true);
+      if (SCH && !z.fertig) SCH.lesen(rueck.textContent + ' ' + erklaerungen.textContent, true);   // erst die Rückmeldung lesen
     }
 
     function darstellen(nachPruefen) {
@@ -156,6 +187,9 @@
       erklaerungen.textContent = '';
       ende.textContent = '';
       pruefKnopf.hidden = z.fertig;
+      herzPlatz.textContent = '';
+      if (SCH && !z.fertig) herzPlatz.appendChild(SCH.kopf(''));
+      unten.hidden = !!SCH && !z.fertig;      // mit Leben: kein „Noch einmal“ mitten in der Aufgabe
       K.fortschrittSetzen(e.gefunden, hinweise);
 
       if (geraten) {
