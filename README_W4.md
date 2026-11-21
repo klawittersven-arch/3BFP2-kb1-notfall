@@ -27,7 +27,7 @@ Es gibt **zwei Fassungen** mit denselben Aufgaben im KA-Format – die Lehrkraft
 | Adresse | wofür |
 |---|---|
 | …/3BFP2-kb1-notfall/w4/verlauf.html | Blatt 2: Live-Verlauf am Handy (Gewinnen: Finn rechtzeitig gemeldet, höchstens 1 Fehlalarm) |
-| …/w4/anatomie.html | Blatt 3, AA1 (digital): „Wo ist was?“ – Teile der Atemwege antippen, bei einem Fehler von vorn; alles richtig → Wörter für den Lückentext |
+| …/w4/anatomie.html | Blatt 3, AA1 (digital): „Wo ist was?“ – Teile der Atemwege antippen, je Frage 5 Sekunden (`sekunden` in `docs/w4/inhalte.js`); Fehler oder Zeit abgelaufen → von vorn; alles richtig → Wörter für den Lückentext |
 | …/w4/verlegung.html | Blatt 3, AA2: Lesetext „Wenn etwas im Hals stecken bleibt“ mit drei Bildern (digitale Fassung) |
 | …/w4/speisesaal.html | Blatt 3, „Für die Schnellen“: Simulation (Bestanden: niemand bewusstlos, höchstens 1 Fehlalarm) |
 | …/w4/rueckenmark.html | Blatt 1, AA2 (digital): Rückenmark-Check – acht kurze Fälle |

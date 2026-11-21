@@ -33,7 +33,7 @@ main { max-width: 680px; margin: 0 auto; padding: 14px 16px 40px; }
 .klein { font-size: 14px; }
 .fortschritt { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--leise); margin: 0 0 10px; }
 .fortschritt .spur { flex: 1; height: 8px; background: var(--linie); border-radius: 4px; overflow: hidden; }
-.fortschritt .balken { height: 100%; background: var(--akzent); width: 0; transition: width .3s; }
+.fortschritt .balken { display: block; height: 100%; background: var(--akzent); width: 0; transition: width .3s; }
 button { font: inherit; cursor: pointer; }
 .knopf {
   display: block; width: 100%; min-height: 48px; padding: 11px 14px; margin: 8px 0 0;
@@ -59,7 +59,7 @@ button { font: inherit; cursor: pointer; }
 .ampel button.gewaehlt { opacity: 1; box-shadow: 0 0 0 3px rgba(0,0,0,.15) inset; }
 .uhr { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--leise); margin-top: 10px; }
 .uhr .spur { flex: 1; height: 6px; background: var(--linie); border-radius: 3px; overflow: hidden; }
-.uhr .rest { height: 100%; background: var(--gelb); width: 100%; transition: width 1s linear; }
+.uhr .rest { display: block; height: 100%; background: var(--gelb); width: 100%; transition: width 1s linear; }
 .werte { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 10px 0; }
 .werte div { background: var(--grund); border-radius: 8px; padding: 6px 8px; text-align: center; }
 .werte b { display: block; font-size: 20px; }

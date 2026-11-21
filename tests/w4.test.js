@@ -305,6 +305,20 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
   pruefe(await s.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth), 'Wo ist was?: passt in Handybreite');
   await s.screenshot({ path: path.join(ERG, 'w4_anatomie_ende.png'), fullPage: true });
   await s.context().close();
+  s = await neueSeite('anatomie-zeit', { uhr: true });
+  await s.goto(basis + 'w4/anatomie.html');
+  pruefe(new RegExp(`nur ${W4.anatomie.sekunden} Sekunden`).test(await s.locator('main').innerText()), `Wo ist was?: Startbildschirm nennt das Zeitlimit (${W4.anatomie.sekunden} s)`);
+  await start(s);
+  await s.clock.runFor(1000);
+  const breite = await s.evaluate(() => ({ uhr: document.querySelector('.uhr .rest').getBoundingClientRect().width, balken: document.querySelector('.fortschritt .balken').getBoundingClientRect().width }));
+  pruefe(breite.uhr > 0 && breite.balken > 0, 'Zeitleiste und Fortschrittsbalken werden gezeichnet (Füllung sichtbar)', breite);
+  await s.clock.runFor((W4.anatomie.sekunden - 2) * 1000);
+  pruefe(!/Zeit abgelaufen/.test(await s.locator('main').innerText()), 'Wo ist was?: kurz vor Ablauf noch keine Zeitüberschreitung');
+  await s.clock.runFor(2000);
+  pruefe(/Zeit abgelaufen/.test(await s.locator('main').innerText()) && (await s.locator('.teil.zeigen').count()) === 1, 'Wo ist was?: Zeit abgelaufen → gesuchter Teil grün markiert');
+  await s.locator('button.knopf', { hasText: 'Von vorn' }).click();
+  pruefe(/^1 \/ 6/.test(await s.locator('.fortschritt').innerText()) && /Versuch 2/.test(await s.locator('.versuch').innerText()), 'Wo ist was?: nach Zeitüberschreitung von vorn (Versuch 2)');
+  await s.context().close();
 
   console.log('\n== Schon fertig? (rueckenmark, trend, atemweg)');
   s = await neueSeite('rueckenmark');

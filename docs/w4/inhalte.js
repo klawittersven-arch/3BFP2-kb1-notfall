@@ -232,11 +232,13 @@ var W4 = {
   },
 
   /* ---------- Blatt 3 · AA1 digital: „Wo ist was?“ – Teile der Atemwege im Bild antippen ----------
-     Fragen in zufälliger Reihenfolge; bei einem Fehler beginnt die Übung von vorn. Danach: Wörter für den Lückentext
+     Fragen in zufälliger Reihenfolge, je Frage „sekunden“ Zeit; bei einem Fehler oder abgelaufener Zeit beginnt die Übung von vorn. Danach: Wörter für den Lückentext
      (alle **Wörter** aus atemwegeText, alphabetisch). Bild: atemwege_bild.js */
   anatomie: {
     titel: 'Wo ist was? Die Atemwege',
-    einleitung: 'Sie sehen die Atemwege von vorn. Tippen Sie bei jeder Frage auf den richtigen Teil im Bild. **Achtung:** Bei einem Fehler beginnen Sie wieder von vorn. Wenn alles richtig ist, bekommen Sie die Wörter für den Lückentext auf dem Arbeitsblatt.',
+    // Zeit je Frage in Sekunden (kurze Frage lesen ≈ 1,5 s, im Bild finden 1–2 s, tippen). Abgelaufen = von vorn.
+    sekunden: 5,
+    einleitung: 'Sie sehen die Atemwege von vorn. Tippen Sie bei jeder Frage auf den richtigen Teil im Bild – Sie haben dafür nur **{sekunden} Sekunden**. **Achtung:** Bei einem Fehler oder wenn die Zeit abläuft, beginnen Sie wieder von vorn. Wenn alles richtig ist, bekommen Sie die Wörter für den Lückentext auf dem Arbeitsblatt.',
     teile: [
       { id: 'kehldeckel', name: 'Kehldeckel', frage: 'Wo ist der **Kehldeckel**?' },
       { id: 'kehlkopf', name: 'Kehlkopf', frage: 'Wo ist der **Kehlkopf**?' },
