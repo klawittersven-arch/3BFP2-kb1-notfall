@@ -129,7 +129,7 @@
       el('p', { text: text }),
       el('p', { text: 'Punkte: ' + s.punkte + ' / ' + V.karten.length + ' · Fehlalarme: ' + s.fehlalarme + ' · Finn rechtzeitig gemeldet: ' + (s.finn ? 'ja' : 'nein') }),
       tab,
-      el('div', { klasse: 'hinweis', text: '✍️ Übertragen Sie Ihre Entscheidungen in die Tabelle auf dem Arbeitsblatt und haken Sie ab, was richtig war.' }),
+      el('div', { klasse: 'hinweis', text: '✍️ Vergleichen Sie mit Finns Kurve auf dem Arbeitsblatt. Die Werte von 08:00 Uhr stehen im Kasten neben der Kurve.' }),
       el('button', { klasse: 'knopf zweit', type: 'button', text: 'Noch einmal spielen', onclick: function () { neu(); window.scrollTo(0, 0); } })));
   }
 

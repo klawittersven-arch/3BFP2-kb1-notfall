@@ -115,7 +115,7 @@ const B2 = {
   aa1: {
     text: {
       analog: 'Allein (8 Minuten). Kreuzen Sie bei jeder Messung an, was Sie tun. Tragen Sie danach **Finns** Puls und Blutdruck in die Kurve ein.',
-      digital: 'Scannen Sie den QR-Code. Am Handy kommen nacheinander **Messkarten**: Wählen Sie bei jeder Karte die Ampel. Bei **Finn**: Puls und Blutdruck in die Kurve eintragen. Am Ende: Ergebnis in die Tabelle übertragen.'
+      digital: 'Scannen Sie den QR-Code. Am Handy kommen nacheinander **Messkarten**: Wählen Sie bei jeder Karte die Ampel. Bei **Finn**: Puls und Blutdruck in die Kurve eintragen.'
     },
     // Analoge Fassung: Ankreuz-Tabelle (zeitlich geordnet). Finns Messungen kommen aus docs/w4/inhalte.js (Karten 1, 5, 6 –
     // dieselben Werte wie in der Kurve und in 2.1). Herr Kurz steht bewusst am Anfang (🟡) und kurz vor Finns Notfall (🟢),

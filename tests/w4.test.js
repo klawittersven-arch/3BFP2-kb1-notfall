@@ -152,6 +152,8 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
     const lvTextD = nurText(docxText(LV));
     pruefe(!/Wortspeicher/.test(svText) && (info.match(/_{18}/g) || []).length === 8 && !/in den Rachen|heißt Ventilation|In den Lungenbläschen|Hustenreflex/.test(info) && lueckenWoerter.every((w) => lvTextD.includes(w)), 'digitale Fassung, Blatt 3 AA1: Infotext als Lückentext (8 Lücken, Wörter nur in der Lehrerversion), kein Wortspeicher');
     pruefe(!/3\.4 /.test(svText), 'digitale Fassung: „Für die Schnellen“ ohne 3.4 (dafür Atemweg-Check)');
+    const b2 = svText.slice(svText.indexOf('Innere Blutung: den Verlauf im Blick'), svText.indexOf('Atemwege: wenn etwas im Hals'));
+    pruefe(!/Meine Punkte|Fehlalarme: ____|\nWer\?\n/.test(b2) && /Finns Kurve/.test(b2) && /So wäre es um 8 Uhr gewesen/.test(b2), 'digitale Fassung, Blatt 2: keine Ergebnistabelle mehr, große Kurve mit 08:00-Kasten');
     const b1 = svText.slice(0, svText.indexOf('Innere Blutung: den Verlauf im Blick'));
     pruefe(!/Welche Höhe passt zu A, B und C/.test(b1) && !/Herr Lux \(19\) ist kopfüber/.test(b1) && b1.indexOf('rueckenmark.html') < b1.indexOf('Merksatz') && /Höhe der Verletzung/.test(b1) && /Tetraplegie mit Atemlähmung/.test(b1) && /Und bei Herrn Pfeiffer\? Höhe:/.test(b1) && !/\nFall\n/.test(b1), 'digitale Fassung, Blatt 1 AA2: Rückenmark-Check per QR-Code statt Fälle A–C; Höhen-Tabelle (ohne Spalte „Fall“) und Herr Pfeiffer bleiben auf dem Blatt');
     pruefe(/Schon fertig\? Herr Pfeiffer ist 79 Jahre alt/.test(b1) && (b1.match(/rueckenmark\.html/g) || []).length === 1, 'digitale Fassung, Blatt 1: „Schon fertig?“ ist eine Zusatzfrage (kein zweites Mal Rückenmark-Check)');

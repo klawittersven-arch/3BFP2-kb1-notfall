@@ -21,7 +21,6 @@ const QR = (n) => path.join(WURZEL, 'qr', `qr_w4_${n}.png`);
 const BILD = (n) => path.join(__dirname, 'bilder', n);
 const IC = { lesen: 'icon_lesen.png', markieren: 'icon_markieren.png', schreiben: 'icon_schreiben.png', handy: 'icon_handy.png', stift: 'icon_stift.png', beurteilen: 'icon_beurteilen.png', checkout: 'icon_checkout.png' };
 const AMP_FARBE = { gruen: 'E2F0D9', gelb: 'FFF2CC', rot: 'F8D7D3' };
-const AMP_NAME = { gruen: 'grün', gelb: 'gelb', rot: 'rot' };
 // Fassung: 'analog' (ganz ohne Smartphone) oder 'digital' (Live-Verlauf, Simulation und „Schon fertig?“ am Smartphone).
 // Wird in main() je Dokument gesetzt; die Aufgaben im KA-Format sind in beiden Fassungen gleich.
 let MODUS = 'analog';
@@ -267,7 +266,7 @@ function blatt2(B) {
       new Paragraph({ spacing: { after: 40, line: 245 }, children: BB.runs(`Finn: Puls **${AU.puls}**/min · Blutdruck **${AU.rr[0]}/${AU.rr[1]}** mmHg · Atemzüge ${AU.af}/min. ${AU.beobachtung} ${AU.aussage}`, { size: 19 }) }),
       new Paragraph({ spacing: { after: 0, line: 245 }, children: BB.runs('✍️ Tragen Sie auch diese Werte in die Kurve ein (Spalte 08:00).', { size: 19, bold: true }) })],
   { fill: F.GRAU_HELL, rand: F.GRAU_R });
-  const kurve = (mitte) => [new Paragraph({ alignment: mitte ? AlignmentType.CENTER : undefined, keepNext: true, spacing: { after: 0 }, children: [B.b('Finns Kurve', { size: 18 })] }), new Paragraph({ alignment: mitte ? AlignmentType.CENTER : undefined, spacing: { after: 0 }, children: [bild(BILD(B.lsg ? 'w4_kurve_lsg.png' : 'w4_kurve_leer.png'), je(7.9, 8.3), je(5.36, 5.63))] })];
+  const kurve = (mitte) => [new Paragraph({ alignment: mitte ? AlignmentType.CENTER : undefined, keepNext: true, spacing: { after: 0 }, children: [B.b('Finns Kurve', { size: 18 })] }), new Paragraph({ alignment: mitte ? AlignmentType.CENTER : undefined, spacing: { after: 0 }, children: [bild(BILD(B.lsg ? 'w4_kurve_lsg.png' : 'w4_kurve_leer.png'), je(7.9, 10.4), je(5.36, 7.05))] })];
   if (!DIGITAL()) {
     // Analog: konventionelle Ankreuz-Aufgabe (Einzelarbeit), danach Finns Kurve
     const karten = t.aa1.messungen.map((m) => (m.karte ? V.karten.find((kk) => kk.nr === m.karte) : m));
@@ -283,16 +282,9 @@ function blatt2(B) {
     push(leer(60), B.zweiSpaltig(kurve(false), [achtUhr(bausteine({ lsg: B.lsg, breite: B.breite - 5150 - 60 }), false), leer(20)], 5150));
   } else {
     push(new Paragraph({ spacing: { before: 60, after: 60 }, children: B.runs(t.aa1.regel, { size: 19 }) }));
-    // Kurve links, Ergebnistabelle rechts
-    const wK = 5150, wT = B.breite - wK;
-    const sp = [{ text: 'Nr.', w: 560 }, { text: 'Wer?', w: 1300 }, { text: 'Ampel', w: 0 }, { text: '✓', w: 420 }];
-    sp[2].w = wT - 80 - sp.reduce((s, x) => s + x.w, 0);
-    const entscheidung = B.tabelle(sp, V.karten.map((kk) => [`**${kk.nr}**`, { lsg: wer(kk.wer) }, { lsg: AMP_NAME[kk.richtig] + (kk.richtig === 'gelb' ? ' (nachmessen)' : kk.richtig === 'rot' ? ' (Notfall)' : '') }, '']), { hoehe: 470, schrift: 18 });
-    push(B.zweiSpaltig(kurve(false),
-      [entscheidung, new Paragraph({ spacing: { before: 60, after: 0 }, children: B.runs('Meine Punkte: ____ / 6   ·   Fehlalarme: ____', { size: 18, bold: true }) })],
-      wK
-    ));
-    push(leer(60), achtUhr(B, true));
+    // große Kurve links (keine Ergebnistabelle – das Ergebnis zeigt das Handy), 08:00-Kasten rechts daneben
+    const wK = 6050;
+    push(B.zweiSpaltig(kurve(false), [achtUhr(bausteine({ lsg: B.lsg, breite: B.breite - wK - 60 }), false), leer(20)], wK));
     if (B.lsg) push(B.lp('Auflösung: Karte 1 🟢 (zu früh, wer 🔴 wählt) · 2 🟢 (Falle: niedriger, aber stabiler Blutdruck – Schockindex 0,7) · 3 🟡 (nach Belastung nachmessen; 🔴 = Fehlalarm) · 4 🟢 · 5 🟡 (Puls +12, Abstand kleiner – nachmessen, Pflegefachkraft informieren; 🔴 = zu früh) · 6 🔴 (Trend, Blässe, Durst, Schulterschmerz links – Schockindex erst 0,9!). Gewonnen: Karte 6 = 🔴 und höchstens 1 Fehlalarm.', { spacing: { before: 40, after: 40 } }));
   }
   push(leer(80), merksatz(B, t.merksatz), DIGITAL() ? klein(B, t.woerter) : null);
