@@ -9,7 +9,7 @@
   V.patienten.forEach(function (p) { person[p.id] = p; });
 
   var wahl, i;
-  function neu() { wahl = []; i = 0; karte(); }
+  function neu() { wahl = []; i = 0; melden(false); karte(); }
 
   // Bewertet eine Entscheidung: { art: 'richtig'|'fehlalarm'|'vorsichtig'|'zuspaet'|'trend', text }
   function bewerten(gewaehlt, richtig) {
@@ -73,13 +73,11 @@
     var finn = !!(letzteFinn && letzteFinn.gewaehlt === 'rot');
     return { punkte: punkte, fehlalarme: fehlalarme, finn: finn, gewonnen: finn && fehlalarme <= 1 };
   }
+  // anonymer Fortschritt für die freiwillige Lehreransicht: entschiedene Karten von 6, fertig ja/nein
   function melden(fertig) {
-    var s = stand();
-    A.melden('verlauf', {
-      punkte: s.punkte, max: V.karten.length, fertig: fertig, fehlalarme: s.fehlalarme, uebersehen: (fertig && !s.finn) ? 1 : 0, gewonnen: fertig ? s.gewonnen : false,
-      fehler: wahl.filter(function (w) { return w.art !== 'richtig'; }).map(function (w) { return 'k' + w.nr + '-' + w.gewaehlt; })
-    });
+    A.fortschrittMelden('verlauf', wahl.length, V.karten.length, fertig);
   }
+
 
   // Finns Werte als kleine Kurve (Puls ●, Blutdruck als Balken von unten nach oben)
   function kurve(mitAcht) {
@@ -131,7 +129,7 @@
       el('p', { text: text }),
       el('p', { text: 'Punkte: ' + s.punkte + ' / ' + V.karten.length + ' · Fehlalarme: ' + s.fehlalarme + ' · Finn rechtzeitig gemeldet: ' + (s.finn ? 'ja' : 'nein') }),
       tab,
-      el('div', { klasse: 'hinweis', text: '✍️ Übertragen Sie Ihre Entscheidungen in die Tabelle auf dem Arbeitsblatt und haken Sie ab, was richtig war.' }),
+      el('div', { klasse: 'hinweis', text: '✍️ Vergleichen Sie mit Finns Kurve auf dem Arbeitsblatt. Die Werte von 08:00 Uhr stehen im Kasten neben der Kurve.' }),
       el('button', { klasse: 'knopf zweit', type: 'button', text: 'Noch einmal spielen', onclick: function () { neu(); window.scrollTo(0, 0); } })));
   }
 

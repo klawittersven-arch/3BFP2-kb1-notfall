@@ -2,7 +2,7 @@
  *   1. Inhalte und Arbeitsblatt: Messkarten, Szenen, verbotene Wörter, Lösungen nur in der LV, 6 Seiten, QR-Codes
  *   2. Woche 2 unverändert: Geändert sind nur Dateien der Woche 4
  *   3. Handy-Übungen in Handygröße (390 × 844), ohne Worker: durchspielen, gewinnen und verlieren
- *   4. Lehreransicht mit lokalem Worker (wrangler dev --config worker-w4/wrangler.jsonc): Raum, Meldung, Tabelle
+ *   4. Lehreransicht mit lokalem Worker (wrangler dev --config worker-w4/wrangler.jsonc): anonymer Fortschritt, Balken
  * Start (im Ordner tests/): node w4.test.js   ·   Voraussetzung: im Ordner worker/ einmal „npm install“ (für wrangler) */
 'use strict';
 const http = require('http');
@@ -79,11 +79,29 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
   pruefe(S.szenen.every((z) => z.wahl.length === 4 && z.wahl.includes(z.richtig) && z.wahl.every((o) => S.optionen[o] && z.rueckmeldung[o])), 'jede Szene: 4 Antworten mit Rückmeldung, richtige enthalten');
   pruefe(S.szenen.filter((z) => z.schwer).every((z) => !z.wahl.includes('ruecken') && z.richtig === 'hilfe'), 'schwere Verlegung: „auf den Rücken klopfen“ nie als (falsche) Wahl, richtig ist „Hilfe rufen“ (Leitlinien, Woche 5)');
   pruefe(S.szenen.filter((z) => !z.schwer).every((z) => z.richtig === 'husten' && z.wahl.includes('hilfe')), 'leichte Verlegung: „Hilfe rufen“ als Fehlalarm-Falle');
+  const T4 = require('../werkzeuge/ab_w4_texte.js');
+  const speicher = T4.B3.aa1.wortspeicher.replace(/^Wortspeicher: /, '').split(' · ');
+  const fallText = T4.B1.fall.join(' ');
+  const stelle = T4.B1.aa1.loesung.map((spalte) => Math.min(...spalte.map(([, wort]) => fallText.indexOf(wort))));
+  const rang = stelle.map((x) => stelle.filter((y) => y < x).length);
+  pruefe(stelle.every((x) => x >= 0) && rang.every((r, i) => r !== i), 'Blatt 1, AA1: Tabellenspalten nicht in der Reihenfolge des Falls', T4.B1.aa1.spalten.join(' | '));
+  const mess = T4.B2.aa1.messungen.map((m) => (m.karte ? W4.verlauf.karten.find((k) => k.nr === m.karte) : m));
+  const stufe = { gruen: 0, gelb: 1, rot: 2 };
+  pruefe(mess.length === 5 && mess[0].wer === 'kurz' && mess[0].richtig === 'gelb' && mess[3].richtig === 'gruen' && mess[4].wer === 'finn' && mess[4].richtig === 'rot' && mess.some((m, i) => i && stufe[m.richtig] < stufe[mess[i - 1].richtig]) && mess.every((m, i) => !i || m.zeit > mess[i - 1].zeit), 'Blatt 2, AA1 analog: Dringlichkeit steigt nicht wie eine Treppe (Herr Kurz 🟡 zuerst, 🟢 direkt vor Finns Notfall), Zeiten aufsteigend');
+  const LT = W4.verlegung.absaetze.join(' ');
+  const ATB = require('../docs/w4/atemwege_bild.js');
+  const lueckenWoerter = W4.atemwegeText.absaetze.flatMap((a) => (a.match(/\*\*[^*]+\*\*/g) || []).map((w) => w.slice(2, -2)));
+  const tippSvg = ATB.svg({ tippen: true });
+  pruefe(W4.anatomie.teile.map((t) => t.id).join() === ATB.TEILE.join() && ATB.TEILE.every((id) => tippSvg.includes(`data-teil="${id}"`)) && !ATB.svg({ nummern: true }).includes('data-teil'), 'Wo ist was?: sechs antippbare Teile im Bild (nur auf dem Handy)');
+  pruefe(lueckenWoerter.length === 8 && lueckenWoerter.slice().sort((a, b) => a.localeCompare(b, 'de')).join() !== lueckenWoerter.join(), 'Lückentext Blatt 3: acht Fachwörter; am Handy alphabetisch, nicht in Textreihenfolge');
+  pruefe(W4.verlegung.absaetze.length === 4 && LT.indexOf('um Hilfe') < LT.indexOf('an den Hals') && LT.indexOf('an den Hals') < LT.indexOf('Husten wird schwach') && LT.indexOf('**schwere Verlegung**') < LT.indexOf('**leichten Verlegung**') && /Parkinson/.test(W4.verlegung.absaetze[0]), 'Blatt 3, Lesetext: nicht in Tabellenreihenfolge (schwer zuerst, Handeln vor den Zeichen), Absatz 1 als Ablenker');
+  pruefe(T4.B3.aufgaben.length === 1 && T4.B3.aufgaben[0].nr === '3.1' && T4.B3.aufgaben[0].zeilen >= 8 && T4.B3.schnelle.aufgaben.map((a) => a.nr).join() === '3.2,3.3,3.4', 'Blatt 3: AA3 nur 3.1 (mind. 8 Zeilen), 3.2–3.4 „Für die Schnellen“');
+  pruefe(speicher.length === 6 && speicher.every((w) => T4.B3.aa1.begriffe.includes(w)) && speicher.every((w, i) => w !== T4.B3.aa1.begriffe[i]), 'Blatt 3: Wortspeicher enthält alle Begriffe, aber keinen an der Stelle seiner Nummer');
   pruefe(W4.rueckenmark.karten.length === 8 && W4.trend.reihen.length === 5 && W4.atemweg.karten.length === 6, 'Schon fertig?: 8 + 5 + 6 Karten');
 
   console.log('\n== Verbotene Wörter in Texten für die SuS');
   const VERBOTEN = /Klausur|Klassenarbeit|Examen|Prüfung|Woche [5-9]/i;
-  for (const d of ['inhalte.js', 'w4.js', 'verlauf.js', 'speisesaal.js', 'rueckenmark.js', 'trend.js', 'atemweg.js', 'verlauf.html', 'speisesaal.html', 'rueckenmark.html', 'trend.html', 'atemweg.html']) {
+  for (const d of ['inhalte.js', 'w4.js', 'verlegung.js', 'verlegung.html', 'anatomie.js', 'anatomie.html', 'atemwege_bild.js', 'verlauf.js', 'speisesaal.js', 'rueckenmark.js', 'trend.js', 'atemweg.js', 'verlauf.html', 'speisesaal.html', 'rueckenmark.html', 'trend.html', 'atemweg.html']) {
     const m = fs.readFileSync(path.join(DOCS, 'w4', d), 'utf8').match(VERBOTEN);
     pruefe(!m, `docs/w4/${d}: kein „Klausur/Examen/Prüfung/spätere Woche“`, m && m[0]);
   }
@@ -100,29 +118,67 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
   const nummern = [...svText.matchAll(/\b(AA\d):/g)].map((x) => x[1]);
   pruefe(nummern.join() === 'AA1,AA2,AA3,AA4,AA1,AA2,AA1,AA2,AA3', 'Nummerierung beginnt auf jedem Blatt bei AA1', nummern.join());
   pruefe(/Begründen Sie, warum Herr Pfeiffer möglichst nicht bewegt werden soll, und beschreiben Sie eine Maßnahme dazu\./.test(svText), 'Blatt 1: Aufgabe nach Muster KA 5.3');
+  pruefe(!/Er kann doch die Beine bewegen/.test(svText) && !/\n4\.2\n/.test(svText), 'Blatt 1: Aufgabe 4.2 (Beurteilen) gestrichen – AA4 nur 4.1');
+  pruefe((T4.B1.aufgaben.find((x) => x.nr === '4.1') || {}).zeilen >= 8, 'Blatt 1: viel Schreibraum für 4.1 (mind. 8 Zeilen)');
   pruefe(/Unterscheiden Sie anhand der Situation eine leichte von einer schweren Atemwegsverlegung\./.test(svText), 'Blatt 3: Aufgabe nach Muster KA 4.1');
+  pruefe(/\(Hinweis: In welchen Zeilen stehen die Zeichen für eine leichte Verlegung, in welchen die Zeichen für eine schwere\? Geben Sie die Zeilen an und nennen Sie die Zeichen\.\)/.test(svText), 'Blatt 3, 3.1: Bearbeitungshinweis (Zeilen angeben, Zeichen nennen) – Aufgabentext bleibt wie in der KA');
   pruefe(/Beim Frühstück verschluckte sie sich am Kaffee und hustete kräftig\. Ich ließ sie husten, und nach kurzer Zeit war alles wieder gut\./.test(svText), 'Leitfall wörtlich wie im Fallbeispiel');
+  pruefe(!/Schockindex rechnen|Werte lesen und mit dem Vorwert vergleichen\. \*\*2/.test(svText) && !/Schockindex rechnen/.test(svText), 'Blatt 2, AA1: keine Schrittfolge mehr (kein „Schockindex rechnen“)');
+  pruefe(!/Aufgaben mit Punkten/.test(svText) && !/\nPunkte\n/.test(svText) && !/(^|[^_])___ \/ \d/.test(svText), 'Schülerversion: keine Punkte bei den Aufgaben, kein „Aufgaben mit Punkten“');
+  pruefe(/\n2 P\.\n/.test(nurText(docxText(LV))), 'Lehrerversion: Punkte bei den Aufgaben');
+  pruefe(/So wäre es um 8 Uhr gewesen/.test(svText) && /Puls 124\/min · Blutdruck 102\/86 mmHg/.test(svText) && /Tragen Sie auch diese Werte in die Kurve ein/.test(svText), 'Blatt 2: Werte für 08:00 Uhr auf dem Blatt – die Kurve lässt sich vollständig ausfüllen');
+  pruefe(!/Berücksichtigen Sie die Vorwerte/.test(svText), 'Blatt 2, 2.1: ohne Hinweis „Berücksichtigen Sie die Vorwerte“');
+  pruefe(/Tragen Sie die Informationen in Stichworten in die Tabelle ein/.test(svText) && /Nicht alles im Text gehört in die Tabelle/.test(svText) && !/1–4 Fingern|sechs kurze Szenen spielen/.test(svText.slice(0, svText.lastIndexOf('Für die Schnellen'))), 'Blatt 3, AA2: Informationen aus einem Lesetext in die Tabelle');
+  pruefe((svText.match(/^Merksatz$/gm) || []).length === 3 && !/Leichte Verlegung: kräftiger, wirksamer Husten/.test(svText), 'Blatt 3: kein Merksatz zu leicht/schwer (sonst würde nur abgeschrieben)');
+  pruefe(/Für die Schnellen/.test(svText) && /Extrablatt/.test(svText.slice(svText.lastIndexOf('Für die Schnellen'))) && /3\.2 +Erklären Sie, warum Herr Roth/.test(svText) && /3\.3 +Eine Pflegehelferin sagt/.test(svText), 'Blatt 3: 3.2 und 3.3 „Für die Schnellen“ (Antworten auf ein Extrablatt)');
   pruefe(!/Rückenschläge|Oberbauchkompression/.test(svText), 'Schülerversion: kein Vorgehen bei schwerer Verlegung (Planung: Woche 5)');
-  pruefe((svText.match(/Schon fertig\?/g) || []).length === 3, 'jedes Blatt endet mit „Schon fertig?“');
+  pruefe((svText.match(/Schon fertig\?/g) || []).length === 2 && (svText.match(/Für die Schnellen/g) || []).length === 1, 'Blatt 1 und 2 enden mit „Schon fertig?“, Blatt 3 mit „Für die Schnellen“');
+  pruefe(/SpO₂ 98 %/.test(svText) && /Blutzucker 96 mg\/dl/.test(svText) && /trockene Schürfwunde/.test(svText) && /Kein Hinweis auf eine innere Blutung/.test(nurText(docxText(LV))), 'Blatt 2, 2.1: Ablenker im Fall (normale Werte, Schürfwunde) – nicht alles ist ein Hinweis');
+  pruefe(/Parkinson-Krankheit; seine Hände zittern leicht, wie immer/.test(svText) && /Kein Merkmal einer Atemwegsverlegung/.test(nurText(docxText(LV))), 'Blatt 3, 3.1: Ablenker im Fall (Zittern, Brille, Tee, Lachen am Nachbartisch)');
   if (fassung === 'analog') {
     const x = svText.match(/Handy|Smartphone|QR|scann|Link:/i);
     pruefe(!x, 'analoge Fassung: kein Handy, kein QR-Code', x && x[0]);
-    pruefe(/sitzen bleiben/.test(svText) && /1–4 Fingern/.test(svText), 'analoge Fassung: Messkarten mit Aufstehen, Entscheidungsspiel mit Fingern');
+    pruefe(/Kreuzen Sie bei jeder Messung an/.test(svText) && ['05:50 Uhr', '06:00 Uhr', '07:00 Uhr', '07:10 Uhr', '07:20 Uhr'].every((z, i, a) => svText.includes(z) && (!i || svText.indexOf(a[i - 1]) < svText.indexOf(z))) && !/sitzen bleiben|aufstehen 🔴|Messkarte/.test(svText), 'analoge Fassung, Blatt 2: Ankreuz-Aufgabe (5 Messungen, zeitlich geordnet) statt Messkarten und Aufstehen');
+    const lvText = nurText(docxText(LV));
+    pruefe(!/Anhang [AB]|Messkarten für den Live-Verlauf|Entscheidungsspiel nach/.test(lvText), 'analoge Lehrerversion: kein Anhang mehr (kein Messkarten-, kein Entscheidungsspiel-Anhang)');
+    pruefe(/Kann die Person nicht mehr sprechen/.test(svText) && /3\.4 +Warum soll man einer Person, die kräftig hustet/.test(svText) && !/speisesaal/.test(svText), 'analoge Fassung: Lesetext auf dem Blatt; „Für die Schnellen“ mit 3.2–3.4, ohne Simulation');
+    pruefe(/Welche Höhe passt zu A, B und C/.test(svText) && /\nFall\n/.test(svText), 'analoge Fassung, Blatt 1 AA2: Fälle A–C mit Spalte „Fall“');
+    pruefe(/Wortspeicher:/.test(svText) && /Text lesen, Bild beschriften/.test(svText) && /in den Rachen\./.test(svText) && !/_{18}/.test(svText.slice(svText.indexOf('Atemwege und Ventilation'), svText.indexOf('Wortspeicher'))), 'analoge Fassung, Blatt 3 AA1: Infotext vollständig, Bild mit Wortspeicher');
   } else {
     const x = svText.match(/sitzen bleiben|Hand heben|aufstehen\b|Ohne Handy|liest .{0,30}vor|Fingern|Ihre Lehrkraft zeigt/i);
     pruefe(!x, 'digitale Fassung: keine analogen Alternativen genannt', x && x[0]);
-    pruefe((svText.match(/Kein QR-Scanner\?/g) || []).length === 5, 'digitale Fassung: 5 QR-Kästen (Live-Verlauf, Simulation, 3 × „Schon fertig?“)');
+    pruefe((svText.match(/Kein QR-Scanner\?/g) || []).length === 7 && /verlegung\.html/.test(svText) && /anatomie\.html/.test(svText) && !/Kann die Person nicht mehr sprechen/.test(svText), 'digitale Fassung: 7 QR-Kästen (Live-Verlauf, Wo ist was?, Lesetext, 2 × „Schon fertig?“, Atemweg-Check, Simulation); Lesetext nur am Handy');
+    const info = svText.slice(svText.indexOf('Atemwege und Ventilation – Lückentext'), svText.indexOf('Merksatz', svText.indexOf('Atemwege und Ventilation – Lückentext')));
+    const lvTextD = nurText(docxText(LV));
+    pruefe(!/Wortspeicher/.test(svText) && (info.match(/_{18}/g) || []).length === 8 && !/in den Rachen|heißt Ventilation|In den Lungenbläschen|Hustenreflex/.test(info) && lueckenWoerter.every((w) => lvTextD.includes(w)), 'digitale Fassung, Blatt 3 AA1: Infotext als Lückentext (8 Lücken, Wörter nur in der Lehrerversion), kein Wortspeicher');
+    pruefe(!/3\.4 /.test(svText), 'digitale Fassung: „Für die Schnellen“ ohne 3.4 (dafür Atemweg-Check)');
+    const b2 = svText.slice(svText.indexOf('Innere Blutung: den Verlauf im Blick'), svText.indexOf('Atemwege: wenn etwas im Hals'));
+    pruefe(!/Meine Punkte|Fehlalarme: ____|\nWer\?\n/.test(b2) && /Finns Kurve/.test(b2) && /So wäre es um 8 Uhr gewesen/.test(b2), 'digitale Fassung, Blatt 2: keine Ergebnistabelle mehr, große Kurve mit 08:00-Kasten');
+    const b1 = svText.slice(0, svText.indexOf('Innere Blutung: den Verlauf im Blick'));
+    pruefe(!/Welche Höhe passt zu A, B und C/.test(b1) && !/Herr Lux \(19\) ist kopfüber/.test(b1) && b1.indexOf('rueckenmark.html') < b1.indexOf('Merksatz') && /Höhe der Verletzung/.test(b1) && /Tetraplegie mit Atemlähmung/.test(b1) && /Und bei Herrn Pfeiffer\? Höhe:/.test(b1) && !/\nFall\n/.test(b1), 'digitale Fassung, Blatt 1 AA2: Rückenmark-Check per QR-Code statt Fälle A–C; Höhen-Tabelle (ohne Spalte „Fall“) und Herr Pfeiffer bleiben auf dem Blatt');
+    pruefe(/Schon fertig\? Herr Pfeiffer ist 79 Jahre alt/.test(b1) && (b1.match(/rueckenmark\.html/g) || []).length === 1, 'digitale Fassung, Blatt 1: „Schon fertig?“ ist eine Zusatzfrage (kein zweites Mal Rückenmark-Check)');
+    pruefe(svText.lastIndexOf('Für die Schnellen') > svText.lastIndexOf('Schon fertig?') && /speisesaal\.html/.test(svText.slice(svText.lastIndexOf('Für die Schnellen'))), 'digitale Fassung: Simulation ganz unten auf Blatt 3 („Für die Schnellen“)');
   }
   const PDF = SV.replace(/\.docx$/, '.pdf');
   if (fs.existsSync(PDF) && fs.statSync(PDF).mtimeMs >= fs.statSync(SV).mtimeMs - 1000) {
     const seiten = Number((execSync(`pdfinfo "${PDF}"`, { stdio: ['ignore', 'pipe', 'ignore'] }).toString().match(/Pages:\s+(\d+)/) || [])[1]);
-    pruefe(seiten === 6, 'Schülerversion (PDF): 6 Seiten', seiten);
+    const sollSeiten = fassung === 'analog' ? 7 : 6;
+    pruefe(seiten === sollSeiten, `Schülerversion (PDF): ${sollSeiten} Seiten`, seiten);
     const seite = (n) => execSync(`pdftotext -f ${n} -l ${n} "${PDF}" -`, { stdio: ['ignore', 'pipe', 'ignore'] }).toString();
     pruefe(seite(1).includes('Wirbelsäulenverletzung: nicht bewegen') && seite(3).includes('Innere Blutung: den Verlauf') && seite(5).includes('Atemwege: wenn etwas im Hals'), 'jedes Blatt beginnt auf einer ungeraden Seite (1, 3, 5) – beidseitig kopierbar');
   } else console.log('  (PDF fehlt oder ist älter als die .docx – Seitenprüfung übersprungen)');
+  const MK = SV.replace(/_SV\.docx$/, '_SV_markiert.docx');
+  const mkXml = docxText(MK), mkText = nurText(mkXml);
+  pruefe(/w:highlight w:val="yellow"/.test(mkXml) && /w:highlight w:val="magenta"/.test(mkXml) && /Ansichtsexemplar \(nicht austeilen\)/.test(mkText), 'Ansichtsexemplar: gelb (klausurrelevant) und pink (könnte weg) markiert, Legende vorhanden');
+  pruefe(mkText.split('\n').filter((z) => !/^Ansichtsexemplar/.test(z)).join('\n') === svText, 'Ansichtsexemplar: gleicher Text wie die Schülerversion (nur Markierungen und Legende)');
+  const MKPDF = MK.replace(/\.docx$/, '.pdf');
+  if (fs.existsSync(MKPDF) && fs.statSync(MKPDF).mtimeMs >= fs.statSync(MK).mtimeMs - 1000) {
+    const seiten = Number((execSync(`pdfinfo "${MKPDF}"`, { stdio: ['ignore', 'pipe', 'ignore'] }).toString().match(/Pages:\s+(\d+)/) || [])[1]);
+    pruefe(seiten === (fassung === 'analog' ? 7 : 6), 'Ansichtsexemplar (PDF): gleiche Seitenzahl wie die Schülerversion', seiten);
+  }
   }
   console.log('\n== QR-Codes');
-  for (const n of ['verlauf', 'speisesaal', 'rueckenmark', 'trend', 'atemweg']) {
+  for (const n of ['verlauf', 'speisesaal', 'rueckenmark', 'trend', 'atemweg', 'verlegung', 'anatomie']) {
     const datei = path.join(WURZEL, 'qr', `qr_w4_${n}.png`);
     let text = null;
     try { text = execSync(`python3 -c "import zxingcpp,sys;from PIL import Image;print(zxingcpp.read_barcodes(Image.open(sys.argv[1]))[0].text)" "${datei}"`, { stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim(); } catch (e) { text = null; }
@@ -222,6 +278,34 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
   pruefe(/Nicht bestanden/.test(text) && /bewusstlos: 1/.test(text) && /Fehlalarme: 1/.test(text), 'Ergebnis: nicht bestanden (1 bewusstlos, 1 Fehlalarm)');
   await s.context().close();
 
+  console.log('\n== Lesetext am Handy (verlegung.html)');
+  s = await neueSeite('verlegung');
+  await s.goto(basis + 'w4/verlegung.html');
+  const lese = await s.evaluate(() => ({ p: document.querySelectorAll('.lesetext p').length, bilder: document.querySelectorAll('.bild svg[role="img"]').length, breit: document.documentElement.scrollWidth <= document.documentElement.clientWidth, text: document.querySelector('main').innerText }));
+  pruefe(lese.p === 4 && lese.bilder === 3 && lese.breit && lese.text.includes('Kann die Person nicht mehr sprechen') && /Tabelle auf dem Arbeitsblatt/.test(lese.text), 'Lesetext: 4 Absätze, 3 Bilder, passt in Handybreite, Auftrag am Ende');
+  await s.screenshot({ path: path.join(ERG, 'w4_verlegung.png'), fullPage: true });
+  await s.context().close();
+
+  console.log('\n== Wo ist was? am Handy (anatomie.html)');
+  s = await neueSeite('anatomie');
+  await s.goto(basis + 'w4/anatomie.html');
+  await start(s);
+  const gesucht = async () => { const f = await s.locator('.frage').innerText(); return W4.anatomie.teile.find((t) => f.includes(t.frage.replace(/\*\*/g, ''))).id; };
+  // sichtbare Form des Teils antippen (die Tipp-Fläche liegt im selben <g>)
+  const tippe = (id) => s.locator(`[data-teil="${id}"] :not(.tippflaeche)`).first().click({ force: true });
+  let ziel = await gesucht();
+  await tippe(W4.anatomie.teile.find((t) => t.id !== ziel).id);
+  pruefe(/Leider falsch/.test(await s.locator('main').innerText()) && (await s.locator('.teil.falsch').count()) === 1 && (await s.locator('.teil.zeigen').count()) === 1, 'Wo ist was?: falscher Tipp → rot/grün markiert');
+  await s.locator('button.knopf', { hasText: 'Von vorn' }).click();
+  pruefe(/^1 \/ 6/.test(await s.locator('.fortschritt').innerText()) && /Versuch 2/.test(await s.locator('.versuch').innerText()), 'Wo ist was?: nach einem Fehler von vorn (Frage 1 / 6, Versuch 2)');
+  for (let k = 0; k < 6; k++) { ziel = await gesucht(); await tippe(ziel); await s.waitForTimeout(800); }
+  const anaText = await s.locator('main').innerText();
+  const chips = await s.locator('.woerter li').allInnerTexts();
+  pruefe(/Geschafft/.test(anaText) && chips.join() === lueckenWoerter.slice().sort((a, b) => a.localeCompare(b, 'de')).join() && /Lücken im „Informationstext/.test(anaText), 'Wo ist was?: alles richtig → acht Lückenwörter und Auftrag');
+  pruefe(await s.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth), 'Wo ist was?: passt in Handybreite');
+  await s.screenshot({ path: path.join(ERG, 'w4_anatomie_ende.png'), fullPage: true });
+  await s.context().close();
+
   console.log('\n== Schon fertig? (rueckenmark, trend, atemweg)');
   s = await neueSeite('rueckenmark');
   await s.goto(basis + 'w4/rueckenmark.html');
@@ -261,7 +345,7 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
   beobachten(s, P, 'lehrer-demo');
   await s.goto(basis + 'w4/lehrer.html?demo=1');
   text = await s.locator('main').innerText();
-  pruefe(/4821/.test(text) && /Tisch 2/.test(text) && /Häufige Fehlentscheidungen/.test(text) && /Karte 1 \(Finn Albers, 06:00\)/.test(text), 'Probeansicht: Code, Gruppen, häufige Fehlentscheidungen lesbar');
+  pruefe(/Wer ist wie weit\? \(letzte 45 Minuten\)/.test(text) && /7 fertig/.test(text) && /noch niemand/.test(text) && !/Raumcode für|Tisch \d|Gruppe/.test(text) && (await s.locator('.b-zeile').count()) > 20, 'Probeansicht: Fortschrittsbalken je Übung, ohne Raumcode und ohne Namen');
   await s.screenshot({ path: path.join(ERG, 'w4_lehrer_demo.png'), fullPage: true });
   await s.getByText('Messkarten groß').click();
   await s.keyboard.press('ArrowRight');
@@ -279,37 +363,36 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
   if (worker) {
     const U = worker.url;
     const post = (weg, d) => fetch(U + weg, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(d) }).then(async (r) => ({ status: r.status, d: await r.json() }));
-    const { d: raum } = await post('/api/raum', {});
-    pruefe(/^\d{4}$/.test(raum.raum) && raum.schluessel.length >= 20, 'Raum angelegt');
-    pruefe((await (await fetch(U + '/api/pruefen?raum=' + raum.raum)).json()).ok === true, 'Raumcode prüfbar');
-    pruefe((await post('/api/melden', { raum: raum.raum, geraet: 'x', uebung: 'verlauf', punkte: 1, max: 6 })).status === 400, 'ungültige Meldung wird abgelehnt');
-    pruefe((await post('/api/melden', { raum: raum.raum, geraet: 'abcdefghijkl', gruppe: '<b>', uebung: 'verlauf', punkte: 1, max: 6 })).status === 400, 'ungültiger Gruppenname wird abgelehnt');
-    pruefe((await fetch(`${U}/api/stand?raum=${raum.raum}&schluessel=${'X'.repeat(32)}`)).status === 403, 'Stand ohne Schlüssel wird abgelehnt');
+    const geraet = 'testgeraet0001';
+    pruefe((await post('/api/fortschritt', { geraet: 'x', uebung: 'anatomie', schritt: 1, von: 6 })).status === 400, 'ungültige Meldung wird abgelehnt (Geräte-ID)');
+    pruefe((await post('/api/fortschritt', { geraet, uebung: 'anatomie', schritt: 7, von: 6 })).status === 400, 'ungültige Meldung wird abgelehnt (Schritt > von)');
+    pruefe((await post('/api/fortschritt', { geraet, uebung: 'gibtsnicht', schritt: 1, von: 6 })).status === 400, 'ungültige Meldung wird abgelehnt (Übung)');
+    pruefe((await post('/api/fortschritt', { geraet, uebung: 'anatomie', schritt: 6, von: 6, fertig: true })).d.ok === true && (await post('/api/fortschritt', { geraet, uebung: 'anatomie', schritt: 0, von: 6 })).d.ok === true, 'Meldungen angenommen');
+    const st = await (await fetch(U + '/api/fortschritt?minuten=45')).json();
+    pruefe(st.ok && st.uebungen.anatomie.length === 1 && st.uebungen.anatomie[0].fertig === true && !JSON.stringify(st).includes(geraet), 'Stand: „fertig“ bleibt nach Neustart bestehen, keine Geräte-ID in der Antwort');
     const { server: s2, basis: b2 } = await serverStarten(U);
     const lehrer = await (await browser.newContext({ viewport: { width: 1280, height: 800 } })).newPage();
     beobachten(lehrer, P, 'lehrer', [U]);
     await lehrer.goto(b2 + 'w4/lehrer.html');
-    await lehrer.getByText('Neuen Raum starten').click();
-    await lehrer.locator('.code').waitFor();
-    const code = (await lehrer.locator('.code').innerText()).trim();
-    pruefe(/^\d{4}$/.test(code), 'Lehreransicht: Raum gestartet, Code ' + code);
-    const handy = await neueSeite('handy-raum', { erlaubt: [U] });
-    await handy.goto(b2 + 'w4/verlauf.html');
-    await handy.locator('details.raum summary').click();
-    await handy.fill('#raumcode', code);
-    await handy.fill('#gruppe', 'Tisch 3');
+    const handy = await neueSeite('handy-fortschritt', { erlaubt: [U] });
+    await handy.goto(b2 + 'w4/rueckenmark.html');
+    const startText = await handy.locator('main').innerText();
+    pruefe(!/Raumcode/.test(startText) && /Anonym: Ihr Handy meldet nur, wie weit Sie sind/.test(startText), 'Startbildschirm: kein Raumcode, Hinweis „Anonym“');
     await start(handy);
-    await handy.locator('.ampel button').first().waitFor();
-    for (const k of V.karten) { await handy.locator(`.ampel button[data-stufe="${k.richtig}"]`).click(); await handy.locator('button.knopf').last().click(); }
-    await handy.waitForTimeout(500);
-    await lehrer.waitForFunction(() => /Tisch 3/.test(document.body.innerText) && /6\/6 · 🏆/.test(document.body.innerText), null, { timeout: 15000 }).then(() => pruefe(true, 'Lehreransicht zeigt „Tisch 3: 6/6 · 🏆“')).catch(() => pruefe(false, 'Lehreransicht zeigt „Tisch 3: 6/6 · 🏆“'));
-    await lehrer.screenshot({ path: path.join(ERG, 'w4_lehrer_raum.png'), fullPage: true });
-    const handy2 = await neueSeite('handy-falscher-code', { erlaubt: [U] });
-    await handy2.goto(b2 + 'w4/trend.html');
-    await handy2.locator('details.raum summary').click();
-    await handy2.fill('#raumcode', '0000');
+    for (const k of W4.rueckenmark.karten) {
+      if (k.typ === 'hoehe') await handy.locator(`button.wahl[data-id="${k.richtig}"]`).click();
+      else await handy.locator('button.wahl').nth(k.richtig).click();
+      await handy.locator('button.knopf').last().click();
+    }
+    const handy2 = await neueSeite('handy-fortschritt-2', { erlaubt: [U] });
+    await handy2.goto(b2 + 'w4/verlauf.html');
     await start(handy2);
-    await handy2.locator('.ampel button').first().waitFor({ timeout: 8000 }).then(() => pruefe(true, 'falscher Raumcode: Übung startet trotzdem')).catch(() => pruefe(false, 'falscher Raumcode: Übung startet trotzdem'));
+    await handy2.locator('.ampel button').first().click();
+    await handy.waitForTimeout(500);
+    await lehrer.reload();
+    await lehrer.waitForFunction(() => /Rückenmark-Check[\s\S]*1 fertig/.test(document.body.innerText) && /Frühdienst mit Ampel[\s\S]*0 fertig · 1 in Arbeit/.test(document.body.innerText), null, { timeout: 15000 })
+      .then(() => pruefe(true, 'Lehreransicht: Rückenmark-Check 1 fertig, Frühdienst 1 in Arbeit (ohne Namen)')).catch(async () => pruefe(false, 'Lehreransicht: Rückenmark-Check 1 fertig, Frühdienst 1 in Arbeit (ohne Namen)', (await lehrer.locator('main').innerText()).slice(0, 400)));
+    await lehrer.screenshot({ path: path.join(ERG, 'w4_lehrer_fortschritt.png'), fullPage: true });
     s2.close();
     worker.beenden();
   }

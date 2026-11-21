@@ -1,7 +1,7 @@
 /* KB I · Woche 4 (SW 9) – Inhalte der Handy-Übungen.
    Diese Datei ist die einzige Quelle für Messkarten, Simulationsszenen und Übungskarten:
    Die Handy-Seiten (docs/w4/*.html) lesen sie direkt, das Arbeitsblatt-Werkzeug (werkzeuge/ab_w4.js)
-   übernimmt daraus die Messkarten (Kopiervorlage) und das Skript für die Fassung ohne Handy.
+   übernimmt daraus die Messungen für Blatt 2 und den Lesetext von Blatt 3 (analoge Fassung).
    Texte ändern: nur zwischen den Hochkommas; **Wort** = fett. Kennungen (id, typ, richtig) nicht ändern. */
 var W4 = {
   kopfzeile: 'KB I · Notfallsituationen · 3BFP2',
@@ -31,7 +31,7 @@ var W4 = {
         beobachtung: 'Haut rosig und warm.',
         aussage: '„Mir geht’s gut. Nur die Prellung tut weh, wenn ich mich bewege.“',
         richtig: 'gruen',
-        begruendung: 'Alle Werte sind normal (Schockindex 0,6). Schmerz an der Prellung ist nach dem Sturz zu erwarten. Wer jetzt aufsteht, meldet zu früh.'
+        begruendung: 'Alle Werte sind normal (Schockindex 0,6). Schmerz an der Prellung ist nach dem Sturz zu erwarten. Wer jetzt 🔴 wählt, meldet zu früh.'
       },
       {
         nr: 2, zeit: '06:10', wer: 'jana', puls: 70, rr: [96, 58], af: 14, vorwert: 'gestern 18 Uhr: Puls 72/min, RR 98/60 mmHg',
@@ -218,6 +218,58 @@ var W4 = {
       { name: 'Frau Weil (70)', info: 'vier Tage nach einer Bauch-OP', zeiten: ['06:00', '10:00', '14:00'], puls: [84, 92, 102], rr: ['130/80', '128/78', '130/80'], zusatz: 'Temperatur 38,9 °C, Haut heiß, friert', richtig: 'gelb', erklaerung: 'Das Fieber erklärt den höheren Puls, der Blutdruck ist stabil. Melden (Pflegefachkraft, Ärztin informieren) – aber kein Schock-Notfall.' },
       { name: 'Herr Neumann (50)', info: 'Wirbelbruch der Halswirbelsäule nach einem Sturz', zeiten: ['08:00', '08:15', '08:30'], puls: [64, 58, 52], rr: ['110/70', '96/58', '84/50'], zusatz: 'Haut an den Beinen warm, trocken, rosig', richtig: 'rot', erklaerung: 'Der Blutdruck fällt, der Puls wird sogar langsamer: neurogener Schock. Nicht vom ruhigen Puls täuschen lassen → Notfall.' }
     ]
+  },
+
+  /* ---------- Blatt 3 · AA1 Informationstext „Atemwege und Ventilation“ ----------
+     Analog: Text mit fetten Fachwörtern. Digital: dieselben Fachwörter sind Lücken; die Wörter bekommen die SuS
+     am Handy (anatomie.html), sobald sie alle Teile im Bild richtig angetippt haben. **Wort** = Lücke bzw. fett. */
+  atemwegeText: {
+    kopf: 'Informationstext: Atemwege und Ventilation',
+    absaetze: [
+      'Die Luft strömt durch Nase oder Mund in den **Rachen**. Hier kreuzen sich Luftweg und Speiseweg. Beim Schlucken hebt sich der **Kehlkopf**, der **Kehldeckel** verschließt die **Luftröhre** – die Nahrung rutscht in die Speiseröhre. Gerät doch etwas in den Kehlkopf, muss man kräftig husten (**Hustenreflex**).',
+      'Die Luftröhre teilt sich in zwei Hauptbronchien, einen rechten und einen linken. Der **rechte Hauptbronchus** ist kürzer, weiter und verläuft steiler. In den **Lungenbläschen** geht Sauerstoff ins Blut. Das Ein- und Ausatmen heißt **Ventilation**.'
+    ]
+  },
+
+  /* ---------- Blatt 3 · AA1 digital: „Wo ist was?“ – Teile der Atemwege im Bild antippen ----------
+     Fragen in zufälliger Reihenfolge; bei einem Fehler beginnt die Übung von vorn. Danach: Wörter für den Lückentext
+     (alle **Wörter** aus atemwegeText, alphabetisch). Bild: atemwege_bild.js */
+  anatomie: {
+    titel: 'Wo ist was? Die Atemwege',
+    einleitung: 'Sie sehen die Atemwege von vorn. Tippen Sie bei jeder Frage auf den richtigen Teil im Bild. **Achtung:** Bei einem Fehler beginnen Sie wieder von vorn. Wenn alles richtig ist, bekommen Sie die Wörter für den Lückentext auf dem Arbeitsblatt.',
+    teile: [
+      { id: 'kehldeckel', name: 'Kehldeckel', frage: 'Wo ist der **Kehldeckel**?' },
+      { id: 'kehlkopf', name: 'Kehlkopf', frage: 'Wo ist der **Kehlkopf**?' },
+      { id: 'luftroehre', name: 'Luftröhre', frage: 'Wo ist die **Luftröhre**?' },
+      { id: 'bronchus_re', name: 'rechter Hauptbronchus', frage: 'Wo ist der **rechte Hauptbronchus**?' },
+      { id: 'bronchus_li', name: 'linker Hauptbronchus', frage: 'Wo ist der **linke Hauptbronchus**?' },
+      { id: 'blaeschen', name: 'Lungenbläschen', frage: 'Wo sind die **Lungenbläschen**?' }
+    ],
+    tippRechtsLinks: 'Rechts und links gelten von der Person aus – nicht von Ihnen aus.',
+    geschafft: 'Geschafft – alles richtig!',
+    woerterKopf: 'Ihre Wörter für den Lückentext:',
+    auftrag: '✍️ Tragen Sie diese Wörter in die Lücken im „Informationstext: Atemwege und Ventilation“ auf dem Arbeitsblatt ein.'
+  },
+
+  /* ---------- Blatt 3 · AA2 Lesetext „leicht oder schwer?“ ----------
+     Analog steht der Text auf dem Arbeitsblatt, digital auf w4/verlegung.html (QR-Code, mit Bildern).
+     Bewusst NICHT in der Reihenfolge der Tabelle (Husten · Sprechen und Atmen · weitere Zeichen · So handle ich)
+     und mit Angaben, die nicht in die Tabelle gehören (Absatz 1). */
+  verlegung: {
+    titel: 'Wenn etwas im Hals stecken bleibt',
+    absaetze: [
+      'Beim Essen und Trinken kann sich jeder Mensch verschlucken. Ältere Menschen verschlucken sich öfter – zum Beispiel bei einer Parkinson-Krankheit, nach einem Schlaganfall oder mit einer schlecht sitzenden Zahnprothese. Auch wer beim Essen spricht oder lacht, verschluckt sich leichter. Man unterscheidet eine leichte und eine schwere Verlegung der Atemwege.',
+      'Kann die Person nicht mehr sprechen, ist der Atemweg fast ganz oder ganz verschlossen. Das ist eine **schwere Verlegung**. Rufen Sie dann sofort laut um Hilfe und lassen Sie einen Notruf absetzen. Bleiben Sie bei der Person und handeln Sie sofort. Viele Betroffene greifen sich mit beiden Händen an den Hals. Sie atmen kaum noch – manchmal hört man nur ein leises Pfeifen. Ihr Husten wird schwach und leise oder hört ganz auf.',
+      'Bei einer **leichten Verlegung** bekommt die Person noch Luft. Ihr Gesicht ist vom Husten oft rot. Sie kann sprechen, zum Beispiel: „Geht schon!“ Sie hustet kräftig und laut. Kräftiges Husten ist das beste Mittel, um den Fremdkörper herauszubringen. Fordern Sie die Person deshalb auf, weiter zu husten. Bleiben Sie bei ihr und beobachten Sie sie genau. Geben Sie nichts zu trinken und klopfen Sie nicht auf den Rücken – das stört den Husten.',
+      'Eine leichte Verlegung kann schnell zu einer schweren werden, zum Beispiel wenn der Husten schwächer wird. Achten Sie deshalb die ganze Zeit auf Husten, Sprechen und Atmung. Blaue Lippen (Zyanose) zeigen sich erst spät, wenn schon viel Sauerstoff fehlt. Warten Sie nicht darauf! Ohne Hilfe wird die Person nach wenigen Minuten bewusstlos.'
+    ],
+    // Bilder nur auf der Handy-Seite: nach Absatz (Index) → Bild
+    bilder: [
+      { nach: 1, bild: 'schwer', text: 'Kann nicht sprechen, greift sich an den Hals' },
+      { nach: 2, bild: 'leicht', text: 'Hustet kräftig und sagt: „Geht schon!“' },
+      { nach: 3, bild: 'lippen', text: 'Die Lippen werden erst spät blau.' }
+    ],
+    auftrag: '✍️ Tragen Sie die Informationen in Stichworten in die Tabelle auf dem Arbeitsblatt ein. Achtung: Nicht alles im Text gehört in die Tabelle.'
   },
 
   /* ---------- Blatt 3 · Schon fertig? „Atemweg-Check“ ---------- */

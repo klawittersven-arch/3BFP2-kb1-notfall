@@ -10,6 +10,7 @@
   function neu() {
     var fest = S.szenen.slice(0, S.feste), rest = A.mischen(S.szenen.slice(S.feste));
     reihe = fest.concat(rest); i = 0; ergebnisse = [];
+    melden(false);
     szene();
   }
 
@@ -121,10 +122,11 @@
     ergebnisse.forEach(function (e) { punkte += e.punkte; fehlalarme += e.fehlalarme; if (e.art === 'bewusstlos') bewusstlos++; fehler = fehler.concat(e.fehler); });
     return { punkte: punkte, fehlalarme: fehlalarme, bewusstlos: bewusstlos, fehler: fehler, bestanden: bewusstlos === 0 && fehlalarme <= 1 };
   }
+  // anonymer Fortschritt für die freiwillige Lehreransicht: gespielte Szenen von 6, fertig ja/nein
   function melden(fertig) {
-    var s = stand();
-    A.melden('speisesaal', { punkte: s.punkte, max: 2 * S.szenen.length, fertig: fertig, fehlalarme: s.fehlalarme, uebersehen: s.bewusstlos, gewonnen: fertig ? s.bestanden : false, fehler: s.fehler.slice(0, 20) });
+    A.fortschrittMelden('speisesaal', ergebnisse.length, S.szenen.length, fertig);
   }
+
 
   function ende() {
     var h = A.haupt(), s = stand();
@@ -141,7 +143,7 @@
       el('p', { text: text }),
       el('p', { text: 'Punkte: ' + s.punkte + ' / ' + (2 * S.szenen.length) + ' · Fehlalarme: ' + s.fehlalarme + ' · bewusstlos: ' + s.bewusstlos }),
       tab,
-      el('div', { klasse: 'hinweis', text: '✍️ Füllen Sie jetzt die Tabelle „leicht oder schwer?“ auf dem Arbeitsblatt aus.' }),
+      el('div', { klasse: 'hinweis', text: '✍️ Vergleichen Sie mit Ihrer Tabelle „leicht oder schwer?“ auf dem Arbeitsblatt.' }),
       el('button', { klasse: 'knopf zweit', type: 'button', text: 'Noch einmal (neue Reihenfolge)', onclick: function () { neu(); window.scrollTo(0, 0); } })));
   }
 

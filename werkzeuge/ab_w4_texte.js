@@ -17,27 +17,34 @@ const B1 = {
   ],
   aa1: {
     text: 'Lesen Sie den Fall. Unterstreichen Sie alle **Hinweise auf eine Wirbelsäulenverletzung**. Tragen Sie sie mit Zeilennummer in die Tabelle ein. Achtung: Nicht alles im Fall ist ein Hinweis!',
-    spalten: ['Unfallhergang', 'Schmerzen', 'Ausfälle (Gefühl und Bewegung)'],
-    // Lösung: [Text, Suchwort für die Zeilennummer]
+    // Spalten bewusst NICHT in der Reihenfolge des Falls (dort: Unfallhergang → Schmerzen → Ausfälle),
+    // damit die SuS jede Information selbst zuordnen müssen.
+    spalten: ['Ausfälle (Gefühl und Bewegung)', 'Unfallhergang', 'Schmerzen'],
+    // Lösung je Spalte: [Text, Suchwort für die Zeilennummer]
     loesung: [
+      [['Kribbeln in beiden Händen', 'Hände kribbeln'], ['Finger der rechten Hand kaum beweglich', 'Finger der rechten']],
       [['rückwärts sechs Stufen hinuntergestürzt', 'sechs Stufen'], ['mit dem Kopf gegen die Wand geprallt', 'gegen die Wand']],
-      [['„Mein Nacken tut so weh.“', 'Nacken tut']],
-      [['Kribbeln in beiden Händen', 'Hände kribbeln'], ['Finger der rechten Hand kaum beweglich', 'Finger der rechten']]
+      [['„Mein Nacken tut so weh.“', 'Nacken tut']]
     ],
     hinweis: 'Kein Hinweis (Ablenker): Diabetes, Brille, Schürfwunde, Mittagessen. Dass er die Beine bewegen kann, schließt eine Verletzung nicht aus.'
   },
   info: {
     kopf: 'Informationstext: Rückenmark und Höhe der Verletzung',
     absaetze: [
-      'Die Wirbelsäule schützt das **Rückenmark**. Es leitet Signale zwischen Gehirn und Körper. Auf jeder Höhe gehen Nerven ab: für Atmung, Arme, Rumpf und Beine (Bild unten). Wird das Rückenmark verletzt, fallen **unterhalb der Verletzung** Bewegung und Gefühl aus: Lähmung, Kribbeln, Taubheit. **Je höher die Verletzung, desto mehr fällt aus.**',
+      'Die Wirbelsäule schützt das **Rückenmark**. Es leitet Signale zwischen Gehirn und Körper. Auf jeder Höhe gehen Nerven ab: für Atmung, Arme, Rumpf und Beine (Bild unten). Wird das Rückenmark verletzt, fallen **unterhalb der Verletzung** Bewegung und Gefühl aus: Lähmung, Kribbeln, Taubheit. **Je höher die Verletzung, desto mehr fällt aus.** Ist es nur **teilweise** verletzt, fällt nicht alles aus. Für die Höhe zählt die **höchste betroffene Stelle**: Hände betroffen → HWS.',
       'Ein **instabiler** Wirbelbruch kann das Rückenmark bei jeder Bewegung quetschen – zum Beispiel beim Aufsetzen oder Kopfdrehen. Die Folge: eine bleibende **Querschnittlähmung**. Auch wer Arme und Beine bewegen kann, kann so einen Bruch haben.',
       'Bei hohen Verletzungen fällt oft der **Sympathikus** aus: **neurogener Schock** (Blutdruck niedrig, Puls langsam, Haut warm).'
     ],
     quelle: 'Quelle: nach MSD Manual Profi-Ausgabe: Rückenmarkverletzungen; ERC-Leitlinien 2025, Erste Hilfe; sprachlich vereinfacht.',
-    woerter: 'Wörterhilfe: HWS = Halswirbelsäule, BWS = Brustwirbelsäule, LWS = Lendenwirbelsäule · Rückenmark = Nervenstrang im Wirbelkanal · instabil = nicht fest, kann sich verschieben · Querschnittlähmung = Lähmung unterhalb der Verletzung · Quelle: nach MSD Manual, ERC 2025, vereinfacht'
+    woerter: 'Wörterhilfe: HWS = Halswirbelsäule, BWS = Brustwirbelsäule, LWS = Lendenwirbelsäule · Rückenmark = Nervenstrang im Wirbelkanal · instabil = nicht fest · Querschnittlähmung = Lähmung unterhalb der Verletzung · Quelle: nach MSD Manual, ERC 2025, vereinfacht'
   },
   aa2: {
-    text: 'Welche Höhe passt zu A, B und C? Schreiben Sie den Buchstaben in die Tabelle.',
+    text: {
+      analog: 'Welche Höhe passt zu A, B und C? Buchstaben in die Tabelle schreiben.',
+      // digital: die Fälle kommen am Handy (Rückenmark-Check); Tabelle und Bild bleiben als Hilfe auf dem Blatt
+      digital: 'Scannen Sie den QR-Code und lösen Sie die acht Fälle am Handy. Die Tabelle unten hilft Ihnen.'
+    },
+    handy: '**Rückenmark-Check:** acht kurze Fälle – Höhe der Verletzung und richtiges Handeln, mit Rückmeldung.',
     faelle: [
       ['A', 'Frau Sander (30) ist vom Pferd gestürzt. Sie kann die Beine nicht bewegen. Arme und Hände funktionieren.'],
       ['B', 'Herr Lux (19) ist kopfüber ins flache Wasser gesprungen. Er kann Arme und Beine nicht bewegen. Er atmet selbst.'],
@@ -45,11 +52,11 @@ const B1 = {
     ],
     hoehen: [
       ['HWS, sehr hoch', 'Arme, Beine **und die Atmung**', 'Tetraplegie mit Atemlähmung', 'C'],
-      ['HWS', 'Arme (ganz oder teilweise) und Beine', 'Tetraplegie', 'B'],
+      ['HWS', 'Arme, Hände – meist auch Beine', 'Tetraplegie', 'B'],
       ['BWS oder LWS', 'Beine (und Rumpf) – die Arme funktionieren', 'Paraplegie', 'A']
     ],
     pfeiffer: 'Und bei Herrn Pfeiffer? Höhe:',
-    pfeifferLoesung: 'HWS'
+    pfeifferLoesung: 'HWS – seine Hände sind betroffen, deren Nerven kommen aus dem Halsmark. Die Beine funktionieren noch, weil das Rückenmark nur teilweise verletzt ist.'
   },
   merksatz: [['Hinweise auf eine Wirbelsäulenverletzung: ', { l: 'Unfallhergang' }, ' (Sturz aus der Höhe, Kopfsprung, Verkehrsunfall), ', { l: 'Schmerzen in Nacken oder Rücken' }, ', ', { l: 'Kribbeln, Taubheit, Lähmung' }, '. Dann: ', { l: 'nicht bewegen' }, ', Person bitten, still zu liegen, ', { l: 'Kopf mit beiden Händen in der vorgefundenen Lage halten' }, ', nicht aufsetzen – sonst droht eine ', { l: 'Querschnittlähmung' }, ' (bei sehr hoher Verletzung auch Atemlähmung). Drehen nur, wenn es sein muss (z. B. Erbrechen): ', { l: 'achsengerecht mit mehreren Helfenden' }, '.']],
   aa3: {
@@ -72,26 +79,21 @@ const B1 = {
   rahmen: 'Pflegefachpersonen leiten in lebensbedrohlichen Situationen Sofortmaßnahmen ein.',
   aufgaben: [
     {
-      nr: '4.1', punkte: 2, zeilen: 4,
+      nr: '4.1', punkte: 2, zeilen: 9,
       text: 'Begründen Sie, warum Herr Pfeiffer möglichst nicht bewegt werden soll, und beschreiben Sie eine Maßnahme dazu.',
       hinweis: '(Hinweis: Beschreiben Sie, was Sie tun, statt Herrn Pfeiffer zu bewegen: Wie schützen Sie ihn in dieser Situation? Schreiben Sie genau, wie Sie es machen.)',
       loesung: [
         'Begründung: Der Sturz rückwärts von der Treppe mit Kopfanprall, die Nackenschmerzen und das Kribbeln in beiden Händen weisen auf eine Verletzung der Halswirbelsäule mit Beteiligung des Rückenmarks hin. Jede Bewegung (z. B. Aufsetzen, Kopf drehen) kann das Rückenmark (weiter) schädigen → bleibende Querschnittlähmung, bei hoher Verletzung Atemlähmung. (1 P.)',
         'Maßnahme, z. B.: Kopf mit beiden Händen in der vorgefundenen Lage halten; Herrn Pfeiffer bitten, still zu liegen, nicht aufsetzen oder aufstehen lassen; ansprechen und erklären. Lagewechsel nur, wenn unvermeidbar (z. B. Erbrechen), dann achsengerecht mit mehreren Helfenden. (1 P.; eine HWS-Orthese wird nicht erwartet)'
       ]
-    },
-    {
-      nr: '4.2', punkte: 2, zeilen: 3,
-      text: 'Ihre Kollegin sagt: „Er kann doch die Beine bewegen. Dann ist die Wirbelsäule nicht verletzt.“ Beurteilen Sie die Aussage.',
-      hinweis: '(Beurteilen heißt: Stimmt die Aussage oder stimmt sie nicht? Begründen Sie Ihre Antwort.)',
-      loesung: [
-        'Die Aussage ist falsch. (1 P.)',
-        'Unfallhergang und Nackenschmerz reichen für den Verdacht. Ein instabiler Wirbelbruch kann das Rückenmark erst bei einer Bewegung verletzen. Außerdem zeigen die Hände schon Ausfälle (Kribbeln, Schwäche). Deshalb trotzdem nicht bewegen. (1 P.)'
-      ]
     }
   ],
   fertig: {
-    digital: '**Schon fertig?** Rückenmark-Check: acht kurze Fälle am Handy – mit Rückmeldung.',
+    // digital ist der Rückenmark-Check schon AA2 – deshalb hier eine Zusatzfrage auf Papier (Antwort auf ein Extrablatt)
+    digital: {
+      frage: '**Schon fertig?** Herr Pfeiffer ist 79 Jahre alt und nur sechs Stufen gestürzt. Warum kann bei alten Menschen schon so ein Sturz die Halswirbelsäule verletzen? Nennen Sie zwei Gründe.',
+      loesung: 'z. B.: Die Knochen sind oft brüchig (Osteoporose). Die Wirbelsäule ist durch Verschleiß steif, der Wirbelkanal enger – das Rückenmark wird schneller gequetscht. Stürze werden schlechter abgefangen (Kraft, Reflexe, Sehen), der Kopf prallt an. Typisch: Die Hände sind stärker betroffen als die Beine – wie bei Herrn Pfeiffer.'
+    },
     analog: {
       frage: '**Schon fertig?** Herr Lux (19) aus AA2 hat einen Blutdruck von 85/50 mmHg und einen Puls von 52/min. Die Haut an seinen Beinen ist warm. Welcher Schock liegt vor? Erklären Sie den langsamen Puls.',
       loesung: 'Neurogener Schock: Durch die Verletzung des Rückenmarks fällt der Sympathikus aus. Die Gefäße werden weit, der Blutdruck fällt – und der Puls kann nicht steigen, er bleibt langsam.'
@@ -112,9 +114,38 @@ const B2 = {
   vielleicht: 'Vielleicht ist keiner ein Notfall – vielleicht mehrere.',
   aa1: {
     text: {
-      analog: 'Ihre Lehrkraft zeigt nacheinander **Messkarten**. Bei jeder Karte: **1.** Werte lesen und mit dem Vorwert vergleichen. **2.** Schockindex rechnen (Puls : systolischer Blutdruck). **3.** Ampel wählen und in die Tabelle schreiben. **4.** Alle zeigen gleichzeitig: **sitzen bleiben** 🟢 · **Hand heben** 🟡 · **aufstehen** 🔴. Bei **Finn**: Puls und Blutdruck in die Kurve eintragen.',
-      digital: 'Scannen Sie den QR-Code. Die **Messkarten** kommen am Handy von selbst – 40 Sekunden pro Karte. Bei jeder Karte: **1.** Werte lesen und mit dem Vorwert vergleichen. **2.** Schockindex rechnen (Puls : systolischer Blutdruck). **3.** Ampel am Handy wählen und in die Tabelle schreiben. Bei **Finn**: Puls und Blutdruck in die Kurve eintragen.'
+      analog: 'Allein (8 Minuten). Kreuzen Sie bei jeder Messung an, was Sie tun. Tragen Sie danach **Finns** Puls und Blutdruck in die Kurve ein.',
+      digital: 'Scannen Sie den QR-Code. Am Handy kommen nacheinander **Messkarten**: Wählen Sie bei jeder Karte die Ampel. Bei **Finn**: Puls und Blutdruck in die Kurve eintragen.'
     },
+    // Analoge Fassung: Ankreuz-Tabelle (zeitlich geordnet). Finns Messungen kommen aus docs/w4/inhalte.js (Karten 1, 5, 6 –
+    // dieselben Werte wie in der Kurve und in 2.1). Herr Kurz steht bewusst am Anfang (🟡) und kurz vor Finns Notfall (🟢),
+    // damit die Dringlichkeit nicht wie eine Treppe ansteigt. Jana fehlt bewusst – sie kommt in 2.3.
+    messungen: [
+      {
+        zeit: '05:50', wer: 'kurz', puls: 112, rr: [142, 86], af: 22, vorwert: 'gestern 22 Uhr: Puls 80/min, RR 135/85 mmHg',
+        beobachtung: 'Er kommt gerade mit den Unterarmgehstützen von der Toilette (50 m). Er schwitzt leicht.',
+        aussage: '„Puh, das ist anstrengend!“',
+        richtig: 'gelb',
+        begruendung: 'Puls und Atmung sind direkt nach der Anstrengung erhöht – das ist erklärbar. Richtig: nach 5 Minuten Ruhe nachmessen. Sofort einen Notfall zu melden wäre ein Fehlalarm.'
+      },
+      { karte: 1 },
+      { karte: 5 },
+      {
+        zeit: '07:10', wer: 'kurz', puls: 80, rr: [136, 84], af: 16, vorwert: null,
+        beobachtung: 'Er sitzt im Bett und frühstückt. Haut trocken.',
+        aussage: '„Jetzt geht’s mir gut.“',
+        richtig: 'gruen',
+        begruendung: 'In Ruhe sind die Werte normal wie am Vorabend (Schockindex 0,6). Die Anstrengung erklärte den hohen Puls von 05:50 Uhr. Wer hier 🟡 oder 🔴 wählt, lässt sich vom alten Wert leiten.'
+      },
+      { karte: 6 }
+    ],
+    loesungAnalog: [
+      '**05:50 Herr Kurz: 🟡** – Puls und Atmung sind direkt nach dem Gehen erhöht, das ist erklärbar: nach 5 Minuten Ruhe nachmessen. 🔴 wäre ein Fehlalarm.',
+      '**06:00 Finn: 🟢** – alle Werte normal (Schockindex 0,6); Schmerz an der Prellung ist nach dem Sturz zu erwarten. 🔴 wäre zu früh.',
+      '**07:00 Finn: 🟡** – Werte noch im Normbereich, aber der Puls ist in einer Stunde um 12 gestiegen und der Abstand der Blutdruckwerte ist kleiner geworden: in 15–20 Minuten nachmessen, Pflegefachkraft informieren, noch nichts essen lassen. 🔴 wäre zu früh.',
+      '**07:10 Herr Kurz: 🟢** – in Ruhe wieder normale Werte wie am Vorabend, keine Beschwerden: Die Anstrengung erklärte den hohen Puls von 05:50 Uhr. 🟡 oder 🔴 wären unnötig.',
+      '**07:20 Finn: 🔴** – Puls steigt weiter (76 → 88 → 104/min), Abstand der Blutdruckwerte 46 → 40 → 30 mmHg, dazu blass, kühle Hände, Durst und Schmerz in der linken Schulter (Milz). Notfall – obwohl der Schockindex erst 0,9 ist.'
+    ],
     regel: '🏆 **Gewonnen:** Finn rechtzeitig gemeldet **und** höchstens **ein Fehlalarm** (🔴 ohne Notfall).',
     handy: '**Frühdienst mit Ampel:** QR-Code scannen und starten. Am Ende sehen Sie, ob Sie gewonnen haben.'
   },
@@ -124,10 +155,11 @@ const B2 = {
   aufgaben: [
     {
       nr: '2.1', punkte: 3, zeilen: 4,
-      vorsatz: 'Um 07:20 Uhr messen Sie bei Finn: Puls 104/min, Blutdruck 118/88 mmHg (07:00 Uhr: 88/min, 122/82 mmHg; 06:00 Uhr: 76/min, 124/78 mmHg). Er ist blass, die Hände sind kühl. Er sagt: „Ich hab so Durst. Und meine linke Schulter tut komisch weh.“',
-      text: 'Identifizieren Sie drei Befunde, die bei Finn auf eine innere Blutung hinweisen. Berücksichtigen Sie die Vorwerte.',
+      vorsatz: 'Um 07:20 Uhr erheben Sie bei Finn: Puls 104/min (07:00 Uhr: 88/min; 06:00 Uhr: 76/min) · Blutdruck 118/88 mmHg (07:00 Uhr: 122/82; 06:00 Uhr: 124/78) · Atemfrequenz 22/min (06:00 Uhr: 16/min) · SpO₂ 98 % · Temperatur 36,8 °C · Blutzucker 96 mg/dl. Er ist blass, die Hände sind kühl. Am rechten Knie hat er eine kleine, trockene Schürfwunde. Er sagt: „Ich hab so Durst. Und meine linke Schulter tut komisch weh. Kann ich meine Mutter anrufen?“',
+      text: 'Identifizieren Sie drei Befunde, die bei Finn auf eine innere Blutung hinweisen.',
       loesung: [
-        'z. B. (je Befund mit Vorwert bzw. Zuordnung 1 P., max. 3 P.): Puls steigt von 76 über 88 auf 104/min (Kompensation durch den Sympathikus) · Abstand der Blutdruckwerte wird kleiner: 46 → 40 → 30 mmHg (systolisch sinkt, diastolisch steigt – die Gefäße werden eng) · blass, kühle Hände (Zentralisation) · Durst (Volumenmangel) · Schmerz in der linken Schulter (Hinweis auf Milzverletzung: Blut reizt das Zwerchfell) · Schockindex steigt von 0,6 auf 0,9.'
+        'z. B. (je Befund 1 P., max. 3 P.; wer den Verlauf mit dem Vorwert nennt, zeigt das Verständnis am besten): Puls steigt von 76 über 88 auf 104/min (Kompensation durch den Sympathikus) · Abstand der Blutdruckwerte wird kleiner: 46 → 40 → 30 mmHg (systolisch sinkt, diastolisch steigt – die Gefäße werden eng) · Atemfrequenz steigt von 16 auf 22/min · blass, kühle Hände (Zentralisation) · Durst (Volumenmangel) · Schmerz in der linken Schulter (Hinweis auf Milzverletzung: Blut reizt das Zwerchfell) · Schockindex steigt von 0,6 auf 0,9.',
+        'Kein Hinweis auf eine innere Blutung (0 P.): SpO₂ 98 %, Temperatur 36,8 °C und Blutzucker 96 mg/dl sind normal; die kleine, trockene Schürfwunde am Knie blutet nicht und erklärt keinen Volumenmangel; der Wunsch, die Mutter anzurufen, ist kein Krankheitszeichen.'
       ]
     },
     {
@@ -176,12 +208,14 @@ const B3 = {
   leitfrage: 'War es richtig, Frau Maler einfach husten zu lassen?',
   leitfrageLoesung: 'Ja. Frau Maler hustete kräftig – eine leichte Verlegung. Richtig ist dann: zum Husten auffordern, bei ihr bleiben und beobachten. Nichts zu trinken geben, nicht auf den Rücken klopfen. Wäre der Husten schwach geworden, hätte Christin sofort Hilfe holen müssen.',
   aa1: {
-    text: '**a) Selbstversuch:** Finger vorn auf den Hals legen und schlucken. Was spüren Sie? Geht schlucken und einatmen gleichzeitig? **b)** Text lesen, Bild beschriften.',
-    info: [
-      'Die Luft strömt durch Nase oder Mund in den **Rachen**. Hier kreuzen sich Luftweg und Speiseweg. Beim Schlucken hebt sich der **Kehlkopf**, der **Kehldeckel** verschließt die **Luftröhre** – die Nahrung rutscht in die Speiseröhre. Gerät doch etwas in den Kehlkopf, muss man kräftig husten (**Hustenreflex**).',
-      'Die Luftröhre teilt sich in den **rechten** und den **linken Hauptbronchus**. Der rechte ist kürzer, weiter und verläuft steiler. In den **Lungenbläschen** geht Sauerstoff ins Blut. Das Ein- und Ausatmen heißt **Ventilation**.'
-    ],
-    wortspeicher: 'Wortspeicher: Kehldeckel · Kehlkopf · Luftröhre · rechter Hauptbronchus · linker Hauptbronchus · Lungenbläschen',
+    text: {
+      analog: '**a) Selbstversuch:** Finger vorn auf den Hals legen und schlucken. Was spüren Sie? Geht schlucken und einatmen gleichzeitig? **b)** Text lesen, Bild beschriften.',
+      digital: '**a) Selbstversuch:** Finger vorn auf den Hals legen und schlucken. Was spüren Sie? Geht schlucken und einatmen gleichzeitig? **b)** Scannen Sie den QR-Code und tippen Sie die Teile der Atemwege im Bild an. Bei einem Fehler beginnen Sie von vorn. **c)** Wenn alles richtig ist, bekommen Sie Wörter: Tragen Sie sie in die Lücken im Text ein.'
+    },
+    // Informationstext: docs/w4/inhalte.js (W4.atemwegeText) – analog mit fetten Fachwörtern, digital als Lückentext
+    handy: '**Wo ist was? Die Atemwege:** sechs Fragen – tippen Sie die Teile im Bild an. Alles richtig → Sie bekommen die Wörter für den Lückentext.',
+    // Reihenfolge bewusst gemischt: kein Begriff steht an der Stelle seiner Nummer im Bild
+    wortspeicher: 'Wortspeicher: Lungenbläschen · linker Hauptbronchus · Kehlkopf · Luftröhre · Kehldeckel · rechter Hauptbronchus',
     begriffe: ['Kehldeckel', 'Kehlkopf', 'Luftröhre', 'rechter Hauptbronchus', 'linker Hauptbronchus', 'Lungenbläschen'],
     frageC: '**c)** Bei Erwachsenen rutschen Fremdkörper häufiger in den rechten Hauptbronchus. Warum?',
     loesungC: 'Der rechte Hauptbronchus ist kürzer, weiter und verläuft steiler – fast in Verlängerung der Luftröhre.',
@@ -189,32 +223,42 @@ const B3 = {
   },
   merksatz1: [['Beim Schlucken verschließt der ', { l: 'Kehldeckel' }, ' die Luftröhre. Fremdkörper rutschen eher in den ', { l: 'rechten Hauptbronchus' }, '. Atemweg verlegt → keine Luft in die ', { l: 'Lungenbläschen' }, ' → ', { l: 'Sauerstoffmangel (Hypoxie)' }, ': Zyanose, ', { l: 'Bewusstlosigkeit' }, ', ', { l: 'Kreislaufstillstand' }, ' – in ', { l: 'wenigen Minuten' }, '. Das ', { l: 'Gehirn' }, ' ist am empfindlichsten.']],
   aa2: {
+    // Lesetext: docs/w4/inhalte.js (W4.verlegung) – analog auf dem Blatt, digital über QR-Code (w4/verlegung.html, mit Bildern).
+    // Einen Merksatz 2 gibt es bewusst nicht mehr: Die gesicherte Tabelle ist die Zusammenfassung (sonst wird nur abgeschrieben).
     text: {
-      analog: 'Ihre Lehrkraft liest sechs kurze Szenen vor – jeweils mit vier Möglichkeiten. Entscheiden Sie zu zweit schnell und zeigen Sie mit **1–4 Fingern**, was Sie tun. **Bestanden:** niemand wird bewusstlos, höchstens **ein Fehlalarm**. **Danach:** Füllen Sie die Tabelle aus.',
-      digital: 'Ein Handy für zwei: QR-Code scannen und sechs kurze Szenen spielen. **Danach:** Füllen Sie die Tabelle aus.'
+      analog: 'Allein (8 Minuten). Lesen Sie den Text. Tragen Sie die Informationen in Stichworten in die Tabelle ein. Achtung: Nicht alles im Text gehört in die Tabelle.',
+      digital: 'Allein (8 Minuten). Scannen Sie den QR-Code und lesen Sie den Text am Handy. Tragen Sie die Informationen in Stichworten in die Tabelle ein. Achtung: Nicht alles im Text gehört in die Tabelle.'
     },
-    handy: '**Notfall-Ampel im Speisesaal:** sechs Szenen. **Bestanden:** niemand wird bewusstlos, höchstens **ein Fehlalarm**.',
+    handy: '**Text: Wenn etwas im Hals stecken bleibt** – mit Bildern. Lesen Sie in Ruhe (ein Handy für zwei reicht).',
+    // Zeile: [Merkmal, leichte Verlegung, schwere Verlegung] – Lösung (Stichworte aus dem Text)
     zeilen: [
-      ['Husten', 'kräftig, wirksam', 'schwach, leise, unwirksam – oder gar kein Husten'],
-      ['Sprechen und Atmen', 'kann sprechen (auch rufen) und atmen', 'kann nicht oder nur einzelne Wörter sprechen; kaum oder keine Atmung, evtl. Pfeifen'],
-      ['weitere Zeichen', 'Gesicht oft rot', 'Griff an den Hals, Angst; später Zyanose, dann Bewusstlosigkeit'],
-      ['So handle ich', 'zum Husten auffordern, bleiben, beobachten – nichts zu trinken geben, nicht klopfen', 'sofort laut Hilfe rufen, Notruf veranlassen, nicht allein lassen, sofort handeln']
-    ]
+      ['Husten', 'kräftig und laut', 'schwach und leise oder hört ganz auf'],
+      ['Sprechen und Atmen', 'kann sprechen („Geht schon!“), bekommt Luft', 'kann nicht sprechen, atmet kaum, evtl. leises Pfeifen'],
+      ['weitere Zeichen', 'Gesicht vom Husten oft rot', 'greift sich mit beiden Händen an den Hals; spät: blaue Lippen (Zyanose), dann bewusstlos'],
+      ['So handle ich', 'zum Husten auffordern, bleiben, genau beobachten; nichts zu trinken geben, nicht auf den Rücken klopfen', 'sofort laut um Hilfe rufen, Notruf absetzen lassen, bei der Person bleiben, sofort handeln']
+    ],
+    ergaenzung: 'Gehört nicht in die Tabelle: Absatz 1 (wer sich öfter verschluckt: Parkinson, Schlaganfall, Zahnprothese, Sprechen oder Lachen beim Essen). Kernsatz für die Sicherung: „Wer laut rufen kann, bekommt Luft. Nicht auf blaue Lippen warten!“'
   },
-  merksatz2: [[{ l: 'Leichte Verlegung' }, ': ', { l: 'kräftiger, wirksamer Husten' }, ', kann ', { l: 'sprechen und atmen' }, ' → ', { l: 'zum Husten auffordern' }, ', bleiben, beobachten. ', { l: 'Schwere Verlegung' }, ': Husten ', { l: 'schwach oder fehlt' }, ', ', { l: 'kann nicht sprechen' }, ', kaum Atmung, Griff an den Hals, später Zyanose → ', { l: 'sofort Hilfe rufen und handeln' }, '. Nicht auf ', { l: 'blaue Lippen' }, ' warten! Wer laut rufen kann, bekommt Luft.']],
   fall: [
-    'Sie sind Auszubildende bzw. Auszubildender in der Seniorenwohngruppe „Kastanienhof“. Herr Walter Roth (80) sitzt beim Abendessen am Tisch und isst ein Wurstbrot. Plötzlich hustet er kräftig und laut. Er hebt die Hand und sagt: „Geht schon …“ Nach etwa 20 Sekunden wird sein Husten leise und kraftlos. Herr Roth kann nicht mehr sprechen. Er greift sich mit beiden Händen an den Hals. Seine Lippen werden bläulich.'
+    'Sie sind Auszubildende bzw. Auszubildender in der Seniorenwohngruppe „Kastanienhof“. Herr Walter Roth (80) hat eine Parkinson-Krankheit; seine Hände zittern leicht, wie immer. Er trägt eine Brille. Beim Abendessen sitzt er am Tisch, trinkt Pfefferminztee und isst ein Wurstbrot. Am Nachbartisch lacht jemand laut. Plötzlich hustet Herr Roth kräftig und laut. Er hebt die Hand und sagt: „Geht schon …“ Nach etwa 20 Sekunden wird sein Husten leise und kraftlos. Herr Roth kann nicht mehr sprechen. Er greift sich mit beiden Händen an den Hals. Seine Lippen werden bläulich.'
   ],
   rahmen: 'Pflegefachpersonen erkennen Notfallsituationen und schätzen sie ein.',
   aufgaben: [
     {
-      nr: '3.1', punkte: 2, zeilen: 3,
+      nr: '3.1', punkte: 2, zeilen: 8,
       text: 'Unterscheiden Sie anhand der Situation eine leichte von einer schweren Atemwegsverlegung.',
+      hinweis: '(Hinweis: In welchen Zeilen stehen die Zeichen für eine leichte Verlegung, in welchen die Zeichen für eine schwere? Geben Sie die Zeilen an und nennen Sie die Zeichen.)',
       loesung: [
         'Leichte Verlegung: kräftiger, wirksamer Husten, er kann sprechen und atmen – das trifft auf Herrn Roth zu Beginn zu (hustet kräftig und laut, sagt „Geht schon …“, Z. {Geht schon}). (1 P.)',
-        'Schwere Verlegung: Husten leise und kraftlos, kann nicht sprechen, greift sich an den Hals, Lippen bläulich – das trifft nach etwa 20 Sekunden zu (Z. {kraftlos}–{bläulich}). (1 P.)'
+        'Schwere Verlegung: Husten leise und kraftlos, kann nicht sprechen, greift sich an den Hals, Lippen bläulich – das trifft nach etwa 20 Sekunden zu (Z. {kraftlos}–{bläulich}). (1 P.)',
+        'Kein Merkmal einer Atemwegsverlegung (0 P.): Zittern der Hände (Parkinson, „wie immer“), Brille, Pfefferminztee, lautes Lachen am Nachbartisch. Hinweis: Die Parkinson-Krankheit erhöht das Risiko, sich zu verschlucken – sie ist aber kein Zeichen dafür, ob die Verlegung leicht oder schwer ist.'
       ]
-    },
+    }
+  ],
+  // Für die Schnellen (ersetzt „Schon fertig?“ auf Blatt 3): Antworten auf ein Extrablatt
+  schnelle: {
+    kopf: '**Für die Schnellen** ✍️ Schreiben Sie Ihre Antworten auf ein Extrablatt.',
+    aufgaben: [
     {
       nr: '3.2', punkte: 2, zeilen: 3,
       text: 'Erklären Sie, warum Herr Roth ohne Hilfe innerhalb weniger Minuten bewusstlos werden kann.',
@@ -231,14 +275,16 @@ const B3 = {
         'Die Aussage ist falsch. (1 P.)',
         'Entscheidend sind Husten, Sprechen und Atmung: Kann die Person nicht mehr sprechen oder wirksam husten, ist es eine schwere Verlegung – auch mit rosigen Lippen. Die Zyanose ist ein spätes Zeichen; dann fehlt schon viel Sauerstoff. Deshalb sofort handeln. (1 P.)'
       ]
-    }
-  ],
-  fertig: {
-    digital: '**Schon fertig?** Atemweg-Check: sechs kurze Fragen am Handy – mit Rückmeldung.',
-    analog: {
-      frage: '**Schon fertig?** Warum soll man einer Person, die kräftig hustet, nichts zu trinken geben und nicht auf den Rücken klopfen? Begründen Sie.',
-      loesung: 'Kräftiger Husten ist am wirksamsten – Klopfen stört ihn. Beim Trinken kann sich die Person noch einmal verschlucken, Flüssigkeit kann in die Atemwege gelangen. Richtig: zum Husten auffordern, bleiben, beobachten.'
-    }
+    },
+      {
+        nr: '3.4', nurAnalog: true,
+        text: 'Warum soll man einer Person, die kräftig hustet, nichts zu trinken geben und nicht auf den Rücken klopfen? Begründen Sie.',
+        loesung: ['Kräftiger Husten ist am wirksamsten – Klopfen stört ihn. Beim Trinken kann sich die Person noch einmal verschlucken, Flüssigkeit kann in die Atemwege gelangen. Richtig: zum Husten auffordern, bleiben, beobachten.']
+      }
+    ],
+    // nur digitale Fassung: zwei Handy-Übungen
+    atemweg: '**Atemweg-Check:** sechs kurze Fragen am Handy – mit Rückmeldung.',
+    speisesaal: '**Notfall-Ampel im Speisesaal** (zu zweit): sechs Szenen. **Bestanden:** niemand bewusstlos, höchstens **ein Fehlalarm**.'
   }
 };
 
