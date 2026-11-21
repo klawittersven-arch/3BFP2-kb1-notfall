@@ -94,7 +94,6 @@ const B1 = {
     digital: '**Schon fertig?** Rückenmark-Check: acht kurze Fälle am Handy – mit Rückmeldung.',
     analog: {
       frage: '**Schon fertig?** Herr Lux (19) aus AA2 hat einen Blutdruck von 85/50 mmHg und einen Puls von 52/min. Die Haut an seinen Beinen ist warm. Welcher Schock liegt vor? Erklären Sie den langsamen Puls.',
-      zeilen: 2,
       loesung: 'Neurogener Schock: Durch die Verletzung des Rückenmarks fällt der Sympathikus aus. Die Gefäße werden weit, der Blutdruck fällt – und der Puls kann nicht steigen, er bleibt langsam.'
     }
   }
@@ -161,7 +160,6 @@ const B2 = {
     digital: '**Schon fertig?** Trend-Detektiv: fünf Verläufe am Handy lesen und mit der Ampel entscheiden.',
     analog: {
       frage: '**Schon fertig?** Frau Pohl (34) hat eine Beckenprellung. 08:00 Uhr: Puls 80/min, RR 120/80 mmHg · 08:30 Uhr: Puls 96/min, RR 116/84 mmHg · 09:00 Uhr: Puls 112/min, RR 108/88 mmHg, sie ist blass. Welche Ampel wählen Sie um 09:00 Uhr? Begründen Sie mit dem Verlauf.',
-      zeilen: 2,
       loesung: '🔴 Notfall: Der Puls steigt schnell (80 → 96 → 112/min), der Abstand der Blutdruckwerte wird kleiner (40 → 32 → 20 mmHg), dazu Blässe → Verdacht auf eine innere Blutung; Schockindex 112 : 108 ≈ 1,0.'
     }
   }
@@ -239,7 +237,6 @@ const B3 = {
     digital: '**Schon fertig?** Atemweg-Check: sechs kurze Fragen am Handy – mit Rückmeldung.',
     analog: {
       frage: '**Schon fertig?** Warum soll man einer Person, die kräftig hustet, nichts zu trinken geben und nicht auf den Rücken klopfen? Begründen Sie.',
-      zeilen: 2,
       loesung: 'Kräftiger Husten ist am wirksamsten – Klopfen stört ihn. Beim Trinken kann sich die Person noch einmal verschlucken, Flüssigkeit kann in die Atemwege gelangen. Richtig: zum Husten auffordern, bleiben, beobachten.'
     }
   }

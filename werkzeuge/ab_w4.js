@@ -92,12 +92,13 @@ function linien(B, anzahl, loesung = [], breite = B.breite) {
     rows: Array.from({ length: anzahl }, () => new TableRow({ height: { value: 410, rule: D.HeightRule.EXACT }, children: [new TableCell({ width: { size: breite, type: WidthType.DXA }, borders: { top: keinRand, left: keinRand, right: keinRand, bottom: rl }, children: [new Paragraph({ children: [] })] })] }))
   });
 }
-// „Schon fertig?“: digital mit QR-Code, analog als kurze Zusatzaufgabe auf Papier (LSG: Lösung gelb)
+// „Schon fertig?“: digital mit QR-Code, analog als kurze Zusatzaufgabe (Antwort auf ein Extrablatt; LSG: Lösung gelb)
 function fertigKasten(B, seite, f) {
   if (DIGITAL()) return qrKasten(B, seite, [kl(B, f.digital)]);
   const a = f.analog;
-  return B.kasten([kl(B, a.frage),
-    B.lsg ? new Paragraph({ spacing: { before: 30, after: 0, line: 245 }, children: B.runs(a.loesung, { size: 19, highlight: 'yellow' }) }) : linien(B, a.zeilen, [], B.breite - 240)],
+  // Antwort auf ein Extrablatt – so braucht der Kasten keine Schreiblinien
+  return B.kasten([kl(B, a.frage + ' ✍️ **Schreiben Sie Ihre Antwort auf ein Extrablatt.**'),
+    B.lsg ? new Paragraph({ spacing: { before: 30, after: 0, line: 245 }, children: B.runs(a.loesung, { size: 19, highlight: 'yellow' }) }) : null].filter(Boolean),
   { fill: F.BLAU_HELL, rand: '2E75B6' });
 }
 // Aufgaben im KA-Format (Nr. | Aufgabe | Punkte): Kopfzeile nur einmal je Block, darunter die Schreiblinien
@@ -296,7 +297,7 @@ function verlaufsplan(B) {
   push(
     B.titel('Was man nicht sieht: Wirbelsäulenverletzung, innere Blutung, Atemwege – ' + je('analoge Fassung', 'digitale Fassung')),
     new Paragraph({ spacing: { after: 80 }, children: [B.emoji('🎯 '), B.b('Lernziel (Planung): '), ...B.runs('Die Lernenden erkennen Hinweise auf eine Wirbelsäulenverletzung und begründen die Bewegungsminimierung. Sie überwachen Vitalzeichen im Verlauf und erkennen eine verzögerte innere Blutung. Sie unterscheiden eine leichte von einer schweren Atemwegsverlegung.')] }),
-    B.p('**Rahmen:** KB I · Woche 4 (SW 9) · 3 UStd. (135 min): 2 UStd. Wirbelsäulenverletzung und innere Blutung, 1 UStd. Fremdkörperaspiration Teil 1 · Leitfall „Frau Maler“ (verschluckt sich am Kaffee) · Fall „17-Jähriger nach Fahrradsturz“ (Finn) · Vorwissen: Woche 1 (Kompensation, Schockindex), Woche 2 (Schockformen, neurogener Schock, Lagerung „nicht bewegen“), Woche 3 laut Planung (sichtbare Blutung, Abgrenzung Erste Hilfe – pflegerische Sofortmaßnahme – ärztliche Maßnahme) · Ich-kann-Liste KB I: Woche 4 Nr. 1–3, Fremdkörperaspiration Nr. 1–2 · KA-Bezug: KB 1, Aufg. 5.3 und 4.1 (dazu 5.5, 5.4 als Wiederholung) · AB: 3 Blätter je 2 Seiten (6 Seiten), nacheinander austeilen · ' + je('**Analoge Fassung:** ganz ohne Smartphone (Messkarten, Entscheidungsspiel, „Schon fertig?“ auf Papier).', '**Digitale Fassung:** Live-Verlauf, Simulation und „Schon fertig?“ am Smartphone (ein Handy pro Paar reicht, ohne Anmeldung, ohne Beamer).')),
+    B.p('**Rahmen:** KB I · Woche 4 (SW 9) · 3 UStd. (135 min): 2 UStd. Wirbelsäulenverletzung und innere Blutung, 1 UStd. Fremdkörperaspiration Teil 1 · Leitfall „Frau Maler“ (verschluckt sich am Kaffee) · Fall „17-Jähriger nach Fahrradsturz“ (Finn) · Vorwissen: Woche 1 (Kompensation, Schockindex), Woche 2 (Schockformen, neurogener Schock, Lagerung „nicht bewegen“), Woche 3 laut Planung (sichtbare Blutung, Abgrenzung Erste Hilfe – pflegerische Sofortmaßnahme – ärztliche Maßnahme) · Ich-kann-Liste KB I: Woche 4 Nr. 1–3, Fremdkörperaspiration Nr. 1–2 · KA-Bezug: KB 1, Aufg. 5.3 und 4.1 (dazu 5.5, 5.4 als Wiederholung) · AB: 3 Blätter je 2 Seiten (6 Seiten), nacheinander austeilen · ' + je('**Analoge Fassung:** ganz ohne Smartphone (Messkarten, Entscheidungsspiel, „Schon fertig?“ als Zusatzaufgabe – Antwort auf ein Extrablatt).', '**Digitale Fassung:** Live-Verlauf, Simulation und „Schon fertig?“ am Smartphone (ein Handy pro Paar reicht, ohne Anmeldung, ohne Beamer).')),
     B.p('**Kompetenzbezug:** Anlage 1 PflAPrV I.4.a, I.4.c (wie Woche 2) · Landeslehrplan CE 06 „In Akutsituationen sicher handeln“ · Methodenwechsel: szenischer Einstieg, Einzelarbeit, Partnerarbeit, Gruppenübung auf dem Boden oder auf Isomatten, ' + je('Bewegungsspiel (Ampel), Entscheidungsspiel im Plenum', 'Live-Verlauf und Simulation am Smartphone') + ', Peer-Korrektur'),
     B.p('**Methodenwechsel** („erst erleben, dann begründen und aufschreiben“): ① Praxisübung „Kopf halten und achsengerecht drehen“ → AA4 (Muster KA 5.3) · ② Live-Verlauf „Frühdienst – drei Patienten, eine Ampel“ (' + je('Messkarten, sitzen/Hand heben/aufstehen', 'am Smartphone') + ') → AA2 · ③ „Notfall-Ampel im Speisesaal“ (' + je('Entscheidungsspiel im Plenum, Anhang B', 'Simulation am Smartphone') + ') → AA3 (Muster KA 4.1).')
   );
@@ -326,7 +327,7 @@ function verlaufsplan(B) {
     z('93–105', 'Notfall-Ampel im Speisesaal (AA2)', je('Szenen aus Anhang B vorlesen, Paare zeigen 1–4 Finger, 10 s herunterzählen, Folgen vorlesen, Fehlalarme und „bewusstlos“ an der Tafel zählen (ca. 6 min). Dann Tabelle (4 min), Auswertung: „Wo waren die Fallen?“ (Frau Brückner, Herr Vogt), Merksatz.', 'Paare scannen den QR-Code (ein Handy pro Paar), ca. 6 min; wer früh fertig ist: neue Reihenfolge. Dann Tabelle (4 min), Auswertung: „Wo waren die Fallen?“ (Frau Brückner, Herr Vogt), Merksatz.'), 'unter Zeitdruck entscheiden, Tabelle leicht/schwer ausfüllen', je('PA (Handzeichen) → EA', 'PA (Handy) → EA'), je('Anhang B, Blatt 3 S. 2', 'Handy, Blatt 3 S. 2'), 'erleben, dann aufschreiben; Fehlvorstellungen „erst bei blauen Lippen handeln“ und „wer schreit, erstickt“. AFB II'),
     z('105–117', 'Aufgaben mit Punkten (AA3)', 'Uhr 9 min, dann Musterlösung (3 min).', '3.1–3.3 allein schreiben, mit Musterlösung verbessern', 'EA → Plenum', 'Blatt 3 S. 2', '3.1 = Muster KA 4.1; 3.3 Beurteilen (AFB III)'),
     z('117–122', 'Abschluss', 'Leitfrage beantworten lassen (2 Zeilen). Bogen zum Einstieg: „Was tun Sie jetzt, wenn Herr Pfeiffer sagt: Helfen Sie mir hoch?“ Blitzlicht: Drei Notfälle, die man nicht sieht – woran erkennen Sie sie?', 'Leitfrage schriftlich beantworten, Blitzlicht', 'EA → Plenum', 'Blatt 3', 'Leitfall abschließen, Lernzuwachs sichtbar machen'),
-    z('122–135', 'Puffer (ca. 13 min)', 'Reserve für langsames Lesen und Schreiben, Übung und Musterlösungen. Schnelle SuS: ' + je('Zusatzaufgaben „Schon fertig?“ am Ende jedes Blatts.', 'QR-Kästen „Schon fertig?“ (Rückenmark-Check, Trend-Detektiv, Atemweg-Check).'), '–', '–', '–', 'Zeitreserve, kein neuer Inhalt')
+    z('122–135', 'Puffer (ca. 13 min)', 'Reserve für langsames Lesen und Schreiben, Übung und Musterlösungen. Schnelle SuS: ' + je('Zusatzaufgaben „Schon fertig?“ am Ende jedes Blatts (Antwort auf ein Extrablatt – Blätter bereitlegen).', 'QR-Kästen „Schon fertig?“ (Rückenmark-Check, Trend-Detektiv, Atemweg-Check).'), '–', '–', '–', 'Zeitreserve, kein neuer Inhalt')
   ];
   push(planTabelle(B, sp, zeilen, 17));
   return k;
