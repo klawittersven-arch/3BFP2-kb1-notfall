@@ -1,0 +1,25 @@
+// Cloudflare-Konfiguration NUR für Woche 4: optionale Lehreransicht (Ergebnisse der Handy-Übungen).
+// Eigenes Cloudflare-Projekt „kb1-notfall-w4“ – unabhängig vom Worker der Woche 2 (wrangler.jsonc).
+// Einrichtung: siehe README_W4.md (Deploy-Befehl: npx wrangler deploy --config wrangler-w4.jsonc).
+{
+  "$schema": "worker/node_modules/wrangler/config-schema.json",
+  "name": "kb1-notfall-w4",
+  "main": "worker-w4/src/index.js",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": true,
+  "preview_urls": false,
+  "durable_objects": {
+    "bindings": [
+      { "name": "RAUM", "class_name": "Raum" }
+    ]
+  },
+  "migrations": [
+    { "tag": "v1", "new_sqlite_classes": ["Raum"] }
+  ],
+  "vars": {
+    // So lange gibt es einen Raum; danach wird alles automatisch gelöscht.
+    "LEBENSDAUER_MINUTEN": "360"
+  },
+  // Keine Protokolle bei Cloudflare speichern.
+  "observability": { "enabled": false }
+}

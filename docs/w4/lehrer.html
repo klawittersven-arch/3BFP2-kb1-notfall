@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#25434B">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex">
+<title>Lehreransicht Woche 4 – KB I Notfallsituationen</title>
+<link rel="stylesheet" href="w4.css">
+<style>
+  main { max-width: 1100px; }
+  .reiter { display: flex; gap: 8px; margin: 0 0 12px; }
+  .reiter button { flex: 1; border: 2px solid var(--akzent); background: #fff; color: var(--akzent); border-radius: 10px; padding: 10px; font-weight: 600; }
+  .reiter button.an { background: var(--akzent); color: #fff; }
+  .code { font-size: 56px; font-weight: 800; letter-spacing: 6px; color: var(--kopf); }
+  .zelle-ok { background: var(--gruen-hell); } .zelle-nein { background: var(--rot-hell); } .zelle-lauf { background: var(--gelb-hell); }
+  table.tab td, table.tab th { font-size: 15px; }
+  .mk { font-size: clamp(18px, 2.4vw, 30px); }
+  .mk .zeit { font-size: clamp(36px, 6vw, 72px); }
+  .mk .werte b { font-size: clamp(28px, 4.5vw, 56px); }
+  .mk .werte span { font-size: clamp(13px, 1.5vw, 18px); }
+  .mk .person { font-size: clamp(22px, 3vw, 38px); }
+  .navi { display: flex; gap: 8px; } .navi .knopf { flex: 1; }
+</style>
+</head>
+<body>
+<header class="kopf"><p id="kopfzeile"></p><h1 id="titel"></h1></header>
+<main id="haupt"></main>
+<script src="inhalte.js"></script>
+<script src="config.js"></script>
+<script src="w4.js"></script>
+<script src="lehrer.js"></script>
+</body>
+</html>
