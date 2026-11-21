@@ -159,7 +159,7 @@ function blatt1(B) {
   );
   const w3 = Math.floor(B.breite / 3);
   const lsgZelle = (liste) => ({ lsg: liste.map(([text, wort]) => `${text} (Z. ${fall.zeile(wort)})`).join('; ') });
-  push(B.tabelle(t.aa1.spalten.map((s, i) => ({ text: s, w: i < 2 ? w3 : B.breite - 2 * w3 })), [t.aa1.loesung.map(lsgZelle)], { hoehe: 820, schrift: 19 }));
+  push(B.tabelle(t.aa1.spalten.map((s) => ({ text: s, w: /^Ausfälle/.test(s) ? B.breite - 2 * w3 : w3 })), [t.aa1.loesung.map(lsgZelle)], { hoehe: 820, schrift: 19 }));
   push(
     leer(80),
     B.kasten([...t.info.absaetze.map((a) => new Paragraph({ spacing: { after: 50, line: 250 }, children: B.runs(a, { size: 20 }) }))], { kopf: t.info.kopf }),

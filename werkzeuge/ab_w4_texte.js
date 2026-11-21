@@ -17,12 +17,14 @@ const B1 = {
   ],
   aa1: {
     text: 'Lesen Sie den Fall. Unterstreichen Sie alle **Hinweise auf eine Wirbelsäulenverletzung**. Tragen Sie sie mit Zeilennummer in die Tabelle ein. Achtung: Nicht alles im Fall ist ein Hinweis!',
-    spalten: ['Unfallhergang', 'Schmerzen', 'Ausfälle (Gefühl und Bewegung)'],
-    // Lösung: [Text, Suchwort für die Zeilennummer]
+    // Spalten bewusst NICHT in der Reihenfolge des Falls (dort: Unfallhergang → Schmerzen → Ausfälle),
+    // damit die SuS jede Information selbst zuordnen müssen.
+    spalten: ['Ausfälle (Gefühl und Bewegung)', 'Unfallhergang', 'Schmerzen'],
+    // Lösung je Spalte: [Text, Suchwort für die Zeilennummer]
     loesung: [
+      [['Kribbeln in beiden Händen', 'Hände kribbeln'], ['Finger der rechten Hand kaum beweglich', 'Finger der rechten']],
       [['rückwärts sechs Stufen hinuntergestürzt', 'sechs Stufen'], ['mit dem Kopf gegen die Wand geprallt', 'gegen die Wand']],
-      [['„Mein Nacken tut so weh.“', 'Nacken tut']],
-      [['Kribbeln in beiden Händen', 'Hände kribbeln'], ['Finger der rechten Hand kaum beweglich', 'Finger der rechten']]
+      [['„Mein Nacken tut so weh.“', 'Nacken tut']]
     ],
     hinweis: 'Kein Hinweis (Ablenker): Diabetes, Brille, Schürfwunde, Mittagessen. Dass er die Beine bewegen kann, schließt eine Verletzung nicht aus.'
   },
