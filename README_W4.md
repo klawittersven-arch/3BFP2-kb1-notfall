@@ -15,7 +15,7 @@ Es gibt **zwei Fassungen** mit denselben Aufgaben im KA-Format – die Lehrkraft
 | `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_analog_SV.docx/.pdf` | **Analog**, ganz ohne Smartphone: Blatt 2 als Ankreuz-Aufgabe (fünf Messungen, Finns Kurve), Blatt 3 mit Lesetext „Wenn etwas im Hals stecken bleibt“ auf dem Blatt; „Schon fertig?“ bzw. „Für die Schnellen“ als Zusatzaufgaben (Antworten auf ein Extrablatt). 3 Blätter, **7 Seiten** (Blatt 3: S. 5–7) |
 | `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_analog_LV_LSG.docx/.pdf` | Lehrerversion analog: Verlaufsplan (135 min), Hinweise, Klausur- und Examensbezug, Lösungen (gelb) (Punkte stehen nur hier, nicht auf dem Arbeitsblatt) |
 | `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_digital_SV.docx/.pdf` | **Digital**: Live-Verlauf am Smartphone; Blatt 3: „Wo ist was?“ am Handy (Teile antippen) liefert die Wörter für den Infotext als Lückentext, Lesetext per QR-Code (mit Bildern); „Schon fertig?“ mit QR-Code, unten auf Blatt 3 „Für die Schnellen“ (3.2, 3.3, Atemweg-Check, Simulation); keine analogen Alternativen auf dem Blatt. 6 Seiten |
-| `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_digital_LV_LSG.docx/.pdf` | Lehrerversion digital: Verlaufsplan, Hinweise (u. a. optionale Lehreransicht), Lösungen |
+| `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_digital_LV_LSG.docx/.pdf` | Lehrerversion digital: Verlaufsplan, Hinweise (u. a. freiwillige Lehreransicht ohne Raumcode), Lösungen |
 | `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_{analog,digital}_SV_markiert.docx/.pdf` | **Ansichtsexemplar für die Lehrkraft (nicht austeilen):** Schülerversion mit Textmarker – **gelb** = direkt klausurrelevant, **pink** = könnte gestrichen werden, ohne Markierung = unterstützend. Zuordnung in `werkzeuge/ab_w4.js` (`MARKE`) |
 
 - **Blatt 1 – Wirbelsäulenverletzung: nicht bewegen – aber richtig** · Methodenwechsel: Übung „Kopf halten und achsengerecht drehen“ (Vierergruppen, auf dem Boden oder auf Isomatten) → AA4 (Muster KA 5.3)
@@ -31,7 +31,7 @@ Es gibt **zwei Fassungen** mit denselben Aufgaben im KA-Format – die Lehrkraft
 | …/w4/verlegung.html | Blatt 3, AA2: Lesetext „Wenn etwas im Hals stecken bleibt“ mit drei Bildern (digitale Fassung) |
 | …/w4/speisesaal.html | Blatt 3, „Für die Schnellen“: Simulation (Bestanden: niemand bewusstlos, höchstens 1 Fehlalarm) |
 | …/w4/rueckenmark.html · trend.html · atemweg.html | „Schon fertig?“ am Ende von Blatt 1 und 2, Atemweg-Check bei „Für die Schnellen“ auf Blatt 3 |
-| …/w4/lehrer.html | Lehreransicht (freiwillig): Raum starten, Ergebnisse je Gruppe, häufige Fehlentscheidungen; „Messkarten groß“ für die Besprechung (ohne Server) |
+| …/w4/lehrer.html | Lehreransicht (freiwillig): **Fortschritt der letzten 45 Minuten – ohne Raumcode, ohne Namen** (je Übung ein Balken pro Handy, grün = fertig); „Messkarten groß“ für die Besprechung (ohne Server) |
 | …/w4/lehrer.html?demo=1 | Probeansicht mit erfundenen Gruppen (ohne Internet) |
 
 Alle Seiten der Woche 4 liegen im Unterordner `docs/w4/`. So bleibt `docs/sw.js` (Offline-Speicher der Woche 2)
@@ -59,18 +59,17 @@ Voraussetzung: Der Ordner `worker-w4/` ist in `main` (Branch zusammengeführt).
 5. Test: `https://kb1-notfall-w4.klawittersven.workers.dev` öffnen → Antwort
    `{"dienst":"KB1 Woche 4 (3BFP2) – Lehreransicht","ok":true}`.
    Steht in der Adresse statt `klawittersven` etwas anderes, die Adresse in `docs/w4/config.js` (`WORKER_URL`) anpassen.
-6. `…/w4/lehrer.html` öffnen → **Neuen Raum starten** → der Code erscheint.
+6. `…/w4/lehrer.html` öffnen → „Wer ist wie weit?“ erscheint (zuerst „noch niemand“). Sobald ein Handy eine Übung startet, kommt ein Balken dazu.
 
 Ab dann baut Cloudflare beide Worker bei jeder Änderung in `main` neu – das ist normal und ändert an Woche 2 nichts.
 
 Alternativ von einem Rechner mit Node.js aus: `cd worker-w4 && npx wrangler login && npx wrangler deploy`.
 
-Ohne eingerichteten Worker passiert nichts Schlimmes: Der Raumcode ist auf den Handys nur ein aufklappbares, freiwilliges
-Feld; bei einem unbekannten Code läuft die Übung trotzdem.
+Ohne eingerichteten Worker passiert nichts Schlimmes: Die Übungen laufen ganz normal, die Lehreransicht zeigt dann nur „Dienst nicht erreichbar“.
 
-**Datenschutz:** Zufalls-Geräte-ID, freiwilliger Gruppenname (kein echter Name nötig, Sperrwörter-Filter), Punkte,
-Fehlalarme und Kennungen falscher Entscheidungen (z. B. `k5-rot`). Nach 6 Stunden löscht der Worker den Raum. Keine
-Cookies, keine fremden Skripte oder Schriften, Cloudflare-Protokolle aus.
+**Datenschutz:** Kein Raumcode, keine Namen. Die Handys senden nur eine zufällige Geräte-ID, die Übung, „Schritt x von n“ und „fertig“ – keine Antworten, keine Punkte. Die Geräte-ID wird nie angezeigt; 60 Minuten nach der letzten Meldung löscht der Worker den Eintrag (`LOESCHEN_NACH_MINUTEN` in `worker-w4/wrangler.jsonc`). Keine Cookies, keine fremden Skripte oder Schriften, Cloudflare-Protokolle aus. Gezählt wird jedes Handy, das die Adresse in dieser Zeit nutzt – auch aus einer anderen Klasse.
+
+War der Worker schon mit der früheren Raumcode-Fassung eingerichtet: einfach neu bauen lassen (Zusammenführen in `main` genügt). Die Migration `v2` benennt den Speicher um; alte Räume verschwinden.
 
 ## Texte ändern und neu erzeugen
 

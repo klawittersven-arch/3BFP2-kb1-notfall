@@ -9,7 +9,7 @@
   V.patienten.forEach(function (p) { person[p.id] = p; });
 
   var wahl, i;
-  function neu() { wahl = []; i = 0; karte(); }
+  function neu() { wahl = []; i = 0; melden(false); karte(); }
 
   // Bewertet eine Entscheidung: { art: 'richtig'|'fehlalarm'|'vorsichtig'|'zuspaet'|'trend', text }
   function bewerten(gewaehlt, richtig) {
@@ -73,13 +73,11 @@
     var finn = !!(letzteFinn && letzteFinn.gewaehlt === 'rot');
     return { punkte: punkte, fehlalarme: fehlalarme, finn: finn, gewonnen: finn && fehlalarme <= 1 };
   }
+  // anonymer Fortschritt für die freiwillige Lehreransicht: entschiedene Karten von 6, fertig ja/nein
   function melden(fertig) {
-    var s = stand();
-    A.melden('verlauf', {
-      punkte: s.punkte, max: V.karten.length, fertig: fertig, fehlalarme: s.fehlalarme, uebersehen: (fertig && !s.finn) ? 1 : 0, gewonnen: fertig ? s.gewonnen : false,
-      fehler: wahl.filter(function (w) { return w.art !== 'richtig'; }).map(function (w) { return 'k' + w.nr + '-' + w.gewaehlt; })
-    });
+    A.fortschrittMelden('verlauf', wahl.length, V.karten.length, fertig);
   }
+
 
   // Finns Werte als kleine Kurve (Puls ●, Blutdruck als Balken von unten nach oben)
   function kurve(mitAcht) {

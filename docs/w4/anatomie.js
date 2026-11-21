@@ -1,7 +1,7 @@
 /* Blatt 3 · AA1 (digitale Fassung): „Wo ist was? Die Atemwege“.
    Die SuS tippen bei jeder Frage den richtigen Teil im Bild an (Reihenfolge zufällig).
    Ein Fehler → die Übung beginnt von vorn. Alles richtig → die Wörter für den Lückentext auf dem Arbeitsblatt
-   (alle **Wörter** aus W4.atemwegeText, alphabetisch). Keine Daten, kein Server. */
+   (alle **Wörter** aus W4.atemwegeText, alphabetisch). Meldet nur anonym den Fortschritt (A.fortschrittMelden), keine Antworten. */
 'use strict';
 (function () {
   var AN = W4.anatomie, el = A.el;
@@ -28,6 +28,7 @@
     versuch++;
     reihe = A.mischen(AN.teile);
     i = 0;
+    A.fortschrittMelden('anatomie', 0, reihe.length, false);
     frage();
   }
 
@@ -49,6 +50,7 @@
       if (id === t.id) {
         g.classList.add('ok');
         rueck.appendChild(el('div', { klasse: 'rueck ok' }, el('strong', { text: '✓ Richtig: ' + t.name })));
+        A.fortschrittMelden('anatomie', i + 1, reihe.length, i + 1 === reihe.length);
         setTimeout(function () { i++; if (i < reihe.length) frage(); else ende(); }, 700);
       } else {
         g.classList.add('falsch');
@@ -74,12 +76,13 @@
       el('button', { klasse: 'knopf zweit', type: 'button', text: 'Noch einmal üben', onclick: function () { versuch = 0; neu(); window.scrollTo(0, 0); } })));
   }
 
-  // Startbildschirm (ohne Raumcode – diese Übung meldet nichts an die Lehreransicht)
+  // Startbildschirm
   A.kopf(AN.titel);
   var h = A.haupt();
   h.appendChild(el('section', { klasse: 'karte' },
     el('h2', { text: AN.titel }),
     el('p', { fett: AN.einleitung }),
     el('div', { klasse: 'hinweis', text: AN.tippRechtsLinks }),
-    el('button', { klasse: 'knopf', type: 'button', text: 'Los geht’s', onclick: neu })));
+    el('button', { klasse: 'knopf', type: 'button', text: 'Los geht’s', onclick: neu }),
+    A.anonymHinweis()));
 })();

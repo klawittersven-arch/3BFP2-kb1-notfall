@@ -13,9 +13,16 @@
   .reiter { display: flex; gap: 8px; margin: 0 0 12px; }
   .reiter button { flex: 1; border: 2px solid var(--akzent); background: #fff; color: var(--akzent); border-radius: 10px; padding: 10px; font-weight: 600; }
   .reiter button.an { background: var(--akzent); color: #fff; }
-  .code { font-size: 56px; font-weight: 800; letter-spacing: 6px; color: var(--kopf); }
-  .zelle-ok { background: var(--gruen-hell); } .zelle-nein { background: var(--rot-hell); } .zelle-lauf { background: var(--gelb-hell); }
-  table.tab td, table.tab th { font-size: 15px; }
+  .uebungen { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; }
+  .uebung { margin: 0; }
+  .u-kopf { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .u-kopf h3 { margin: 0; font-size: 17px; }
+  .u-zahl { margin: 4px 0 8px; }
+  .b-zeile { display: flex; align-items: center; gap: 8px; margin: 3px 0; }
+  .b-spur { flex: 1; height: 12px; background: var(--linie); border-radius: 6px; overflow: hidden; }
+  .b-fuell { display: block; height: 100%; background: var(--gelb); border-radius: 6px; }
+  .b-zeile.fertig .b-fuell { background: var(--gruen); }
+  .b-text { width: 36px; font-size: 13px; color: var(--leise); text-align: right; font-variant-numeric: tabular-nums; }
   .mk { font-size: clamp(18px, 2.4vw, 30px); }
   .mk .zeit { font-size: clamp(36px, 6vw, 72px); }
   .mk .werte b { font-size: clamp(28px, 4.5vw, 56px); }

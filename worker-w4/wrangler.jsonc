@@ -1,4 +1,4 @@
-// Cloudflare-Konfiguration NUR für Woche 4: optionale Lehreransicht (Ergebnisse der Handy-Übungen).
+// Cloudflare-Konfiguration NUR für Woche 4: freiwillige Lehreransicht (anonymer Fortschritt der Handy-Übungen, ohne Raumcode).
 // Eigenes Cloudflare-Projekt „kb1-notfall-w4“ – unabhängig vom Worker der Woche 2 (wrangler.jsonc im Hauptordner).
 // Eigener Ordner, damit Cloudflare (Workers Builds) diese Datei findet: im Dashboard „Root directory“ = /worker-w4
 // und Deploy-Befehl wie vorgegeben (npx wrangler deploy). Der Worker-Name im Dashboard muss „kb1-notfall-w4“ lauten.
@@ -12,15 +12,17 @@
   "preview_urls": false,
   "durable_objects": {
     "bindings": [
-      { "name": "RAUM", "class_name": "Raum" }
+      { "name": "FORTSCHRITT", "class_name": "Fortschritt" }
     ]
   },
   "migrations": [
-    { "tag": "v1", "new_sqlite_classes": ["Raum"] }
+    { "tag": "v1", "new_sqlite_classes": ["Raum"] },
+    // v2: kein Raumcode mehr – derselbe Speicher heißt jetzt „Fortschritt“
+    { "tag": "v2", "renamed_classes": [{ "from": "Raum", "to": "Fortschritt" }] }
   ],
   "vars": {
-    // So lange gibt es einen Raum; danach wird alles automatisch gelöscht.
-    "LEBENSDAUER_MINUTEN": "360"
+    // So viele Minuten nach der letzten Meldung eines Handys wird sein Eintrag gelöscht.
+    "LOESCHEN_NACH_MINUTEN": "60"
   },
   // Keine Protokolle bei Cloudflare speichern.
   "observability": { "enabled": false }

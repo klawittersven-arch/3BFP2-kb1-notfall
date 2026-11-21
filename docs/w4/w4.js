@@ -1,10 +1,10 @@
 /* KB I · Woche 4 – gemeinsame Hilfen der Handy-Übungen (unabhängig von Woche 2).
    - Bausteine für die Oberfläche, Uhr, Fortschritt
-   - optionaler Raumcode für die Lehreransicht (eigener Worker, siehe config.js).
-     Ohne Code oder ohne Netz laufen alle Übungen vollständig allein. */
+   - anonyme Fortschrittsmeldung für die freiwillige Lehreransicht (eigener Worker, siehe config.js):
+     kein Raumcode, keine Namen – nur „Schritt x von n, fertig ja/nein“. Ohne Netz laufen alle Übungen allein. */
 'use strict';
 var A = (function () {
-  var CFG = window.W4_CONFIG || { WORKER_URL: '', RAUMCODE_GUELTIG_STUNDEN: 3, SPERRWOERTER: [] };
+  var CFG = window.W4_CONFIG || { WORKER_URL: '' };
 
   /* ---------- Oberfläche ---------- */
   function el(tag, attrs) {
@@ -83,84 +83,32 @@ var A = (function () {
     return id;
   }
 
-  /* ---------- Raumcode (freiwillig) ---------- */
-  var raum = { code: '', gruppe: '', aktiv: false };
-  (function () {
-    var r = lesen('raum');
-    if (r && r.bis > Date.now()) { raum.code = r.code || ''; raum.gruppe = r.gruppe || ''; }
-    var q = new URLSearchParams(location.search).get('raum');
-    if (q && /^\d{4}$/.test(q)) raum.code = q;
-  })();
-  function gruppeOk(name) {
-    if (!name) return true;
-    if (!/^[A-Za-z0-9ÄÖÜäöüß .\-]{1,20}$/.test(name)) return false;
-    var n = name.toLowerCase().replace(/[^a-zäöüß]/g, '').replace(/4/g, 'a');
-    return !(CFG.SPERRWOERTER || []).some(function (w) { return n.indexOf(w) >= 0; });
-  }
-  function mitZeitlimit(p, ms) {
-    return Promise.race([p, new Promise(function (_, nein) { setTimeout(function () { nein(new Error('zeit')); }, ms); })]);
-  }
-  function raumPruefen(code) {
-    if (!CFG.WORKER_URL || !/^\d{4}$/.test(code)) return Promise.resolve(false);
-    return mitZeitlimit(fetch(CFG.WORKER_URL + '/api/pruefen?raum=' + code, { cache: 'no-store' }).then(function (r) { return r.json(); }), 4000)
-      .then(function (d) { return !!(d && d.ok); }).catch(function () { return false; });
-  }
-  // Baut den aufklappbaren Bereich „Raumcode (freiwillig)“ für den Startbildschirm
-  function raumFeld() {
-    var code = el('input', { inputmode: 'numeric', maxlength: '4', autocomplete: 'off', placeholder: 'z. B. 4821', id: 'raumcode' });
-    code.value = raum.code;
-    var gruppe = el('input', { maxlength: '20', autocomplete: 'off', placeholder: 'z. B. Tisch 3', id: 'gruppe' });
-    gruppe.value = raum.gruppe;
-    var meldung = el('div', { klasse: 'meldung leise' });
-    var box = el('details', { klasse: 'raum' },
-      el('summary', { text: 'Ihre Lehrkraft zeigt einen Raumcode? (freiwillig)' }),
-      el('p', { klasse: 'leise', text: 'Nur ausfüllen, wenn Ihre Lehrkraft einen Code zeigt. Sonst einfach starten – die Übung läuft auch ohne Code.' }),
-      el('label', { for: 'raumcode', text: 'Raumcode (4 Ziffern)' }), code,
-      el('label', { for: 'gruppe', text: 'Gruppenname (kein echter Name nötig, z. B. „Tisch 3“)' }), gruppe,
-      meldung);
-    if (raum.code) box.setAttribute('open', '');
-    return {
-      box: box,
-      // prüft und übernimmt die Angaben; ok() wird immer aufgerufen – auch ohne Code
-      uebernehmen: function (ok) {
-        var c = code.value.trim(), g = gruppe.value.trim();
-        if (!c) { raum.code = ''; raum.aktiv = false; ok(); return; }
-        if (!/^\d{4}$/.test(c)) { meldung.textContent = 'Der Raumcode hat 4 Ziffern. Oder Feld leer lassen.'; return; }
-        if (!gruppeOk(g)) { meldung.textContent = 'Bitte einen anderen Gruppennamen wählen (Buchstaben und Zahlen, höchstens 20 Zeichen).'; return; }
-        meldung.textContent = 'Raumcode wird geprüft …';
-        raumPruefen(c).then(function (gut) {
-          raum.code = c; raum.gruppe = g; raum.aktiv = gut;
-          if (gut) schreiben('raum', { code: c, gruppe: g, bis: Date.now() + (CFG.RAUMCODE_GUELTIG_STUNDEN || 3) * 3600000 });
-          else { meldung.textContent = 'Raumcode nicht gefunden – die Übung läuft trotzdem.'; }
-          setTimeout(ok, gut ? 0 : 1200);
-        });
-      }
-    };
-  }
-  // Meldet den Stand an die Lehreransicht (nur mit gültigem Raumcode; Fehler werden ignoriert)
-  function melden(uebung, daten) {
-    if (!raum.aktiv || !CFG.WORKER_URL) return;
-    var body = { raum: raum.code, geraet: geraetId(), gruppe: raum.gruppe || '', uebung: uebung };
-    Object.keys(daten).forEach(function (k) { body[k] = daten[k]; });
+  /* ---------- Fortschritt anonym melden (für die freiwillige Lehreransicht) ----------
+     Nur Übung, Schritt x von n und „fertig“ – mit einer zufälligen Geräte-ID, ohne Namen. Fehler werden ignoriert. */
+  function fortschrittMelden(uebung, schritt, von, fertig) {
+    if (!CFG.WORKER_URL || !uebung) return;
+    var body = { geraet: geraetId(), uebung: uebung, schritt: Math.max(0, Math.min(schritt, von)), von: von, fertig: !!fertig };
     try {
-      fetch(CFG.WORKER_URL + '/api/melden', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), keepalive: true })
+      fetch(CFG.WORKER_URL + '/api/fortschritt', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), keepalive: true })
         .catch(function () { /* egal */ });
     } catch (e) { /* egal */ }
+  }
+  function anonymHinweis() {
+    return CFG.WORKER_URL ? el('p', { klasse: 'leise klein', text: '🔒 Anonym: Ihr Handy meldet nur, wie weit Sie sind – ohne Namen, ohne Antworten.' }) : null;
   }
 
   /* ---------- Startbildschirm ---------- */
   function start(o) {
     kopf(o.titel);
     var h = haupt();
-    var rf = raumFeld();
     var knopf = el('button', { klasse: 'knopf', type: 'button', text: o.knopf || 'Los geht’s' });
-    knopf.addEventListener('click', function () { knopf.disabled = true; rf.uebernehmen(function () { o.los(); }); setTimeout(function () { knopf.disabled = false; }, 1500); });
+    knopf.addEventListener('click', function () { knopf.disabled = true; o.los(); setTimeout(function () { knopf.disabled = false; }, 1500); });
     h.appendChild(el('section', { klasse: 'karte' },
       el('h2', { text: o.titel }),
       (o.absaetze || []).map(function (t) { return typeof t === 'string' ? el('p', { fett: t }) : t; }),
       o.regel ? el('div', { klasse: 'hinweis', fett: o.regel }) : null,
       knopf,
-      rf.box));
+      anonymHinweis()));
   }
 
   /* ---------- Quiz mit Karten (Schon fertig?) ----------
@@ -183,21 +131,21 @@ var A = (function () {
         k.addEventListener('click', function () { i++; weiter(); window.scrollTo(0, 0); });
         box.appendChild(k);
         k.focus();
-        melden(o.uebung, { punkte: punkte, max: reihenfolge.length, fertig: false, fehler: fehler.slice(0, 20) });
+        fortschrittMelden(o.uebung, i + 1, reihenfolge.length, false);
       });
     }
     function ende() {
       var h = haupt();
       var gut = punkte >= Math.ceil(reihenfolge.length * 0.75);
-      melden(o.uebung, { punkte: punkte, max: reihenfolge.length, fertig: true, gewonnen: gut, fehler: fehler.slice(0, 20) });
+      fortschrittMelden(o.uebung, reihenfolge.length, reihenfolge.length, true);
       h.appendChild(el('section', { klasse: 'karte ergebnis' },
         el('h2', { text: 'Ergebnis' }),
         el('div', { klasse: 'gross ' + (gut ? 'sieg' : 'niederlage'), text: punkte + ' / ' + reihenfolge.length }),
         el('p', { text: gut ? 'Sehr gut! Das sitzt.' : 'Lesen Sie die Erklärungen und den Merksatz noch einmal – dann neu starten.' }),
-        el('button', { klasse: 'knopf', type: 'button', text: 'Noch einmal', onclick: function () { reihenfolge = o.mischen ? mischen(o.karten) : o.karten.slice(); punkte = 0; i = 0; fehler = []; weiter(); } })));
+        el('button', { klasse: 'knopf', type: 'button', text: 'Noch einmal', onclick: function () { reihenfolge = o.mischen ? mischen(o.karten) : o.karten.slice(); punkte = 0; i = 0; fehler = []; fortschrittMelden(o.uebung, 0, reihenfolge.length, false); weiter(); } })));
     }
-    start({ titel: o.titel, absaetze: [o.einleitung], los: weiter, knopf: 'Start' });
+    start({ titel: o.titel, absaetze: [o.einleitung], los: function () { fortschrittMelden(o.uebung, 0, reihenfolge.length, false); weiter(); }, knopf: 'Start' });
   }
 
-  return { el: el, fett: fett, leeren: leeren, mischen: mischen, kopf: kopf, haupt: haupt, fortschritt: fortschritt, uhr: uhr, uhrAnzeige: uhrAnzeige, start: start, quiz: quiz, melden: melden, raum: raum, lesen: lesen, schreiben: schreiben, geraetId: geraetId, gruppeOk: gruppeOk, CFG: CFG };
+  return { el: el, fett: fett, leeren: leeren, mischen: mischen, kopf: kopf, haupt: haupt, fortschritt: fortschritt, uhr: uhr, uhrAnzeige: uhrAnzeige, start: start, quiz: quiz, fortschrittMelden: fortschrittMelden, anonymHinweis: anonymHinweis, lesen: lesen, schreiben: schreiben, geraetId: geraetId, CFG: CFG };
 })();

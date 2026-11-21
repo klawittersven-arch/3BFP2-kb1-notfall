@@ -2,7 +2,7 @@
  *   1. Inhalte und Arbeitsblatt: Messkarten, Szenen, verbotene Wörter, Lösungen nur in der LV, 6 Seiten, QR-Codes
  *   2. Woche 2 unverändert: Geändert sind nur Dateien der Woche 4
  *   3. Handy-Übungen in Handygröße (390 × 844), ohne Worker: durchspielen, gewinnen und verlieren
- *   4. Lehreransicht mit lokalem Worker (wrangler dev --config worker-w4/wrangler.jsonc): Raum, Meldung, Tabelle
+ *   4. Lehreransicht mit lokalem Worker (wrangler dev --config worker-w4/wrangler.jsonc): anonymer Fortschritt, Balken
  * Start (im Ordner tests/): node w4.test.js   ·   Voraussetzung: im Ordner worker/ einmal „npm install“ (für wrangler) */
 'use strict';
 const http = require('http');
@@ -339,7 +339,7 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
   beobachten(s, P, 'lehrer-demo');
   await s.goto(basis + 'w4/lehrer.html?demo=1');
   text = await s.locator('main').innerText();
-  pruefe(/4821/.test(text) && /Tisch 2/.test(text) && /Häufige Fehlentscheidungen/.test(text) && /Karte 1 \(Finn Albers, 06:00\)/.test(text), 'Probeansicht: Code, Gruppen, häufige Fehlentscheidungen lesbar');
+  pruefe(/Wer ist wie weit\? \(letzte 45 Minuten\)/.test(text) && /7 fertig/.test(text) && /noch niemand/.test(text) && !/Raumcode für|Tisch \d|Gruppe/.test(text) && (await s.locator('.b-zeile').count()) > 20, 'Probeansicht: Fortschrittsbalken je Übung, ohne Raumcode und ohne Namen');
   await s.screenshot({ path: path.join(ERG, 'w4_lehrer_demo.png'), fullPage: true });
   await s.getByText('Messkarten groß').click();
   await s.keyboard.press('ArrowRight');
@@ -357,37 +357,36 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
   if (worker) {
     const U = worker.url;
     const post = (weg, d) => fetch(U + weg, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(d) }).then(async (r) => ({ status: r.status, d: await r.json() }));
-    const { d: raum } = await post('/api/raum', {});
-    pruefe(/^\d{4}$/.test(raum.raum) && raum.schluessel.length >= 20, 'Raum angelegt');
-    pruefe((await (await fetch(U + '/api/pruefen?raum=' + raum.raum)).json()).ok === true, 'Raumcode prüfbar');
-    pruefe((await post('/api/melden', { raum: raum.raum, geraet: 'x', uebung: 'verlauf', punkte: 1, max: 6 })).status === 400, 'ungültige Meldung wird abgelehnt');
-    pruefe((await post('/api/melden', { raum: raum.raum, geraet: 'abcdefghijkl', gruppe: '<b>', uebung: 'verlauf', punkte: 1, max: 6 })).status === 400, 'ungültiger Gruppenname wird abgelehnt');
-    pruefe((await fetch(`${U}/api/stand?raum=${raum.raum}&schluessel=${'X'.repeat(32)}`)).status === 403, 'Stand ohne Schlüssel wird abgelehnt');
+    const geraet = 'testgeraet0001';
+    pruefe((await post('/api/fortschritt', { geraet: 'x', uebung: 'anatomie', schritt: 1, von: 6 })).status === 400, 'ungültige Meldung wird abgelehnt (Geräte-ID)');
+    pruefe((await post('/api/fortschritt', { geraet, uebung: 'anatomie', schritt: 7, von: 6 })).status === 400, 'ungültige Meldung wird abgelehnt (Schritt > von)');
+    pruefe((await post('/api/fortschritt', { geraet, uebung: 'gibtsnicht', schritt: 1, von: 6 })).status === 400, 'ungültige Meldung wird abgelehnt (Übung)');
+    pruefe((await post('/api/fortschritt', { geraet, uebung: 'anatomie', schritt: 6, von: 6, fertig: true })).d.ok === true && (await post('/api/fortschritt', { geraet, uebung: 'anatomie', schritt: 0, von: 6 })).d.ok === true, 'Meldungen angenommen');
+    const st = await (await fetch(U + '/api/fortschritt?minuten=45')).json();
+    pruefe(st.ok && st.uebungen.anatomie.length === 1 && st.uebungen.anatomie[0].fertig === true && !JSON.stringify(st).includes(geraet), 'Stand: „fertig“ bleibt nach Neustart bestehen, keine Geräte-ID in der Antwort');
     const { server: s2, basis: b2 } = await serverStarten(U);
     const lehrer = await (await browser.newContext({ viewport: { width: 1280, height: 800 } })).newPage();
     beobachten(lehrer, P, 'lehrer', [U]);
     await lehrer.goto(b2 + 'w4/lehrer.html');
-    await lehrer.getByText('Neuen Raum starten').click();
-    await lehrer.locator('.code').waitFor();
-    const code = (await lehrer.locator('.code').innerText()).trim();
-    pruefe(/^\d{4}$/.test(code), 'Lehreransicht: Raum gestartet, Code ' + code);
-    const handy = await neueSeite('handy-raum', { erlaubt: [U] });
-    await handy.goto(b2 + 'w4/verlauf.html');
-    await handy.locator('details.raum summary').click();
-    await handy.fill('#raumcode', code);
-    await handy.fill('#gruppe', 'Tisch 3');
+    const handy = await neueSeite('handy-fortschritt', { erlaubt: [U] });
+    await handy.goto(b2 + 'w4/rueckenmark.html');
+    const startText = await handy.locator('main').innerText();
+    pruefe(!/Raumcode/.test(startText) && /Anonym: Ihr Handy meldet nur, wie weit Sie sind/.test(startText), 'Startbildschirm: kein Raumcode, Hinweis „Anonym“');
     await start(handy);
-    await handy.locator('.ampel button').first().waitFor();
-    for (const k of V.karten) { await handy.locator(`.ampel button[data-stufe="${k.richtig}"]`).click(); await handy.locator('button.knopf').last().click(); }
-    await handy.waitForTimeout(500);
-    await lehrer.waitForFunction(() => /Tisch 3/.test(document.body.innerText) && /6\/6 · 🏆/.test(document.body.innerText), null, { timeout: 15000 }).then(() => pruefe(true, 'Lehreransicht zeigt „Tisch 3: 6/6 · 🏆“')).catch(() => pruefe(false, 'Lehreransicht zeigt „Tisch 3: 6/6 · 🏆“'));
-    await lehrer.screenshot({ path: path.join(ERG, 'w4_lehrer_raum.png'), fullPage: true });
-    const handy2 = await neueSeite('handy-falscher-code', { erlaubt: [U] });
-    await handy2.goto(b2 + 'w4/trend.html');
-    await handy2.locator('details.raum summary').click();
-    await handy2.fill('#raumcode', '0000');
+    for (const k of W4.rueckenmark.karten) {
+      if (k.typ === 'hoehe') await handy.locator(`button.wahl[data-id="${k.richtig}"]`).click();
+      else await handy.locator('button.wahl').nth(k.richtig).click();
+      await handy.locator('button.knopf').last().click();
+    }
+    const handy2 = await neueSeite('handy-fortschritt-2', { erlaubt: [U] });
+    await handy2.goto(b2 + 'w4/verlauf.html');
     await start(handy2);
-    await handy2.locator('.ampel button').first().waitFor({ timeout: 8000 }).then(() => pruefe(true, 'falscher Raumcode: Übung startet trotzdem')).catch(() => pruefe(false, 'falscher Raumcode: Übung startet trotzdem'));
+    await handy2.locator('.ampel button').first().click();
+    await handy.waitForTimeout(500);
+    await lehrer.reload();
+    await lehrer.waitForFunction(() => /Rückenmark-Check[\s\S]*1 fertig/.test(document.body.innerText) && /Frühdienst mit Ampel[\s\S]*0 fertig · 1 in Arbeit/.test(document.body.innerText), null, { timeout: 15000 })
+      .then(() => pruefe(true, 'Lehreransicht: Rückenmark-Check 1 fertig, Frühdienst 1 in Arbeit (ohne Namen)')).catch(async () => pruefe(false, 'Lehreransicht: Rückenmark-Check 1 fertig, Frühdienst 1 in Arbeit (ohne Namen)', (await lehrer.locator('main').innerText()).slice(0, 400)));
+    await lehrer.screenshot({ path: path.join(ERG, 'w4_lehrer_fortschritt.png'), fullPage: true });
     s2.close();
     worker.beenden();
   }
