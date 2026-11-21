@@ -83,6 +83,7 @@ const B1 = {
     {
       nr: '4.2', punkte: 2, zeilen: 3,
       text: 'Ihre Kollegin sagt: „Er kann doch die Beine bewegen. Dann ist die Wirbelsäule nicht verletzt.“ Beurteilen Sie die Aussage.',
+      hinweis: '(Beurteilen heißt: Stimmt die Aussage oder stimmt sie nicht? Begründen Sie Ihre Antwort.)',
       loesung: [
         'Die Aussage ist falsch. (1 P.)',
         'Unfallhergang und Nackenschmerz reichen für den Verdacht. Ein instabiler Wirbelbruch kann das Rückenmark erst bei einer Bewegung verletzen. Außerdem zeigen die Hände schon Ausfälle (Kribbeln, Schwäche). Deshalb trotzdem nicht bewegen. (1 P.)'
@@ -132,6 +133,7 @@ const B2 = {
       nr: '2.3', punkte: 2, zeilen: 3,
       vorsatz: 'Jana Kraus um 06:10 Uhr: Puls 70/min, Blutdruck 96/58 mmHg (gestern 18 Uhr: 72/min, 98/60 mmHg). Ihre Haut ist warm und rosig. Sie fühlt sich wohl.',
       text: 'Beurteilen Sie, ob bei Jana Kraus ein Schock vorliegt.',
+      hinweis: '(Beurteilen heißt: Liegt ein Schock vor – ja oder nein? Begründen Sie Ihre Antwort.)',
       loesung: [
         'Es liegt kein Schock vor. (1 P.)',
         'Begründung: Puls ruhig, Schockindex 70 : 96 ≈ 0,7, die Werte sind stabil wie gestern, die Haut ist warm und rosig, sie hat keine Beschwerden. Ein niedriger Blutdruck allein ist noch kein Schock – entscheidend sind Verlauf und Zeichen der Minderdurchblutung. (1 P.)'
@@ -206,6 +208,7 @@ const B3 = {
     {
       nr: '3.3', punkte: 2, zeilen: 3,
       text: 'Eine Pflegehelferin sagt: „Solange die Lippen nicht blau sind, ist es nicht schlimm.“ Beurteilen Sie die Aussage.',
+      hinweis: '(Beurteilen heißt: Stimmt die Aussage oder stimmt sie nicht? Begründen Sie Ihre Antwort.)',
       loesung: [
         'Die Aussage ist falsch. (1 P.)',
         'Entscheidend sind Husten, Sprechen und Atmung: Kann die Person nicht mehr sprechen oder wirksam husten, ist es eine schwere Verlegung – auch mit rosigen Lippen. Die Zyanose ist ein spätes Zeichen; dann fehlt schon viel Sauerstoff. Deshalb sofort handeln. (1 P.)'
