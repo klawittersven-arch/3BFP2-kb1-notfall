@@ -237,8 +237,9 @@ var W4 = {
      (alle **Wörter** aus atemwegeText, alphabetisch). Bild: atemwege_bild.js */
   anatomie: {
     titel: 'Wo ist was? Die Atemwege',
-    // Zeit je Frage in Sekunden (kurze Frage lesen ≈ 1,5 s, im Bild finden 1–2 s, tippen). Abgelaufen = von vorn.
-    sekunden: 5,
+    // Zeit je Frage in Sekunden – bewusst eng (Wunsch der Lehrkraft): Wer die Teile kennt, schafft es; Raten reicht nicht.
+    // Abgelaufen = von vorn. Ein Durchgang dauert so nur etwa 20 Sekunden.
+    sekunden: 3,
     einleitung: 'Sie sehen die Atemwege von vorn. Tippen Sie bei jeder Frage auf den richtigen Teil im Bild – Sie haben dafür nur **{sekunden} Sekunden**. **Achtung:** Bei einem Fehler oder wenn die Zeit abläuft, beginnen Sie wieder von vorn. Wenn alles richtig ist, bekommen Sie die Wörter für den Lückentext auf dem Arbeitsblatt.',
     teile: [
       { id: 'kehldeckel', name: 'Kehldeckel', frage: 'Wo ist der **Kehldeckel**?' },
