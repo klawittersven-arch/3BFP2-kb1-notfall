@@ -51,7 +51,7 @@ const B1 = {
     pfeiffer: 'Und bei Herrn Pfeiffer? Höhe:',
     pfeifferLoesung: 'HWS'
   },
-  merksatz: [['Hinweise auf eine Wirbelsäulenverletzung: ', { l: 'Unfallhergang' }, ' (Sturz aus der Höhe, Kopfsprung, Verkehrsunfall), ', { l: 'Schmerzen in Nacken oder Rücken' }, ', ', { l: 'Kribbeln, Taubheit, Lähmung' }, '. Dann: ', { l: 'nicht bewegen' }, ', ', { l: 'Kopf mit beiden Händen halten' }, ', nicht aufsetzen – sonst droht eine ', { l: 'Querschnittlähmung' }, '. Drehen nur, wenn es sein muss (z. B. Erbrechen): ', { l: 'achsengerecht mit mehreren Helfenden' }, '.']],
+  merksatz: [['Hinweise auf eine Wirbelsäulenverletzung: ', { l: 'Unfallhergang' }, ' (Sturz aus der Höhe, Kopfsprung, Verkehrsunfall), ', { l: 'Schmerzen in Nacken oder Rücken' }, ', ', { l: 'Kribbeln, Taubheit, Lähmung' }, '. Dann: ', { l: 'nicht bewegen' }, ', Person bitten, still zu liegen, ', { l: 'Kopf mit beiden Händen in der vorgefundenen Lage halten' }, ', nicht aufsetzen – sonst droht eine ', { l: 'Querschnittlähmung' }, ' (bei sehr hoher Verletzung auch Atemlähmung). Drehen nur, wenn es sein muss (z. B. Erbrechen): ', { l: 'achsengerecht mit mehreren Helfenden' }, '.']],
   aa3: {
     fortsetzung: 'Herr Pfeiffer sagt: „Mir ist so übel. Ich muss mich übergeben.“ Er muss auf die Seite gedreht werden – sonst kann er ersticken.',
     text: 'Herr Pfeiffer muss sich übergeben und auf die Seite gedreht werden – sonst kann er ersticken. Üben Sie **vier Runden** auf der Isomatte, dann Rollen tauschen.',
@@ -180,7 +180,7 @@ const B3 = {
       ['So handle ich', 'zum Husten auffordern, bleiben, beobachten – nichts zu trinken geben, nicht klopfen', 'sofort laut Hilfe rufen, Notruf veranlassen, nicht allein lassen, sofort handeln']
     ]
   },
-  merksatz2: [[{ l: 'Leichte Verlegung' }, ': kräftiger Husten, kann sprechen → ', { l: 'zum Husten auffordern' }, ', bleiben, beobachten. ', { l: 'Schwere Verlegung' }, ': Husten ', { l: 'schwach oder fehlt' }, ', ', { l: 'kann nicht sprechen' }, ', Griff an den Hals → ', { l: 'sofort Hilfe rufen und handeln' }, '. Nicht auf ', { l: 'blaue Lippen' }, ' warten! Wer laut rufen kann, bekommt Luft.']],
+  merksatz2: [[{ l: 'Leichte Verlegung' }, ': ', { l: 'kräftiger, wirksamer Husten' }, ', kann ', { l: 'sprechen und atmen' }, ' → ', { l: 'zum Husten auffordern' }, ', bleiben, beobachten. ', { l: 'Schwere Verlegung' }, ': Husten ', { l: 'schwach oder fehlt' }, ', ', { l: 'kann nicht sprechen' }, ', kaum Atmung, Griff an den Hals, später Zyanose → ', { l: 'sofort Hilfe rufen und handeln' }, '. Nicht auf ', { l: 'blaue Lippen' }, ' warten! Wer laut rufen kann, bekommt Luft.']],
   fall: [
     'Sie sind Auszubildende bzw. Auszubildender in der Seniorenwohngruppe „Kastanienhof“. Herr Walter Roth (80) sitzt beim Abendessen am Tisch und isst ein Wurstbrot. Plötzlich hustet er kräftig und laut. Er hebt die Hand und sagt: „Geht schon …“ Nach etwa 20 Sekunden wird sein Husten leise und kraftlos. Herr Roth kann nicht mehr sprechen. Er greift sich mit beiden Händen an den Hals. Seine Lippen werden bläulich.'
   ],
