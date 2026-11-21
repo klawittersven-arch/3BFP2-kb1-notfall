@@ -90,7 +90,13 @@ const B1 = {
       ]
     }
   ],
-  fertig: '**Schon fertig?** Rückenmark-Check: acht kurze Fälle am Handy – mit Rückmeldung.'
+  fertig: {
+    digital: '**Schon fertig?** Rückenmark-Check: acht kurze Fälle am Handy – mit Rückmeldung.',
+    analog: {
+      frage: '**Schon fertig?** Herr Lux (19) aus AA2 hat einen Blutdruck von 85/50 mmHg und einen Puls von 52/min. Die Haut an seinen Beinen ist warm. Welcher Schock liegt vor? Erklären Sie den langsamen Puls.',
+      loesung: 'Neurogener Schock: Durch die Verletzung des Rückenmarks fällt der Sympathikus aus. Die Gefäße werden weit, der Blutdruck fällt – und der Puls kann nicht steigen, er bleibt langsam.'
+    }
+  }
 };
 
 /* ===================== Blatt 2 ===================== */
@@ -105,9 +111,12 @@ const B2 = {
   ],
   vielleicht: 'Vielleicht ist keiner ein Notfall – vielleicht mehrere.',
   aa1: {
-    text: 'Ihre Lehrkraft zeigt **Messkarten** – oder Sie spielen am **Handy** (QR-Code unten). Bei jeder Karte: **1.** Werte lesen und mit dem Vorwert vergleichen. **2.** Schockindex rechnen (Puls : systolischer Blutdruck). **3.** Ampel wählen und in die Tabelle schreiben. Bei **Finn**: Puls und Blutdruck in die Kurve eintragen.',
+    text: {
+      analog: 'Ihre Lehrkraft zeigt nacheinander **Messkarten**. Bei jeder Karte: **1.** Werte lesen und mit dem Vorwert vergleichen. **2.** Schockindex rechnen (Puls : systolischer Blutdruck). **3.** Ampel wählen und in die Tabelle schreiben. **4.** Alle zeigen gleichzeitig: **sitzen bleiben** 🟢 · **Hand heben** 🟡 · **aufstehen** 🔴. Bei **Finn**: Puls und Blutdruck in die Kurve eintragen.',
+      digital: 'Scannen Sie den QR-Code. Die **Messkarten** kommen am Handy von selbst – 40 Sekunden pro Karte. Bei jeder Karte: **1.** Werte lesen und mit dem Vorwert vergleichen. **2.** Schockindex rechnen (Puls : systolischer Blutdruck). **3.** Ampel am Handy wählen und in die Tabelle schreiben. Bei **Finn**: Puls und Blutdruck in die Kurve eintragen.'
+    },
     regel: '🏆 **Gewonnen:** Finn rechtzeitig gemeldet **und** höchstens **ein Fehlalarm** (🔴 ohne Notfall).',
-    handy: '**Handy-Fassung** (nur wenn Ihre Lehrkraft es sagt): QR-Code scannen. Die Karten kommen von selbst – 40 Sekunden pro Karte.'
+    handy: '**Frühdienst mit Ampel:** QR-Code scannen und starten. Am Ende sehen Sie, ob Sie gewonnen haben.'
   },
   merksatz: [['Eine innere Blutung ist ', { l: 'nicht sichtbar' }, '. Ich achte auf den ', { l: 'Verlauf' }, ': Der ', { l: 'Puls steigt' }, ', der ', { l: 'Abstand zwischen oberem und unterem Blutdruckwert wird kleiner' }, ', dazu ', { l: 'Blässe, Durst, Unruhe, Bauchschmerz' }, ' – bei einer Milzverletzung oft ', { l: 'Schmerz in der linken Schulter' }, '. Junge Menschen ', { l: 'gleichen lange aus' }, ': Der Blutdruck fällt erst spät. Ein einzelner Wert sagt wenig – ', { l: 'Vorwert, Ursache und Beschwerden' }, ' gehören dazu. Einen Notfall melde ich ', { l: 'sofort' }, ' – nicht erst bei einem Schockindex über 1.']],
   woerter: 'Wörterhilfe: Milz = Organ im linken Oberbauch; sie blutet stark, wenn sie verletzt ist. Eine verletzte Milz kann auch erst Stunden oder Tage nach dem Unfall reißen · Prellmarke = Abdruck oder Bluterguss auf der Haut · Fehlalarm = Notfall gemeldet, obwohl keiner vorliegt',
@@ -147,7 +156,13 @@ const B2 = {
       ]
     }
   ],
-  fertig: '**Schon fertig?** Trend-Detektiv: fünf Verläufe am Handy lesen und mit der Ampel entscheiden.'
+  fertig: {
+    digital: '**Schon fertig?** Trend-Detektiv: fünf Verläufe am Handy lesen und mit der Ampel entscheiden.',
+    analog: {
+      frage: '**Schon fertig?** Frau Pohl (34) hat eine Beckenprellung. 08:00 Uhr: Puls 80/min, RR 120/80 mmHg · 08:30 Uhr: Puls 96/min, RR 116/84 mmHg · 09:00 Uhr: Puls 112/min, RR 108/88 mmHg, sie ist blass. Welche Ampel wählen Sie um 09:00 Uhr? Begründen Sie mit dem Verlauf.',
+      loesung: '🔴 Notfall: Der Puls steigt schnell (80 → 96 → 112/min), der Abstand der Blutdruckwerte wird kleiner (40 → 32 → 20 mmHg), dazu Blässe → Verdacht auf eine innere Blutung; Schockindex 112 : 108 ≈ 1,0.'
+    }
+  }
 };
 
 /* ===================== Blatt 3 ===================== */
@@ -174,8 +189,11 @@ const B3 = {
   },
   merksatz1: [['Beim Schlucken verschließt der ', { l: 'Kehldeckel' }, ' die Luftröhre. Fremdkörper rutschen eher in den ', { l: 'rechten Hauptbronchus' }, '. Atemweg verlegt → keine Luft in die ', { l: 'Lungenbläschen' }, ' → ', { l: 'Sauerstoffmangel (Hypoxie)' }, ': Zyanose, ', { l: 'Bewusstlosigkeit' }, ', ', { l: 'Kreislaufstillstand' }, ' – in ', { l: 'wenigen Minuten' }, '. Das ', { l: 'Gehirn' }, ' ist am empfindlichsten.']],
   aa2: {
-    text: 'Ein Handy für zwei. **Danach:** Füllen Sie die Tabelle aus.',
-    handy: 'Sechs Szenen. **Bestanden:** niemand bewusstlos, höchstens **ein Fehlalarm**. **Ohne Handy:** Ihre Lehrkraft liest vor, Sie zeigen 1–4 Finger.',
+    text: {
+      analog: 'Ihre Lehrkraft liest sechs kurze Szenen vor – jeweils mit vier Möglichkeiten. Entscheiden Sie zu zweit schnell und zeigen Sie mit **1–4 Fingern**, was Sie tun. **Bestanden:** niemand wird bewusstlos, höchstens **ein Fehlalarm**. **Danach:** Füllen Sie die Tabelle aus.',
+      digital: 'Ein Handy für zwei: QR-Code scannen und sechs kurze Szenen spielen. **Danach:** Füllen Sie die Tabelle aus.'
+    },
+    handy: '**Notfall-Ampel im Speisesaal:** sechs Szenen. **Bestanden:** niemand wird bewusstlos, höchstens **ein Fehlalarm**.',
     zeilen: [
       ['Husten', 'kräftig, wirksam', 'schwach, leise, unwirksam – oder gar kein Husten'],
       ['Sprechen und Atmen', 'kann sprechen (auch rufen) und atmen', 'kann nicht oder nur einzelne Wörter sprechen; kaum oder keine Atmung, evtl. Pfeifen'],
@@ -215,7 +233,13 @@ const B3 = {
       ]
     }
   ],
-  fertig: '**Schon fertig?** Atemweg-Check: sechs kurze Fragen am Handy – mit Rückmeldung.'
+  fertig: {
+    digital: '**Schon fertig?** Atemweg-Check: sechs kurze Fragen am Handy – mit Rückmeldung.',
+    analog: {
+      frage: '**Schon fertig?** Warum soll man einer Person, die kräftig hustet, nichts zu trinken geben und nicht auf den Rücken klopfen? Begründen Sie.',
+      loesung: 'Kräftiger Husten ist am wirksamsten – Klopfen stört ihn. Beim Trinken kann sich die Person noch einmal verschlucken, Flüssigkeit kann in die Atemwege gelangen. Richtig: zum Husten auffordern, bleiben, beobachten.'
+    }
+  }
 };
 
 module.exports = { LINK_BASIS, FUSS, THEMA, B1, B2, B3 };
