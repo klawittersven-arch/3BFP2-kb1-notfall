@@ -222,21 +222,25 @@ var W4 = {
 
   /* ---------- Blatt 3 · AA1 Informationstext „Atemwege und Ventilation“ ----------
      Analog: Text mit fetten Fachwörtern. Digital: dieselben Fachwörter sind Lücken; die Wörter bekommen die SuS
-     am Handy (anatomie.html), sobald sie alle Teile im Bild richtig angetippt haben. **Wort** = Lücke bzw. fett. */
+     am Handy (anatomie.html), sobald sie alle Teile im Bild richtig angetippt haben. **Wort** = Lücke bzw. fett.
+     Kein Lückenwort darf zusätzlich als normales Wort im Text (oder im Merksatz darunter) stehen – sonst ist die Lücke verraten. */
   atemwegeText: {
     kopf: 'Informationstext: Atemwege und Ventilation',
     absaetze: [
-      'Die Luft strömt durch Nase oder Mund in den **Rachen**. Hier kreuzen sich Luftweg und Speiseweg. Beim Schlucken hebt sich der **Kehlkopf**, der **Kehldeckel** verschließt die **Luftröhre** – die Nahrung rutscht in die Speiseröhre. Gerät doch etwas in den Kehlkopf, muss man kräftig husten (**Hustenreflex**).',
-      'Die Luftröhre teilt sich in zwei Hauptbronchien, einen rechten und einen linken. Der **rechte Hauptbronchus** ist kürzer, weiter und verläuft steiler. In den **Lungenbläschen** geht Sauerstoff ins Blut. Das Ein- und Ausatmen heißt **Ventilation**.'
+      'Die Luft strömt durch Nase oder Mund in den **Rachen**. Hier kreuzen sich Luftweg und Speiseweg. Beim Schlucken hebt sich der **Kehlkopf**, der **Kehldeckel** verschließt die **Luftröhre** – die Nahrung rutscht in die Speiseröhre. Gerät doch etwas in den Luftweg, muss man kräftig husten (**Hustenreflex**).',
+      'In der Brust teilt sich der Luftweg in zwei Hauptbronchien, einen rechten und einen linken. Der **rechte Hauptbronchus** ist kürzer, weiter und verläuft steiler. Deshalb landen eingeatmete Fremdkörper häufiger dort. In den **Lungenbläschen** geht Sauerstoff ins Blut. Das Ein- und Ausatmen heißt **Ventilation**.'
     ]
   },
 
   /* ---------- Blatt 3 · AA1 digital: „Wo ist was?“ – Teile der Atemwege im Bild antippen ----------
-     Fragen in zufälliger Reihenfolge; bei einem Fehler beginnt die Übung von vorn. Danach: Wörter für den Lückentext
+     Fragen in zufälliger Reihenfolge, je Frage „sekunden“ Zeit; bei einem Fehler oder abgelaufener Zeit beginnt die Übung von vorn. Danach: Wörter für den Lückentext
      (alle **Wörter** aus atemwegeText, alphabetisch). Bild: atemwege_bild.js */
   anatomie: {
     titel: 'Wo ist was? Die Atemwege',
-    einleitung: 'Sie sehen die Atemwege von vorn. Tippen Sie bei jeder Frage auf den richtigen Teil im Bild. **Achtung:** Bei einem Fehler beginnen Sie wieder von vorn. Wenn alles richtig ist, bekommen Sie die Wörter für den Lückentext auf dem Arbeitsblatt.',
+    // Zeit je Frage in Sekunden – bewusst eng (Wunsch der Lehrkraft): Wer die Teile kennt, schafft es; Raten reicht nicht.
+    // Abgelaufen = von vorn. Ein Durchgang dauert so nur etwa 20 Sekunden.
+    sekunden: 3,
+    einleitung: 'Sie sehen die Atemwege von vorn. Tippen Sie bei jeder Frage auf den richtigen Teil im Bild – Sie haben dafür nur **{sekunden} Sekunden**. **Achtung:** Bei einem Fehler oder wenn die Zeit abläuft, beginnen Sie wieder von vorn. Wenn alles richtig ist, bekommen Sie die Wörter für den Lückentext auf dem Arbeitsblatt.',
     teile: [
       { id: 'kehldeckel', name: 'Kehldeckel', frage: 'Wo ist der **Kehldeckel**?' },
       { id: 'kehlkopf', name: 'Kehlkopf', frage: 'Wo ist der **Kehlkopf**?' },

@@ -93,6 +93,10 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
   const lueckenWoerter = W4.atemwegeText.absaetze.flatMap((a) => (a.match(/\*\*[^*]+\*\*/g) || []).map((w) => w.slice(2, -2)));
   const tippSvg = ATB.svg({ tippen: true });
   pruefe(W4.anatomie.teile.map((t) => t.id).join() === ATB.TEILE.join() && ATB.TEILE.every((id) => tippSvg.includes(`data-teil="${id}"`)) && !ATB.svg({ nummern: true }).includes('data-teil'), 'Wo ist was?: sechs antippbare Teile im Bild (nur auf dem Handy)');
+  const merk1 = T4.B3.merksatz1.flat().map((x) => (typeof x === 'string' ? x : x.l)).join('');
+  pruefe(!lueckenWoerter.some((w) => merk1.includes(w) || merk1.includes(w.replace('rechte ', 'rechten '))) && /Hypoxie/.test(merk1) && /häufiger dort/.test(W4.atemwegeText.absaetze[1]), 'Blatt 3: Merksatz 1 ohne Lückenwörter (keine Dopplung mit dem Infotext); „Fremdkörper rechts“ steht im Infotext');
+  const ohneLuecken = W4.atemwegeText.absaetze.join(' ').replace(/\*\*[^*]+\*\*/g, '');
+  pruefe(!lueckenWoerter.some((w) => ohneLuecken.includes(w)), 'Lückentext: kein Lückenwort steht zusätzlich als normales Wort im Text', lueckenWoerter.filter((w) => ohneLuecken.includes(w)));
   pruefe(lueckenWoerter.length === 8 && lueckenWoerter.slice().sort((a, b) => a.localeCompare(b, 'de')).join() !== lueckenWoerter.join(), 'Lückentext Blatt 3: acht Fachwörter; am Handy alphabetisch, nicht in Textreihenfolge');
   pruefe(W4.verlegung.absaetze.length === 4 && LT.indexOf('um Hilfe') < LT.indexOf('an den Hals') && LT.indexOf('an den Hals') < LT.indexOf('Husten wird schwach') && LT.indexOf('**schwere Verlegung**') < LT.indexOf('**leichten Verlegung**') && /Parkinson/.test(W4.verlegung.absaetze[0]), 'Blatt 3, Lesetext: nicht in Tabellenreihenfolge (schwer zuerst, Handeln vor den Zeichen), Absatz 1 als Ablenker');
   pruefe(T4.B3.aufgaben.length === 1 && T4.B3.aufgaben[0].nr === '3.1' && T4.B3.aufgaben[0].zeilen >= 8 && T4.B3.schnelle.aufgaben.map((a) => a.nr).join() === '3.2,3.3,3.4', 'Blatt 3: AA3 nur 3.1 (mind. 8 Zeilen), 3.2–3.4 „Für die Schnellen“');
@@ -152,6 +156,7 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
     const lvTextD = nurText(docxText(LV));
     pruefe(!/Wortspeicher/.test(svText) && (info.match(/_{18}/g) || []).length === 8 && !/in den Rachen|heißt Ventilation|In den Lungenbläschen|Hustenreflex/.test(info) && lueckenWoerter.every((w) => lvTextD.includes(w)), 'digitale Fassung, Blatt 3 AA1: Infotext als Lückentext (8 Lücken, Wörter nur in der Lehrerversion), kein Wortspeicher');
     pruefe(!/3\.4 /.test(svText), 'digitale Fassung: „Für die Schnellen“ ohne 3.4 (dafür Atemweg-Check)');
+    pruefe(/Bei einem Fehler oder wenn die Zeit abläuft, beginnen Sie von vorn\./.test(svText), 'digitale Fassung, Blatt 3 AA1: Zeitlimit von „Wo ist was?“ steht im Arbeitsauftrag');
     const b2 = svText.slice(svText.indexOf('Innere Blutung: den Verlauf im Blick'), svText.indexOf('Atemwege: wenn etwas im Hals'));
     pruefe(!/Meine Punkte|Fehlalarme: ____|\nWer\?\n/.test(b2) && /Finns Kurve/.test(b2) && /So wäre es um 8 Uhr gewesen/.test(b2), 'digitale Fassung, Blatt 2: keine Ergebnistabelle mehr, große Kurve mit 08:00-Kasten');
     const b1 = svText.slice(0, svText.indexOf('Innere Blutung: den Verlauf im Blick'));
@@ -304,6 +309,20 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
   pruefe(/Geschafft/.test(anaText) && chips.join() === lueckenWoerter.slice().sort((a, b) => a.localeCompare(b, 'de')).join() && /Lücken im „Informationstext/.test(anaText), 'Wo ist was?: alles richtig → acht Lückenwörter und Auftrag');
   pruefe(await s.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth), 'Wo ist was?: passt in Handybreite');
   await s.screenshot({ path: path.join(ERG, 'w4_anatomie_ende.png'), fullPage: true });
+  await s.context().close();
+  s = await neueSeite('anatomie-zeit', { uhr: true });
+  await s.goto(basis + 'w4/anatomie.html');
+  pruefe(new RegExp(`nur ${W4.anatomie.sekunden} Sekunden`).test(await s.locator('main').innerText()), `Wo ist was?: Startbildschirm nennt das Zeitlimit (${W4.anatomie.sekunden} s)`);
+  await start(s);
+  await s.clock.runFor(1000);
+  const breite = await s.evaluate(() => ({ uhr: document.querySelector('.uhr .rest').getBoundingClientRect().width, balken: document.querySelector('.fortschritt .balken').getBoundingClientRect().width }));
+  pruefe(breite.uhr > 0 && breite.balken > 0, 'Zeitleiste und Fortschrittsbalken werden gezeichnet (Füllung sichtbar)', breite);
+  await s.clock.runFor((W4.anatomie.sekunden - 2) * 1000);
+  pruefe(!/Zeit abgelaufen/.test(await s.locator('main').innerText()), 'Wo ist was?: kurz vor Ablauf noch keine Zeitüberschreitung');
+  await s.clock.runFor(2000);
+  pruefe(/Zeit abgelaufen/.test(await s.locator('main').innerText()) && (await s.locator('.teil.zeigen').count()) === 1, 'Wo ist was?: Zeit abgelaufen → gesuchter Teil grün markiert');
+  await s.locator('button.knopf', { hasText: 'Von vorn' }).click();
+  pruefe(/^1 \/ 6/.test(await s.locator('.fortschritt').innerText()) && /Versuch 2/.test(await s.locator('.versuch').innerText()), 'Wo ist was?: nach Zeitüberschreitung von vorn (Versuch 2)');
   await s.context().close();
 
   console.log('\n== Schon fertig? (rueckenmark, trend, atemweg)');
