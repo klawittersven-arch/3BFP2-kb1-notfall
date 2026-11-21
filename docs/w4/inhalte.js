@@ -222,12 +222,13 @@ var W4 = {
 
   /* ---------- Blatt 3 · AA1 Informationstext „Atemwege und Ventilation“ ----------
      Analog: Text mit fetten Fachwörtern. Digital: dieselben Fachwörter sind Lücken; die Wörter bekommen die SuS
-     am Handy (anatomie.html), sobald sie alle Teile im Bild richtig angetippt haben. **Wort** = Lücke bzw. fett. */
+     am Handy (anatomie.html), sobald sie alle Teile im Bild richtig angetippt haben. **Wort** = Lücke bzw. fett.
+     Kein Lückenwort darf zusätzlich als normales Wort im Text (oder im Merksatz darunter) stehen – sonst ist die Lücke verraten. */
   atemwegeText: {
     kopf: 'Informationstext: Atemwege und Ventilation',
     absaetze: [
-      'Die Luft strömt durch Nase oder Mund in den **Rachen**. Hier kreuzen sich Luftweg und Speiseweg. Beim Schlucken hebt sich der **Kehlkopf**, der **Kehldeckel** verschließt die **Luftröhre** – die Nahrung rutscht in die Speiseröhre. Gerät doch etwas in den Kehlkopf, muss man kräftig husten (**Hustenreflex**).',
-      'Die Luftröhre teilt sich in zwei Hauptbronchien, einen rechten und einen linken. Der **rechte Hauptbronchus** ist kürzer, weiter und verläuft steiler. In den **Lungenbläschen** geht Sauerstoff ins Blut. Das Ein- und Ausatmen heißt **Ventilation**.'
+      'Die Luft strömt durch Nase oder Mund in den **Rachen**. Hier kreuzen sich Luftweg und Speiseweg. Beim Schlucken hebt sich der **Kehlkopf**, der **Kehldeckel** verschließt die **Luftröhre** – die Nahrung rutscht in die Speiseröhre. Gerät doch etwas in den Luftweg, muss man kräftig husten (**Hustenreflex**).',
+      'In der Brust teilt sich der Luftweg in zwei Hauptbronchien, einen rechten und einen linken. Der **rechte Hauptbronchus** ist kürzer, weiter und verläuft steiler. Deshalb landen eingeatmete Fremdkörper häufiger dort. In den **Lungenbläschen** geht Sauerstoff ins Blut. Das Ein- und Ausatmen heißt **Ventilation**.'
     ]
   },
 

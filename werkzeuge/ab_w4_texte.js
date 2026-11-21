@@ -221,7 +221,9 @@ const B3 = {
     loesungC: 'Der rechte Hauptbronchus ist kürzer, weiter und verläuft steiler – fast in Verlängerung der Luftröhre.',
     selbstversuch: 'Selbstversuch: Der Kehlkopf geht beim Schlucken nach oben, der Kehldeckel verschließt die Luftröhre. Schlucken und Einatmen gleichzeitig geht nicht.'
   },
-  merksatz1: [['Beim Schlucken verschließt der ', { l: 'Kehldeckel' }, ' die Luftröhre. Fremdkörper rutschen eher in den ', { l: 'rechten Hauptbronchus' }, '. Atemweg verlegt → keine Luft in die ', { l: 'Lungenbläschen' }, ' → ', { l: 'Sauerstoffmangel (Hypoxie)' }, ': Zyanose, ', { l: 'Bewusstlosigkeit' }, ', ', { l: 'Kreislaufstillstand' }, ' – in ', { l: 'wenigen Minuten' }, '. Das ', { l: 'Gehirn' }, ' ist am empfindlichsten.']],
+  // Merksatz 1 ergänzt den Infotext (Folgen der Verlegung) und wiederholt ihn nicht – er enthält kein Lückenwort des Infotexts,
+  // sonst könnten die SuS in der digitalen Fassung die Lücken einfach aus dem Merksatz abschreiben.
+  merksatz1: [['Ist der Atemweg verlegt, kommt kein Sauerstoff mehr ins Blut – es entsteht ein ', { l: 'Sauerstoffmangel (Hypoxie)' }, '. Die Folgen kommen schnell: ', { l: 'Zyanose' }, ', ', { l: 'Bewusstlosigkeit' }, ', ', { l: 'Kreislaufstillstand' }, ' – in ', { l: 'wenigen Minuten' }, '. Das ', { l: 'Gehirn' }, ' ist am empfindlichsten.']],
   aa2: {
     // Lesetext: docs/w4/inhalte.js (W4.verlegung) – analog auf dem Blatt, digital über QR-Code (w4/verlegung.html, mit Bildern).
     // Einen Merksatz 2 gibt es bewusst nicht mehr: Die gesicherte Tabelle ist die Zusammenfassung (sonst wird nur abgeschrieben).

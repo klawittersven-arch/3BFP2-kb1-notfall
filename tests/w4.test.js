@@ -93,6 +93,10 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
   const lueckenWoerter = W4.atemwegeText.absaetze.flatMap((a) => (a.match(/\*\*[^*]+\*\*/g) || []).map((w) => w.slice(2, -2)));
   const tippSvg = ATB.svg({ tippen: true });
   pruefe(W4.anatomie.teile.map((t) => t.id).join() === ATB.TEILE.join() && ATB.TEILE.every((id) => tippSvg.includes(`data-teil="${id}"`)) && !ATB.svg({ nummern: true }).includes('data-teil'), 'Wo ist was?: sechs antippbare Teile im Bild (nur auf dem Handy)');
+  const merk1 = T4.B3.merksatz1.flat().map((x) => (typeof x === 'string' ? x : x.l)).join('');
+  pruefe(!lueckenWoerter.some((w) => merk1.includes(w) || merk1.includes(w.replace('rechte ', 'rechten '))) && /Hypoxie/.test(merk1) && /häufiger dort/.test(W4.atemwegeText.absaetze[1]), 'Blatt 3: Merksatz 1 ohne Lückenwörter (keine Dopplung mit dem Infotext); „Fremdkörper rechts“ steht im Infotext');
+  const ohneLuecken = W4.atemwegeText.absaetze.join(' ').replace(/\*\*[^*]+\*\*/g, '');
+  pruefe(!lueckenWoerter.some((w) => ohneLuecken.includes(w)), 'Lückentext: kein Lückenwort steht zusätzlich als normales Wort im Text', lueckenWoerter.filter((w) => ohneLuecken.includes(w)));
   pruefe(lueckenWoerter.length === 8 && lueckenWoerter.slice().sort((a, b) => a.localeCompare(b, 'de')).join() !== lueckenWoerter.join(), 'Lückentext Blatt 3: acht Fachwörter; am Handy alphabetisch, nicht in Textreihenfolge');
   pruefe(W4.verlegung.absaetze.length === 4 && LT.indexOf('um Hilfe') < LT.indexOf('an den Hals') && LT.indexOf('an den Hals') < LT.indexOf('Husten wird schwach') && LT.indexOf('**schwere Verlegung**') < LT.indexOf('**leichten Verlegung**') && /Parkinson/.test(W4.verlegung.absaetze[0]), 'Blatt 3, Lesetext: nicht in Tabellenreihenfolge (schwer zuerst, Handeln vor den Zeichen), Absatz 1 als Ablenker');
   pruefe(T4.B3.aufgaben.length === 1 && T4.B3.aufgaben[0].nr === '3.1' && T4.B3.aufgaben[0].zeilen >= 8 && T4.B3.schnelle.aufgaben.map((a) => a.nr).join() === '3.2,3.3,3.4', 'Blatt 3: AA3 nur 3.1 (mind. 8 Zeilen), 3.2–3.4 „Für die Schnellen“');
