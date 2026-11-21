@@ -87,8 +87,10 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
     const m = fs.readFileSync(path.join(DOCS, 'w4', d), 'utf8').match(VERBOTEN);
     pruefe(!m, `docs/w4/${d}: kein „Klausur/Examen/Prüfung/spätere Woche“`, m && m[0]);
   }
-  const SV = path.join(WURZEL, 'arbeitsblatt', 'KB1_W4_Wirbelsaeule_Blutung_SV.docx');
-  const LV = path.join(WURZEL, 'arbeitsblatt', 'KB1_W4_Wirbelsaeule_Blutung_LV_LSG.docx');
+  for (const fassung of ['analog', 'digital']) {
+  console.log(`\n== Arbeitsblatt, ${fassung}e Fassung`);
+  const SV = path.join(WURZEL, 'arbeitsblatt', `KB1_W4_Wirbelsaeule_Blutung_${fassung}_SV.docx`);
+  const LV = path.join(WURZEL, 'arbeitsblatt', `KB1_W4_Wirbelsaeule_Blutung_${fassung}_LV_LSG.docx`);
   const svXml = docxText(SV), svText = nurText(svXml);
   const m = svText.match(VERBOTEN);
   pruefe(!m, 'Schülerversion: kein „Klausur/Examen/Prüfung/spätere Woche“', m && m[0]);
@@ -102,6 +104,15 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
   pruefe(/Beim Frühstück verschluckte sie sich am Kaffee und hustete kräftig\. Ich ließ sie husten, und nach kurzer Zeit war alles wieder gut\./.test(svText), 'Leitfall wörtlich wie im Fallbeispiel');
   pruefe(!/Rückenschläge|Oberbauchkompression/.test(svText), 'Schülerversion: kein Vorgehen bei schwerer Verlegung (Planung: Woche 5)');
   pruefe((svText.match(/Schon fertig\?/g) || []).length === 3, 'jedes Blatt endet mit „Schon fertig?“');
+  if (fassung === 'analog') {
+    const x = svText.match(/Handy|Smartphone|QR|scann|Link:/i);
+    pruefe(!x, 'analoge Fassung: kein Handy, kein QR-Code', x && x[0]);
+    pruefe(/sitzen bleiben/.test(svText) && /1–4 Fingern/.test(svText), 'analoge Fassung: Messkarten mit Aufstehen, Entscheidungsspiel mit Fingern');
+  } else {
+    const x = svText.match(/sitzen bleiben|Hand heben|aufstehen\b|Ohne Handy|liest .{0,30}vor|Fingern|Ihre Lehrkraft zeigt/i);
+    pruefe(!x, 'digitale Fassung: keine analogen Alternativen genannt', x && x[0]);
+    pruefe((svText.match(/Kein QR-Scanner\?/g) || []).length === 5, 'digitale Fassung: 5 QR-Kästen (Live-Verlauf, Simulation, 3 × „Schon fertig?“)');
+  }
   const PDF = SV.replace(/\.docx$/, '.pdf');
   if (fs.existsSync(PDF) && fs.statSync(PDF).mtimeMs >= fs.statSync(SV).mtimeMs - 1000) {
     const seiten = Number((execSync(`pdfinfo "${PDF}"`, { stdio: ['ignore', 'pipe', 'ignore'] }).toString().match(/Pages:\s+(\d+)/) || [])[1]);
@@ -109,6 +120,7 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
     const seite = (n) => execSync(`pdftotext -f ${n} -l ${n} "${PDF}" -`, { stdio: ['ignore', 'pipe', 'ignore'] }).toString();
     pruefe(seite(1).includes('Wirbelsäulenverletzung: nicht bewegen') && seite(3).includes('Innere Blutung: den Verlauf') && seite(5).includes('Atemwege: wenn etwas im Hals'), 'jedes Blatt beginnt auf einer ungeraden Seite (1, 3, 5) – beidseitig kopierbar');
   } else console.log('  (PDF fehlt oder ist älter als die .docx – Seitenprüfung übersprungen)');
+  }
   console.log('\n== QR-Codes');
   for (const n of ['verlauf', 'speisesaal', 'rueckenmark', 'trend', 'atemweg']) {
     const datei = path.join(WURZEL, 'qr', `qr_w4_${n}.png`);

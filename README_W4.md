@@ -8,14 +8,18 @@ Arbeitsblatt – ohne Beamer, ohne Anmeldung. Eine Lehreransicht ist freiwillig.
 
 ## Arbeitsblätter
 
+Es gibt **zwei Fassungen** mit denselben Aufgaben im KA-Format – die Lehrkraft wählt:
+
 | Datei | Inhalt |
 |---|---|
-| `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_SV.docx/.pdf` | Schülerversion: 3 Blätter je 2 Seiten (6 Seiten), beidseitig kopieren, nacheinander austeilen |
-| `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_LV_LSG.docx/.pdf` | Lehrerversion: Verlaufsplan (135 min), Hinweise, Klausur- und Examensbezug, Lösungen (gelb), **Anhang A** Messkarten, **Anhang B** Simulation ohne Handy |
+| `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_analog_SV.docx/.pdf` | **Analog**, ganz ohne Smartphone: Live-Verlauf mit Messkarten (sitzen / Hand heben / aufstehen), Entscheidungsspiel mit Handzeichen, „Schon fertig?“ als Zusatzaufgabe auf Papier. 3 Blätter je 2 Seiten (6 Seiten) |
+| `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_analog_LV_LSG.docx/.pdf` | Lehrerversion analog: Verlaufsplan (135 min), Hinweise, Klausur- und Examensbezug, Lösungen (gelb), **Anhang A** Messkarten, **Anhang B** Entscheidungsspiel zum Vorlesen |
+| `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_digital_SV.docx/.pdf` | **Digital**: Live-Verlauf und Simulation am Smartphone, „Schon fertig?“ mit QR-Code; keine analogen Alternativen auf dem Blatt. 6 Seiten |
+| `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_digital_LV_LSG.docx/.pdf` | Lehrerversion digital: Verlaufsplan, Hinweise (u. a. optionale Lehreransicht), Lösungen |
 
 - **Blatt 1 – Wirbelsäulenverletzung: nicht bewegen – aber richtig** · Methodenwechsel: Übung „Kopf halten und achsengerecht drehen“ (Vierergruppen, auf dem Boden oder auf Isomatten) → AA4 (Muster KA 5.3)
-- **Blatt 2 – Innere Blutung: den Verlauf im Blick** · Methodenwechsel: Live-Verlauf „Frühdienst – drei Patienten, eine Ampel“ – **analog** (Messkarten; sitzen 🟢 / Hand heben 🟡 / aufstehen 🔴) **oder am Handy** (`w4/verlauf.html`), freie Wahl der Lehrkraft → AA2
-- **Blatt 3 – Atemwege: wenn etwas im Hals stecken bleibt** · Methodenwechsel: Handy-Simulation „Notfall-Ampel im Speisesaal“ (ohne Handy: Plenumsspiel, Anhang B) → AA3 (Muster KA 4.1)
+- **Blatt 2 – Innere Blutung: den Verlauf im Blick** · Methodenwechsel: Live-Verlauf „Frühdienst – drei Patienten, eine Ampel“ – analog mit Messkarten (sitzen 🟢 / Hand heben 🟡 / aufstehen 🔴) bzw. digital am Handy (`w4/verlauf.html`) → AA2
+- **Blatt 3 – Atemwege: wenn etwas im Hals stecken bleibt** · Methodenwechsel: „Notfall-Ampel im Speisesaal“ – analog als Entscheidungsspiel (Anhang B) bzw. digital als Simulation am Handy (`w4/speisesaal.html`) → AA3 (Muster KA 4.1)
 
 ## Adressen (nach dem Zusammenführen in `main` über GitHub Pages online)
 
@@ -74,10 +78,10 @@ Cookies, keine fremden Skripte oder Schriften, Cloudflare-Protokolle aus.
 node werkzeuge/w4_bilder.js      # Kurve, Wirbelsäule, Atemwege (PNG)
 node werkzeuge/qr_w4.js          # QR-Codes qr/qr_w4_*.png
 node werkzeuge/ab_w4.js          # SV und LV_LSG (.docx)
-soffice --headless --convert-to pdf --outdir arbeitsblatt arbeitsblatt/KB1_W4_*.docx
+soffice --headless --convert-to pdf --outdir arbeitsblatt arbeitsblatt/KB1_W4_*.docx   # erzeugt analog und digital
 ```
 
-Nach Textänderungen die Seitenzahl prüfen: Die Schülerversion muss bei 6 Seiten bleiben (jedes Blatt beginnt auf S. 1, 3, 5).
+Nach Textänderungen die Seitenzahl prüfen: Beide Schülerversionen müssen bei 6 Seiten bleiben (jedes Blatt beginnt auf S. 1, 3, 5).
 
 ## Tests
 
