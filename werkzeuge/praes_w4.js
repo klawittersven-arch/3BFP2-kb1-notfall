@@ -236,7 +236,7 @@ async function praes2() {
     s = pres.addSlide({ masterName: 'W4 Inhalt', sectionTitle: 'Rückblick' });
     s.addText('Das nehmen wir aus Blatt 1 mit', { placeholder: 'title' });
     const w3 = (12.13 - 0.6) / 3;
-    await karte(s, { x: 0.6, y: 1.65, w: w3, hh: 4.85, iconName: 'FaHandPaper', kreis: C.accent4, kopf: 'Nicht bewegen', text: 'Person bitten, still zu liegen. Nicht aufsetzen – sonst droht eine Querschnittlähmung.', name: 'Merke 1' });
+    await karte(s, { x: 0.6, y: 1.65, w: w3, hh: 4.85, iconName: 'FaHandPaper', kreis: C.accent4, kopf: 'Nicht bewegen', text: 'Person ansprechen, beruhigen und bitten, still zu liegen. Nicht aufsetzen – sonst droht eine Querschnittlähmung.', name: 'Merke 1' });
     await karte(s, { x: 0.6 + w3 + 0.3, y: 1.65, w: w3, hh: 4.85, iconName: 'FaHandsHelping', kreis: C.accent4, kopf: 'Kopf halten', text: 'Mit beiden Händen in der vorgefundenen Lage halten.', name: 'Merke 2' });
     await karte(s, { x: 0.6 + 2 * (w3 + 0.3), y: 1.65, w: w3, hh: 4.85, iconName: 'FaUsers', kreis: C.accent4, kopf: 'Drehen nur, wenn nötig', text: 'Zum Beispiel beim Erbrechen: achsengerecht mit mehreren Helfenden.', name: 'Merke 3' });
     s.addNotes('Leitfrage von Blatt 1 beantworten lassen: Darf Herr Pfeiffer aufstehen? Nein – Hinweise auf eine Verletzung der Halswirbelsäule (Sturz, Nackenschmerz, Kribbeln in den Händen). Die drei Karten sind der Merksatz von Blatt 1 in Kurzform.');
@@ -345,11 +345,11 @@ async function praes3() {
     await schritte(s, [
       { nr: 'AA1', icon: 'FaMobileAlt', kopf: 'Der Weg der Luft', text: '„Wo ist was?“ am Handy: Teile antippen – 3 Sekunden je Frage. Die Wörter kommen in den Lückentext.', form: 'allein · Handy' },
       { nr: 'AA2', icon: 'FaBookOpen', kopf: 'Leicht oder schwer?', text: 'Text am Handy lesen. Die Zeichen in Stichworten in die Tabelle eintragen.', form: 'allein · Handy' },
-      { nr: 'AA3', icon: 'FaPen', kopf: 'Wissen anwenden', text: 'Aufgabe 3.1 schriftlich beantworten. Hilfe: Ihre Tabelle.', form: 'allein · 5 Minuten' }
+      { nr: 'AA3', icon: 'FaPen', kopf: 'Wissen anwenden', text: 'Aufgaben 3.1 und 3.2 schriftlich beantworten. Hilfe: Tabelle und Merksatz.', form: 'allein · 8 Minuten' }
     ], { breite: 8.9, textSize: 16 });
     s.addImage({ path: BILD('w4_atemwege.png'), x: 9.8, y: 1.75, w: 2.95, h: 2.95, altText: 'Atemwege von vorn', objectName: 'Bild Atemwege' });
     s.addText('Schnell fertig? „Für die Schnellen“ unten auf Blatt 3.', { x: 9.6, y: 4.95, w: 3.3, h: 1.3, fontSize: 15, align: 'center', color: HEX.grau, margin: 0, isTextBox: true, objectName: 'Für die Schnellen' });
-    s.addNotes('AA1: „Wo ist was?“ (bei einem Fehler oder abgelaufener Zeit von vorn), dann Lückentext sichern, Merksatz. AA2: Lesetext am Handy, Tabelle sichern (Kernsatz: „Wer laut rufen kann, bekommt Luft. Nicht auf blaue Lippen warten!“). AA3: 3.1 (5 min), Musterlösung. Abschluss: Leitfrage beantworten.');
+    s.addNotes('AA1: „Wo ist was?“ (bei einem Fehler oder abgelaufener Zeit von vorn), dann Lückentext sichern, Merksatz. AA2: Lesetext am Handy, Tabelle sichern (Kernsatz: „Wer laut rufen kann, bekommt Luft. Nicht auf blaue Lippen warten!“). AA3: 3.1 und 3.2 (8 min), Musterlösung. Abschluss: Leitfrage beantworten.');
   });
 }
 
