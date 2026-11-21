@@ -29,15 +29,15 @@ const B1 = {
   info: {
     kopf: 'Informationstext: Rückenmark und Höhe der Verletzung',
     absaetze: [
-      'Die Wirbelsäule schützt das **Rückenmark**. Es leitet Signale zwischen Gehirn und Körper. Auf jeder Höhe gehen Nerven ab: für Atmung, Arme, Rumpf und Beine (Bild unten). Wird das Rückenmark verletzt, fallen **unterhalb der Verletzung** Bewegung und Gefühl aus: Lähmung, Kribbeln, Taubheit. **Je höher die Verletzung, desto mehr fällt aus.**',
+      'Die Wirbelsäule schützt das **Rückenmark**. Es leitet Signale zwischen Gehirn und Körper. Auf jeder Höhe gehen Nerven ab: für Atmung, Arme, Rumpf und Beine (Bild unten). Wird das Rückenmark verletzt, fallen **unterhalb der Verletzung** Bewegung und Gefühl aus: Lähmung, Kribbeln, Taubheit. **Je höher die Verletzung, desto mehr fällt aus.** Ist es nur **teilweise** verletzt, fällt nicht alles aus. Für die Höhe zählt die **höchste betroffene Stelle**: Hände betroffen → HWS.',
       'Ein **instabiler** Wirbelbruch kann das Rückenmark bei jeder Bewegung quetschen – zum Beispiel beim Aufsetzen oder Kopfdrehen. Die Folge: eine bleibende **Querschnittlähmung**. Auch wer Arme und Beine bewegen kann, kann so einen Bruch haben.',
       'Bei hohen Verletzungen fällt oft der **Sympathikus** aus: **neurogener Schock** (Blutdruck niedrig, Puls langsam, Haut warm).'
     ],
     quelle: 'Quelle: nach MSD Manual Profi-Ausgabe: Rückenmarkverletzungen; ERC-Leitlinien 2025, Erste Hilfe; sprachlich vereinfacht.',
-    woerter: 'Wörterhilfe: HWS = Halswirbelsäule, BWS = Brustwirbelsäule, LWS = Lendenwirbelsäule · Rückenmark = Nervenstrang im Wirbelkanal · instabil = nicht fest, kann sich verschieben · Querschnittlähmung = Lähmung unterhalb der Verletzung · Quelle: nach MSD Manual, ERC 2025, vereinfacht'
+    woerter: 'Wörterhilfe: HWS = Halswirbelsäule, BWS = Brustwirbelsäule, LWS = Lendenwirbelsäule · Rückenmark = Nervenstrang im Wirbelkanal · instabil = nicht fest · Querschnittlähmung = Lähmung unterhalb der Verletzung · Quelle: nach MSD Manual, ERC 2025, vereinfacht'
   },
   aa2: {
-    text: 'Welche Höhe passt zu A, B und C? Schreiben Sie den Buchstaben in die Tabelle.',
+    text: 'Welche Höhe passt zu A, B und C? Buchstaben in die Tabelle schreiben.',
     faelle: [
       ['A', 'Frau Sander (30) ist vom Pferd gestürzt. Sie kann die Beine nicht bewegen. Arme und Hände funktionieren.'],
       ['B', 'Herr Lux (19) ist kopfüber ins flache Wasser gesprungen. Er kann Arme und Beine nicht bewegen. Er atmet selbst.'],
@@ -45,11 +45,11 @@ const B1 = {
     ],
     hoehen: [
       ['HWS, sehr hoch', 'Arme, Beine **und die Atmung**', 'Tetraplegie mit Atemlähmung', 'C'],
-      ['HWS', 'Arme (ganz oder teilweise) und Beine', 'Tetraplegie', 'B'],
+      ['HWS', 'Arme, Hände – meist auch Beine', 'Tetraplegie', 'B'],
       ['BWS oder LWS', 'Beine (und Rumpf) – die Arme funktionieren', 'Paraplegie', 'A']
     ],
     pfeiffer: 'Und bei Herrn Pfeiffer? Höhe:',
-    pfeifferLoesung: 'HWS'
+    pfeifferLoesung: 'HWS – seine Hände sind betroffen, deren Nerven kommen aus dem Halsmark. Die Beine funktionieren noch, weil das Rückenmark nur teilweise verletzt ist.'
   },
   merksatz: [['Hinweise auf eine Wirbelsäulenverletzung: ', { l: 'Unfallhergang' }, ' (Sturz aus der Höhe, Kopfsprung, Verkehrsunfall), ', { l: 'Schmerzen in Nacken oder Rücken' }, ', ', { l: 'Kribbeln, Taubheit, Lähmung' }, '. Dann: ', { l: 'nicht bewegen' }, ', Person bitten, still zu liegen, ', { l: 'Kopf mit beiden Händen in der vorgefundenen Lage halten' }, ', nicht aufsetzen – sonst droht eine ', { l: 'Querschnittlähmung' }, ' (bei sehr hoher Verletzung auch Atemlähmung). Drehen nur, wenn es sein muss (z. B. Erbrechen): ', { l: 'achsengerecht mit mehreren Helfenden' }, '.']],
   aa3: {

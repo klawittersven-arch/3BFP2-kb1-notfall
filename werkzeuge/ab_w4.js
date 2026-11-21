@@ -142,7 +142,7 @@ function blatt1(B) {
   );
   const w3 = Math.floor(B.breite / 3);
   const lsgZelle = (liste) => ({ lsg: liste.map(([text, wort]) => `${text} (Z. ${fall.zeile(wort)})`).join('; ') });
-  push(B.tabelle(t.aa1.spalten.map((s, i) => ({ text: s, w: i < 2 ? w3 : B.breite - 2 * w3 })), [t.aa1.loesung.map(lsgZelle)], { hoehe: 900, schrift: 19 }));
+  push(B.tabelle(t.aa1.spalten.map((s, i) => ({ text: s, w: i < 2 ? w3 : B.breite - 2 * w3 })), [t.aa1.loesung.map(lsgZelle)], { hoehe: 820, schrift: 19 }));
   push(
     leer(80),
     B.kasten([...t.info.absaetze.map((a) => new Paragraph({ spacing: { after: 50, line: 250 }, children: B.runs(a, { size: 20 }) }))], { kopf: t.info.kopf }),
@@ -157,7 +157,7 @@ function blatt1(B) {
   const FARBE_HOEHE = ['F8D7D3', 'FCE4C8', 'DDEBF7'];   // wie im Bild: rot = HWS sehr hoch, orange = HWS, blau = BWS/LWS
   const hoehenTab = B.tabelle(sp, t.aa2.hoehen.map((h, i) => [{ text: `**${h[0]}**`, fill: FARBE_HOEHE[i] }, h[1], h[2], { lsg: h[3] }]), { hoehe: 420, schrift: 18 });
   push(B.zweiSpaltig(
-    [new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 0 }, children: [bild(BILD('w4_wirbelsaeule.png'), 2.1, 3.1)] })],
+    [new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 0 }, children: [bild(BILD('w4_wirbelsaeule.png'), 1.84, 2.7)] })],
     [hoehenTab,
       new Paragraph({ spacing: { before: 60, after: 0 }, children: [...B.runs(t.aa2.pfeiffer, { size: 18 }), B.t(' '), B.lsg ? B.loes(t.aa2.pfeifferLoesung, { bold: true, size: 18 }) : B.t('_'.repeat(14), { size: 18 })] })],
     wBild
