@@ -105,6 +105,7 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
   pruefe(!/Rückenschläge|Oberbauchkompression/.test(svText), 'Schülerversion: kein Vorgehen bei schwerer Verlegung (Planung: Woche 5)');
   pruefe((svText.match(/Schon fertig\?/g) || []).length === 3, 'jedes Blatt endet mit „Schon fertig?“');
   pruefe(/SpO₂ 98 %/.test(svText) && /Blutzucker 96 mg\/dl/.test(svText) && /trockene Schürfwunde/.test(svText) && /Kein Hinweis auf eine innere Blutung/.test(nurText(docxText(LV))), 'Blatt 2, 2.1: Ablenker im Fall (normale Werte, Schürfwunde) – nicht alles ist ein Hinweis');
+  pruefe(/Parkinson-Krankheit; seine Hände zittern leicht, wie immer/.test(svText) && /Kein Merkmal einer Atemwegsverlegung/.test(nurText(docxText(LV))), 'Blatt 3, 3.1: Ablenker im Fall (Zittern, Brille, Tee, Lachen am Nachbartisch)');
   if (fassung === 'analog') {
     const x = svText.match(/Handy|Smartphone|QR|scann|Link:/i);
     pruefe(!x, 'analoge Fassung: kein Handy, kein QR-Code', x && x[0]);

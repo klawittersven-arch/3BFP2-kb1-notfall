@@ -204,7 +204,7 @@ const B3 = {
   },
   merksatz2: [[{ l: 'Leichte Verlegung' }, ': ', { l: 'kräftiger, wirksamer Husten' }, ', kann ', { l: 'sprechen und atmen' }, ' → ', { l: 'zum Husten auffordern' }, ', bleiben, beobachten. ', { l: 'Schwere Verlegung' }, ': Husten ', { l: 'schwach oder fehlt' }, ', ', { l: 'kann nicht sprechen' }, ', kaum Atmung, Griff an den Hals, später Zyanose → ', { l: 'sofort Hilfe rufen und handeln' }, '. Nicht auf ', { l: 'blaue Lippen' }, ' warten! Wer laut rufen kann, bekommt Luft.']],
   fall: [
-    'Sie sind Auszubildende bzw. Auszubildender in der Seniorenwohngruppe „Kastanienhof“. Herr Walter Roth (80) sitzt beim Abendessen am Tisch und isst ein Wurstbrot. Plötzlich hustet er kräftig und laut. Er hebt die Hand und sagt: „Geht schon …“ Nach etwa 20 Sekunden wird sein Husten leise und kraftlos. Herr Roth kann nicht mehr sprechen. Er greift sich mit beiden Händen an den Hals. Seine Lippen werden bläulich.'
+    'Sie sind Auszubildende bzw. Auszubildender in der Seniorenwohngruppe „Kastanienhof“. Herr Walter Roth (80) hat eine Parkinson-Krankheit; seine Hände zittern leicht, wie immer. Er trägt eine Brille. Beim Abendessen sitzt er am Tisch, trinkt Pfefferminztee und isst ein Wurstbrot. Am Nachbartisch lacht jemand laut. Plötzlich hustet Herr Roth kräftig und laut. Er hebt die Hand und sagt: „Geht schon …“ Nach etwa 20 Sekunden wird sein Husten leise und kraftlos. Herr Roth kann nicht mehr sprechen. Er greift sich mit beiden Händen an den Hals. Seine Lippen werden bläulich.'
   ],
   rahmen: 'Pflegefachpersonen erkennen Notfallsituationen und schätzen sie ein.',
   aufgaben: [
@@ -213,7 +213,8 @@ const B3 = {
       text: 'Unterscheiden Sie anhand der Situation eine leichte von einer schweren Atemwegsverlegung.',
       loesung: [
         'Leichte Verlegung: kräftiger, wirksamer Husten, er kann sprechen und atmen – das trifft auf Herrn Roth zu Beginn zu (hustet kräftig und laut, sagt „Geht schon …“, Z. {Geht schon}). (1 P.)',
-        'Schwere Verlegung: Husten leise und kraftlos, kann nicht sprechen, greift sich an den Hals, Lippen bläulich – das trifft nach etwa 20 Sekunden zu (Z. {kraftlos}–{bläulich}). (1 P.)'
+        'Schwere Verlegung: Husten leise und kraftlos, kann nicht sprechen, greift sich an den Hals, Lippen bläulich – das trifft nach etwa 20 Sekunden zu (Z. {kraftlos}–{bläulich}). (1 P.)',
+        'Kein Merkmal einer Atemwegsverlegung (0 P.): Zittern der Hände (Parkinson, „wie immer“), Brille, Pfefferminztee, lautes Lachen am Nachbartisch. Hinweis: Die Parkinson-Krankheit erhöht das Risiko, sich zu verschlucken – sie ist aber kein Zeichen dafür, ob die Verlegung leicht oder schwer ist.'
       ]
     },
     {
