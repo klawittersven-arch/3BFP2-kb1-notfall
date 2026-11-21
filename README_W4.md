@@ -22,6 +22,16 @@ Es gibt **zwei Fassungen** mit denselben Aufgaben im KA-Format – die Lehrkraft
 - **Blatt 2 – Innere Blutung: den Verlauf im Blick** · AA1 „Frühdienst mit Ampel“ – analog als Ankreuz-Aufgabe in Einzelarbeit (fünf Messungen in gemischter Dringlichkeit, dann Finns Kurve), digital als Live-Verlauf am Handy (`w4/verlauf.html`) → AA2
 - **Blatt 3 – Atemwege: wenn etwas im Hals stecken bleibt** · AA1: analog Bild beschriften (Wortspeicher); digital „Wo ist was?“ am Handy (`w4/anatomie.html`) → die Lösungswörter kommen in den Infotext als Lückentext · AA2 „leicht oder schwer?“: Informationen aus einem längeren Lesetext (nicht in Tabellenreihenfolge, mit Ablenkern) in die Tabelle – analog auf dem Blatt, digital am Handy (`w4/verlegung.html`); kein Merksatz dazu (sonst würde nur abgeschrieben) → AA3 nur 3.1 (Muster KA 4.1) mit viel Schreibraum · „Für die Schnellen“: 3.2, 3.3 (analog dazu 3.4) auf ein Extrablatt, digital zusätzlich Atemweg-Check und Simulation „Notfall-Ampel im Speisesaal“
 
+## Präsentationen (vor jedem Blatt)
+
+| Datei | wann |
+|---|---|
+| `arbeitsblatt/KB1_W4_Praesentation_1_Einstieg_Wirbelsaeule.pptx` | **Stundeneinstieg** vor Blatt 1 (6 Folien): Fahrplan „Was man nicht sieht“, Zitat Herr Pfeiffer („Was tun Sie?“), Leitfrage, Lernziel, Ablauf Blatt 1, Start AA1 |
+| `arbeitsblatt/KB1_W4_Praesentation_2_Gelenkstelle_Innere_Blutung.pptx` | **Gelenkstelle** Blatt 1 → Blatt 2 (6 Folien): Rückblick in drei Karten, „Blutung, die man nicht sieht“, drei Patienten, Lernziel und Ampel, Ablauf Blatt 2 |
+| `arbeitsblatt/KB1_W4_Praesentation_3_Gelenkstelle_Atemwege.pptx` | **Gelenkstelle** Blatt 2 → Blatt 3 (6 Folien): Rückblick mit Finns Kurve, Leitfall Frau Maler, Leitfrage (Daumen hoch/runter), Selbstversuch, Ablauf Blatt 3 |
+
+Wiederkehrendes Element ist der Fahrplan mit den drei Notfällen (erledigt = grüner Haken). Ablauf und Lehrerhandeln stehen in den **Notizen** jeder Folie (aus dem Verlaufsplan). Die Texte kommen aus derselben Quelle wie die Arbeitsblätter; neu erzeugen mit `werkzeuge/praes_w4.js` (Aufruf steht oben in der Datei).
+
 ## Adressen (nach dem Zusammenführen in `main` über GitHub Pages online)
 
 | Adresse | wofür |

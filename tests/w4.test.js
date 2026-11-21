@@ -199,7 +199,7 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
     execSync('git rev-parse --verify origin/main', { cwd: WURZEL, stdio: 'ignore' });
     geaendert = execSync('git diff --name-only origin/main', { cwd: WURZEL }).toString().split('\n')
       .concat(execSync('git ls-files --others --exclude-standard', { cwd: WURZEL }).toString().split('\n')).filter(Boolean);
-    const erlaubt = /^(docs\/w4\/|worker-w4\/|wrangler-w4\.jsonc$|werkzeuge\/(ab_w4|ab_w4_texte|w4_bilder|qr_w4)\.js$|werkzeuge\/bilder\/w4_|qr\/qr_w4_|arbeitsblatt\/KB1_W4_|tests\/w4\.test\.js$|tests\/ergebnisse\/w4_|README_W4\.md$)/;
+    const erlaubt = /^(docs\/w4\/|worker-w4\/|wrangler-w4\.jsonc$|werkzeuge\/(ab_w4|ab_w4_texte|w4_bilder|qr_w4|praes_w4)\.js$|werkzeuge\/bilder\/w4_|qr\/qr_w4_|arbeitsblatt\/KB1_W4_|tests\/w4\.test\.js$|tests\/ergebnisse\/w4_|README_W4\.md$)/;
     const fremd = geaendert.filter((d) => !erlaubt.test(d));
     pruefe(fremd.length === 0, `nur Dateien der Woche 4 geändert (${geaendert.length} Dateien)`, fremd);
   } catch (e) { console.log('  (origin/main nicht verfügbar – übersprungen)'); }
