@@ -39,7 +39,12 @@ const B1 = {
     woerter: 'Wörterhilfe: HWS = Halswirbelsäule, BWS = Brustwirbelsäule, LWS = Lendenwirbelsäule · Rückenmark = Nervenstrang im Wirbelkanal · instabil = nicht fest · Querschnittlähmung = Lähmung unterhalb der Verletzung · Quelle: nach MSD Manual, ERC 2025, vereinfacht'
   },
   aa2: {
-    text: 'Welche Höhe passt zu A, B und C? Buchstaben in die Tabelle schreiben.',
+    text: {
+      analog: 'Welche Höhe passt zu A, B und C? Buchstaben in die Tabelle schreiben.',
+      // digital: die Fälle kommen am Handy (Rückenmark-Check); Tabelle und Bild bleiben als Hilfe auf dem Blatt
+      digital: 'Scannen Sie den QR-Code und lösen Sie die acht Fälle am Handy. Die Tabelle unten hilft Ihnen.'
+    },
+    handy: '**Rückenmark-Check:** acht kurze Fälle – Höhe der Verletzung und richtiges Handeln, mit Rückmeldung.',
     faelle: [
       ['A', 'Frau Sander (30) ist vom Pferd gestürzt. Sie kann die Beine nicht bewegen. Arme und Hände funktionieren.'],
       ['B', 'Herr Lux (19) ist kopfüber ins flache Wasser gesprungen. Er kann Arme und Beine nicht bewegen. Er atmet selbst.'],
@@ -84,7 +89,11 @@ const B1 = {
     }
   ],
   fertig: {
-    digital: '**Schon fertig?** Rückenmark-Check: acht kurze Fälle am Handy – mit Rückmeldung.',
+    // digital ist der Rückenmark-Check schon AA2 – deshalb hier eine Zusatzfrage auf Papier (Antwort auf ein Extrablatt)
+    digital: {
+      frage: '**Schon fertig?** Herr Pfeiffer ist 79 Jahre alt und nur sechs Stufen gestürzt. Warum kann bei alten Menschen schon so ein Sturz die Halswirbelsäule verletzen? Nennen Sie zwei Gründe.',
+      loesung: 'z. B.: Die Knochen sind oft brüchig (Osteoporose). Die Wirbelsäule ist durch Verschleiß steif, der Wirbelkanal enger – das Rückenmark wird schneller gequetscht. Stürze werden schlechter abgefangen (Kraft, Reflexe, Sehen), der Kopf prallt an. Typisch: Die Hände sind stärker betroffen als die Beine – wie bei Herrn Pfeiffer.'
+    },
     analog: {
       frage: '**Schon fertig?** Herr Lux (19) aus AA2 hat einen Blutdruck von 85/50 mmHg und einen Puls von 52/min. Die Haut an seinen Beinen ist warm. Welcher Schock liegt vor? Erklären Sie den langsamen Puls.',
       loesung: 'Neurogener Schock: Durch die Verletzung des Rückenmarks fällt der Sympathikus aus. Die Gefäße werden weit, der Blutdruck fällt – und der Puls kann nicht steigen, er bleibt langsam.'

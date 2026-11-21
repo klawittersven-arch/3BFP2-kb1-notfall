@@ -142,6 +142,7 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
     const lvText = nurText(docxText(LV));
     pruefe(!/Anhang [AB]|Messkarten für den Live-Verlauf|Entscheidungsspiel nach/.test(lvText), 'analoge Lehrerversion: kein Anhang mehr (kein Messkarten-, kein Entscheidungsspiel-Anhang)');
     pruefe(/Kann die Person nicht mehr sprechen/.test(svText) && /3\.4 +Warum soll man einer Person, die kräftig hustet/.test(svText) && !/speisesaal/.test(svText), 'analoge Fassung: Lesetext auf dem Blatt; „Für die Schnellen“ mit 3.2–3.4, ohne Simulation');
+    pruefe(/Welche Höhe passt zu A, B und C/.test(svText) && /\nFall\n/.test(svText), 'analoge Fassung, Blatt 1 AA2: Fälle A–C mit Spalte „Fall“');
     pruefe(/Wortspeicher:/.test(svText) && /Text lesen, Bild beschriften/.test(svText) && /in den Rachen\./.test(svText) && !/_{18}/.test(svText.slice(svText.indexOf('Atemwege und Ventilation'), svText.indexOf('Wortspeicher'))), 'analoge Fassung, Blatt 3 AA1: Infotext vollständig, Bild mit Wortspeicher');
   } else {
     const x = svText.match(/sitzen bleiben|Hand heben|aufstehen\b|Ohne Handy|liest .{0,30}vor|Fingern|Ihre Lehrkraft zeigt/i);
@@ -151,6 +152,9 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
     const lvTextD = nurText(docxText(LV));
     pruefe(!/Wortspeicher/.test(svText) && (info.match(/_{18}/g) || []).length === 8 && !/in den Rachen|heißt Ventilation|In den Lungenbläschen|Hustenreflex/.test(info) && lueckenWoerter.every((w) => lvTextD.includes(w)), 'digitale Fassung, Blatt 3 AA1: Infotext als Lückentext (8 Lücken, Wörter nur in der Lehrerversion), kein Wortspeicher');
     pruefe(!/3\.4 /.test(svText), 'digitale Fassung: „Für die Schnellen“ ohne 3.4 (dafür Atemweg-Check)');
+    const b1 = svText.slice(0, svText.indexOf('Innere Blutung: den Verlauf im Blick'));
+    pruefe(!/Welche Höhe passt zu A, B und C/.test(b1) && !/Herr Lux \(19\) ist kopfüber/.test(b1) && b1.indexOf('rueckenmark.html') < b1.indexOf('Merksatz') && /Höhe der Verletzung/.test(b1) && /Tetraplegie mit Atemlähmung/.test(b1) && /Und bei Herrn Pfeiffer\? Höhe:/.test(b1) && !/\nFall\n/.test(b1), 'digitale Fassung, Blatt 1 AA2: Rückenmark-Check per QR-Code statt Fälle A–C; Höhen-Tabelle (ohne Spalte „Fall“) und Herr Pfeiffer bleiben auf dem Blatt');
+    pruefe(/Schon fertig\? Herr Pfeiffer ist 79 Jahre alt/.test(b1) && (b1.match(/rueckenmark\.html/g) || []).length === 1, 'digitale Fassung, Blatt 1: „Schon fertig?“ ist eine Zusatzfrage (kein zweites Mal Rückenmark-Check)');
     pruefe(svText.lastIndexOf('Für die Schnellen') > svText.lastIndexOf('Schon fertig?') && /speisesaal\.html/.test(svText.slice(svText.lastIndexOf('Für die Schnellen'))), 'digitale Fassung: Simulation ganz unten auf Blatt 3 („Für die Schnellen“)');
   }
   const PDF = SV.replace(/\.docx$/, '.pdf');

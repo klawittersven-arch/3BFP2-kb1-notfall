@@ -9,7 +9,7 @@
   var DEMO = new URLSearchParams(location.search).get('demo') === '1';
   var MINUTEN = Math.max(5, Math.min(60, Number(CFG.FORTSCHRITT_MINUTEN) || 45));
   var UEB = [
-    { id: 'rueckenmark', name: 'Rückenmark-Check', wo: 'Blatt 1 · Schon fertig?' },
+    { id: 'rueckenmark', name: 'Rückenmark-Check', wo: 'Blatt 1 · AA2' },
     { id: 'verlauf', name: 'Frühdienst mit Ampel', wo: 'Blatt 2 · AA1' },
     { id: 'trend', name: 'Trend-Detektiv', wo: 'Blatt 2 · Schon fertig?' },
     { id: 'anatomie', name: 'Wo ist was? Die Atemwege', wo: 'Blatt 3 · AA1' },
