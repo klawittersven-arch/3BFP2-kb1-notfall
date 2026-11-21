@@ -13,9 +13,9 @@ Arbeitsblatt – ohne Beamer, ohne Anmeldung. Eine Lehreransicht ist freiwillig.
 | `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_SV.docx/.pdf` | Schülerversion: 3 Blätter je 2 Seiten (6 Seiten), beidseitig kopieren, nacheinander austeilen |
 | `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_LV_LSG.docx/.pdf` | Lehrerversion: Verlaufsplan (135 min), Hinweise, Klausur- und Examensbezug, Lösungen (gelb), **Anhang A** Messkarten, **Anhang B** Simulation ohne Handy |
 
-- **Blatt 1 – Wirbelsäulenverletzung: nicht bewegen – aber richtig** · Highlight: Übung „Kopf halten und achsengerecht drehen“ (Vierergruppen, Isomatten) → AA4 (Muster KA 5.3)
-- **Blatt 2 – Innere Blutung: den Verlauf im Blick** · Highlight: Live-Verlauf „Frühdienst – drei Patienten, eine Ampel“ – **analog** (Messkarten; sitzen 🟢 / Hand heben 🟡 / aufstehen 🔴) **oder am Handy** (`w4/verlauf.html`), freie Wahl der Lehrkraft → AA2
-- **Blatt 3 – Atemwege: wenn etwas im Hals stecken bleibt** · Highlight: Handy-Simulation „Notfall-Ampel im Speisesaal“ (ohne Handy: Plenumsspiel, Anhang B) → AA3 (Muster KA 4.1)
+- **Blatt 1 – Wirbelsäulenverletzung: nicht bewegen – aber richtig** · Methodenwechsel: Übung „Kopf halten und achsengerecht drehen“ (Vierergruppen, Isomatten) → AA4 (Muster KA 5.3)
+- **Blatt 2 – Innere Blutung: den Verlauf im Blick** · Methodenwechsel: Live-Verlauf „Frühdienst – drei Patienten, eine Ampel“ – **analog** (Messkarten; sitzen 🟢 / Hand heben 🟡 / aufstehen 🔴) **oder am Handy** (`w4/verlauf.html`), freie Wahl der Lehrkraft → AA2
+- **Blatt 3 – Atemwege: wenn etwas im Hals stecken bleibt** · Methodenwechsel: Handy-Simulation „Notfall-Ampel im Speisesaal“ (ohne Handy: Plenumsspiel, Anhang B) → AA3 (Muster KA 4.1)
 
 ## Adressen (nach dem Zusammenführen in `main` über GitHub Pages online)
 
