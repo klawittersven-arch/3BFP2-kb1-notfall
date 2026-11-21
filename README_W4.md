@@ -16,6 +16,7 @@ Es gibt **zwei Fassungen** mit denselben Aufgaben im KA-Format – die Lehrkraft
 | `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_analog_LV_LSG.docx/.pdf` | Lehrerversion analog: Verlaufsplan (135 min), Hinweise, Klausur- und Examensbezug, Lösungen (gelb), **Anhang A** Messkarten, **Anhang B** Entscheidungsspiel zum Vorlesen |
 | `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_digital_SV.docx/.pdf` | **Digital**: Live-Verlauf und Simulation am Smartphone, „Schon fertig?“ mit QR-Code; keine analogen Alternativen auf dem Blatt. 6 Seiten |
 | `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_digital_LV_LSG.docx/.pdf` | Lehrerversion digital: Verlaufsplan, Hinweise (u. a. optionale Lehreransicht), Lösungen |
+| `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_{analog,digital}_SV_markiert.docx/.pdf` | **Ansichtsexemplar für die Lehrkraft (nicht austeilen):** Schülerversion mit Textmarker – **gelb** = direkt klausurrelevant, **pink** = könnte gestrichen werden, ohne Markierung = unterstützend. Zuordnung in `werkzeuge/ab_w4.js` (`MARKE`) |
 
 - **Blatt 1 – Wirbelsäulenverletzung: nicht bewegen – aber richtig** · Methodenwechsel: Übung „Kopf halten und achsengerecht drehen“ (Vierergruppen, auf dem Boden oder auf Isomatten) → AA4 (Muster KA 5.3)
 - **Blatt 2 – Innere Blutung: den Verlauf im Blick** · Methodenwechsel: Live-Verlauf „Frühdienst – drei Patienten, eine Ampel“ – analog mit Messkarten (sitzen 🟢 / Hand heben 🟡 / aufstehen 🔴) bzw. digital am Handy (`w4/verlauf.html`) → AA2

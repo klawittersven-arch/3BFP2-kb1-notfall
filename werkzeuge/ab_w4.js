@@ -28,6 +28,14 @@ const AMP_NAME = { gruen: 'grün', gelb: 'gelb', rot: 'rot' };
 let MODUS = 'analog';
 const DIGITAL = () => MODUS === 'digital';
 const je = (analog, digital) => (DIGITAL() ? digital : analog);
+// Ansichtsexemplar mit Textmarker (nicht zum Austeilen): gelb = direkt klausurrelevant, pink = könnte gestrichen werden
+let MARKIERT = false;
+const MARKE = {
+  b1aa1: 'y', b1merk: 'y', '4.1': 'y', '2.1': 'y', '2.2': 'y', '2.4': 'y', b3tab: 'y', b3merk2: 'y', '3.1': 'y',
+  b1aa2: 'p', b2aa1: 'p', '2.3': 'p', b3aa1: 'p', b3merk1: 'p', '3.2': 'p', fertig: 'p', leitfrage: 'p'
+};
+const hl = (key) => (MARKIERT && MARKE[key] ? { y: 'yellow', p: 'magenta' }[MARKE[key]] : undefined);
+const mitHl = (key, o = {}) => (hl(key) ? { ...o, highlight: hl(key) } : o);
 
 /* ---------- eigene Bausteine für Woche 4 (ab_bausteine.js bleibt unverändert) ---------- */
 function blattKopf(B, text, o = {}) {
@@ -94,10 +102,10 @@ function linien(B, anzahl, loesung = [], breite = B.breite) {
 }
 // „Schon fertig?“: digital mit QR-Code, analog als kurze Zusatzaufgabe (Antwort auf ein Extrablatt; LSG: Lösung gelb)
 function fertigKasten(B, seite, f) {
-  if (DIGITAL()) return qrKasten(B, seite, [kl(B, f.digital)]);
+  if (DIGITAL()) return qrKasten(B, seite, [kl(B, f.digital, mitHl('fertig'))]);
   const a = f.analog;
   // Antwort auf ein Extrablatt – so braucht der Kasten keine Schreiblinien
-  return B.kasten([kl(B, a.frage + ' ✍️ **Schreiben Sie Ihre Antwort auf ein Extrablatt.**'),
+  return B.kasten([kl(B, a.frage + ' ✍️ **Schreiben Sie Ihre Antwort auf ein Extrablatt.**', mitHl('fertig')),
     B.lsg ? new Paragraph({ spacing: { before: 30, after: 0, line: 245 }, children: B.runs(a.loesung, { size: 19, highlight: 'yellow' }) }) : null].filter(Boolean),
   { fill: F.BLAU_HELL, rand: '2E75B6' });
 }
@@ -113,7 +121,7 @@ function aufgabenListe(B, liste, ersetze = (s) => s) {
     if (i === 0) rows.push(new TableRow({ cantSplit: true, children: [z([pa([B.b('Nr.', { size: 19 })])], w1, F.LACHS_KOPF), z([pa([B.b('Aufgabe', { size: 19 })])], w2, F.LACHS_KOPF), z([pa([B.b('Punkte', { size: 19 })])], w3, F.LACHS_KOPF)] }));
     rows.push(new TableRow({ cantSplit: true, children: [
       z([pa([B.b(a.nr, { size: 19 })])], w1),
-      z([a.vorsatz ? pa(B.runs(a.vorsatz, { size: 19, italics: true }), { spacing: { after: 30, line: 245 } }) : null, pa(B.runs(a.text, { size: 19 })),
+      z([a.vorsatz ? pa(B.runs(a.vorsatz, mitHl(a.nr, { size: 19, italics: true })), { spacing: { after: 30, line: 245 } }) : null, pa(B.runs(a.text, mitHl(a.nr, { size: 19 }))),
         a.hinweis ? pa(B.runs(a.hinweis, { size: 17, italics: true, color: F.GRAU_T }), { spacing: { before: 30, after: 0, line: 240 } }) : null].filter(Boolean), w2),
       z([pa([B.t(`___ / ${a.punkte}`, { size: 19 })])], w3)
     ] }));
@@ -123,7 +131,15 @@ function aufgabenListe(B, liste, ersetze = (s) => s) {
   return out;
 }
 // Arbeitsauftrag mit kleinen Symbolen
-const aa = (B, symbole, kopf, text) => B.teil(symbole, `**${kopf}** ${text}`, { spacing: { before: 100, after: 50, line: 250 } });
+const aa = (B, symbole, kopf, text, key) => (hl(key)
+  ? new Paragraph({ keepNext: true, spacing: { before: 100, after: 50, line: 250 }, children: [...symbole.flatMap((x) => [bild(x, 0.6, 0.6), B.t(' ')]), ...B.runs(`**${kopf}** ${text}`, { highlight: hl(key) })] })
+  : B.teil(symbole, `**${kopf}** ${text}`, { spacing: { before: 100, after: 50, line: 250 } }));
+// Merksatz (wie B.merksatz), im Ansichtsexemplar mit Textmarker
+const merksatz = (B, zeilen, key) => (hl(key)
+  ? B.kasten(zeilen.map((teile) => new Paragraph({ spacing: { after: 100, line: 300 }, children: teile.flatMap((x) => (typeof x === 'string' ? B.runs(x, { highlight: hl(key) }) : [B.b(x.l, { highlight: hl(key) })])) })), { kopf: 'Merksatz', fill: 'FFFFFF', kopfFill: F.BLAU_HELL, rand: '2E75B6' })
+  : B.merksatz('Merksatz', zeilen));
+// Legende im Ansichtsexemplar
+const legende = (B) => (MARKIERT ? new Paragraph({ spacing: { after: 60 }, children: [B.b('Ansichtsexemplar (nicht austeilen): ', { size: 17 }), B.t('direkt klausurrelevant', { size: 17, highlight: 'yellow' }), B.t('  ·  ', { size: 17 }), B.t('könnte gestrichen werden', { size: 17, highlight: 'magenta' }), B.t('  ·  ohne Markierung = unterstützend', { size: 17 })] }) : null);
 const zelleFarbig = (B, kinder, w, fill, o = {}) => B.zelle(kinder, w, { borders: rahmen('000000', 4), shading: fill ? { type: ShadingType.CLEAR, color: 'auto', fill } : undefined, ...o });
 
 /* =====================================================================
@@ -135,9 +151,10 @@ function blatt1(B) {
   const fall = fallKasten(B, 'Fallsituation', t.fall);
   push(
     blattKopf(B, t.kopf),
+    legende(B),
     lernziel(B, t.lernziel),
     fall.tabelle,
-    aa(B, [IC.lesen, IC.markieren], 'AA1: Identifizieren – Hinweise finden:', t.aa1.text),
+    aa(B, [IC.lesen, IC.markieren], 'AA1: Identifizieren – Hinweise finden:', t.aa1.text, 'b1aa1'),
     B.meta('8 min · Einzelarbeit → Plenum · AFB I · IKL W4 Nr. 1 · KA-Bezug KB 1, Aufg. 5.3 (Hinweise im Fall erkennen = Begründungsteil) · ' + t.aa1.hinweis)
   );
   const w3 = Math.floor(B.breite / 3);
@@ -147,7 +164,7 @@ function blatt1(B) {
     leer(80),
     B.kasten([...t.info.absaetze.map((a) => new Paragraph({ spacing: { after: 50, line: 250 }, children: B.runs(a, { size: 20 }) }))], { kopf: t.info.kopf }),
     klein(B, t.info.woerter),
-    aa(B, [IC.lesen, IC.schreiben], 'AA2: Erklären – Höhe und Ausfälle:', t.aa2.text),
+    aa(B, [IC.lesen, IC.schreiben], 'AA2: Erklären – Höhe und Ausfälle:', t.aa2.text, 'b1aa2'),
     B.meta('9 min (mit Infotext und Merksatz) · Partnerarbeit (lesen) → Einzelarbeit → Plenum · AFB I–II · IKL W4 Nr. 2 · Brücke zu Woche 2 (neurogener Schock) und KA KB 1, Aufg. 5.5')
   );
   push(...t.aa2.faelle.map(([b, text]) => new Paragraph({ spacing: { after: 20, line: 240 }, indent: { left: 260, hanging: 260 }, children: [B.b(b + '  ', { size: 19 }), ...B.runs(text, { size: 19 })] })), leer(40));
@@ -162,7 +179,7 @@ function blatt1(B) {
       new Paragraph({ spacing: { before: 60, after: 0 }, children: [...B.runs(t.aa2.pfeiffer, { size: 18 }), B.t(' '), B.lsg ? B.loes(t.aa2.pfeifferLoesung, { bold: true, size: 18 }) : B.t('_'.repeat(14), { size: 18 })] })],
     wBild
   ));
-  push(leer(60), B.merksatz('Merksatz', t.merksatz));
+  push(leer(60), merksatz(B, t.merksatz, 'b1merk'));
   // AA3 Praxisübung
   push(
     aa(B, [IC.checkout], 'AA3: Üben – Kopf halten und achsengerecht drehen 👥', t.aa3.text),
@@ -194,10 +211,11 @@ function blatt2(B) {
   const fall = fallKasten(B, 'Ausgangssituation', t.fall);
   push(
     blattKopf(B, t.kopf, { pageBreakBefore: true }),
+    legende(B),
     lernziel(B, t.lernziel),
     fall.tabelle,
     new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 60, after: 0 }, children: [B.b(t.vielleicht, { size: 21 })] }),
-    aa(B, je([IC.stift], [IC.handy, IC.stift]), 'AA1: Entscheiden – Frühdienst mit Ampel:', je(t.aa1.text.analog, t.aa1.text.digital)),
+    aa(B, je([IC.stift], [IC.handy, IC.stift]), 'AA1: Entscheiden – Frühdienst mit Ampel:', je(t.aa1.text.analog, t.aa1.text.digital), 'b2aa1'),
     B.meta(je('15 min · Messkarten aus Anhang A nacheinander zeigen – sitzen 🟢 / Hand heben 🟡 / aufstehen 🔴 · EA + Bewegung → Plenum · AFB II–III · Methodenwechsel (Bewegung) · IKL W4 Nr. 3',
       '15 min · verlauf.html allein oder zu zweit (ca. 8 min), dann Besprechung im Plenum · EA/PA (Handy) → Plenum · AFB II–III · Methodenwechsel (Smartphone) · IKL W4 Nr. 3')),
     DIGITAL() ? qrKasten(B, 'verlauf', [kl(B, t.aa1.handy)]) : null,
@@ -224,7 +242,7 @@ function blatt2(B) {
     wK
   ));
   if (B.lsg) push(B.lp('Auflösung: Karte 1 🟢 (zu früh, wer 🔴 wählt) · 2 🟢 (Falle: niedriger, aber stabiler Blutdruck – Schockindex 0,7) · 3 🟡 (nach Belastung nachmessen; 🔴 = Fehlalarm) · 4 🟢 · 5 🟡 (Puls +12, Abstand kleiner – nachmessen, Pflegefachkraft informieren; 🔴 = zu früh) · 6 🔴 (Trend, Blässe, Durst, Schulterschmerz links – Schockindex erst 0,9!). Gewonnen: Karte 6 = 🔴 und höchstens 1 Fehlalarm.', { spacing: { before: 40, after: 40 } }));
-  push(leer(80), B.merksatz('Merksatz', t.merksatz), klein(B, t.woerter));
+  push(leer(80), merksatz(B, t.merksatz), klein(B, t.woerter));
   push(
     aa(B, [IC.schreiben], 'AA2: Wissen anwenden – Aufgaben mit Punkten:', 'Allein (10 Minuten). Hilfe: Merksatz und Ihre Kurve.'),
     B.meta('13 min (10 min schreiben, 3 min Musterlösung) · EA → Plenum · AFB I–III · 2.1 Befunde mit Vorwerten (Muster KA KB 1, Aufg. 5.4 und W1 4.1) · 2.3 Beurteilen (AFB III) · 2.4 = KA KB 1, Aufg. 5.5 · Examensvorbild: Mai 2026 Tag 1, Aufg. 1.3–1.5 (Nachblutung, „hämorrhagischer Schock“, Vitalzeichen); Jan 2026 Tag 2, Aufg. 1.4 („Blutdruckabfall oder Pulserhöhung rechtzeitig erkannt“)'),
@@ -240,15 +258,16 @@ function blatt3(B) {
   const t = T.B3;
   push(
     blattKopf(B, t.kopf, { pageBreakBefore: true }),
+    legende(B),
     lernziel(B, t.lernziel),
     B.kasten([
       new Paragraph({ spacing: { after: 0, line: 250 }, children: [...B.runs(t.leitfall[0], { size: 20 }), ...B.runs(t.leitfall[1], { size: 20, italics: true })] })
-      , new Paragraph({ spacing: { before: 40, after: 0 }, children: [B.emoji('💬 '), B.b('Leitfrage: ', { size: 20 }), B.i(t.leitfrage, { size: 20 })] }),
+      , new Paragraph({ spacing: { before: 40, after: 0 }, children: [B.emoji('💬 '), B.b('Leitfrage: ', mitHl('leitfrage', { size: 20 })), B.i(t.leitfrage, mitHl('leitfrage', { size: 20 }))] }),
       new Paragraph({ spacing: { before: 30, after: 0 }, children: [B.b('Antwort am Ende der Stunde:', { size: 18 })] }),
       ...(B.lsg ? [new Paragraph({ spacing: { after: 0, line: 245 }, children: B.runs(t.leitfrageLoesung, { size: 19, highlight: 'yellow' }) })]
         : [linien(B, 2, [], B.breite - 240)])
     ], { kopf: 'Fallbezug: „Reanimation – und nicht nur ich war hilflos“ (Auszug)', fill: 'FFFFFF', kopfFill: 'FFFFFF', rand: '000000' }),
-    aa(B, [IC.lesen, IC.schreiben], 'AA1: Beschreiben – Der Weg der Luft:', t.aa1.text),
+    aa(B, [IC.lesen, IC.schreiben], 'AA1: Beschreiben – Der Weg der Luft:', t.aa1.text, 'b3aa1'),
     B.meta('9 min · Selbstversuch (30 s) → EA/PA → Plenum · AFB I–II · IKL Fremdkörperaspiration Nr. 1 (Atemwegsanatomie, Ventilation, Folgen der Hypoxie)'),
     B.lp(t.aa1.selbstversuch),
     B.kasten(t.aa1.info.map((a) => new Paragraph({ spacing: { after: 40, line: 250 }, children: B.runs(a, { size: 20 }) })), { kopf: 'Informationstext: Atemwege und Ventilation' })
@@ -260,7 +279,7 @@ function blatt3(B) {
     [kl(B, t.aa1.wortspeicher, { italics: true }), ...[1, 2, 3, 4, 5, 6].map(zeile)],
     wBild
   ));
-  push(leer(60), B.merksatz('Merksatz', t.merksatz1));
+  push(leer(60), merksatz(B, t.merksatz1, 'b3merk1'));
   // AA2 Simulation
   push(
     aa(B, je([IC.stift], [IC.handy, IC.stift]), 'AA2: Unterscheiden – Notfall-Ampel im Speisesaal (zu zweit):', je(t.aa2.text.analog, t.aa2.text.digital)),
@@ -271,8 +290,8 @@ function blatt3(B) {
   );
   const w1 = 1800, w2 = Math.floor((B.breite - w1) / 2);
   push(B.tabelle([{ text: '', w: w1 }, { text: 'leichte Verlegung', w: w2 }, { text: 'schwere Verlegung', w: B.breite - w1 - w2 }],
-    t.aa2.zeilen.map((z) => [{ text: `**${z[0]}**`, fill: F.LACHS }, { lsg: z[1] }, { lsg: z[2] }]), { hoehe: 600, schrift: 18 }));
-  push(leer(60), B.merksatz('Merksatz', t.merksatz2));
+    t.aa2.zeilen.map((z) => [{ text: `**${z[0]}**`, fill: F.LACHS, o: mitHl('b3tab') }, { lsg: z[1] }, { lsg: z[2] }]), { hoehe: 600, schrift: 18 }));
+  push(leer(60), merksatz(B, t.merksatz2, 'b3merk2'));
   // AA3 im KA-Format
   const fall = fallKasten(B, 'Fallsituation', t.fall);
   const ersetze = (s) => s.replace(/\{([^}]+)\}/g, (_, w) => String(fall.zeile(w)));
@@ -479,6 +498,10 @@ async function main() {
     const fassung = modus === 'analog' ? 'analoge Fassung' : 'digitale Fassung';
     const SV = bausteine({ lsg: false, breite: BREITE_HOCH });
     await speichern(new Document({ creator: 'KB I · 3BFP2', title: `KB1 W4 Wirbelsäule, innere Blutung, Atemwege – Schülerversion (${fassung})`, styles: STILE, sections: [sektionHoch(alleBlaetter(SV))] }), name + '_SV.docx');
+    MARKIERT = true;
+    const SVM = bausteine({ lsg: false, breite: BREITE_HOCH });
+    await speichern(new Document({ creator: 'KB I · 3BFP2', title: `KB1 W4 – Schülerversion (${fassung}), Ansichtsexemplar mit Markierungen`, styles: STILE, sections: [sektionHoch(alleBlaetter(SVM), T.FUSS + ' · Ansichtsexemplar mit Markierungen')] }), name + '_SV_markiert.docx');
+    MARKIERT = false;
     const LQ = bausteine({ lsg: true, breite: BREITE_QUER });
     const LH = bausteine({ lsg: true, breite: BREITE_HOCH });
     const sektionen = [

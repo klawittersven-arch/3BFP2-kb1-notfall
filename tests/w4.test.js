@@ -125,6 +125,15 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
     const seite = (n) => execSync(`pdftotext -f ${n} -l ${n} "${PDF}" -`, { stdio: ['ignore', 'pipe', 'ignore'] }).toString();
     pruefe(seite(1).includes('Wirbelsäulenverletzung: nicht bewegen') && seite(3).includes('Innere Blutung: den Verlauf') && seite(5).includes('Atemwege: wenn etwas im Hals'), 'jedes Blatt beginnt auf einer ungeraden Seite (1, 3, 5) – beidseitig kopierbar');
   } else console.log('  (PDF fehlt oder ist älter als die .docx – Seitenprüfung übersprungen)');
+  const MK = SV.replace(/_SV\.docx$/, '_SV_markiert.docx');
+  const mkXml = docxText(MK), mkText = nurText(mkXml);
+  pruefe(/w:highlight w:val="yellow"/.test(mkXml) && /w:highlight w:val="magenta"/.test(mkXml) && /Ansichtsexemplar \(nicht austeilen\)/.test(mkText), 'Ansichtsexemplar: gelb (klausurrelevant) und pink (könnte weg) markiert, Legende vorhanden');
+  pruefe(mkText.split('\n').filter((z) => !/^Ansichtsexemplar/.test(z)).join('\n') === svText, 'Ansichtsexemplar: gleicher Text wie die Schülerversion (nur Markierungen und Legende)');
+  const MKPDF = MK.replace(/\.docx$/, '.pdf');
+  if (fs.existsSync(MKPDF) && fs.statSync(MKPDF).mtimeMs >= fs.statSync(MK).mtimeMs - 1000) {
+    const seiten = Number((execSync(`pdfinfo "${MKPDF}"`, { stdio: ['ignore', 'pipe', 'ignore'] }).toString().match(/Pages:\s+(\d+)/) || [])[1]);
+    pruefe(seiten === 6, 'Ansichtsexemplar (PDF): 6 Seiten', seiten);
+  }
   }
   console.log('\n== QR-Codes');
   for (const n of ['verlauf', 'speisesaal', 'rueckenmark', 'trend', 'atemweg']) {
