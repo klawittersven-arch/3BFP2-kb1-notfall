@@ -85,6 +85,8 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
   const stelle = T4.B1.aa1.loesung.map((spalte) => Math.min(...spalte.map(([, wort]) => fallText.indexOf(wort))));
   const rang = stelle.map((x) => stelle.filter((y) => y < x).length);
   pruefe(stelle.every((x) => x >= 0) && rang.every((r, i) => r !== i), 'Blatt 1, AA1: Tabellenspalten nicht in der Reihenfolge des Falls', T4.B1.aa1.spalten.join(' | '));
+  const tabReihe = T4.B3.aa2.zeilen.flatMap((z) => [z[1], z[2]]);
+  pruefe(T4.B3.aa2.kasten.length === 8 && tabReihe.every((w) => T4.B3.aa2.kasten.includes(w)) && T4.B3.aa2.kasten.every((w, i) => w !== tabReihe[i]), 'Blatt 3, AA2: Kasten enthält alle acht Kärtchen, keins an seiner Tabellenstelle');
   pruefe(speicher.length === 6 && speicher.every((w) => T4.B3.aa1.begriffe.includes(w)) && speicher.every((w, i) => w !== T4.B3.aa1.begriffe[i]), 'Blatt 3: Wortspeicher enthält alle Begriffe, aber keinen an der Stelle seiner Nummer');
   pruefe(W4.rueckenmark.karten.length === 8 && W4.trend.reihen.length === 5 && W4.atemweg.karten.length === 6, 'Schon fertig?: 8 + 5 + 6 Karten');
 
@@ -112,6 +114,10 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
   pruefe(/Unterscheiden Sie anhand der Situation eine leichte von einer schweren Atemwegsverlegung\./.test(svText), 'Blatt 3: Aufgabe nach Muster KA 4.1');
   pruefe(/Beim Frühstück verschluckte sie sich am Kaffee und hustete kräftig\. Ich ließ sie husten, und nach kurzer Zeit war alles wieder gut\./.test(svText), 'Leitfall wörtlich wie im Fallbeispiel');
   pruefe(!/Schockindex rechnen|Werte lesen und mit dem Vorwert vergleichen\. \*\*2/.test(svText) && !/Schockindex rechnen/.test(svText), 'Blatt 2, AA1: keine Schrittfolge mehr (kein „Schockindex rechnen“)');
+  pruefe(!/Aufgaben mit Punkten/.test(svText) && !/\nPunkte\n/.test(svText) && !/(^|[^_])___ \/ \d/.test(svText), 'Schülerversion: keine Punkte bei den Aufgaben, kein „Aufgaben mit Punkten“');
+  pruefe(/\n2 P\.\n/.test(nurText(docxText(LV))), 'Lehrerversion: Punkte bei den Aufgaben');
+  pruefe(!/Berücksichtigen Sie die Vorwerte/.test(svText), 'Blatt 2, 2.1: ohne Hinweis „Berücksichtigen Sie die Vorwerte“');
+  pruefe(/Ordnen Sie die Zeichen und Maßnahmen aus dem Kasten in die Tabelle ein/.test(svText) && !/1–4 Fingern|sechs kurze Szenen spielen/.test(svText.slice(0, svText.lastIndexOf('Schon fertig?'))), 'Blatt 3, AA2: Zuordnungsaufgabe statt Spiel');
   pruefe(!/Rückenschläge|Oberbauchkompression/.test(svText), 'Schülerversion: kein Vorgehen bei schwerer Verlegung (Planung: Woche 5)');
   pruefe((svText.match(/Schon fertig\?/g) || []).length === 3, 'jedes Blatt endet mit „Schon fertig?“');
   pruefe(/SpO₂ 98 %/.test(svText) && /Blutzucker 96 mg\/dl/.test(svText) && /trockene Schürfwunde/.test(svText) && /Kein Hinweis auf eine innere Blutung/.test(nurText(docxText(LV))), 'Blatt 2, 2.1: Ablenker im Fall (normale Werte, Schürfwunde) – nicht alles ist ein Hinweis');
@@ -120,13 +126,14 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
     const x = svText.match(/Handy|Smartphone|QR|scann|Link:/i);
     pruefe(!x, 'analoge Fassung: kein Handy, kein QR-Code', x && x[0]);
     pruefe(/Kreuzen Sie bei jeder Messung an/.test(svText) && ['06:00 Uhr', '06:30 Uhr', '07:00 Uhr', '07:20 Uhr'].every((z) => svText.includes(z)) && !/sitzen bleiben|aufstehen 🔴|Messkarte/.test(svText), 'analoge Fassung, Blatt 2: Ankreuz-Aufgabe (4 Messungen) statt Messkarten und Aufstehen');
-    pruefe(/1–4 Fingern/.test(svText), 'analoge Fassung, Blatt 3: Entscheidungsspiel mit Fingern');
     const lvText = nurText(docxText(LV));
-    pruefe(/Anhang A · Notfall-Ampel im Speisesaal/.test(lvText) && !/Anhang B|Messkarten für den Live-Verlauf/.test(lvText), 'analoge Lehrerversion: nur noch ein Anhang (Entscheidungsspiel)');
+    pruefe(!/Anhang [AB]|Messkarten für den Live-Verlauf|Entscheidungsspiel nach/.test(lvText), 'analoge Lehrerversion: kein Anhang mehr (kein Messkarten-, kein Entscheidungsspiel-Anhang)');
+    pruefe(!/Für die Schnellen/.test(svText), 'analoge Fassung: keine Simulation „Für die Schnellen“');
   } else {
     const x = svText.match(/sitzen bleiben|Hand heben|aufstehen\b|Ohne Handy|liest .{0,30}vor|Fingern|Ihre Lehrkraft zeigt/i);
     pruefe(!x, 'digitale Fassung: keine analogen Alternativen genannt', x && x[0]);
-    pruefe((svText.match(/Kein QR-Scanner\?/g) || []).length === 5, 'digitale Fassung: 5 QR-Kästen (Live-Verlauf, Simulation, 3 × „Schon fertig?“)');
+    pruefe((svText.match(/Kein QR-Scanner\?/g) || []).length === 5, 'digitale Fassung: 5 QR-Kästen (Live-Verlauf, 3 × „Schon fertig?“, Simulation „Für die Schnellen“)');
+    pruefe(svText.lastIndexOf('Für die Schnellen') > svText.lastIndexOf('Schon fertig?') && /speisesaal\.html/.test(svText.slice(svText.lastIndexOf('Für die Schnellen'))), 'digitale Fassung: Simulation ganz unten auf Blatt 3 („Für die Schnellen“)');
   }
   const PDF = SV.replace(/\.docx$/, '.pdf');
   if (fs.existsSync(PDF) && fs.statSync(PDF).mtimeMs >= fs.statSync(SV).mtimeMs - 1000) {

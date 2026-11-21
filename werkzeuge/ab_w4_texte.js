@@ -126,9 +126,9 @@ const B2 = {
     {
       nr: '2.1', punkte: 3, zeilen: 4,
       vorsatz: 'Um 07:20 Uhr erheben Sie bei Finn: Puls 104/min (07:00 Uhr: 88/min; 06:00 Uhr: 76/min) · Blutdruck 118/88 mmHg (07:00 Uhr: 122/82; 06:00 Uhr: 124/78) · Atemfrequenz 22/min (06:00 Uhr: 16/min) · SpO₂ 98 % · Temperatur 36,8 °C · Blutzucker 96 mg/dl. Er ist blass, die Hände sind kühl. Am rechten Knie hat er eine kleine, trockene Schürfwunde. Er sagt: „Ich hab so Durst. Und meine linke Schulter tut komisch weh. Kann ich meine Mutter anrufen?“',
-      text: 'Identifizieren Sie drei Befunde, die bei Finn auf eine innere Blutung hinweisen. Berücksichtigen Sie die Vorwerte.',
+      text: 'Identifizieren Sie drei Befunde, die bei Finn auf eine innere Blutung hinweisen.',
       loesung: [
-        'z. B. (je Befund mit Vorwert bzw. Zuordnung 1 P., max. 3 P.): Puls steigt von 76 über 88 auf 104/min (Kompensation durch den Sympathikus) · Abstand der Blutdruckwerte wird kleiner: 46 → 40 → 30 mmHg (systolisch sinkt, diastolisch steigt – die Gefäße werden eng) · Atemfrequenz steigt von 16 auf 22/min · blass, kühle Hände (Zentralisation) · Durst (Volumenmangel) · Schmerz in der linken Schulter (Hinweis auf Milzverletzung: Blut reizt das Zwerchfell) · Schockindex steigt von 0,6 auf 0,9.',
+        'z. B. (je Befund 1 P., max. 3 P.; wer den Verlauf mit dem Vorwert nennt, zeigt das Verständnis am besten): Puls steigt von 76 über 88 auf 104/min (Kompensation durch den Sympathikus) · Abstand der Blutdruckwerte wird kleiner: 46 → 40 → 30 mmHg (systolisch sinkt, diastolisch steigt – die Gefäße werden eng) · Atemfrequenz steigt von 16 auf 22/min · blass, kühle Hände (Zentralisation) · Durst (Volumenmangel) · Schmerz in der linken Schulter (Hinweis auf Milzverletzung: Blut reizt das Zwerchfell) · Schockindex steigt von 0,6 auf 0,9.',
         'Kein Hinweis auf eine innere Blutung (0 P.): SpO₂ 98 %, Temperatur 36,8 °C und Blutzucker 96 mg/dl sind normal; die kleine, trockene Schürfwunde am Knie blutet nicht und erklärt keinen Volumenmangel; der Wunsch, die Mutter anzurufen, ist kein Krankheitszeichen.'
       ]
     },
@@ -192,17 +192,19 @@ const B3 = {
   },
   merksatz1: [['Beim Schlucken verschließt der ', { l: 'Kehldeckel' }, ' die Luftröhre. Fremdkörper rutschen eher in den ', { l: 'rechten Hauptbronchus' }, '. Atemweg verlegt → keine Luft in die ', { l: 'Lungenbläschen' }, ' → ', { l: 'Sauerstoffmangel (Hypoxie)' }, ': Zyanose, ', { l: 'Bewusstlosigkeit' }, ', ', { l: 'Kreislaufstillstand' }, ' – in ', { l: 'wenigen Minuten' }, '. Das ', { l: 'Gehirn' }, ' ist am empfindlichsten.']],
   aa2: {
-    text: {
-      analog: 'Ihre Lehrkraft liest sechs kurze Szenen vor – jeweils mit vier Möglichkeiten. Entscheiden Sie zu zweit schnell und zeigen Sie mit **1–4 Fingern**, was Sie tun. **Bestanden:** niemand wird bewusstlos, höchstens **ein Fehlalarm**. **Danach:** Füllen Sie die Tabelle aus.',
-      digital: 'Ein Handy für zwei: QR-Code scannen und sechs kurze Szenen spielen. **Danach:** Füllen Sie die Tabelle aus.'
-    },
-    handy: '**Notfall-Ampel im Speisesaal:** sechs Szenen. **Bestanden:** niemand wird bewusstlos, höchstens **ein Fehlalarm**.',
+    text: 'Allein (4 Minuten). Ordnen Sie die Zeichen und Maßnahmen aus dem Kasten in die Tabelle ein.',
+    // Zeile: [Merkmal, leichte Verlegung, schwere Verlegung] – die SuS schreiben die Kärtchen aus dem Kasten in die Felder
     zeilen: [
-      ['Husten', 'kräftig, wirksam', 'schwach, leise, unwirksam – oder gar kein Husten'],
-      ['Sprechen und Atmen', 'kann sprechen (auch rufen) und atmen', 'kann nicht oder nur einzelne Wörter sprechen; kaum oder keine Atmung, evtl. Pfeifen'],
-      ['weitere Zeichen', 'Gesicht oft rot', 'Griff an den Hals, Angst; später Zyanose, dann Bewusstlosigkeit'],
-      ['So handle ich', 'zum Husten auffordern, bleiben, beobachten – nichts zu trinken geben, nicht klopfen', 'sofort laut Hilfe rufen, Notruf veranlassen, nicht allein lassen, sofort handeln']
-    ]
+      ['Husten', 'hustet kräftig', 'Husten wird schwach oder fehlt'],
+      ['Sprechen und Atmen', 'kann sprechen und atmen', 'kann nicht sprechen, kaum Atmung'],
+      ['weitere Zeichen', 'Gesicht oft rot', 'Griff an den Hals, später blaue Lippen'],
+      ['So handle ich', 'zum Husten auffordern, bleiben, beobachten', 'sofort laut Hilfe rufen, Notruf veranlassen']
+    ],
+    // Reihenfolge bewusst gemischt – nicht in der Reihenfolge der Tabelle
+    kasten: ['kann nicht sprechen, kaum Atmung', 'zum Husten auffordern, bleiben, beobachten', 'Gesicht oft rot', 'Husten wird schwach oder fehlt', 'sofort laut Hilfe rufen, Notruf veranlassen', 'hustet kräftig', 'Griff an den Hals, später blaue Lippen', 'kann sprechen und atmen'],
+    ergaenzung: 'Im Gespräch ergänzen: Bei leichter Verlegung nichts zu trinken geben und nicht auf den Rücken klopfen (stört den wirksamen Husten). Bei schwerer Verlegung nicht allein lassen; blaue Lippen (Zyanose) sind ein spätes Zeichen. Woran man sicher erkennt, dass noch Luft durchkommt: Die Person kann sprechen oder kräftig husten.',
+    // nur digitale Fassung: Simulation als Zusatz ganz unten auf Blatt 3
+    schnelle: '**Für die Schnellen (zu zweit):** Notfall-Ampel im Speisesaal – sechs Szenen am Handy. **Bestanden:** niemand wird bewusstlos, höchstens **ein Fehlalarm**.'
   },
   merksatz2: [[{ l: 'Leichte Verlegung' }, ': ', { l: 'kräftiger, wirksamer Husten' }, ', kann ', { l: 'sprechen und atmen' }, ' → ', { l: 'zum Husten auffordern' }, ', bleiben, beobachten. ', { l: 'Schwere Verlegung' }, ': Husten ', { l: 'schwach oder fehlt' }, ', ', { l: 'kann nicht sprechen' }, ', kaum Atmung, Griff an den Hals, später Zyanose → ', { l: 'sofort Hilfe rufen und handeln' }, '. Nicht auf ', { l: 'blaue Lippen' }, ' warten! Wer laut rufen kann, bekommt Luft.']],
   fall: [

@@ -141,7 +141,7 @@
       el('p', { text: text }),
       el('p', { text: 'Punkte: ' + s.punkte + ' / ' + (2 * S.szenen.length) + ' · Fehlalarme: ' + s.fehlalarme + ' · bewusstlos: ' + s.bewusstlos }),
       tab,
-      el('div', { klasse: 'hinweis', text: '✍️ Füllen Sie jetzt die Tabelle „leicht oder schwer?“ auf dem Arbeitsblatt aus.' }),
+      el('div', { klasse: 'hinweis', text: '✍️ Vergleichen Sie mit Ihrer Tabelle „leicht oder schwer?“ auf dem Arbeitsblatt.' }),
       el('button', { klasse: 'knopf zweit', type: 'button', text: 'Noch einmal (neue Reihenfolge)', onclick: function () { neu(); window.scrollTo(0, 0); } })));
   }
 
