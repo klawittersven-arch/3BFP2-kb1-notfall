@@ -156,6 +156,7 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
     const lvTextD = nurText(docxText(LV));
     pruefe(!/Wortspeicher/.test(svText) && (info.match(/_{18}/g) || []).length === 8 && !/in den Rachen|heißt Ventilation|In den Lungenbläschen|Hustenreflex/.test(info) && lueckenWoerter.every((w) => lvTextD.includes(w)), 'digitale Fassung, Blatt 3 AA1: Infotext als Lückentext (8 Lücken, Wörter nur in der Lehrerversion), kein Wortspeicher');
     pruefe(!/3\.4 /.test(svText), 'digitale Fassung: „Für die Schnellen“ ohne 3.4 (dafür Atemweg-Check)');
+    pruefe(/Bei einem Fehler oder wenn die Zeit abläuft, beginnen Sie von vorn\./.test(svText), 'digitale Fassung, Blatt 3 AA1: Zeitlimit von „Wo ist was?“ steht im Arbeitsauftrag');
     const b2 = svText.slice(svText.indexOf('Innere Blutung: den Verlauf im Blick'), svText.indexOf('Atemwege: wenn etwas im Hals'));
     pruefe(!/Meine Punkte|Fehlalarme: ____|\nWer\?\n/.test(b2) && /Finns Kurve/.test(b2) && /So wäre es um 8 Uhr gewesen/.test(b2), 'digitale Fassung, Blatt 2: keine Ergebnistabelle mehr, große Kurve mit 08:00-Kasten');
     const b1 = svText.slice(0, svText.indexOf('Innere Blutung: den Verlauf im Blick'));

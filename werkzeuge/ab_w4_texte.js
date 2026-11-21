@@ -210,7 +210,7 @@ const B3 = {
   aa1: {
     text: {
       analog: '**a) Selbstversuch:** Finger vorn auf den Hals legen und schlucken. Was spüren Sie? Geht schlucken und einatmen gleichzeitig? **b)** Text lesen, Bild beschriften.',
-      digital: '**a) Selbstversuch:** Finger vorn auf den Hals legen und schlucken. Was spüren Sie? Geht schlucken und einatmen gleichzeitig? **b)** Scannen Sie den QR-Code und tippen Sie die Teile der Atemwege im Bild an. Bei einem Fehler beginnen Sie von vorn. **c)** Wenn alles richtig ist, bekommen Sie Wörter: Tragen Sie sie in die Lücken im Text ein.'
+      digital: '**a) Selbstversuch:** Finger vorn auf den Hals legen und schlucken. Was spüren Sie? Geht schlucken und einatmen gleichzeitig? **b)** Scannen Sie den QR-Code und tippen Sie die Teile der Atemwege im Bild an. Bei einem Fehler oder wenn die Zeit abläuft, beginnen Sie von vorn. **c)** Wenn alles richtig ist, bekommen Sie Wörter: Tragen Sie sie in die Lücken im Text ein.'
     },
     // Informationstext: docs/w4/inhalte.js (W4.atemwegeText) – analog mit fetten Fachwörtern, digital als Lückentext
     handy: '**Wo ist was? Die Atemwege:** sechs Fragen – tippen Sie die Teile im Bild an. Alles richtig → Sie bekommen die Wörter für den Lückentext.',
