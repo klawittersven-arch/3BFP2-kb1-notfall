@@ -1,0 +1,107 @@
+/* KB I · Woche 4 – eigene Gestaltung der Handy-Übungen (unabhängig von Woche 2) */
+:root {
+  --grund: #f4f6f7;
+  --flaeche: #ffffff;
+  --text: #1d2a30;
+  --leise: #56656c;
+  --linie: #d5dde0;
+  --kopf: #25434b;
+  --akzent: #2e75b6;
+  --gruen: #2e8b57;
+  --gruen-hell: #e4f4ea;
+  --gelb: #c98a00;
+  --gelb-hell: #fff4d6;
+  --rot: #c0392b;
+  --rot-hell: #fbe6e3;
+  --lachs: #fae2d5;
+  --radius: 12px;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--grund); color: var(--text);
+  font: 17px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, Calibri, Arial, sans-serif;
+}
+.kopf { background: var(--kopf); color: #fff; padding: 12px 16px 14px; }
+.kopf p { margin: 0; font-size: 13px; opacity: .85; }
+.kopf h1 { margin: 2px 0 0; font-size: 21px; line-height: 1.25; }
+main { max-width: 680px; margin: 0 auto; padding: 14px 16px 40px; }
+.karte { background: var(--flaeche); border: 1px solid var(--linie); border-radius: var(--radius); padding: 14px 16px; margin: 0 0 14px; }
+.karte h2 { margin: 0 0 6px; font-size: 19px; }
+.karte h3 { margin: 10px 0 4px; font-size: 16px; }
+.leise { color: var(--leise); font-size: 14px; }
+.klein { font-size: 14px; }
+.fortschritt { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--leise); margin: 0 0 10px; }
+.fortschritt .spur { flex: 1; height: 8px; background: var(--linie); border-radius: 4px; overflow: hidden; }
+.fortschritt .balken { height: 100%; background: var(--akzent); width: 0; transition: width .3s; }
+button { font: inherit; cursor: pointer; }
+.knopf {
+  display: block; width: 100%; min-height: 48px; padding: 11px 14px; margin: 8px 0 0;
+  border: 2px solid var(--akzent); border-radius: 10px; background: var(--akzent); color: #fff; font-weight: 600; text-align: center;
+}
+.knopf.zweit { background: #fff; color: var(--akzent); }
+.knopf:disabled { opacity: .45; cursor: default; }
+.wahl {
+  display: block; width: 100%; min-height: 52px; padding: 10px 14px; margin: 8px 0 0; text-align: left;
+  border: 2px solid var(--linie); border-radius: 10px; background: #fff; color: var(--text);
+}
+.wahl:active { transform: scale(.99); }
+.wahl.falsch { border-color: var(--rot); background: var(--rot-hell); opacity: .75; }
+.wahl.richtig { border-color: var(--gruen); background: var(--gruen-hell); }
+.wahl:disabled { cursor: default; }
+.ampel { display: grid; gap: 8px; margin-top: 10px; }
+.ampel button { display: flex; align-items: center; gap: 10px; min-height: 56px; padding: 8px 12px; border-radius: 10px; border: 2px solid; background: #fff; text-align: left; color: var(--text); }
+.ampel .z { font-size: 26px; line-height: 1; }
+.ampel .gruen { border-color: var(--gruen); }
+.ampel .gelb { border-color: var(--gelb); }
+.ampel .rot { border-color: var(--rot); }
+.ampel button:disabled { opacity: .5; }
+.ampel button.gewaehlt { opacity: 1; box-shadow: 0 0 0 3px rgba(0,0,0,.15) inset; }
+.uhr { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--leise); margin-top: 10px; }
+.uhr .spur { flex: 1; height: 6px; background: var(--linie); border-radius: 3px; overflow: hidden; }
+.uhr .rest { height: 100%; background: var(--gelb); width: 100%; transition: width 1s linear; }
+.werte { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 10px 0; }
+.werte div { background: var(--grund); border-radius: 8px; padding: 6px 8px; text-align: center; }
+.werte b { display: block; font-size: 20px; }
+.werte span { font-size: 12px; color: var(--leise); }
+.zeit { font-size: 30px; font-weight: 700; letter-spacing: .5px; }
+.person { font-weight: 700; }
+.zitat { font-style: italic; margin: 6px 0 0; }
+.vorwert { font-size: 14px; color: var(--leise); margin: 4px 0 0; }
+.rueck { border-radius: 10px; padding: 10px 12px; margin-top: 12px; }
+.rueck.ok { background: var(--gruen-hell); border: 2px solid var(--gruen); }
+.rueck.nein { background: var(--rot-hell); border: 2px solid var(--rot); }
+.rueck.mittel { background: var(--gelb-hell); border: 2px solid var(--gelb); }
+.rueck strong:first-child { display: block; margin-bottom: 2px; }
+.hinweis { background: var(--lachs); border-radius: 10px; padding: 8px 12px; margin-top: 10px; font-size: 15px; }
+.liste { margin: 6px 0 0; padding-left: 20px; }
+.liste li { margin: 3px 0; }
+.raum { margin-top: 12px; border-top: 1px dashed var(--linie); padding-top: 10px; }
+.raum summary { cursor: pointer; color: var(--akzent); font-size: 15px; }
+.raum label { display: block; font-size: 14px; margin: 8px 0 2px; }
+.raum input { width: 100%; font: inherit; padding: 9px 10px; border: 2px solid var(--linie); border-radius: 8px; }
+.raum .meldung { font-size: 14px; margin-top: 6px; }
+.monitor { display: flex; align-items: center; gap: 14px; background: #10232a; color: #e8f4f2; border-radius: 12px; padding: 10px 14px; margin: 10px 0; }
+.monitor .spo2 { font-size: 40px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; }
+.monitor .einheit { font-size: 13px; opacity: .8; }
+.monitor svg { flex: 0 0 auto; }
+.monitor .status { font-size: 14px; }
+.spo2.gut { color: #6ee7a8; } .spo2.mittel { color: #ffd166; } .spo2.schlecht { color: #ff7b6b; }
+table.tab { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 8px; }
+table.tab th, table.tab td { border: 1px solid var(--linie); padding: 5px 6px; text-align: left; vertical-align: top; }
+table.tab th { background: var(--grund); }
+.ergebnis { text-align: center; }
+.ergebnis .gross { font-size: 40px; font-weight: 700; margin: 4px 0; }
+.sieg { color: var(--gruen); } .niederlage { color: var(--rot); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.chips button { border: 2px solid var(--linie); background: #fff; border-radius: 20px; padding: 8px 12px; color: var(--text); }
+.chips button.gesetzt { background: var(--gruen-hell); border-color: var(--gruen); }
+.chips button.wackeln { animation: wackeln .3s; border-color: var(--rot); }
+@keyframes wackeln { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+.reihe-ziel { min-height: 40px; border: 2px dashed var(--linie); border-radius: 10px; padding: 6px 8px; margin-top: 8px; font-size: 15px; }
+.wirbel { display: flex; gap: 14px; align-items: flex-start; }
+.wirbel svg { flex: 0 0 auto; }
+.wirbel .knoepfe { flex: 1; }
+.fuss { text-align: center; color: var(--leise); font-size: 12px; margin-top: 18px; }
+.versteckt { display: none !important; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
