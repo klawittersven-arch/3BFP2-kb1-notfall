@@ -85,6 +85,9 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
   const stelle = T4.B1.aa1.loesung.map((spalte) => Math.min(...spalte.map(([, wort]) => fallText.indexOf(wort))));
   const rang = stelle.map((x) => stelle.filter((y) => y < x).length);
   pruefe(stelle.every((x) => x >= 0) && rang.every((r, i) => r !== i), 'Blatt 1, AA1: Tabellenspalten nicht in der Reihenfolge des Falls', T4.B1.aa1.spalten.join(' | '));
+  const mess = T4.B2.aa1.messungen.map((m) => (m.karte ? W4.verlauf.karten.find((k) => k.nr === m.karte) : m));
+  const stufe = { gruen: 0, gelb: 1, rot: 2 };
+  pruefe(mess.length === 5 && mess[0].wer === 'kurz' && mess[0].richtig === 'gelb' && mess[3].richtig === 'gruen' && mess[4].wer === 'finn' && mess[4].richtig === 'rot' && mess.some((m, i) => i && stufe[m.richtig] < stufe[mess[i - 1].richtig]) && mess.every((m, i) => !i || m.zeit > mess[i - 1].zeit), 'Blatt 2, AA1 analog: Dringlichkeit steigt nicht wie eine Treppe (Herr Kurz 🟡 zuerst, 🟢 direkt vor Finns Notfall), Zeiten aufsteigend');
   const LT = W4.verlegung.absaetze.join(' ');
   const ATB = require('../docs/w4/atemwege_bild.js');
   const lueckenWoerter = W4.atemwegeText.absaetze.flatMap((a) => (a.match(/\*\*[^*]+\*\*/g) || []).map((w) => w.slice(2, -2)));
@@ -122,6 +125,7 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
   pruefe(!/Schockindex rechnen|Werte lesen und mit dem Vorwert vergleichen\. \*\*2/.test(svText) && !/Schockindex rechnen/.test(svText), 'Blatt 2, AA1: keine Schrittfolge mehr (kein „Schockindex rechnen“)');
   pruefe(!/Aufgaben mit Punkten/.test(svText) && !/\nPunkte\n/.test(svText) && !/(^|[^_])___ \/ \d/.test(svText), 'Schülerversion: keine Punkte bei den Aufgaben, kein „Aufgaben mit Punkten“');
   pruefe(/\n2 P\.\n/.test(nurText(docxText(LV))), 'Lehrerversion: Punkte bei den Aufgaben');
+  pruefe(/So wäre es um 8 Uhr gewesen/.test(svText) && /Puls 124\/min · Blutdruck 102\/86 mmHg/.test(svText) && /Tragen Sie auch diese Werte in die Kurve ein/.test(svText), 'Blatt 2: Werte für 08:00 Uhr auf dem Blatt – die Kurve lässt sich vollständig ausfüllen');
   pruefe(!/Berücksichtigen Sie die Vorwerte/.test(svText), 'Blatt 2, 2.1: ohne Hinweis „Berücksichtigen Sie die Vorwerte“');
   pruefe(/Tragen Sie die Informationen in Stichworten in die Tabelle ein/.test(svText) && /Nicht alles im Text gehört in die Tabelle/.test(svText) && !/1–4 Fingern|sechs kurze Szenen spielen/.test(svText.slice(0, svText.lastIndexOf('Für die Schnellen'))), 'Blatt 3, AA2: Informationen aus einem Lesetext in die Tabelle');
   pruefe((svText.match(/^Merksatz$/gm) || []).length === 3 && !/Leichte Verlegung: kräftiger, wirksamer Husten/.test(svText), 'Blatt 3: kein Merksatz zu leicht/schwer (sonst würde nur abgeschrieben)');
@@ -133,7 +137,7 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
   if (fassung === 'analog') {
     const x = svText.match(/Handy|Smartphone|QR|scann|Link:/i);
     pruefe(!x, 'analoge Fassung: kein Handy, kein QR-Code', x && x[0]);
-    pruefe(/Kreuzen Sie bei jeder Messung an/.test(svText) && ['06:00 Uhr', '06:30 Uhr', '07:00 Uhr', '07:20 Uhr'].every((z) => svText.includes(z)) && !/sitzen bleiben|aufstehen 🔴|Messkarte/.test(svText), 'analoge Fassung, Blatt 2: Ankreuz-Aufgabe (4 Messungen) statt Messkarten und Aufstehen');
+    pruefe(/Kreuzen Sie bei jeder Messung an/.test(svText) && ['05:50 Uhr', '06:00 Uhr', '07:00 Uhr', '07:10 Uhr', '07:20 Uhr'].every((z, i, a) => svText.includes(z) && (!i || svText.indexOf(a[i - 1]) < svText.indexOf(z))) && !/sitzen bleiben|aufstehen 🔴|Messkarte/.test(svText), 'analoge Fassung, Blatt 2: Ankreuz-Aufgabe (5 Messungen, zeitlich geordnet) statt Messkarten und Aufstehen');
     const lvText = nurText(docxText(LV));
     pruefe(!/Anhang [AB]|Messkarten für den Live-Verlauf|Entscheidungsspiel nach/.test(lvText), 'analoge Lehrerversion: kein Anhang mehr (kein Messkarten-, kein Entscheidungsspiel-Anhang)');
     pruefe(/Kann die Person nicht mehr sprechen/.test(svText) && /3\.4 +Warum soll man einer Person, die kräftig hustet/.test(svText) && !/speisesaal/.test(svText), 'analoge Fassung: Lesetext auf dem Blatt; „Für die Schnellen“ mit 3.2–3.4, ohne Simulation');
