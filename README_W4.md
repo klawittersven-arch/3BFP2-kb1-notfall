@@ -32,18 +32,31 @@ unverändert, und die Tests der Woche 2 laufen weiter.
 
 ## Lehreransicht einrichten (einmalig, ca. 10 Minuten)
 
-Die Lehreransicht braucht einen **eigenen** kleinen Cloudflare-Worker `kb1-notfall-w4` (Dateien `worker-w4/`,
-`wrangler-w4.jsonc`). Der Worker der Woche 2 (`kb1-notfall`, `wrangler.jsonc`) bleibt unverändert und unberührt.
+Die Lehreransicht braucht einen **eigenen** kleinen Cloudflare-Worker `kb1-notfall-w4`. Er liegt mit eigener
+Konfiguration im Ordner `worker-w4/` (`worker-w4/wrangler.jsonc`, `worker-w4/src/index.js`). Der Worker der Woche 2
+(`kb1-notfall`, `wrangler.jsonc` im Hauptordner) bleibt unverändert und unberührt.
 
-1. Zuerst den Branch in `main` zusammenführen.
-2. Cloudflare-Dashboard → **Workers & Pages** → **Erstellen** → **Repository importieren** (GitHub) → dieses Repository wählen.
-3. Projektname: `kb1-notfall-w4` · Produktionszweig: `main` · Build-Befehl: leer lassen ·
-   **Deploy-Befehl: `npx wrangler deploy --config wrangler-w4.jsonc`** · Stammverzeichnis: `/`.
-4. Speichern und bereitstellen. Die Adresse lautet dann `https://kb1-notfall-w4.<Ihr-Konto>.workers.dev`.
-   Steht dort nicht `klawittersven`, die Adresse in `docs/w4/config.js` (`WORKER_URL`) anpassen.
-5. Test: `…/w4/lehrer.html` öffnen → „Neuen Raum starten“ → Code erscheint.
+Voraussetzung: Der Ordner `worker-w4/` ist in `main` (Branch zusammengeführt).
 
-Alternativ von einem Rechner aus: `cd worker && npm install && npx wrangler login && npx wrangler deploy --config ../wrangler-w4.jsonc`.
+1. Cloudflare-Dashboard → **Workers & Pages** → **Create application**.
+2. **GitHub** wählen (das Konto ist schon verbunden, weil der Worker der Woche 2 aus diesem Repository gebaut wird)
+   und das Repository **3BFP2-kb1-notfall** auswählen.
+3. Einstellungen:
+   - **Name des Workers: `kb1-notfall-w4`** – genau so, sonst bricht der Build ab
+     („The name in your Wrangler configuration file … must match the name of your Worker“).
+   - **Git branch** (Produktionszweig): `main`
+   - **Build command:** leer lassen
+   - **Deploy command:** `npx wrangler deploy` (Standard lassen)
+   - **Root directory: `/worker-w4`** (steht ggf. unter den erweiterten Einstellungen)
+4. **Save and Deploy** und warten, bis der Build grün ist (1–2 Minuten).
+5. Test: `https://kb1-notfall-w4.klawittersven.workers.dev` öffnen → Antwort
+   `{"dienst":"KB1 Woche 4 (3BFP2) – Lehreransicht","ok":true}`.
+   Steht in der Adresse statt `klawittersven` etwas anderes, die Adresse in `docs/w4/config.js` (`WORKER_URL`) anpassen.
+6. `…/w4/lehrer.html` öffnen → **Neuen Raum starten** → der Code erscheint.
+
+Ab dann baut Cloudflare beide Worker bei jeder Änderung in `main` neu – das ist normal und ändert an Woche 2 nichts.
+
+Alternativ von einem Rechner mit Node.js aus: `cd worker-w4 && npx wrangler login && npx wrangler deploy`.
 
 Ohne eingerichteten Worker passiert nichts Schlimmes: Der Raumcode ist auf den Handys nur ein aufklappbares, freiwilliges
 Feld; bei einem unbekannten Code läuft die Übung trotzdem.

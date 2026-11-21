@@ -1,10 +1,12 @@
 // Cloudflare-Konfiguration NUR für Woche 4: optionale Lehreransicht (Ergebnisse der Handy-Übungen).
-// Eigenes Cloudflare-Projekt „kb1-notfall-w4“ – unabhängig vom Worker der Woche 2 (wrangler.jsonc).
-// Einrichtung: siehe README_W4.md (Deploy-Befehl: npx wrangler deploy --config wrangler-w4.jsonc).
+// Eigenes Cloudflare-Projekt „kb1-notfall-w4“ – unabhängig vom Worker der Woche 2 (wrangler.jsonc im Hauptordner).
+// Eigener Ordner, damit Cloudflare (Workers Builds) diese Datei findet: im Dashboard „Root directory“ = /worker-w4
+// und Deploy-Befehl wie vorgegeben (npx wrangler deploy). Der Worker-Name im Dashboard muss „kb1-notfall-w4“ lauten.
+// Einrichtung: siehe README_W4.md.
 {
-  "$schema": "worker/node_modules/wrangler/config-schema.json",
+  "$schema": "../worker/node_modules/wrangler/config-schema.json",
   "name": "kb1-notfall-w4",
-  "main": "worker-w4/src/index.js",
+  "main": "src/index.js",
   "compatibility_date": "2026-10-01",
   "workers_dev": true,
   "preview_urls": false,

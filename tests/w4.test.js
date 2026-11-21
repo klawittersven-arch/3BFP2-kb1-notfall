@@ -2,7 +2,7 @@
  *   1. Inhalte und Arbeitsblatt: Messkarten, Szenen, verbotene Wörter, Lösungen nur in der LV, 6 Seiten, QR-Codes
  *   2. Woche 2 unverändert: Geändert sind nur Dateien der Woche 4
  *   3. Handy-Übungen in Handygröße (390 × 844), ohne Worker: durchspielen, gewinnen und verlieren
- *   4. Lehreransicht mit lokalem Worker (wrangler dev --config wrangler-w4.jsonc): Raum, Meldung, Tabelle
+ *   4. Lehreransicht mit lokalem Worker (wrangler dev --config worker-w4/wrangler.jsonc): Raum, Meldung, Tabelle
  * Start (im Ordner tests/): node w4.test.js   ·   Voraussetzung: im Ordner worker/ einmal „npm install“ (für wrangler) */
 'use strict';
 const http = require('http');
@@ -44,7 +44,7 @@ function serverStarten(workerUrl) {
 function workerStarten(port) {
   const WRANGLER = path.join(WURZEL, 'worker', 'node_modules', '.bin', 'wrangler');
   const zustand = fs.mkdtempSync(path.join(os.tmpdir(), 'kb1-w4-wrangler-'));
-  const kind = spawn(WRANGLER, ['dev', '--config', path.join(WURZEL, 'wrangler-w4.jsonc'), '--port', String(port), '--ip', '127.0.0.1', '--persist-to', zustand, '--show-interactive-dev-session=false'],
+  const kind = spawn(WRANGLER, ['dev', '--config', path.join(WURZEL, 'worker-w4', 'wrangler.jsonc'), '--port', String(port), '--ip', '127.0.0.1', '--persist-to', zustand, '--show-interactive-dev-session=false'],
     { cwd: WURZEL, stdio: ['ignore', 'pipe', 'pipe'], env: { ...process.env, WRANGLER_SEND_METRICS: 'false', CI: '1' } });
   let log = ''; kind.stdout.on('data', (d) => { log += d; }); kind.stderr.on('data', (d) => { log += d; });
   const url = `http://127.0.0.1:${port}`;
@@ -261,7 +261,7 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
   server.close();
 
   /* ===================== 4. Lehreransicht mit lokalem Worker ===================== */
-  console.log('\n== Worker (wrangler-w4.jsonc) und Lehreransicht');
+  console.log('\n== Worker (worker-w4/wrangler.jsonc) und Lehreransicht');
   let worker = null;
   try { worker = await workerStarten(8796); } catch (e) { console.log('  (Worker startet nicht – „npm install“ im Ordner worker/? übersprungen)'); }
   if (worker) {
