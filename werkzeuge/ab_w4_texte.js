@@ -124,10 +124,11 @@ const B2 = {
   aufgaben: [
     {
       nr: '2.1', punkte: 3, zeilen: 4,
-      vorsatz: 'Um 07:20 Uhr messen Sie bei Finn: Puls 104/min, Blutdruck 118/88 mmHg (07:00 Uhr: 88/min, 122/82 mmHg; 06:00 Uhr: 76/min, 124/78 mmHg). Er ist blass, die Hände sind kühl. Er sagt: „Ich hab so Durst. Und meine linke Schulter tut komisch weh.“',
+      vorsatz: 'Um 07:20 Uhr erheben Sie bei Finn: Puls 104/min (07:00 Uhr: 88/min; 06:00 Uhr: 76/min) · Blutdruck 118/88 mmHg (07:00 Uhr: 122/82; 06:00 Uhr: 124/78) · Atemfrequenz 22/min (06:00 Uhr: 16/min) · SpO₂ 98 % · Temperatur 36,8 °C · Blutzucker 96 mg/dl. Er ist blass, die Hände sind kühl. Am rechten Knie hat er eine kleine, trockene Schürfwunde. Er sagt: „Ich hab so Durst. Und meine linke Schulter tut komisch weh. Kann ich meine Mutter anrufen?“',
       text: 'Identifizieren Sie drei Befunde, die bei Finn auf eine innere Blutung hinweisen. Berücksichtigen Sie die Vorwerte.',
       loesung: [
-        'z. B. (je Befund mit Vorwert bzw. Zuordnung 1 P., max. 3 P.): Puls steigt von 76 über 88 auf 104/min (Kompensation durch den Sympathikus) · Abstand der Blutdruckwerte wird kleiner: 46 → 40 → 30 mmHg (systolisch sinkt, diastolisch steigt – die Gefäße werden eng) · blass, kühle Hände (Zentralisation) · Durst (Volumenmangel) · Schmerz in der linken Schulter (Hinweis auf Milzverletzung: Blut reizt das Zwerchfell) · Schockindex steigt von 0,6 auf 0,9.'
+        'z. B. (je Befund mit Vorwert bzw. Zuordnung 1 P., max. 3 P.): Puls steigt von 76 über 88 auf 104/min (Kompensation durch den Sympathikus) · Abstand der Blutdruckwerte wird kleiner: 46 → 40 → 30 mmHg (systolisch sinkt, diastolisch steigt – die Gefäße werden eng) · Atemfrequenz steigt von 16 auf 22/min · blass, kühle Hände (Zentralisation) · Durst (Volumenmangel) · Schmerz in der linken Schulter (Hinweis auf Milzverletzung: Blut reizt das Zwerchfell) · Schockindex steigt von 0,6 auf 0,9.',
+        'Kein Hinweis auf eine innere Blutung (0 P.): SpO₂ 98 %, Temperatur 36,8 °C und Blutzucker 96 mg/dl sind normal; die kleine, trockene Schürfwunde am Knie blutet nicht und erklärt keinen Volumenmangel; der Wunsch, die Mutter anzurufen, ist kein Krankheitszeichen.'
       ]
     },
     {

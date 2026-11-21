@@ -104,6 +104,7 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
   pruefe(/Beim Frühstück verschluckte sie sich am Kaffee und hustete kräftig\. Ich ließ sie husten, und nach kurzer Zeit war alles wieder gut\./.test(svText), 'Leitfall wörtlich wie im Fallbeispiel');
   pruefe(!/Rückenschläge|Oberbauchkompression/.test(svText), 'Schülerversion: kein Vorgehen bei schwerer Verlegung (Planung: Woche 5)');
   pruefe((svText.match(/Schon fertig\?/g) || []).length === 3, 'jedes Blatt endet mit „Schon fertig?“');
+  pruefe(/SpO₂ 98 %/.test(svText) && /Blutzucker 96 mg\/dl/.test(svText) && /trockene Schürfwunde/.test(svText) && /Kein Hinweis auf eine innere Blutung/.test(nurText(docxText(LV))), 'Blatt 2, 2.1: Ablenker im Fall (normale Werte, Schürfwunde) – nicht alles ist ein Hinweis');
   if (fassung === 'analog') {
     const x = svText.match(/Handy|Smartphone|QR|scann|Link:/i);
     pruefe(!x, 'analoge Fassung: kein Handy, kein QR-Code', x && x[0]);
