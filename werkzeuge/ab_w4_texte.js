@@ -16,7 +16,7 @@ const B1 = {
     'Herr Pfeiffer ist wach und weiß, wo er ist. Er sagt: „Mein Nacken tut so weh. Und meine Hände kribbeln, beide.“ Die Finger der rechten Hand kann er kaum bewegen. Seine Beine kann er bewegen. Dann ruft er: „Helfen Sie mir hoch, ich muss zum Mittagessen!“ Eine Kollegin holt die Pflegefachkraft und setzt den Notruf ab.'
   ],
   aa1: {
-    text: 'Lesen Sie den Fall. Unterstreichen Sie alle **Hinweise auf eine Wirbelsäulenverletzung**. Tragen Sie sie mit Zeilennummer in die Tabelle ein. Achtung: Nicht alles im Fall ist ein Hinweis!',
+    text: 'Lesen Sie den Fall. Unterstreichen Sie alle **Hinweise auf eine Wirbelsäulenverletzung**. Tragen Sie sie mit Zeilennummer in die Tabelle ein.',
     // Spalten bewusst NICHT in der Reihenfolge des Falls (dort: Unfallhergang → Schmerzen → Ausfälle),
     // damit die SuS jede Information selbst zuordnen müssen.
     spalten: ['Ausfälle (Gefühl und Bewegung)', 'Unfallhergang', 'Schmerzen'],
@@ -30,10 +30,9 @@ const B1 = {
   },
   info: {
     kopf: 'Informationstext: Rückenmark und Höhe der Verletzung',
+    // ein Absatz (Fassung der Lehrkraft); ++Wort++ = fett und unterstrichen
     absaetze: [
-      'Die Wirbelsäule schützt das **Rückenmark**. Es leitet Signale zwischen Gehirn und Körper. Auf jeder Höhe gehen Nerven ab: für Atmung, Arme, Rumpf und Beine (Bild unten). Wird das Rückenmark verletzt, fallen **unterhalb der Verletzung** Bewegung und Gefühl aus: Lähmung, Kribbeln, Taubheit. **Je höher die Verletzung, desto mehr fällt aus.** Ist es nur **teilweise** verletzt, fällt nicht alles aus. Für die Höhe zählt die **höchste betroffene Stelle**: Hände betroffen → HWS.',
-      'Ein **instabiler** Wirbelbruch kann das Rückenmark bei jeder Bewegung quetschen – zum Beispiel beim Aufsetzen oder Kopfdrehen. Die Folge: eine bleibende **Querschnittlähmung**. Auch wer Arme und Beine bewegen kann, kann so einen Bruch haben.',
-      'Bei hohen Verletzungen fällt oft der **Sympathikus** aus: **neurogener Schock** (Blutdruck niedrig, Puls langsam, Haut warm).'
+      'Die Wirbelsäule schützt das **Rückenmark**. Es leitet Signale zwischen Gehirn und Körper. Auf jeder Höhe gehen Nerven ab: für Atmung, Arme, Rumpf und Beine (Bild unten). Wird das Rückenmark verletzt, fallen **unterhalb der Verletzung** Bewegung und Gefühl aus: Lähmung, Kribbeln, Taubheit. **Je ++höher++ die Verletzung, desto ++mehr++ fällt aus.** Ist es nur **teilweise** verletzt, fällt nicht alles aus. Für die Höhe zählt die **höchste betroffene Stelle**: Hände betroffen → HWS. Ein **instabiler** Wirbelbruch kann das Rückenmark bei jeder Bewegung quetschen – zum Beispiel beim Aufsetzen oder Kopfdrehen. Die Folge: eine bleibende **Querschnittlähmung**. Auch wer Arme und Beine bewegen kann, kann so einen Bruch haben. Bei hohen Verletzungen fällt oft der **Sympathikus** aus: **neurogener Schock** (Blutdruck niedrig, Puls langsam, Haut warm).'
     ],
     quelle: 'Quelle: nach MSD Manual Profi-Ausgabe: Rückenmarkverletzungen; ERC-Leitlinien 2025, Erste Hilfe; sprachlich vereinfacht.',
     woerter: 'Wörterhilfe: HWS = Halswirbelsäule, BWS = Brustwirbelsäule, LWS = Lendenwirbelsäule · Rückenmark = Nervenstrang im Wirbelkanal · instabil = nicht fest · Querschnittlähmung = Lähmung unterhalb der Verletzung · Quelle: nach MSD Manual, ERC 2025, vereinfacht'
@@ -51,17 +50,17 @@ const B1 = {
       ['C', 'Herr Kaiser (40) hatte einen Motorradunfall. Arme und Beine sind gelähmt. Er kann nicht selbst atmen.']
     ],
     hoehen: [
-      ['HWS, sehr hoch', 'Arme, Beine **und die Atmung**', 'Tetraplegie mit Atemlähmung', 'C'],
+      ['HWS, sehr hoch', 'Arme, Beine **und die Atmung** (Zwerchfell)', 'Tetraplegie mit Atemlähmung', 'C'],
       ['HWS', 'Arme, Hände – meist auch Beine', 'Tetraplegie', 'B'],
       ['BWS oder LWS', 'Beine (und Rumpf) – die Arme funktionieren', 'Paraplegie', 'A']
     ],
     pfeiffer: 'Und bei Herrn Pfeiffer? Höhe:',
     pfeifferLoesung: 'HWS – seine Hände sind betroffen, deren Nerven kommen aus dem Halsmark. Die Beine funktionieren noch, weil das Rückenmark nur teilweise verletzt ist.'
   },
-  merksatz: [['Hinweise auf eine Wirbelsäulenverletzung: ', { l: 'Unfallhergang' }, ' (Sturz aus der Höhe, Kopfsprung, Verkehrsunfall), ', { l: 'Schmerzen in Nacken oder Rücken' }, ', ', { l: 'Kribbeln, Taubheit, Lähmung' }, '. Dann: ', { l: 'nicht bewegen' }, ', Person bitten, still zu liegen, ', { l: 'Kopf mit beiden Händen in der vorgefundenen Lage halten' }, ', nicht aufsetzen – sonst droht eine ', { l: 'Querschnittlähmung' }, ' (bei sehr hoher Verletzung auch Atemlähmung). Drehen nur, wenn es sein muss (z. B. Erbrechen): ', { l: 'achsengerecht mit mehreren Helfenden' }, '.']],
+  merksatz: [['Hinweise auf eine Wirbelsäulenverletzung: ', { l: 'Unfallhergang' }, ' (Sturz aus der Höhe, Kopfsprung, Verkehrsunfall), ', { l: 'Schmerzen in Nacken oder Rücken' }, ', ', { l: 'Kribbeln, Taubheit, Lähmung' }, '. Dann: ', { l: 'nicht bewegen' }, ', Person ansprechen, ', { l: 'beruhigen' }, ' und bitten, still zu liegen, ', { l: 'Kopf mit beiden Händen in der vorgefundenen Lage halten' }, ', nicht aufsetzen – sonst droht eine ', { l: 'Querschnittlähmung' }, ' (bei sehr hoher Verletzung auch Atemlähmung). Drehen nur, wenn es sein muss (z. B. Erbrechen): ', { l: 'achsengerecht mit mehreren Helfenden' }, '.']],
   aa3: {
     fortsetzung: 'Herr Pfeiffer sagt: „Mir ist so übel. Ich muss mich übergeben.“ Er muss auf die Seite gedreht werden – sonst kann er ersticken.',
-    text: 'Herr Pfeiffer muss sich übergeben und auf die Seite gedreht werden – sonst kann er ersticken. Üben Sie **vier Runden** auf dem Boden oder auf der Isomatte (falls vorhanden), dann Rollen tauschen.',
+    text: 'Herr Pfeiffer muss sich übergeben! Daher muss er auf die Seite gedreht werden – sonst kann er ersticken. Üben Sie **vier Runden** auf dem Boden oder auf der Isomatte (falls vorhanden), dann Rollen tauschen.',
     rollen: [
       ['① Patient/in', 'liegt auf dem Rücken, bleibt locker, hilft nicht mit.'],
       ['② Kopf', 'hält den Kopf mit beiden Händen seitlich fest. Kommando: „Auf drei: eins – zwei – drei.“'],
@@ -149,8 +148,8 @@ const B2 = {
     regel: '🏆 **Gewonnen:** Finn rechtzeitig gemeldet **und** höchstens **ein Fehlalarm** (🔴 ohne Notfall).',
     handy: '**Frühdienst mit Ampel:** QR-Code scannen und starten. Am Ende sehen Sie, ob Sie gewonnen haben.'
   },
-  merksatz: [['Eine innere Blutung ist ', { l: 'nicht sichtbar' }, '. Ich achte auf den ', { l: 'Verlauf' }, ': Der ', { l: 'Puls steigt' }, ', der ', { l: 'Abstand zwischen oberem und unterem Blutdruckwert wird kleiner' }, ', dazu ', { l: 'Blässe, Durst, Unruhe, Bauchschmerz' }, ' – bei einer Milzverletzung oft ', { l: 'Schmerz in der linken Schulter' }, '. Junge Menschen ', { l: 'gleichen lange aus' }, ': Der Blutdruck fällt erst spät. Ein einzelner Wert sagt wenig – ', { l: 'Vorwert, Ursache und Beschwerden' }, ' gehören dazu. Einen Notfall melde ich ', { l: 'sofort' }, ' – nicht erst bei einem Schockindex über 1.']],
-  woerter: 'Wörterhilfe: Milz = Organ im linken Oberbauch; sie blutet stark, wenn sie verletzt ist. Eine verletzte Milz kann auch erst Stunden oder Tage nach dem Unfall reißen · Prellmarke = Abdruck oder Bluterguss auf der Haut · Fehlalarm = Notfall gemeldet, obwohl keiner vorliegt',
+  merksatz: [['Eine innere Blutung ist ', { l: 'nicht sichtbar' }, '. Ich achte auf den ', { l: 'Verlauf' }, ': Der ', { l: 'Puls steigt' }, ', der ', { l: 'Abstand zwischen oberem und unterem Blutdruckwert wird kleiner' }, ', dazu ', { l: 'Blässe, Durst, Unruhe, Bauchschmerz' }, ', ein ', { l: 'harter, gespannter Bauch (Abwehrspannung)' }, ' und ein ', { l: 'zunehmender Bauchumfang' }, ' – bei einer Milzverletzung oft ', { l: 'Schmerz in der linken Schulter' }, '. Junge Menschen ', { l: 'gleichen lange aus' }, ': Der Blutdruck fällt erst spät. Ein einzelner Wert sagt wenig – ', { l: 'Vorwert, Ursache und Beschwerden' }, ' gehören dazu. Einen Notfall melde ich ', { l: 'sofort' }, ' – nicht erst bei einem Schockindex über 1.']],
+  woerter: 'Wörterhilfe: Milz = Organ im linken Oberbauch; sie blutet stark, wenn sie verletzt ist. Eine verletzte Milz kann auch erst Stunden oder Tage nach dem Unfall reißen · Prellmarke = Abdruck oder Bluterguss auf der Haut · Abwehrspannung = die Bauchmuskeln spannen sich bei Berührung an, der Bauch ist hart · zunehmender Bauchumfang = der Bauch wird dicker, weil sich Blut darin sammelt · Fehlalarm = Notfall gemeldet, obwohl keiner vorliegt',
   rahmen: 'Pflegefachpersonen schätzen akute Situationen anhand von Beobachtungen und Messwerten ein.',
   aufgaben: [
     {
@@ -255,12 +254,8 @@ const B3 = {
         'Schwere Verlegung: Husten leise und kraftlos, kann nicht sprechen, greift sich an den Hals, Lippen bläulich – das trifft nach etwa 20 Sekunden zu (Z. {kraftlos}–{bläulich}). (1 P.)',
         'Kein Merkmal einer Atemwegsverlegung (0 P.): Zittern der Hände (Parkinson, „wie immer“), Brille, Pfefferminztee, lautes Lachen am Nachbartisch. Hinweis: Die Parkinson-Krankheit erhöht das Risiko, sich zu verschlucken – sie ist aber kein Zeichen dafür, ob die Verlegung leicht oder schwer ist.'
       ]
-    }
-  ],
-  // Für die Schnellen (ersetzt „Schon fertig?“ auf Blatt 3): Antworten auf ein Extrablatt
-  schnelle: {
-    kopf: '**Für die Schnellen** ✍️ Schreiben Sie Ihre Antworten auf ein Extrablatt.',
-    aufgaben: [
+    },
+    // Pflicht (IKL Fremdkörperaspiration Nr. 1: erklären, warum eine Verlegung lebensbedrohlich ist)
     {
       nr: '3.2', punkte: 2, zeilen: 3,
       text: 'Erklären Sie, warum Herr Roth ohne Hilfe innerhalb weniger Minuten bewusstlos werden kann.',
@@ -268,7 +263,12 @@ const B3 = {
         'Der Bissen verlegt die Atemwege: Es kommt keine Luft mehr in die Lungenbläschen, kein Sauerstoff gelangt ins Blut (Hypoxie, Zyanose). (1 P.)',
         'Das Gehirn reagiert am empfindlichsten auf Sauerstoffmangel → Bewusstlosigkeit, danach Kreislaufstillstand – innerhalb weniger Minuten. (1 P.)'
       ]
-    },
+    }
+  ],
+  // Für die Schnellen (ersetzt „Schon fertig?“ auf Blatt 3): Antworten auf ein Extrablatt
+  schnelle: {
+    kopf: '**Für die Schnellen** ✍️ Schreiben Sie Ihre Antworten auf ein Extrablatt.',
+    aufgaben: [
     {
       nr: '3.3', punkte: 2, zeilen: 3,
       text: 'Eine Pflegehelferin sagt: „Solange die Lippen nicht blau sind, ist es nicht schlimm.“ Beurteilen Sie die Aussage.',
