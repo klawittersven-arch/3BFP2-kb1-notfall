@@ -1,7 +1,7 @@
 /* KB I · Woche 4 (SW 9) – Inhalte der Handy-Übungen.
    Diese Datei ist die einzige Quelle für Messkarten, Simulationsszenen und Übungskarten:
    Die Handy-Seiten (docs/w4/*.html) lesen sie direkt, das Arbeitsblatt-Werkzeug (werkzeuge/ab_w4.js)
-   übernimmt daraus die Messkarten (Kopiervorlage) und das Skript für die Fassung ohne Handy.
+   übernimmt daraus die Messungen für Blatt 2 und den Lesetext von Blatt 3 (analoge Fassung).
    Texte ändern: nur zwischen den Hochkommas; **Wort** = fett. Kennungen (id, typ, richtig) nicht ändern. */
 var W4 = {
   kopfzeile: 'KB I · Notfallsituationen · 3BFP2',
@@ -218,6 +218,27 @@ var W4 = {
       { name: 'Frau Weil (70)', info: 'vier Tage nach einer Bauch-OP', zeiten: ['06:00', '10:00', '14:00'], puls: [84, 92, 102], rr: ['130/80', '128/78', '130/80'], zusatz: 'Temperatur 38,9 °C, Haut heiß, friert', richtig: 'gelb', erklaerung: 'Das Fieber erklärt den höheren Puls, der Blutdruck ist stabil. Melden (Pflegefachkraft, Ärztin informieren) – aber kein Schock-Notfall.' },
       { name: 'Herr Neumann (50)', info: 'Wirbelbruch der Halswirbelsäule nach einem Sturz', zeiten: ['08:00', '08:15', '08:30'], puls: [64, 58, 52], rr: ['110/70', '96/58', '84/50'], zusatz: 'Haut an den Beinen warm, trocken, rosig', richtig: 'rot', erklaerung: 'Der Blutdruck fällt, der Puls wird sogar langsamer: neurogener Schock. Nicht vom ruhigen Puls täuschen lassen → Notfall.' }
     ]
+  },
+
+  /* ---------- Blatt 3 · AA2 Lesetext „leicht oder schwer?“ ----------
+     Analog steht der Text auf dem Arbeitsblatt, digital auf w4/verlegung.html (QR-Code, mit Bildern).
+     Bewusst NICHT in der Reihenfolge der Tabelle (Husten · Sprechen und Atmen · weitere Zeichen · So handle ich)
+     und mit Angaben, die nicht in die Tabelle gehören (Absatz 1). */
+  verlegung: {
+    titel: 'Wenn etwas im Hals stecken bleibt',
+    absaetze: [
+      'Beim Essen und Trinken kann sich jeder Mensch verschlucken. Ältere Menschen verschlucken sich öfter – zum Beispiel bei einer Parkinson-Krankheit, nach einem Schlaganfall oder mit einer schlecht sitzenden Zahnprothese. Auch wer beim Essen spricht oder lacht, verschluckt sich leichter. Man unterscheidet eine leichte und eine schwere Verlegung der Atemwege.',
+      'Kann die Person nicht mehr sprechen, ist der Atemweg fast ganz oder ganz verschlossen. Das ist eine **schwere Verlegung**. Rufen Sie dann sofort laut um Hilfe und lassen Sie einen Notruf absetzen. Bleiben Sie bei der Person und handeln Sie sofort. Viele Betroffene greifen sich mit beiden Händen an den Hals. Sie atmen kaum noch – manchmal hört man nur ein leises Pfeifen. Ihr Husten wird schwach und leise oder hört ganz auf.',
+      'Bei einer **leichten Verlegung** bekommt die Person noch Luft. Ihr Gesicht ist vom Husten oft rot. Sie kann sprechen, zum Beispiel: „Geht schon!“ Sie hustet kräftig und laut. Kräftiges Husten ist das beste Mittel, um den Fremdkörper herauszubringen. Fordern Sie die Person deshalb auf, weiter zu husten. Bleiben Sie bei ihr und beobachten Sie sie genau. Geben Sie nichts zu trinken und klopfen Sie nicht auf den Rücken – das stört den Husten.',
+      'Eine leichte Verlegung kann schnell zu einer schweren werden, zum Beispiel wenn der Husten schwächer wird. Achten Sie deshalb die ganze Zeit auf Husten, Sprechen und Atmung. Blaue Lippen (Zyanose) zeigen sich erst spät, wenn schon viel Sauerstoff fehlt. Warten Sie nicht darauf! Ohne Hilfe wird die Person nach wenigen Minuten bewusstlos.'
+    ],
+    // Bilder nur auf der Handy-Seite: nach Absatz (Index) → Bild
+    bilder: [
+      { nach: 1, bild: 'schwer', text: 'Kann nicht sprechen, greift sich an den Hals' },
+      { nach: 2, bild: 'leicht', text: 'Hustet kräftig und sagt: „Geht schon!“' },
+      { nach: 3, bild: 'lippen', text: 'Die Lippen werden erst spät blau.' }
+    ],
+    auftrag: '✍️ Tragen Sie die Informationen in Stichworten in die Tabelle auf dem Arbeitsblatt ein. Achtung: Nicht alles im Text gehört in die Tabelle.'
   },
 
   /* ---------- Blatt 3 · Schon fertig? „Atemweg-Check“ ---------- */

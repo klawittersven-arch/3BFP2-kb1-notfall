@@ -12,23 +12,24 @@ Es gibt **zwei Fassungen** mit denselben Aufgaben im KA-Format – die Lehrkraft
 
 | Datei | Inhalt |
 |---|---|
-| `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_analog_SV.docx/.pdf` | **Analog**, ganz ohne Smartphone: Blatt 2 als Ankreuz-Aufgabe (vier Messungen, Finns Kurve), Blatt 3 als Zuordnungsaufgabe leicht/schwer, „Schon fertig?“ als Zusatzaufgabe (Antwort auf ein Extrablatt). 3 Blätter je 2 Seiten (6 Seiten) |
+| `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_analog_SV.docx/.pdf` | **Analog**, ganz ohne Smartphone: Blatt 2 als Ankreuz-Aufgabe (vier Messungen, Finns Kurve), Blatt 3 mit Lesetext „Wenn etwas im Hals stecken bleibt“ auf dem Blatt; „Schon fertig?“ bzw. „Für die Schnellen“ als Zusatzaufgaben (Antworten auf ein Extrablatt). 3 Blätter, **7 Seiten** (Blatt 3: S. 5–7) |
 | `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_analog_LV_LSG.docx/.pdf` | Lehrerversion analog: Verlaufsplan (135 min), Hinweise, Klausur- und Examensbezug, Lösungen (gelb) (Punkte stehen nur hier, nicht auf dem Arbeitsblatt) |
-| `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_digital_SV.docx/.pdf` | **Digital**: Live-Verlauf am Smartphone, „Schon fertig?“ mit QR-Code, ganz unten auf Blatt 3 die Simulation „Für die Schnellen“; keine analogen Alternativen auf dem Blatt. 6 Seiten |
+| `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_digital_SV.docx/.pdf` | **Digital**: Live-Verlauf am Smartphone, Lesetext für Blatt 3 per QR-Code (mit Bildern), „Schon fertig?“ mit QR-Code, unten auf Blatt 3 „Für die Schnellen“ (3.2, 3.3, Atemweg-Check, Simulation); keine analogen Alternativen auf dem Blatt. 6 Seiten |
 | `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_digital_LV_LSG.docx/.pdf` | Lehrerversion digital: Verlaufsplan, Hinweise (u. a. optionale Lehreransicht), Lösungen |
 | `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_{analog,digital}_SV_markiert.docx/.pdf` | **Ansichtsexemplar für die Lehrkraft (nicht austeilen):** Schülerversion mit Textmarker – **gelb** = direkt klausurrelevant, **pink** = könnte gestrichen werden, ohne Markierung = unterstützend. Zuordnung in `werkzeuge/ab_w4.js` (`MARKE`) |
 
 - **Blatt 1 – Wirbelsäulenverletzung: nicht bewegen – aber richtig** · Methodenwechsel: Übung „Kopf halten und achsengerecht drehen“ (Vierergruppen, auf dem Boden oder auf Isomatten) → AA4 (Muster KA 5.3)
 - **Blatt 2 – Innere Blutung: den Verlauf im Blick** · AA1 „Frühdienst mit Ampel“ – analog als Ankreuz-Aufgabe in Einzelarbeit (vier Messungen, dann Finns Kurve), digital als Live-Verlauf am Handy (`w4/verlauf.html`) → AA2
-- **Blatt 3 – Atemwege: wenn etwas im Hals stecken bleibt** · AA2 „leicht oder schwer?“: Merkmale und Maßnahmen zuordnen (beide Fassungen) → AA3 (Muster KA 4.1) · digital zusätzlich unten „Für die Schnellen“: Simulation „Notfall-Ampel im Speisesaal“ (`w4/speisesaal.html`)
+- **Blatt 3 – Atemwege: wenn etwas im Hals stecken bleibt** · AA2 „leicht oder schwer?“: Informationen aus einem längeren Lesetext (nicht in Tabellenreihenfolge, mit Ablenkern) in die Tabelle – analog auf dem Blatt, digital am Handy (`w4/verlegung.html`); kein Merksatz dazu (sonst würde nur abgeschrieben) → AA3 nur 3.1 (Muster KA 4.1) mit viel Schreibraum · „Für die Schnellen“: 3.2, 3.3 (analog dazu 3.4) auf ein Extrablatt, digital zusätzlich Atemweg-Check und Simulation „Notfall-Ampel im Speisesaal“
 
 ## Adressen (nach dem Zusammenführen in `main` über GitHub Pages online)
 
 | Adresse | wofür |
 |---|---|
 | …/3BFP2-kb1-notfall/w4/verlauf.html | Blatt 2: Live-Verlauf am Handy (Gewinnen: Finn rechtzeitig gemeldet, höchstens 1 Fehlalarm) |
+| …/w4/verlegung.html | Blatt 3, AA2: Lesetext „Wenn etwas im Hals stecken bleibt“ mit drei Bildern (digitale Fassung) |
 | …/w4/speisesaal.html | Blatt 3, „Für die Schnellen“: Simulation (Bestanden: niemand bewusstlos, höchstens 1 Fehlalarm) |
-| …/w4/rueckenmark.html · trend.html · atemweg.html | „Schon fertig?“ am Ende von Blatt 1, 2 und 3 |
+| …/w4/rueckenmark.html · trend.html · atemweg.html | „Schon fertig?“ am Ende von Blatt 1 und 2, Atemweg-Check bei „Für die Schnellen“ auf Blatt 3 |
 | …/w4/lehrer.html | Lehreransicht (freiwillig): Raum starten, Ergebnisse je Gruppe, häufige Fehlentscheidungen; „Messkarten groß“ für die Besprechung (ohne Server) |
 | …/w4/lehrer.html?demo=1 | Probeansicht mit erfundenen Gruppen (ohne Internet) |
 
@@ -72,7 +73,7 @@ Cookies, keine fremden Skripte oder Schriften, Cloudflare-Protokolle aus.
 
 ## Texte ändern und neu erzeugen
 
-- **Messkarten, Simulationsszenen, Handy-Übungen:** `docs/w4/inhalte.js` (eine Quelle für Handy, Lehreransicht und Blatt 2)
+- **Messkarten, Lesetext Blatt 3, Simulationsszenen, Handy-Übungen:** `docs/w4/inhalte.js` (eine Quelle für Handy, Lehreransicht und Arbeitsblatt)
 - **Arbeitsblatt-Texte, Aufgaben, Lösungen:** `werkzeuge/ab_w4_texte.js` · Layout, Verlaufsplan, Hinweise: `werkzeuge/ab_w4.js`
 
 ```
@@ -82,7 +83,7 @@ node werkzeuge/ab_w4.js          # SV und LV_LSG (.docx)
 soffice --headless --convert-to pdf --outdir arbeitsblatt arbeitsblatt/KB1_W4_*.docx   # erzeugt analog und digital
 ```
 
-Nach Textänderungen die Seitenzahl prüfen: Beide Schülerversionen müssen bei 6 Seiten bleiben (jedes Blatt beginnt auf S. 1, 3, 5).
+Nach Textänderungen die Seitenzahl prüfen: digital 6 Seiten, analog 7 Seiten (jedes Blatt beginnt auf S. 1, 3, 5).
 
 ## Tests
 
@@ -92,5 +93,5 @@ cd tests && node w4.test.js
 ```
 
 Prüft u. a.: Messkarten und Szenen (Gewinn- und Verlustbedingungen), keine Wörter wie „Klausur“ oder „Examen“ in Texten für die SuS,
-Lösungen nur in der Lehrerversion, 6 Seiten, QR-Codes, dass nur Dateien der Woche 4 geändert sind, alle Übungen in Handygröße
+Lösungen und Punkte nur in der Lehrerversion, 6 bzw. 7 Seiten, QR-Codes, dass nur Dateien der Woche 4 geändert sind, alle Übungen in Handygröße
 (gewinnen, verlieren, Zeit abgelaufen, Sättigung sinkt, bewusstlos) und die Lehreransicht mit lokalem Worker.

@@ -192,35 +192,41 @@ const B3 = {
   },
   merksatz1: [['Beim Schlucken verschließt der ', { l: 'Kehldeckel' }, ' die Luftröhre. Fremdkörper rutschen eher in den ', { l: 'rechten Hauptbronchus' }, '. Atemweg verlegt → keine Luft in die ', { l: 'Lungenbläschen' }, ' → ', { l: 'Sauerstoffmangel (Hypoxie)' }, ': Zyanose, ', { l: 'Bewusstlosigkeit' }, ', ', { l: 'Kreislaufstillstand' }, ' – in ', { l: 'wenigen Minuten' }, '. Das ', { l: 'Gehirn' }, ' ist am empfindlichsten.']],
   aa2: {
-    text: 'Allein (4 Minuten). Ordnen Sie die Zeichen und Maßnahmen aus dem Kasten in die Tabelle ein.',
-    // Zeile: [Merkmal, leichte Verlegung, schwere Verlegung] – die SuS schreiben die Kärtchen aus dem Kasten in die Felder
+    // Lesetext: docs/w4/inhalte.js (W4.verlegung) – analog auf dem Blatt, digital über QR-Code (w4/verlegung.html, mit Bildern).
+    // Einen Merksatz 2 gibt es bewusst nicht mehr: Die gesicherte Tabelle ist die Zusammenfassung (sonst wird nur abgeschrieben).
+    text: {
+      analog: 'Allein (8 Minuten). Lesen Sie den Text. Tragen Sie die Informationen in Stichworten in die Tabelle ein. Achtung: Nicht alles im Text gehört in die Tabelle.',
+      digital: 'Allein (8 Minuten). Scannen Sie den QR-Code und lesen Sie den Text am Handy. Tragen Sie die Informationen in Stichworten in die Tabelle ein. Achtung: Nicht alles im Text gehört in die Tabelle.'
+    },
+    handy: '**Text: Wenn etwas im Hals stecken bleibt** – mit Bildern. Lesen Sie in Ruhe (ein Handy für zwei reicht).',
+    // Zeile: [Merkmal, leichte Verlegung, schwere Verlegung] – Lösung (Stichworte aus dem Text)
     zeilen: [
-      ['Husten', 'hustet kräftig', 'Husten wird schwach oder fehlt'],
-      ['Sprechen und Atmen', 'kann sprechen und atmen', 'kann nicht sprechen, kaum Atmung'],
-      ['weitere Zeichen', 'Gesicht oft rot', 'Griff an den Hals, später blaue Lippen'],
-      ['So handle ich', 'zum Husten auffordern, bleiben, beobachten', 'sofort laut Hilfe rufen, Notruf veranlassen']
+      ['Husten', 'kräftig und laut', 'schwach und leise oder hört ganz auf'],
+      ['Sprechen und Atmen', 'kann sprechen („Geht schon!“), bekommt Luft', 'kann nicht sprechen, atmet kaum, evtl. leises Pfeifen'],
+      ['weitere Zeichen', 'Gesicht vom Husten oft rot', 'greift sich mit beiden Händen an den Hals; spät: blaue Lippen (Zyanose), dann bewusstlos'],
+      ['So handle ich', 'zum Husten auffordern, bleiben, genau beobachten; nichts zu trinken geben, nicht auf den Rücken klopfen', 'sofort laut um Hilfe rufen, Notruf absetzen lassen, bei der Person bleiben, sofort handeln']
     ],
-    // Reihenfolge bewusst gemischt – nicht in der Reihenfolge der Tabelle
-    kasten: ['kann nicht sprechen, kaum Atmung', 'zum Husten auffordern, bleiben, beobachten', 'Gesicht oft rot', 'Husten wird schwach oder fehlt', 'sofort laut Hilfe rufen, Notruf veranlassen', 'hustet kräftig', 'Griff an den Hals, später blaue Lippen', 'kann sprechen und atmen'],
-    ergaenzung: 'Im Gespräch ergänzen: Bei leichter Verlegung nichts zu trinken geben und nicht auf den Rücken klopfen (stört den wirksamen Husten). Bei schwerer Verlegung nicht allein lassen; blaue Lippen (Zyanose) sind ein spätes Zeichen. Woran man sicher erkennt, dass noch Luft durchkommt: Die Person kann sprechen oder kräftig husten.',
-    // nur digitale Fassung: Simulation als Zusatz ganz unten auf Blatt 3
-    schnelle: '**Für die Schnellen (zu zweit):** Notfall-Ampel im Speisesaal – sechs Szenen am Handy. **Bestanden:** niemand wird bewusstlos, höchstens **ein Fehlalarm**.'
+    ergaenzung: 'Gehört nicht in die Tabelle: Absatz 1 (wer sich öfter verschluckt: Parkinson, Schlaganfall, Zahnprothese, Sprechen oder Lachen beim Essen). Kernsatz für die Sicherung: „Wer laut rufen kann, bekommt Luft. Nicht auf blaue Lippen warten!“'
   },
-  merksatz2: [[{ l: 'Leichte Verlegung' }, ': ', { l: 'kräftiger, wirksamer Husten' }, ', kann ', { l: 'sprechen und atmen' }, ' → ', { l: 'zum Husten auffordern' }, ', bleiben, beobachten. ', { l: 'Schwere Verlegung' }, ': Husten ', { l: 'schwach oder fehlt' }, ', ', { l: 'kann nicht sprechen' }, ', kaum Atmung, Griff an den Hals, später Zyanose → ', { l: 'sofort Hilfe rufen und handeln' }, '. Nicht auf ', { l: 'blaue Lippen' }, ' warten! Wer laut rufen kann, bekommt Luft.']],
   fall: [
     'Sie sind Auszubildende bzw. Auszubildender in der Seniorenwohngruppe „Kastanienhof“. Herr Walter Roth (80) hat eine Parkinson-Krankheit; seine Hände zittern leicht, wie immer. Er trägt eine Brille. Beim Abendessen sitzt er am Tisch, trinkt Pfefferminztee und isst ein Wurstbrot. Am Nachbartisch lacht jemand laut. Plötzlich hustet Herr Roth kräftig und laut. Er hebt die Hand und sagt: „Geht schon …“ Nach etwa 20 Sekunden wird sein Husten leise und kraftlos. Herr Roth kann nicht mehr sprechen. Er greift sich mit beiden Händen an den Hals. Seine Lippen werden bläulich.'
   ],
   rahmen: 'Pflegefachpersonen erkennen Notfallsituationen und schätzen sie ein.',
   aufgaben: [
     {
-      nr: '3.1', punkte: 2, zeilen: 3,
+      nr: '3.1', punkte: 2, zeilen: 8,
       text: 'Unterscheiden Sie anhand der Situation eine leichte von einer schweren Atemwegsverlegung.',
       loesung: [
         'Leichte Verlegung: kräftiger, wirksamer Husten, er kann sprechen und atmen – das trifft auf Herrn Roth zu Beginn zu (hustet kräftig und laut, sagt „Geht schon …“, Z. {Geht schon}). (1 P.)',
         'Schwere Verlegung: Husten leise und kraftlos, kann nicht sprechen, greift sich an den Hals, Lippen bläulich – das trifft nach etwa 20 Sekunden zu (Z. {kraftlos}–{bläulich}). (1 P.)',
         'Kein Merkmal einer Atemwegsverlegung (0 P.): Zittern der Hände (Parkinson, „wie immer“), Brille, Pfefferminztee, lautes Lachen am Nachbartisch. Hinweis: Die Parkinson-Krankheit erhöht das Risiko, sich zu verschlucken – sie ist aber kein Zeichen dafür, ob die Verlegung leicht oder schwer ist.'
       ]
-    },
+    }
+  ],
+  // Für die Schnellen (ersetzt „Schon fertig?“ auf Blatt 3): Antworten auf ein Extrablatt
+  schnelle: {
+    kopf: '**Für die Schnellen** ✍️ Schreiben Sie Ihre Antworten auf ein Extrablatt.',
+    aufgaben: [
     {
       nr: '3.2', punkte: 2, zeilen: 3,
       text: 'Erklären Sie, warum Herr Roth ohne Hilfe innerhalb weniger Minuten bewusstlos werden kann.',
@@ -237,14 +243,16 @@ const B3 = {
         'Die Aussage ist falsch. (1 P.)',
         'Entscheidend sind Husten, Sprechen und Atmung: Kann die Person nicht mehr sprechen oder wirksam husten, ist es eine schwere Verlegung – auch mit rosigen Lippen. Die Zyanose ist ein spätes Zeichen; dann fehlt schon viel Sauerstoff. Deshalb sofort handeln. (1 P.)'
       ]
-    }
-  ],
-  fertig: {
-    digital: '**Schon fertig?** Atemweg-Check: sechs kurze Fragen am Handy – mit Rückmeldung.',
-    analog: {
-      frage: '**Schon fertig?** Warum soll man einer Person, die kräftig hustet, nichts zu trinken geben und nicht auf den Rücken klopfen? Begründen Sie.',
-      loesung: 'Kräftiger Husten ist am wirksamsten – Klopfen stört ihn. Beim Trinken kann sich die Person noch einmal verschlucken, Flüssigkeit kann in die Atemwege gelangen. Richtig: zum Husten auffordern, bleiben, beobachten.'
-    }
+    },
+      {
+        nr: '3.4', nurAnalog: true,
+        text: 'Warum soll man einer Person, die kräftig hustet, nichts zu trinken geben und nicht auf den Rücken klopfen? Begründen Sie.',
+        loesung: ['Kräftiger Husten ist am wirksamsten – Klopfen stört ihn. Beim Trinken kann sich die Person noch einmal verschlucken, Flüssigkeit kann in die Atemwege gelangen. Richtig: zum Husten auffordern, bleiben, beobachten.']
+      }
+    ],
+    // nur digitale Fassung: zwei Handy-Übungen
+    atemweg: '**Atemweg-Check:** sechs kurze Fragen am Handy – mit Rückmeldung.',
+    speisesaal: '**Notfall-Ampel im Speisesaal** (zu zweit): sechs Szenen. **Bestanden:** niemand bewusstlos, höchstens **ein Fehlalarm**.'
   }
 };
 

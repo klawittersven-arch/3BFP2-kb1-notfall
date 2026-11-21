@@ -85,14 +85,15 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
   const stelle = T4.B1.aa1.loesung.map((spalte) => Math.min(...spalte.map(([, wort]) => fallText.indexOf(wort))));
   const rang = stelle.map((x) => stelle.filter((y) => y < x).length);
   pruefe(stelle.every((x) => x >= 0) && rang.every((r, i) => r !== i), 'Blatt 1, AA1: Tabellenspalten nicht in der Reihenfolge des Falls', T4.B1.aa1.spalten.join(' | '));
-  const tabReihe = T4.B3.aa2.zeilen.flatMap((z) => [z[1], z[2]]);
-  pruefe(T4.B3.aa2.kasten.length === 8 && tabReihe.every((w) => T4.B3.aa2.kasten.includes(w)) && T4.B3.aa2.kasten.every((w, i) => w !== tabReihe[i]), 'Blatt 3, AA2: Kasten enthält alle acht Kärtchen, keins an seiner Tabellenstelle');
+  const LT = W4.verlegung.absaetze.join(' ');
+  pruefe(W4.verlegung.absaetze.length === 4 && LT.indexOf('um Hilfe') < LT.indexOf('an den Hals') && LT.indexOf('an den Hals') < LT.indexOf('Husten wird schwach') && LT.indexOf('**schwere Verlegung**') < LT.indexOf('**leichten Verlegung**') && /Parkinson/.test(W4.verlegung.absaetze[0]), 'Blatt 3, Lesetext: nicht in Tabellenreihenfolge (schwer zuerst, Handeln vor den Zeichen), Absatz 1 als Ablenker');
+  pruefe(T4.B3.aufgaben.length === 1 && T4.B3.aufgaben[0].nr === '3.1' && T4.B3.aufgaben[0].zeilen >= 8 && T4.B3.schnelle.aufgaben.map((a) => a.nr).join() === '3.2,3.3,3.4', 'Blatt 3: AA3 nur 3.1 (mind. 8 Zeilen), 3.2–3.4 „Für die Schnellen“');
   pruefe(speicher.length === 6 && speicher.every((w) => T4.B3.aa1.begriffe.includes(w)) && speicher.every((w, i) => w !== T4.B3.aa1.begriffe[i]), 'Blatt 3: Wortspeicher enthält alle Begriffe, aber keinen an der Stelle seiner Nummer');
   pruefe(W4.rueckenmark.karten.length === 8 && W4.trend.reihen.length === 5 && W4.atemweg.karten.length === 6, 'Schon fertig?: 8 + 5 + 6 Karten');
 
   console.log('\n== Verbotene Wörter in Texten für die SuS');
   const VERBOTEN = /Klausur|Klassenarbeit|Examen|Prüfung|Woche [5-9]/i;
-  for (const d of ['inhalte.js', 'w4.js', 'verlauf.js', 'speisesaal.js', 'rueckenmark.js', 'trend.js', 'atemweg.js', 'verlauf.html', 'speisesaal.html', 'rueckenmark.html', 'trend.html', 'atemweg.html']) {
+  for (const d of ['inhalte.js', 'w4.js', 'verlegung.js', 'verlegung.html', 'verlauf.js', 'speisesaal.js', 'rueckenmark.js', 'trend.js', 'atemweg.js', 'verlauf.html', 'speisesaal.html', 'rueckenmark.html', 'trend.html', 'atemweg.html']) {
     const m = fs.readFileSync(path.join(DOCS, 'w4', d), 'utf8').match(VERBOTEN);
     pruefe(!m, `docs/w4/${d}: kein „Klausur/Examen/Prüfung/spätere Woche“`, m && m[0]);
   }
@@ -117,9 +118,11 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
   pruefe(!/Aufgaben mit Punkten/.test(svText) && !/\nPunkte\n/.test(svText) && !/(^|[^_])___ \/ \d/.test(svText), 'Schülerversion: keine Punkte bei den Aufgaben, kein „Aufgaben mit Punkten“');
   pruefe(/\n2 P\.\n/.test(nurText(docxText(LV))), 'Lehrerversion: Punkte bei den Aufgaben');
   pruefe(!/Berücksichtigen Sie die Vorwerte/.test(svText), 'Blatt 2, 2.1: ohne Hinweis „Berücksichtigen Sie die Vorwerte“');
-  pruefe(/Ordnen Sie die Zeichen und Maßnahmen aus dem Kasten in die Tabelle ein/.test(svText) && !/1–4 Fingern|sechs kurze Szenen spielen/.test(svText.slice(0, svText.lastIndexOf('Schon fertig?'))), 'Blatt 3, AA2: Zuordnungsaufgabe statt Spiel');
+  pruefe(/Tragen Sie die Informationen in Stichworten in die Tabelle ein/.test(svText) && /Nicht alles im Text gehört in die Tabelle/.test(svText) && !/1–4 Fingern|sechs kurze Szenen spielen/.test(svText.slice(0, svText.lastIndexOf('Für die Schnellen'))), 'Blatt 3, AA2: Informationen aus einem Lesetext in die Tabelle');
+  pruefe((svText.match(/^Merksatz$/gm) || []).length === 3 && !/Leichte Verlegung: kräftiger, wirksamer Husten/.test(svText), 'Blatt 3: kein Merksatz zu leicht/schwer (sonst würde nur abgeschrieben)');
+  pruefe(/Für die Schnellen/.test(svText) && /Extrablatt/.test(svText.slice(svText.lastIndexOf('Für die Schnellen'))) && /3\.2 +Erklären Sie, warum Herr Roth/.test(svText) && /3\.3 +Eine Pflegehelferin sagt/.test(svText), 'Blatt 3: 3.2 und 3.3 „Für die Schnellen“ (Antworten auf ein Extrablatt)');
   pruefe(!/Rückenschläge|Oberbauchkompression/.test(svText), 'Schülerversion: kein Vorgehen bei schwerer Verlegung (Planung: Woche 5)');
-  pruefe((svText.match(/Schon fertig\?/g) || []).length === 3, 'jedes Blatt endet mit „Schon fertig?“');
+  pruefe((svText.match(/Schon fertig\?/g) || []).length === 2 && (svText.match(/Für die Schnellen/g) || []).length === 1, 'Blatt 1 und 2 enden mit „Schon fertig?“, Blatt 3 mit „Für die Schnellen“');
   pruefe(/SpO₂ 98 %/.test(svText) && /Blutzucker 96 mg\/dl/.test(svText) && /trockene Schürfwunde/.test(svText) && /Kein Hinweis auf eine innere Blutung/.test(nurText(docxText(LV))), 'Blatt 2, 2.1: Ablenker im Fall (normale Werte, Schürfwunde) – nicht alles ist ein Hinweis');
   pruefe(/Parkinson-Krankheit; seine Hände zittern leicht, wie immer/.test(svText) && /Kein Merkmal einer Atemwegsverlegung/.test(nurText(docxText(LV))), 'Blatt 3, 3.1: Ablenker im Fall (Zittern, Brille, Tee, Lachen am Nachbartisch)');
   if (fassung === 'analog') {
@@ -128,17 +131,19 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
     pruefe(/Kreuzen Sie bei jeder Messung an/.test(svText) && ['06:00 Uhr', '06:30 Uhr', '07:00 Uhr', '07:20 Uhr'].every((z) => svText.includes(z)) && !/sitzen bleiben|aufstehen 🔴|Messkarte/.test(svText), 'analoge Fassung, Blatt 2: Ankreuz-Aufgabe (4 Messungen) statt Messkarten und Aufstehen');
     const lvText = nurText(docxText(LV));
     pruefe(!/Anhang [AB]|Messkarten für den Live-Verlauf|Entscheidungsspiel nach/.test(lvText), 'analoge Lehrerversion: kein Anhang mehr (kein Messkarten-, kein Entscheidungsspiel-Anhang)');
-    pruefe(!/Für die Schnellen/.test(svText), 'analoge Fassung: keine Simulation „Für die Schnellen“');
+    pruefe(/Kann die Person nicht mehr sprechen/.test(svText) && /3\.4 +Warum soll man einer Person, die kräftig hustet/.test(svText) && !/speisesaal/.test(svText), 'analoge Fassung: Lesetext auf dem Blatt; „Für die Schnellen“ mit 3.2–3.4, ohne Simulation');
   } else {
     const x = svText.match(/sitzen bleiben|Hand heben|aufstehen\b|Ohne Handy|liest .{0,30}vor|Fingern|Ihre Lehrkraft zeigt/i);
     pruefe(!x, 'digitale Fassung: keine analogen Alternativen genannt', x && x[0]);
-    pruefe((svText.match(/Kein QR-Scanner\?/g) || []).length === 5, 'digitale Fassung: 5 QR-Kästen (Live-Verlauf, 3 × „Schon fertig?“, Simulation „Für die Schnellen“)');
+    pruefe((svText.match(/Kein QR-Scanner\?/g) || []).length === 6 && /verlegung\.html/.test(svText) && !/Kann die Person nicht mehr sprechen/.test(svText), 'digitale Fassung: 6 QR-Kästen (Live-Verlauf, Lesetext, 2 × „Schon fertig?“, Atemweg-Check und Simulation „Für die Schnellen“); Lesetext nur am Handy');
+    pruefe(!/3\.4 /.test(svText), 'digitale Fassung: „Für die Schnellen“ ohne 3.4 (dafür Atemweg-Check)');
     pruefe(svText.lastIndexOf('Für die Schnellen') > svText.lastIndexOf('Schon fertig?') && /speisesaal\.html/.test(svText.slice(svText.lastIndexOf('Für die Schnellen'))), 'digitale Fassung: Simulation ganz unten auf Blatt 3 („Für die Schnellen“)');
   }
   const PDF = SV.replace(/\.docx$/, '.pdf');
   if (fs.existsSync(PDF) && fs.statSync(PDF).mtimeMs >= fs.statSync(SV).mtimeMs - 1000) {
     const seiten = Number((execSync(`pdfinfo "${PDF}"`, { stdio: ['ignore', 'pipe', 'ignore'] }).toString().match(/Pages:\s+(\d+)/) || [])[1]);
-    pruefe(seiten === 6, 'Schülerversion (PDF): 6 Seiten', seiten);
+    const sollSeiten = fassung === 'analog' ? 7 : 6;
+    pruefe(seiten === sollSeiten, `Schülerversion (PDF): ${sollSeiten} Seiten`, seiten);
     const seite = (n) => execSync(`pdftotext -f ${n} -l ${n} "${PDF}" -`, { stdio: ['ignore', 'pipe', 'ignore'] }).toString();
     pruefe(seite(1).includes('Wirbelsäulenverletzung: nicht bewegen') && seite(3).includes('Innere Blutung: den Verlauf') && seite(5).includes('Atemwege: wenn etwas im Hals'), 'jedes Blatt beginnt auf einer ungeraden Seite (1, 3, 5) – beidseitig kopierbar');
   } else console.log('  (PDF fehlt oder ist älter als die .docx – Seitenprüfung übersprungen)');
@@ -149,11 +154,11 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
   const MKPDF = MK.replace(/\.docx$/, '.pdf');
   if (fs.existsSync(MKPDF) && fs.statSync(MKPDF).mtimeMs >= fs.statSync(MK).mtimeMs - 1000) {
     const seiten = Number((execSync(`pdfinfo "${MKPDF}"`, { stdio: ['ignore', 'pipe', 'ignore'] }).toString().match(/Pages:\s+(\d+)/) || [])[1]);
-    pruefe(seiten === 6, 'Ansichtsexemplar (PDF): 6 Seiten', seiten);
+    pruefe(seiten === (fassung === 'analog' ? 7 : 6), 'Ansichtsexemplar (PDF): gleiche Seitenzahl wie die Schülerversion', seiten);
   }
   }
   console.log('\n== QR-Codes');
-  for (const n of ['verlauf', 'speisesaal', 'rueckenmark', 'trend', 'atemweg']) {
+  for (const n of ['verlauf', 'speisesaal', 'rueckenmark', 'trend', 'atemweg', 'verlegung']) {
     const datei = path.join(WURZEL, 'qr', `qr_w4_${n}.png`);
     let text = null;
     try { text = execSync(`python3 -c "import zxingcpp,sys;from PIL import Image;print(zxingcpp.read_barcodes(Image.open(sys.argv[1]))[0].text)" "${datei}"`, { stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim(); } catch (e) { text = null; }
@@ -251,6 +256,14 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
   await s.locator('button.knopf').last().click();
   text = await s.locator('main').innerText();
   pruefe(/Nicht bestanden/.test(text) && /bewusstlos: 1/.test(text) && /Fehlalarme: 1/.test(text), 'Ergebnis: nicht bestanden (1 bewusstlos, 1 Fehlalarm)');
+  await s.context().close();
+
+  console.log('\n== Lesetext am Handy (verlegung.html)');
+  s = await neueSeite('verlegung');
+  await s.goto(basis + 'w4/verlegung.html');
+  const lese = await s.evaluate(() => ({ p: document.querySelectorAll('.lesetext p').length, bilder: document.querySelectorAll('.bild svg[role="img"]').length, breit: document.documentElement.scrollWidth <= document.documentElement.clientWidth, text: document.querySelector('main').innerText }));
+  pruefe(lese.p === 4 && lese.bilder === 3 && lese.breit && lese.text.includes('Kann die Person nicht mehr sprechen') && /Tabelle auf dem Arbeitsblatt/.test(lese.text), 'Lesetext: 4 Absätze, 3 Bilder, passt in Handybreite, Auftrag am Ende');
+  await s.screenshot({ path: path.join(ERG, 'w4_verlegung.png'), fullPage: true });
   await s.context().close();
 
   console.log('\n== Schon fertig? (rueckenmark, trend, atemweg)');

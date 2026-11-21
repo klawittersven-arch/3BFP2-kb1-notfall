@@ -105,3 +105,8 @@ table.tab th { background: var(--grund); }
 .fuss { text-align: center; color: var(--leise); font-size: 12px; margin-top: 18px; }
 .versteckt { display: none !important; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+/* Lesetext mit Bildern (Blatt 3, verlegung.html) */
+.lesetext p { line-height: 1.55; margin: 0 0 12px; }
+.bild { margin: 4px 0 16px; text-align: center; }
+.bild svg { max-width: 100%; height: auto; }
+.bild figcaption { font-size: 14px; color: var(--leise); margin-top: 2px; }
