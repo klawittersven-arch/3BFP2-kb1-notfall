@@ -105,9 +105,17 @@ const B2 = {
   vielleicht: 'Vielleicht ist keiner ein Notfall – vielleicht mehrere.',
   aa1: {
     text: {
-      analog: 'Ihre Lehrkraft zeigt nacheinander **Messkarten**. Bei jeder Karte: **1.** Werte lesen und mit dem Vorwert vergleichen. **2.** Schockindex rechnen (Puls : systolischer Blutdruck). **3.** Ampel wählen und in die Tabelle schreiben. **4.** Alle zeigen gleichzeitig: **sitzen bleiben** 🟢 · **Hand heben** 🟡 · **aufstehen** 🔴. Bei **Finn**: Puls und Blutdruck in die Kurve eintragen.',
-      digital: 'Scannen Sie den QR-Code. Die **Messkarten** kommen am Handy von selbst – 40 Sekunden pro Karte. Bei jeder Karte: **1.** Werte lesen und mit dem Vorwert vergleichen. **2.** Schockindex rechnen (Puls : systolischer Blutdruck). **3.** Ampel am Handy wählen und in die Tabelle schreiben. Bei **Finn**: Puls und Blutdruck in die Kurve eintragen.'
+      analog: 'Allein (8 Minuten). Kreuzen Sie bei jeder Messung an, was Sie tun. Tragen Sie danach **Finns** Puls und Blutdruck in die Kurve ein.',
+      digital: 'Scannen Sie den QR-Code. Am Handy kommen nacheinander **Messkarten**: Wählen Sie bei jeder Karte die Ampel. Bei **Finn**: Puls und Blutdruck in die Kurve eintragen. Am Ende: Ergebnis in die Tabelle übertragen.'
     },
+    // Analoge Fassung: Ankreuz-Tabelle mit diesen Messkarten aus docs/w4/inhalte.js (Jana fehlt bewusst – sie kommt in 2.3)
+    karten: [1, 3, 5, 6],
+    loesungAnalog: [
+      '**06:00 Finn: 🟢** – alle Werte normal (Schockindex 0,6); Schmerz an der Prellung ist nach dem Sturz zu erwarten. 🔴 wäre zu früh.',
+      '**06:30 Herr Kurz: 🟡** – Puls und Atmung sind direkt nach dem Gehen erhöht, das ist erklärbar: nach 5 Minuten Ruhe nachmessen (dann Puls 84/min, alles normal). 🔴 wäre ein Fehlalarm.',
+      '**07:00 Finn: 🟡** – Werte noch im Normbereich, aber der Puls ist in einer Stunde um 12 gestiegen und der Abstand der Blutdruckwerte ist kleiner geworden: in 15–20 Minuten nachmessen, Pflegefachkraft informieren, noch nichts essen lassen. 🔴 wäre zu früh.',
+      '**07:20 Finn: 🔴** – Puls steigt weiter (76 → 88 → 104/min), Abstand der Blutdruckwerte 46 → 40 → 30 mmHg, dazu blass, kühle Hände, Durst und Schmerz in der linken Schulter (Milz). Notfall – obwohl der Schockindex erst 0,9 ist.'
+    ],
     regel: '🏆 **Gewonnen:** Finn rechtzeitig gemeldet **und** höchstens **ein Fehlalarm** (🔴 ohne Notfall).',
     handy: '**Frühdienst mit Ampel:** QR-Code scannen und starten. Am Ende sehen Sie, ob Sie gewonnen haben.'
   },

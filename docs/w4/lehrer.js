@@ -1,6 +1,6 @@
 /* Lehreransicht Woche 4 (optional):
    1. „Ergebnisse“: Raum starten, Code zeigen, Punkte je Gruppe und häufige Fehlentscheidungen (eigener Worker).
-   2. „Messkarten groß“: die Messkarten des Live-Verlaufs (analoge Fassung) groß zeigen – ganz ohne Server.
+   2. „Messkarten groß“: die Messkarten des Live-Verlaufs groß zeigen (Besprechung) – ganz ohne Server.
    ?demo=1 zeigt die Ergebnis-Ansicht mit erfundenen Gruppen (ohne Internet). */
 'use strict';
 (function () {
@@ -20,7 +20,7 @@
     var h = A.haupt();
     var r = el('div', { klasse: 'reiter' },
       el('button', { type: 'button', klasse: ansicht === 'ergebnisse' ? 'an' : '', text: 'Ergebnisse der Gruppen', onclick: function () { ansicht = 'ergebnisse'; zeigen(); } }),
-      el('button', { type: 'button', klasse: ansicht === 'karten' ? 'an' : '', text: 'Messkarten groß (Blatt 2, analog)', onclick: function () { ansicht = 'karten'; zeigen(); } }));
+      el('button', { type: 'button', klasse: ansicht === 'karten' ? 'an' : '', text: 'Messkarten groß (Blatt 2)', onclick: function () { ansicht = 'karten'; zeigen(); } }));
     h.appendChild(r);
     return h;
   }
@@ -130,7 +130,7 @@
     ];
   }
 
-  /* ---------- Messkarten groß (analoge Fassung von Blatt 2) ---------- */
+  /* ---------- Messkarten groß (Besprechung von Blatt 2) ---------- */
   function karten(n, loesung) {
     var h = rahmen(), V = W4.verlauf, alle = V.karten.concat([null]);
     var k = alle[n];
@@ -164,7 +164,7 @@
       el('button', { klasse: 'knopf', type: 'button', text: n + 1 < alle.length ? 'Nächste Karte →' : 'Von vorn', onclick: function () { karten(n + 1 < alle.length ? n + 1 : 0, false); } }));
     h.appendChild(box);
     h.appendChild(navi);
-    h.appendChild(el('p', { klasse: 'leise', text: 'Ablauf: Karte zeigen → alle tragen ihre Ampel ein → „3-2-1“: sitzen bleiben 🟢 · Hand heben 🟡 · aufstehen 🔴 → 1–2 Begründungen → Lösung zeigen. Tasten: ← →, L = Lösung.' }));
+    h.appendChild(el('p', { klasse: 'leise', text: 'Besprechung: Karte zeigen → „Was haben Sie gewählt?“ → 1–2 Begründungen → Lösung zeigen. Tasten: ← →, L = Lösung.' }));
     document.onkeydown = function (e) {
       if (ansicht !== 'karten') return;
       if (e.key === 'ArrowRight' || e.key === 'PageDown') karten(n + 1 < alle.length ? n + 1 : n, false);

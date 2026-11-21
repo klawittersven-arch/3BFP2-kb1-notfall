@@ -12,15 +12,15 @@ Es gibt **zwei Fassungen** mit denselben Aufgaben im KA-Format – die Lehrkraft
 
 | Datei | Inhalt |
 |---|---|
-| `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_analog_SV.docx/.pdf` | **Analog**, ganz ohne Smartphone: Live-Verlauf mit Messkarten (sitzen / Hand heben / aufstehen), Entscheidungsspiel mit Handzeichen, „Schon fertig?“ als Zusatzaufgabe (Antwort auf ein Extrablatt). 3 Blätter je 2 Seiten (6 Seiten) |
-| `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_analog_LV_LSG.docx/.pdf` | Lehrerversion analog: Verlaufsplan (135 min), Hinweise, Klausur- und Examensbezug, Lösungen (gelb), **Anhang A** Messkarten, **Anhang B** Entscheidungsspiel zum Vorlesen |
+| `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_analog_SV.docx/.pdf` | **Analog**, ganz ohne Smartphone: Blatt 2 als Ankreuz-Aufgabe in Einzelarbeit (vier Messungen, Finns Kurve), Entscheidungsspiel mit Handzeichen, „Schon fertig?“ als Zusatzaufgabe (Antwort auf ein Extrablatt). 3 Blätter je 2 Seiten (6 Seiten) |
+| `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_analog_LV_LSG.docx/.pdf` | Lehrerversion analog: Verlaufsplan (135 min), Hinweise, Klausur- und Examensbezug, Lösungen (gelb), **Anhang A** Entscheidungsspiel zum Vorlesen |
 | `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_digital_SV.docx/.pdf` | **Digital**: Live-Verlauf und Simulation am Smartphone, „Schon fertig?“ mit QR-Code; keine analogen Alternativen auf dem Blatt. 6 Seiten |
 | `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_digital_LV_LSG.docx/.pdf` | Lehrerversion digital: Verlaufsplan, Hinweise (u. a. optionale Lehreransicht), Lösungen |
 | `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_{analog,digital}_SV_markiert.docx/.pdf` | **Ansichtsexemplar für die Lehrkraft (nicht austeilen):** Schülerversion mit Textmarker – **gelb** = direkt klausurrelevant, **pink** = könnte gestrichen werden, ohne Markierung = unterstützend. Zuordnung in `werkzeuge/ab_w4.js` (`MARKE`) |
 
 - **Blatt 1 – Wirbelsäulenverletzung: nicht bewegen – aber richtig** · Methodenwechsel: Übung „Kopf halten und achsengerecht drehen“ (Vierergruppen, auf dem Boden oder auf Isomatten) → AA4 (Muster KA 5.3)
-- **Blatt 2 – Innere Blutung: den Verlauf im Blick** · Methodenwechsel: Live-Verlauf „Frühdienst – drei Patienten, eine Ampel“ – analog mit Messkarten (sitzen 🟢 / Hand heben 🟡 / aufstehen 🔴) bzw. digital am Handy (`w4/verlauf.html`) → AA2
-- **Blatt 3 – Atemwege: wenn etwas im Hals stecken bleibt** · Methodenwechsel: „Notfall-Ampel im Speisesaal“ – analog als Entscheidungsspiel (Anhang B) bzw. digital als Simulation am Handy (`w4/speisesaal.html`) → AA3 (Muster KA 4.1)
+- **Blatt 2 – Innere Blutung: den Verlauf im Blick** · AA1 „Frühdienst mit Ampel“ – analog als Ankreuz-Aufgabe in Einzelarbeit (vier Messungen, dann Finns Kurve), digital als Live-Verlauf am Handy (`w4/verlauf.html`) → AA2
+- **Blatt 3 – Atemwege: wenn etwas im Hals stecken bleibt** · Methodenwechsel: „Notfall-Ampel im Speisesaal“ – analog als Entscheidungsspiel (Anhang A) bzw. digital als Simulation am Handy (`w4/speisesaal.html`) → AA3 (Muster KA 4.1)
 
 ## Adressen (nach dem Zusammenführen in `main` über GitHub Pages online)
 
@@ -29,7 +29,7 @@ Es gibt **zwei Fassungen** mit denselben Aufgaben im KA-Format – die Lehrkraft
 | …/3BFP2-kb1-notfall/w4/verlauf.html | Blatt 2: Live-Verlauf am Handy (Gewinnen: Finn rechtzeitig gemeldet, höchstens 1 Fehlalarm) |
 | …/w4/speisesaal.html | Blatt 3: Simulation (Bestanden: niemand bewusstlos, höchstens 1 Fehlalarm) |
 | …/w4/rueckenmark.html · trend.html · atemweg.html | „Schon fertig?“ am Ende von Blatt 1, 2 und 3 |
-| …/w4/lehrer.html | Lehreransicht (freiwillig): Raum starten, Ergebnisse je Gruppe, häufige Fehlentscheidungen; „Messkarten groß“ (ohne Server) |
+| …/w4/lehrer.html | Lehreransicht (freiwillig): Raum starten, Ergebnisse je Gruppe, häufige Fehlentscheidungen; „Messkarten groß“ für die Besprechung (ohne Server) |
 | …/w4/lehrer.html?demo=1 | Probeansicht mit erfundenen Gruppen (ohne Internet) |
 
 Alle Seiten der Woche 4 liegen im Unterordner `docs/w4/`. So bleibt `docs/sw.js` (Offline-Speicher der Woche 2)
@@ -72,7 +72,7 @@ Cookies, keine fremden Skripte oder Schriften, Cloudflare-Protokolle aus.
 
 ## Texte ändern und neu erzeugen
 
-- **Messkarten, Simulationsszenen, Handy-Übungen:** `docs/w4/inhalte.js` (eine Quelle für Handy, Lehreransicht und die Anhänge der Lehrerversion)
+- **Messkarten, Simulationsszenen, Handy-Übungen:** `docs/w4/inhalte.js` (eine Quelle für Handy, Lehreransicht, Blatt 2 und den Anhang der Lehrerversion)
 - **Arbeitsblatt-Texte, Aufgaben, Lösungen:** `werkzeuge/ab_w4_texte.js` · Layout, Verlaufsplan, Hinweise: `werkzeuge/ab_w4.js`
 
 ```

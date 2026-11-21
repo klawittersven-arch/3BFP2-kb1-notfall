@@ -111,6 +111,7 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
   pruefe((T4.B1.aufgaben.find((x) => x.nr === '4.1') || {}).zeilen >= 8, 'Blatt 1: viel Schreibraum für 4.1 (mind. 8 Zeilen)');
   pruefe(/Unterscheiden Sie anhand der Situation eine leichte von einer schweren Atemwegsverlegung\./.test(svText), 'Blatt 3: Aufgabe nach Muster KA 4.1');
   pruefe(/Beim Frühstück verschluckte sie sich am Kaffee und hustete kräftig\. Ich ließ sie husten, und nach kurzer Zeit war alles wieder gut\./.test(svText), 'Leitfall wörtlich wie im Fallbeispiel');
+  pruefe(!/Schockindex rechnen|Werte lesen und mit dem Vorwert vergleichen\. \*\*2/.test(svText) && !/Schockindex rechnen/.test(svText), 'Blatt 2, AA1: keine Schrittfolge mehr (kein „Schockindex rechnen“)');
   pruefe(!/Rückenschläge|Oberbauchkompression/.test(svText), 'Schülerversion: kein Vorgehen bei schwerer Verlegung (Planung: Woche 5)');
   pruefe((svText.match(/Schon fertig\?/g) || []).length === 3, 'jedes Blatt endet mit „Schon fertig?“');
   pruefe(/SpO₂ 98 %/.test(svText) && /Blutzucker 96 mg\/dl/.test(svText) && /trockene Schürfwunde/.test(svText) && /Kein Hinweis auf eine innere Blutung/.test(nurText(docxText(LV))), 'Blatt 2, 2.1: Ablenker im Fall (normale Werte, Schürfwunde) – nicht alles ist ein Hinweis');
@@ -118,7 +119,10 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
   if (fassung === 'analog') {
     const x = svText.match(/Handy|Smartphone|QR|scann|Link:/i);
     pruefe(!x, 'analoge Fassung: kein Handy, kein QR-Code', x && x[0]);
-    pruefe(/sitzen bleiben/.test(svText) && /1–4 Fingern/.test(svText), 'analoge Fassung: Messkarten mit Aufstehen, Entscheidungsspiel mit Fingern');
+    pruefe(/Kreuzen Sie bei jeder Messung an/.test(svText) && ['06:00 Uhr', '06:30 Uhr', '07:00 Uhr', '07:20 Uhr'].every((z) => svText.includes(z)) && !/sitzen bleiben|aufstehen 🔴|Messkarte/.test(svText), 'analoge Fassung, Blatt 2: Ankreuz-Aufgabe (4 Messungen) statt Messkarten und Aufstehen');
+    pruefe(/1–4 Fingern/.test(svText), 'analoge Fassung, Blatt 3: Entscheidungsspiel mit Fingern');
+    const lvText = nurText(docxText(LV));
+    pruefe(/Anhang A · Notfall-Ampel im Speisesaal/.test(lvText) && !/Anhang B|Messkarten für den Live-Verlauf/.test(lvText), 'analoge Lehrerversion: nur noch ein Anhang (Entscheidungsspiel)');
   } else {
     const x = svText.match(/sitzen bleiben|Hand heben|aufstehen\b|Ohne Handy|liest .{0,30}vor|Fingern|Ihre Lehrkraft zeigt/i);
     pruefe(!x, 'digitale Fassung: keine analogen Alternativen genannt', x && x[0]);

@@ -31,7 +31,7 @@ var W4 = {
         beobachtung: 'Haut rosig und warm.',
         aussage: '„Mir geht’s gut. Nur die Prellung tut weh, wenn ich mich bewege.“',
         richtig: 'gruen',
-        begruendung: 'Alle Werte sind normal (Schockindex 0,6). Schmerz an der Prellung ist nach dem Sturz zu erwarten. Wer jetzt aufsteht, meldet zu früh.'
+        begruendung: 'Alle Werte sind normal (Schockindex 0,6). Schmerz an der Prellung ist nach dem Sturz zu erwarten. Wer jetzt 🔴 wählt, meldet zu früh.'
       },
       {
         nr: 2, zeit: '06:10', wer: 'jana', puls: 70, rr: [96, 58], af: 14, vorwert: 'gestern 18 Uhr: Puls 72/min, RR 98/60 mmHg',
