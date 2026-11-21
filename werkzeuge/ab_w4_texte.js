@@ -16,7 +16,7 @@ const B1 = {
     'Herr Pfeiffer ist wach und weiß, wo er ist. Er sagt: „Mein Nacken tut so weh. Und meine Hände kribbeln, beide.“ Die Finger der rechten Hand kann er kaum bewegen. Seine Beine kann er bewegen. Dann ruft er: „Helfen Sie mir hoch, ich muss zum Mittagessen!“ Eine Kollegin holt die Pflegefachkraft und setzt den Notruf ab.'
   ],
   aa1: {
-    text: 'Lesen Sie den Fall. Unterstreichen Sie alle **Hinweise auf eine Wirbelsäulenverletzung**. Tragen Sie sie mit Zeilennummer in die Tabelle ein. Achtung: Nicht alles im Fall ist ein Hinweis!',
+    text: 'Lesen Sie den Fall. Unterstreichen Sie alle **Hinweise auf eine Wirbelsäulenverletzung**. Tragen Sie sie mit Zeilennummer in die Tabelle ein.',
     // Spalten bewusst NICHT in der Reihenfolge des Falls (dort: Unfallhergang → Schmerzen → Ausfälle),
     // damit die SuS jede Information selbst zuordnen müssen.
     spalten: ['Ausfälle (Gefühl und Bewegung)', 'Unfallhergang', 'Schmerzen'],
@@ -30,10 +30,9 @@ const B1 = {
   },
   info: {
     kopf: 'Informationstext: Rückenmark und Höhe der Verletzung',
+    // ein Absatz (Fassung der Lehrkraft); ++Wort++ = fett und unterstrichen
     absaetze: [
-      'Die Wirbelsäule schützt das **Rückenmark**. Es leitet Signale zwischen Gehirn und Körper. Auf jeder Höhe gehen Nerven ab: für Atmung, Arme, Rumpf und Beine (Bild unten). Wird das Rückenmark verletzt, fallen **unterhalb der Verletzung** Bewegung und Gefühl aus: Lähmung, Kribbeln, Taubheit. **Je höher die Verletzung, desto mehr fällt aus.** Ist es nur **teilweise** verletzt, fällt nicht alles aus. Für die Höhe zählt die **höchste betroffene Stelle**: Hände betroffen → HWS.',
-      'Ein **instabiler** Wirbelbruch kann das Rückenmark bei jeder Bewegung quetschen – zum Beispiel beim Aufsetzen oder Kopfdrehen. Die Folge: eine bleibende **Querschnittlähmung**. Auch wer Arme und Beine bewegen kann, kann so einen Bruch haben.',
-      'Bei hohen Verletzungen fällt oft der **Sympathikus** aus: **neurogener Schock** (Blutdruck niedrig, Puls langsam, Haut warm).'
+      'Die Wirbelsäule schützt das **Rückenmark**. Es leitet Signale zwischen Gehirn und Körper. Auf jeder Höhe gehen Nerven ab: für Atmung, Arme, Rumpf und Beine (Bild unten). Wird das Rückenmark verletzt, fallen **unterhalb der Verletzung** Bewegung und Gefühl aus: Lähmung, Kribbeln, Taubheit. **Je ++höher++ die Verletzung, desto ++mehr++ fällt aus.** Ist es nur **teilweise** verletzt, fällt nicht alles aus. Für die Höhe zählt die **höchste betroffene Stelle**: Hände betroffen → HWS. Ein **instabiler** Wirbelbruch kann das Rückenmark bei jeder Bewegung quetschen – zum Beispiel beim Aufsetzen oder Kopfdrehen. Die Folge: eine bleibende **Querschnittlähmung**. Auch wer Arme und Beine bewegen kann, kann so einen Bruch haben. Bei hohen Verletzungen fällt oft der **Sympathikus** aus: **neurogener Schock** (Blutdruck niedrig, Puls langsam, Haut warm).'
     ],
     quelle: 'Quelle: nach MSD Manual Profi-Ausgabe: Rückenmarkverletzungen; ERC-Leitlinien 2025, Erste Hilfe; sprachlich vereinfacht.',
     woerter: 'Wörterhilfe: HWS = Halswirbelsäule, BWS = Brustwirbelsäule, LWS = Lendenwirbelsäule · Rückenmark = Nervenstrang im Wirbelkanal · instabil = nicht fest · Querschnittlähmung = Lähmung unterhalb der Verletzung · Quelle: nach MSD Manual, ERC 2025, vereinfacht'
@@ -61,7 +60,7 @@ const B1 = {
   merksatz: [['Hinweise auf eine Wirbelsäulenverletzung: ', { l: 'Unfallhergang' }, ' (Sturz aus der Höhe, Kopfsprung, Verkehrsunfall), ', { l: 'Schmerzen in Nacken oder Rücken' }, ', ', { l: 'Kribbeln, Taubheit, Lähmung' }, '. Dann: ', { l: 'nicht bewegen' }, ', Person bitten, still zu liegen, ', { l: 'Kopf mit beiden Händen in der vorgefundenen Lage halten' }, ', nicht aufsetzen – sonst droht eine ', { l: 'Querschnittlähmung' }, ' (bei sehr hoher Verletzung auch Atemlähmung). Drehen nur, wenn es sein muss (z. B. Erbrechen): ', { l: 'achsengerecht mit mehreren Helfenden' }, '.']],
   aa3: {
     fortsetzung: 'Herr Pfeiffer sagt: „Mir ist so übel. Ich muss mich übergeben.“ Er muss auf die Seite gedreht werden – sonst kann er ersticken.',
-    text: 'Herr Pfeiffer muss sich übergeben und auf die Seite gedreht werden – sonst kann er ersticken. Üben Sie **vier Runden** auf dem Boden oder auf der Isomatte (falls vorhanden), dann Rollen tauschen.',
+    text: 'Herr Pfeiffer muss sich übergeben! Daher muss er auf die Seite gedreht werden – sonst kann er ersticken. Üben Sie **vier Runden** auf dem Boden oder auf der Isomatte (falls vorhanden), dann Rollen tauschen.',
     rollen: [
       ['① Patient/in', 'liegt auf dem Rücken, bleibt locker, hilft nicht mit.'],
       ['② Kopf', 'hält den Kopf mit beiden Händen seitlich fest. Kommando: „Auf drei: eins – zwei – drei.“'],
