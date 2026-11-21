@@ -31,7 +31,7 @@ const B1 = {
     absaetze: [
       'Die Wirbelsäule schützt das **Rückenmark**. Es leitet Signale zwischen Gehirn und Körper. Auf jeder Höhe gehen Nerven ab: für Atmung, Arme, Rumpf und Beine (Bild unten). Wird das Rückenmark verletzt, fallen **unterhalb der Verletzung** Bewegung und Gefühl aus: Lähmung, Kribbeln, Taubheit. **Je höher die Verletzung, desto mehr fällt aus.**',
       'Ein **instabiler** Wirbelbruch kann das Rückenmark bei jeder Bewegung quetschen – zum Beispiel beim Aufsetzen oder Kopfdrehen. Die Folge: eine bleibende **Querschnittlähmung**. Auch wer Arme und Beine bewegen kann, kann so einen Bruch haben.',
-      'Bei Verletzungen der Halswirbelsäule und der oberen Brustwirbelsäule fällt oft der **Sympathikus** aus: **neurogener Schock** (Blutdruck niedrig, Puls langsam, Haut warm).'
+      'Bei hohen Verletzungen fällt oft der **Sympathikus** aus: **neurogener Schock** (Blutdruck niedrig, Puls langsam, Haut warm).'
     ],
     quelle: 'Quelle: nach MSD Manual Profi-Ausgabe: Rückenmarkverletzungen; ERC-Leitlinien 2025, Erste Hilfe; sprachlich vereinfacht.',
     woerter: 'Wörterhilfe: Rückenmark = Nervenstrang im Wirbelkanal · instabil = nicht fest, kann sich verschieben · Querschnittlähmung = Lähmung unterhalb der Verletzung · Quelle: nach MSD Manual, ERC 2025, vereinfacht'
@@ -62,10 +62,10 @@ const B1 = {
       ['④ Beobachter/in', 'prüft mit der Checkliste und gibt danach eine Rückmeldung.']
     ],
     checkliste: [
-      'Die Person am Kopf hält ihn die ganze Zeit mit beiden Händen und gibt das Kommando.',
-      'Kopf, Schultern und Hüfte drehen gleichzeitig – wie ein Baumstamm.',
-      'Der Nacken wird nicht gebeugt oder verdreht (Nase in einer Linie mit dem Bauchnabel).',
-      'Die liegende Person wird angesprochen: Was passiert jetzt?'
+      'Kopf die ganze Zeit gehalten, ein Kommando',
+      'alles dreht gleichzeitig (Baumstamm)',
+      'Nacken nicht verdreht (Nase – Bauchnabel)',
+      'Person angesprochen'
     ],
     sicherheit: 'Langsam und ohne Kraft üben. Wer Nacken- oder Rückenbeschwerden hat, übernimmt nicht die Rolle der liegenden Person.'
   },
@@ -96,7 +96,7 @@ const B2 = {
   kopf: 'Innere Blutung: den Verlauf im Blick',
   lernziel: 'Sie erkennen eine innere Blutung am Verlauf der Vitalzeichen. Sie entscheiden begründet, wann Sie weiter beobachten, nachmessen oder einen Notfall melden.',
   fall: [
-    'Sie sind im Frühdienst auf der unfallchirurgischen Station eingesetzt. Sie betreuen heute drei Patientinnen und Patienten. Ihre Pflegefachkraft ist im Nachbarzimmer.',
+    'Sie sind im Frühdienst auf der unfallchirurgischen Station eingesetzt und betreuen heute drei Patientinnen und Patienten.',
     'Finn Albers (17) ist gestern Abend mit dem Fahrrad gestürzt. Dabei hat ihn der Lenker in den linken Oberbauch getroffen. Dort hat er eine Prellmarke. Röntgen und Ultraschall in der Notaufnahme waren unauffällig. Er bleibt zur Beobachtung. Angeordnet ist: Vitalzeichen jede Stunde.',
     'Jana Kraus (24) wurde gestern am rechten Unterarm operiert.',
     'Herr Bernd Kurz (45) wurde vor zwei Tagen am Sprunggelenk operiert. Er geht mit Unterarmgehstützen und darf das Bein nicht belasten.'
@@ -104,7 +104,7 @@ const B2 = {
   vielleicht: 'Vielleicht ist keiner ein Notfall – vielleicht mehrere.',
   aa1: {
     text: 'Ihre Lehrkraft zeigt **Messkarten** – oder Sie spielen am **Handy** (QR-Code unten). Bei jeder Karte: **1.** Werte lesen und mit dem Vorwert vergleichen. **2.** Schockindex rechnen (Puls : systolischer Blutdruck). **3.** Ampel wählen und in die Tabelle schreiben. Bei **Finn**: Puls und Blutdruck in die Kurve eintragen.',
-    regel: '🏆 **Gewonnen**, wenn Sie Finn rechtzeitig als Notfall melden **und** höchstens **einen Fehlalarm** geben (🔴, obwohl es kein Notfall ist).',
+    regel: '🏆 **Gewonnen:** Finn rechtzeitig gemeldet **und** höchstens **ein Fehlalarm** (🔴 ohne Notfall).',
     handy: '**Handy-Fassung** (nur wenn Ihre Lehrkraft es sagt): QR-Code scannen. Die Karten kommen von selbst – 40 Sekunden pro Karte.'
   },
   merksatz: [['Eine innere Blutung ist ', { l: 'nicht sichtbar' }, '. Ich achte auf den ', { l: 'Verlauf' }, ': Der ', { l: 'Puls steigt' }, ', der ', { l: 'Abstand zwischen oberem und unterem Blutdruckwert wird kleiner' }, ', dazu ', { l: 'Blässe, Durst, Unruhe, Bauchschmerz' }, ' – bei einer Milzverletzung oft ', { l: 'Schmerz in der linken Schulter' }, '. Junge Menschen ', { l: 'gleichen lange aus' }, ': Der Blutdruck fällt erst spät. Ein einzelner Wert sagt wenig – ', { l: 'Vorwert, Ursache und Beschwerden' }, ' gehören dazu. Einen Notfall melde ich ', { l: 'sofort' }, ' – nicht erst bei einem Schockindex über 1.']],
@@ -112,7 +112,7 @@ const B2 = {
   rahmen: 'Pflegefachpersonen schätzen akute Situationen anhand von Beobachtungen und Messwerten ein.',
   aufgaben: [
     {
-      nr: '2.1', punkte: 3, zeilen: 3,
+      nr: '2.1', punkte: 3, zeilen: 4,
       vorsatz: 'Um 07:20 Uhr messen Sie bei Finn: Puls 104/min, Blutdruck 118/88 mmHg (07:00 Uhr: 88/min, 122/82 mmHg; 06:00 Uhr: 76/min, 124/78 mmHg). Er ist blass, die Hände sind kühl. Er sagt: „Ich hab so Durst. Und meine linke Schulter tut komisch weh.“',
       text: 'Identifizieren Sie drei Befunde, die bei Finn auf eine innere Blutung hinweisen. Berücksichtigen Sie die Vorwerte.',
       loesung: [
@@ -169,10 +169,10 @@ const B3 = {
     loesungC: 'Der rechte Hauptbronchus ist kürzer, weiter und verläuft steiler – fast in Verlängerung der Luftröhre.',
     selbstversuch: 'Selbstversuch: Der Kehlkopf geht beim Schlucken nach oben, der Kehldeckel verschließt die Luftröhre. Schlucken und Einatmen gleichzeitig geht nicht.'
   },
-  merksatz1: [['Beim Schlucken verschließt der ', { l: 'Kehldeckel' }, ' die Luftröhre. Fremdkörper rutschen eher in den ', { l: 'rechten Hauptbronchus' }, ' (kürzer, weiter, steiler). Atemweg verlegt → keine Luft in die ', { l: 'Lungenbläschen' }, ' → ', { l: 'Sauerstoffmangel (Hypoxie)' }, ': Zyanose, ', { l: 'Bewusstlosigkeit' }, ', ', { l: 'Kreislaufstillstand' }, ' – in ', { l: 'wenigen Minuten' }, '. Das ', { l: 'Gehirn' }, ' ist am empfindlichsten.']],
+  merksatz1: [['Beim Schlucken verschließt der ', { l: 'Kehldeckel' }, ' die Luftröhre. Fremdkörper rutschen eher in den ', { l: 'rechten Hauptbronchus' }, '. Atemweg verlegt → keine Luft in die ', { l: 'Lungenbläschen' }, ' → ', { l: 'Sauerstoffmangel (Hypoxie)' }, ': Zyanose, ', { l: 'Bewusstlosigkeit' }, ', ', { l: 'Kreislaufstillstand' }, ' – in ', { l: 'wenigen Minuten' }, '. Das ', { l: 'Gehirn' }, ' ist am empfindlichsten.']],
   aa2: {
     text: 'Ein Handy für zwei. **Danach:** Füllen Sie die Tabelle aus.',
-    handy: 'QR-Code scannen, sechs kurze Szenen spielen. **Bestanden**, wenn niemand bewusstlos wird und Sie höchstens **einen Fehlalarm** geben. **Ohne Handy:** Ihre Lehrkraft liest vor, Sie zeigen 1–4 Finger.',
+    handy: 'Sechs Szenen. **Bestanden:** niemand bewusstlos, höchstens **ein Fehlalarm**. **Ohne Handy:** Ihre Lehrkraft liest vor, Sie zeigen 1–4 Finger.',
     zeilen: [
       ['Husten', 'kräftig, wirksam', 'schwach, leise, unwirksam – oder gar kein Husten'],
       ['Sprechen und Atmen', 'kann sprechen (auch rufen) und atmen', 'kann nicht oder nur einzelne Wörter sprechen; kaum oder keine Atmung, evtl. Pfeifen'],
@@ -195,7 +195,7 @@ const B3 = {
       ]
     },
     {
-      nr: '3.2', punkte: 2, zeilen: 2,
+      nr: '3.2', punkte: 2, zeilen: 3,
       text: 'Erklären Sie, warum Herr Roth ohne Hilfe innerhalb weniger Minuten bewusstlos werden kann.',
       loesung: [
         'Der Bissen verlegt die Atemwege: Es kommt keine Luft mehr in die Lungenbläschen, kein Sauerstoff gelangt ins Blut (Hypoxie, Zyanose). (1 P.)',
