@@ -98,7 +98,8 @@ function aufgabenListe(B, liste, ersetze = (s) => s) {
     if (i === 0) rows.push(new TableRow({ cantSplit: true, children: [z([pa([B.b('Nr.', { size: 19 })])], w1, F.LACHS_KOPF), z([pa([B.b('Aufgabe', { size: 19 })])], w2, F.LACHS_KOPF), z([pa([B.b('Punkte', { size: 19 })])], w3, F.LACHS_KOPF)] }));
     rows.push(new TableRow({ cantSplit: true, children: [
       z([pa([B.b(a.nr, { size: 19 })])], w1),
-      z([a.vorsatz ? pa(B.runs(a.vorsatz, { size: 19, italics: true }), { spacing: { after: 30, line: 245 } }) : null, pa(B.runs(a.text, { size: 19 }))].filter(Boolean), w2),
+      z([a.vorsatz ? pa(B.runs(a.vorsatz, { size: 19, italics: true }), { spacing: { after: 30, line: 245 } }) : null, pa(B.runs(a.text, { size: 19 })),
+        a.hinweis ? pa(B.runs(a.hinweis, { size: 17, italics: true, color: F.GRAU_T }), { spacing: { before: 30, after: 0, line: 240 } }) : null].filter(Boolean), w2),
       z([pa([B.t(`___ / ${a.punkte}`, { size: 19 })])], w3)
     ] }));
     out.push(new Table({ width: { size: B.breite, type: WidthType.DXA }, columnWidths: [w1, w2, w3], layout: TableLayoutType.FIXED, rows }));
