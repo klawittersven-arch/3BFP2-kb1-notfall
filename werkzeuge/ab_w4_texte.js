@@ -74,21 +74,12 @@ const B1 = {
   rahmen: 'Pflegefachpersonen leiten in lebensbedrohlichen Situationen Sofortmaßnahmen ein.',
   aufgaben: [
     {
-      nr: '4.1', punkte: 2, zeilen: 4,
+      nr: '4.1', punkte: 2, zeilen: 9,
       text: 'Begründen Sie, warum Herr Pfeiffer möglichst nicht bewegt werden soll, und beschreiben Sie eine Maßnahme dazu.',
       hinweis: '(Hinweis: Beschreiben Sie, was Sie tun, statt Herrn Pfeiffer zu bewegen: Wie schützen Sie ihn in dieser Situation? Schreiben Sie genau, wie Sie es machen.)',
       loesung: [
         'Begründung: Der Sturz rückwärts von der Treppe mit Kopfanprall, die Nackenschmerzen und das Kribbeln in beiden Händen weisen auf eine Verletzung der Halswirbelsäule mit Beteiligung des Rückenmarks hin. Jede Bewegung (z. B. Aufsetzen, Kopf drehen) kann das Rückenmark (weiter) schädigen → bleibende Querschnittlähmung, bei hoher Verletzung Atemlähmung. (1 P.)',
         'Maßnahme, z. B.: Kopf mit beiden Händen in der vorgefundenen Lage halten; Herrn Pfeiffer bitten, still zu liegen, nicht aufsetzen oder aufstehen lassen; ansprechen und erklären. Lagewechsel nur, wenn unvermeidbar (z. B. Erbrechen), dann achsengerecht mit mehreren Helfenden. (1 P.; eine HWS-Orthese wird nicht erwartet)'
-      ]
-    },
-    {
-      nr: '4.2', punkte: 2, zeilen: 3,
-      text: 'Ihre Kollegin sagt: „Er kann doch die Beine bewegen. Dann ist die Wirbelsäule nicht verletzt.“ Beurteilen Sie die Aussage.',
-      hinweis: '(Beurteilen heißt: Stimmt die Aussage oder stimmt sie nicht? Begründen Sie Ihre Antwort.)',
-      loesung: [
-        'Die Aussage ist falsch. (1 P.)',
-        'Unfallhergang und Nackenschmerz reichen für den Verdacht. Ein instabiler Wirbelbruch kann das Rückenmark erst bei einer Bewegung verletzen. Außerdem zeigen die Hände schon Ausfälle (Kribbeln, Schwäche). Deshalb trotzdem nicht bewegen. (1 P.)'
       ]
     }
   ],

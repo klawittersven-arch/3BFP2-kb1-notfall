@@ -107,6 +107,8 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
   const nummern = [...svText.matchAll(/\b(AA\d):/g)].map((x) => x[1]);
   pruefe(nummern.join() === 'AA1,AA2,AA3,AA4,AA1,AA2,AA1,AA2,AA3', 'Nummerierung beginnt auf jedem Blatt bei AA1', nummern.join());
   pruefe(/Begründen Sie, warum Herr Pfeiffer möglichst nicht bewegt werden soll, und beschreiben Sie eine Maßnahme dazu\./.test(svText), 'Blatt 1: Aufgabe nach Muster KA 5.3');
+  pruefe(!/Er kann doch die Beine bewegen/.test(svText) && !/\n4\.2\n/.test(svText), 'Blatt 1: Aufgabe 4.2 (Beurteilen) gestrichen – AA4 nur 4.1');
+  pruefe((T4.B1.aufgaben.find((x) => x.nr === '4.1') || {}).zeilen >= 8, 'Blatt 1: viel Schreibraum für 4.1 (mind. 8 Zeilen)');
   pruefe(/Unterscheiden Sie anhand der Situation eine leichte von einer schweren Atemwegsverlegung\./.test(svText), 'Blatt 3: Aufgabe nach Muster KA 4.1');
   pruefe(/Beim Frühstück verschluckte sie sich am Kaffee und hustete kräftig\. Ich ließ sie husten, und nach kurzer Zeit war alles wieder gut\./.test(svText), 'Leitfall wörtlich wie im Fallbeispiel');
   pruefe(!/Rückenschläge|Oberbauchkompression/.test(svText), 'Schülerversion: kein Vorgehen bei schwerer Verlegung (Planung: Woche 5)');
