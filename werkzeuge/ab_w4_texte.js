@@ -34,7 +34,7 @@ const B1 = {
       'Bei hohen Verletzungen fällt oft der **Sympathikus** aus: **neurogener Schock** (Blutdruck niedrig, Puls langsam, Haut warm).'
     ],
     quelle: 'Quelle: nach MSD Manual Profi-Ausgabe: Rückenmarkverletzungen; ERC-Leitlinien 2025, Erste Hilfe; sprachlich vereinfacht.',
-    woerter: 'Wörterhilfe: Rückenmark = Nervenstrang im Wirbelkanal · instabil = nicht fest, kann sich verschieben · Querschnittlähmung = Lähmung unterhalb der Verletzung · Quelle: nach MSD Manual, ERC 2025, vereinfacht'
+    woerter: 'Wörterhilfe: HWS = Halswirbelsäule, BWS = Brustwirbelsäule, LWS = Lendenwirbelsäule · Rückenmark = Nervenstrang im Wirbelkanal · instabil = nicht fest, kann sich verschieben · Querschnittlähmung = Lähmung unterhalb der Verletzung · Quelle: nach MSD Manual, ERC 2025, vereinfacht'
   },
   aa2: {
     text: 'Welche Höhe passt zu A, B und C? Schreiben Sie den Buchstaben in die Tabelle.',
