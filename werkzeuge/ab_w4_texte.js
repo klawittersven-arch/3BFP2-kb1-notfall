@@ -178,11 +178,12 @@ const B3 = {
   leitfrage: 'War es richtig, Frau Maler einfach husten zu lassen?',
   leitfrageLoesung: 'Ja. Frau Maler hustete kräftig – eine leichte Verlegung. Richtig ist dann: zum Husten auffordern, bei ihr bleiben und beobachten. Nichts zu trinken geben, nicht auf den Rücken klopfen. Wäre der Husten schwach geworden, hätte Christin sofort Hilfe holen müssen.',
   aa1: {
-    text: '**a) Selbstversuch:** Finger vorn auf den Hals legen und schlucken. Was spüren Sie? Geht schlucken und einatmen gleichzeitig? **b)** Text lesen, Bild beschriften.',
-    info: [
-      'Die Luft strömt durch Nase oder Mund in den **Rachen**. Hier kreuzen sich Luftweg und Speiseweg. Beim Schlucken hebt sich der **Kehlkopf**, der **Kehldeckel** verschließt die **Luftröhre** – die Nahrung rutscht in die Speiseröhre. Gerät doch etwas in den Kehlkopf, muss man kräftig husten (**Hustenreflex**).',
-      'Die Luftröhre teilt sich in den **rechten** und den **linken Hauptbronchus**. Der rechte ist kürzer, weiter und verläuft steiler. In den **Lungenbläschen** geht Sauerstoff ins Blut. Das Ein- und Ausatmen heißt **Ventilation**.'
-    ],
+    text: {
+      analog: '**a) Selbstversuch:** Finger vorn auf den Hals legen und schlucken. Was spüren Sie? Geht schlucken und einatmen gleichzeitig? **b)** Text lesen, Bild beschriften.',
+      digital: '**a) Selbstversuch:** Finger vorn auf den Hals legen und schlucken. Was spüren Sie? Geht schlucken und einatmen gleichzeitig? **b)** Scannen Sie den QR-Code und tippen Sie die Teile der Atemwege im Bild an. Bei einem Fehler beginnen Sie von vorn. **c)** Wenn alles richtig ist, bekommen Sie Wörter: Tragen Sie sie in die Lücken im Text ein.'
+    },
+    // Informationstext: docs/w4/inhalte.js (W4.atemwegeText) – analog mit fetten Fachwörtern, digital als Lückentext
+    handy: '**Wo ist was? Die Atemwege:** sechs Fragen – tippen Sie die Teile im Bild an. Alles richtig → Sie bekommen die Wörter für den Lückentext.',
     // Reihenfolge bewusst gemischt: kein Begriff steht an der Stelle seiner Nummer im Bild
     wortspeicher: 'Wortspeicher: Lungenbläschen · linker Hauptbronchus · Kehlkopf · Luftröhre · Kehldeckel · rechter Hauptbronchus',
     begriffe: ['Kehldeckel', 'Kehlkopf', 'Luftröhre', 'rechter Hauptbronchus', 'linker Hauptbronchus', 'Lungenbläschen'],

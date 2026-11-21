@@ -10,7 +10,7 @@ const { chromium } = require('playwright');
 
 const WURZEL = path.resolve(__dirname, '..');
 const BASIS = 'https://klawittersven-arch.github.io/3BFP2-kb1-notfall/';
-const SEITEN = { w4_verlauf: 'w4/verlauf.html', w4_speisesaal: 'w4/speisesaal.html', w4_rueckenmark: 'w4/rueckenmark.html', w4_trend: 'w4/trend.html', w4_atemweg: 'w4/atemweg.html', w4_verlegung: 'w4/verlegung.html' };
+const SEITEN = { w4_verlauf: 'w4/verlauf.html', w4_speisesaal: 'w4/speisesaal.html', w4_rueckenmark: 'w4/rueckenmark.html', w4_trend: 'w4/trend.html', w4_atemweg: 'w4/atemweg.html', w4_verlegung: 'w4/verlegung.html', w4_anatomie: 'w4/anatomie.html' };
 
 (async () => {
   const browser = await chromium.launch();

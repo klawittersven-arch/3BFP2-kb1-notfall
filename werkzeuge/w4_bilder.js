@@ -1,7 +1,7 @@
 /* Bilder für die Arbeitsblätter der Woche 4 (SVG → PNG mit Playwright):
      werkzeuge/bilder/w4_kurve_leer.png, w4_kurve_lsg.png   Pflegekurve für Finn (Blatt 2)
      werkzeuge/bilder/w4_wirbelsaeule.png                  Wirbelsäule mit Höhen (Blatt 1)
-     werkzeuge/bilder/w4_atemwege.png                     Atemwege zum Beschriften (Blatt 3; Lösung in der LSG-Tabelle)
+     werkzeuge/bilder/w4_atemwege.png                     Atemwege zum Beschriften (Blatt 3; Zeichnung: docs/w4/atemwege_bild.js)
    Die Werte der Kurve kommen aus docs/w4/inhalte.js (eine Quelle für Handy und Arbeitsblatt).
    Aufruf (im Hauptverzeichnis): node werkzeuge/w4_bilder.js */
 'use strict';
@@ -88,47 +88,9 @@ function wirbelsaeule() {
   return s + '</svg>';
 }
 
-/* ---------- Atemwege (Sicht von vorn) ---------- */
-function atemwege(mitBegriffen) {
-  const B = 470, H = 470;
-  let s = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${B} ${H}" width="${B}" height="${H}" ${SCHRIFT}><rect width="${B}" height="${H}" fill="#fff"/>`;
-  const c = 235;
-  // Kehldeckel (Blatt, oberhalb des Kehlkopfs)
-  s += `<path d="M${c - 22} 46 Q${c} 6 ${c + 22} 46 Q${c} 34 ${c - 22} 46 Z" fill="#e8a0a8" stroke="#a5525c" stroke-width="2"/>`;
-  // Kehlkopf
-  s += `<path d="M${c - 40} 50 L${c + 40} 50 L${c + 26} 116 L${c - 26} 116 Z" fill="#f3c9b5" stroke="#8a5a44" stroke-width="2.5"/>`;
-  s += `<path d="M${c - 14} 60 L${c} 92 L${c + 14} 60" fill="none" stroke="#8a5a44" stroke-width="2"/>`;
-  // Luftröhre mit Knorpelspangen
-  s += `<rect x="${c - 20}" y="116" width="40" height="124" fill="#f7dccf" stroke="#8a5a44" stroke-width="2.5"/>`;
-  for (let yy = 124; yy < 238; yy += 12) s += `<path d="M${c - 20} ${yy} Q${c} ${yy + 6} ${c + 20} ${yy}" fill="none" stroke="#c59a85" stroke-width="3"/>`;
-  // Hauptbronchien: rechts (Bildseite links) kürzer, weiter, steiler; links (Bildseite rechts) länger, enger, flacher
-  s += `<path d="M${c - 20} 236 L${c - 62} 322 L${c - 36} 330 L${c - 4} 254 Z" fill="#f7dccf" stroke="#8a5a44" stroke-width="2.5"/>`;
-  s += `<path d="M${c + 18} 236 L${c + 120} 296 L${c + 112} 312 L${c + 6} 254 Z" fill="#f7dccf" stroke="#8a5a44" stroke-width="2.5"/>`;
-  // kleinere Bronchien
-  const ast = (x1, y1, x2, y2, w) => { s += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#c59a85" stroke-width="${w}" stroke-linecap="round"/>`; };
-  ast(c - 50, 324, c - 92, 372, 8); ast(c - 50, 324, c - 40, 386, 8); ast(c - 92, 372, c - 120, 392, 5); ast(c - 92, 372, c - 98, 410, 5);
-  ast(c + 116, 304, c + 150, 352, 7); ast(c + 116, 304, c + 104, 360, 6); ast(c + 150, 352, c + 176, 372, 4); ast(c + 150, 352, c + 152, 396, 4);
-  // Lungenbläschen (Trauben)
-  const traube = (x0, y0) => { [[0, 0], [9, 4], [-8, 6], [3, 12], [12, 14], [-5, 17]].forEach(([dx, dy]) => { s += `<circle cx="${x0 + dx}" cy="${y0 + dy}" r="7" fill="#f2b8c0" stroke="#b5606c" stroke-width="1.5"/>`; }); };
-  traube(c - 124, 396); traube(c - 100, 414); traube(c - 40, 392); traube(c + 180, 376); traube(c + 154, 400); traube(c + 104, 364);
-  // Nummern mit Linien
-  const nummer = (n, tx, ty, zx, zy, begriff, anker = 'start') => {
-    s += `<line x1="${tx}" y1="${ty}" x2="${zx}" y2="${zy}" stroke="#333" stroke-width="1.5"/>`;
-    s += `<circle cx="${tx}" cy="${ty}" r="15" fill="#fff" stroke="#333" stroke-width="2"/><text x="${tx}" y="${ty + 6}" font-size="18" font-weight="bold" text-anchor="middle">${n}</text>`;
-    if (mitBegriffen) s += `<text x="${anker === 'end' ? tx - 22 : tx + 22}" y="${ty + 6}" font-size="17" text-anchor="${anker}" fill="#1f4e9c" font-weight="bold">${begriff}</text>`;
-  };
-  nummer(1, c + 120, 28, c + 16, 30, 'Kehldeckel');
-  nummer(2, c - 120, 82, c - 32, 82, 'Kehlkopf', 'end');
-  nummer(3, c + 120, 172, c + 20, 172, 'Luftröhre');
-  nummer(4, c - 140, 262, c - 40, 284, 'rechter Haupt-', 'end');
-  if (mitBegriffen) s += `<text x="${c - 162}" y="${290}" font-size="17" text-anchor="end" fill="#1f4e9c" font-weight="bold">bronchus</text>`;
-  nummer(5, c + 150, 252, c + 80, 278, 'linker Hauptbronchus');
-  nummer(6, c - 10, 446, c - 36, 404, 'Lungenbläschen');
-  // Orientierung
-  s += `<text x="18" y="${H - 10}" font-size="16" fill="#555">◀ rechte Seite der Person</text>`;
-  s += `<text x="${B - 18}" y="${H - 10}" font-size="16" text-anchor="end" fill="#555">linke Seite ▶</text>`;
-  return s + '</svg>';
-}
+/* ---------- Atemwege (Sicht von vorn): gemeinsame Quelle mit der Handy-Übung „Wo ist was?“ ---------- */
+const ATEMWEGE_BILD = require('../docs/w4/atemwege_bild.js');
+const atemwege = (mitBegriffen) => ATEMWEGE_BILD.svg({ nummern: true, begriffe: mitBegriffen });
 
 (async () => {
   const browser = await chromium.launch();

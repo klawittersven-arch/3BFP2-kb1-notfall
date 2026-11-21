@@ -220,6 +220,37 @@ var W4 = {
     ]
   },
 
+  /* ---------- Blatt 3 · AA1 Informationstext „Atemwege und Ventilation“ ----------
+     Analog: Text mit fetten Fachwörtern. Digital: dieselben Fachwörter sind Lücken; die Wörter bekommen die SuS
+     am Handy (anatomie.html), sobald sie alle Teile im Bild richtig angetippt haben. **Wort** = Lücke bzw. fett. */
+  atemwegeText: {
+    kopf: 'Informationstext: Atemwege und Ventilation',
+    absaetze: [
+      'Die Luft strömt durch Nase oder Mund in den **Rachen**. Hier kreuzen sich Luftweg und Speiseweg. Beim Schlucken hebt sich der **Kehlkopf**, der **Kehldeckel** verschließt die **Luftröhre** – die Nahrung rutscht in die Speiseröhre. Gerät doch etwas in den Kehlkopf, muss man kräftig husten (**Hustenreflex**).',
+      'Die Luftröhre teilt sich in zwei Hauptbronchien, einen rechten und einen linken. Der **rechte Hauptbronchus** ist kürzer, weiter und verläuft steiler. In den **Lungenbläschen** geht Sauerstoff ins Blut. Das Ein- und Ausatmen heißt **Ventilation**.'
+    ]
+  },
+
+  /* ---------- Blatt 3 · AA1 digital: „Wo ist was?“ – Teile der Atemwege im Bild antippen ----------
+     Fragen in zufälliger Reihenfolge; bei einem Fehler beginnt die Übung von vorn. Danach: Wörter für den Lückentext
+     (alle **Wörter** aus atemwegeText, alphabetisch). Bild: atemwege_bild.js */
+  anatomie: {
+    titel: 'Wo ist was? Die Atemwege',
+    einleitung: 'Sie sehen die Atemwege von vorn. Tippen Sie bei jeder Frage auf den richtigen Teil im Bild. **Achtung:** Bei einem Fehler beginnen Sie wieder von vorn. Wenn alles richtig ist, bekommen Sie die Wörter für den Lückentext auf dem Arbeitsblatt.',
+    teile: [
+      { id: 'kehldeckel', name: 'Kehldeckel', frage: 'Wo ist der **Kehldeckel**?' },
+      { id: 'kehlkopf', name: 'Kehlkopf', frage: 'Wo ist der **Kehlkopf**?' },
+      { id: 'luftroehre', name: 'Luftröhre', frage: 'Wo ist die **Luftröhre**?' },
+      { id: 'bronchus_re', name: 'rechter Hauptbronchus', frage: 'Wo ist der **rechte Hauptbronchus**?' },
+      { id: 'bronchus_li', name: 'linker Hauptbronchus', frage: 'Wo ist der **linke Hauptbronchus**?' },
+      { id: 'blaeschen', name: 'Lungenbläschen', frage: 'Wo sind die **Lungenbläschen**?' }
+    ],
+    tippRechtsLinks: 'Rechts und links gelten von der Person aus – nicht von Ihnen aus.',
+    geschafft: 'Geschafft – alles richtig!',
+    woerterKopf: 'Ihre Wörter für den Lückentext:',
+    auftrag: '✍️ Tragen Sie diese Wörter in die Lücken im „Informationstext: Atemwege und Ventilation“ auf dem Arbeitsblatt ein.'
+  },
+
   /* ---------- Blatt 3 · AA2 Lesetext „leicht oder schwer?“ ----------
      Analog steht der Text auf dem Arbeitsblatt, digital auf w4/verlegung.html (QR-Code, mit Bildern).
      Bewusst NICHT in der Reihenfolge der Tabelle (Husten · Sprechen und Atmen · weitere Zeichen · So handle ich)

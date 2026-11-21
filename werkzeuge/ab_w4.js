@@ -308,18 +308,29 @@ function blatt3(B) {
       ...(B.lsg ? [new Paragraph({ spacing: { after: 0, line: 245 }, children: B.runs(t.leitfrageLoesung, { size: 19, highlight: 'yellow' }) })]
         : [linien(B, 2, [], B.breite - 240)])
     ], { kopf: 'Fallbezug: „Reanimation – und nicht nur ich war hilflos“ (Auszug)', fill: 'FFFFFF', kopfFill: 'FFFFFF', rand: '000000' }),
-    aa(B, [IC.lesen, IC.schreiben], 'AA1: Beschreiben – Der Weg der Luft:', t.aa1.text, 'b3aa1'),
-    B.meta('9 min · Selbstversuch (30 s) → EA/PA → Plenum · AFB I–II · IKL Fremdkörperaspiration Nr. 1 (Atemwegsanatomie, Ventilation, Folgen der Hypoxie)'),
-    B.lp(t.aa1.selbstversuch),
-    B.kasten(t.aa1.info.map((a) => new Paragraph({ spacing: { after: 40, line: 250 }, children: B.runs(a, { size: 20 }) })), { kopf: 'Informationstext: Atemwege und Ventilation' })
+    aa(B, je([IC.lesen, IC.schreiben], [IC.handy, IC.schreiben]), 'AA1: Beschreiben – Der Weg der Luft:', je(t.aa1.text.analog, t.aa1.text.digital), 'b3aa1'),
+    B.meta(je('9 min · Selbstversuch (30 s) → EA/PA → Plenum · AFB I–II · IKL Fremdkörperaspiration Nr. 1 (Atemwegsanatomie, Ventilation, Folgen der Hypoxie)',
+      '9 min · Selbstversuch (30 s) → Handy: anatomie.html (sechs Teile antippen, bei einem Fehler von vorn) → Lückentext → Plenum · AFB I–II · IKL Fremdkörperaspiration Nr. 1 (Atemwegsanatomie, Ventilation, Folgen der Hypoxie)')),
+    B.lp(t.aa1.selbstversuch)
   );
-  const wBild = je(4300, 3500), wRechts = B.breite - wBild;
-  const zeile = (n) => new Paragraph({ spacing: { before: 20, after: 20 }, children: [B.b(n + '  ', { size: 20 }), B.lsg ? B.loes(t.aa1.begriffe[n - 1], { size: 20 }) : B.t('_'.repeat(30), { size: 20 })] });
-  push(B.zweiSpaltig(
-    [new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 0 }, children: [bild(BILD('w4_atemwege.png'), je(5.4, 3.9), je(5.4, 3.9))] })],
-    [kl(B, t.aa1.wortspeicher, { italics: true }), ...[1, 2, 3, 4, 5, 6].map(zeile)],
-    wBild
-  ));
+  // Informationstext (eine Quelle: W4.atemwegeText): analog mit fetten Fachwörtern, digital als Lückentext (Wörter gibt es am Handy)
+  const AT = W4.atemwegeText;
+  const lueckentext = (a) => a.split(/(\*\*[^*]+\*\*)/g).filter(Boolean).map((x) => (x.startsWith('**')
+    ? (B.lsg ? B.t(x.slice(2, -2), { size: 20, bold: true, highlight: 'yellow' }) : B.t('_'.repeat(18), { size: 20 }))
+    : B.t(x, { size: 20 })));
+  const infoKasten = B.kasten(AT.absaetze.map((a) => new Paragraph({ spacing: { after: 40, line: DIGITAL() ? 300 : 250 }, children: DIGITAL() ? lueckentext(a) : B.runs(a, { size: 20 }) })), { kopf: AT.kopf + (DIGITAL() ? ' – Lückentext' : '') });
+  if (DIGITAL()) {
+    push(qrKasten(B, 'anatomie', [kl(B, t.aa1.handy)]), leer(60), infoKasten);
+  } else {
+    push(infoKasten);
+    const wBild = 4300;
+    const zeile = (n) => new Paragraph({ spacing: { before: 20, after: 20 }, children: [B.b(n + '  ', { size: 20 }), B.lsg ? B.loes(t.aa1.begriffe[n - 1], { size: 20 }) : B.t('_'.repeat(30), { size: 20 })] });
+    push(B.zweiSpaltig(
+      [new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 0 }, children: [bild(BILD('w4_atemwege.png'), 5.4, 5.4)] })],
+      [kl(B, t.aa1.wortspeicher, { italics: true }), ...[1, 2, 3, 4, 5, 6].map(zeile)],
+      wBild
+    ));
+  }
   push(leer(60), merksatz(B, t.merksatz1, 'b3merk1'));
   // AA2: Informationen aus einem längeren Lesetext in die Tabelle (Text nicht in Tabellenreihenfolge, mit Ablenkern).
   // Analog steht der Text auf dem Blatt, digital führt ein QR-Code zur Leseseite mit Bildern. Kein Merksatz danach (sonst wird abgeschrieben).
@@ -384,7 +395,7 @@ function verlaufsplan(B) {
     z('68–81', 'Wissen anwenden (AA2)', 'Uhr 10 min; Musterlösung (3 min), bei 2.3 Diskussion zulassen (Einzelwert vs. Gesamtbild).', '2.1–2.4 allein schreiben, mit Musterlösung verbessern', 'EA → Plenum', 'Blatt 2 S. 2', 'Befunde mit Vorwerten (KA 5.4), Beurteilen (AFB III), KA 5.5'),
     ueber('Pause, falls im Stundenraster vorgesehen. – „Frau Maler hat sich beim Frühstück am Kaffee verschluckt. Christin hat sie einfach husten lassen. War das richtig?“'),
     z('81–84', 'Blatt 3: Leitfall', '**Blatt 3 austeilen.** Leitfall vorlesen; Leitfrage: Daumen hoch (richtig) / runter (falsch) – Vermutung, nicht auflösen.', 'vermuten, begründen', 'Plenum', 'Blatt 3', 'Anknüpfung Leitfall; kognitiver Konflikt'),
-    z('84–93', 'Erarbeitung: Weg der Luft (AA1)', 'Selbstversuch anleiten (30 s: Finger auf den Kehlkopf, schlucken; schlucken und einatmen gleichzeitig?). Infotext lesen lassen, Beschriftung und c) sichern, Merksatz.', 'Selbstversuch, lesen, beschriften, Merksatz mitlesen', 'EA/PA → Plenum', 'Blatt 3 S. 1', 'Atemwegsanatomie, Ventilation, Folgen der Hypoxie (IKL Fremdkörperaspiration Nr. 1). AFB I–II'),
+    z('84–93', 'Erarbeitung: Weg der Luft (AA1)', je('Selbstversuch anleiten (30 s: Finger auf den Kehlkopf, schlucken; schlucken und einatmen gleichzeitig?). Infotext lesen lassen, Beschriftung sichern, Merksatz.', 'Selbstversuch anleiten (30 s: Finger auf den Kehlkopf, schlucken; schlucken und einatmen gleichzeitig?). QR-Code „Wo ist was?“: sechs Teile im Bild antippen – bei einem Fehler beginnt die Übung von vorn; wer alles richtig hat, bekommt die acht Wörter für den Lückentext (ca. 5 min). Lückentext sichern, Merksatz.'), je('Selbstversuch, lesen, beschriften, Merksatz mitlesen', 'Selbstversuch, Teile am Handy antippen, Lückentext ausfüllen, Merksatz mitlesen'), je('EA/PA → Plenum', 'EA (Handy) → Plenum'), je('Blatt 3 S. 1', 'Blatt 3 S. 1, Handy'), 'Atemwegsanatomie, Ventilation, Folgen der Hypoxie (IKL Fremdkörperaspiration Nr. 1). AFB I–II'),
     z('93–105', 'Leicht oder schwer? Lesetext (AA2)', je('Uhr 8 min: Text lesen, Tabelle in Stichworten ausfüllen.', 'QR-Code scannen lassen (ein Handy für zwei reicht), Text mit Bildern am Handy lesen; Uhr 8 min, Tabelle in Stichworten ausfüllen.') + ' Sichern Zeile für Zeile; fragen: „Was steht im Text, gehört aber nicht in die Tabelle?“ (Absatz 1: wer sich öfter verschluckt). Kernsatz an die Tafel: „Wer laut rufen kann, bekommt Luft. Nicht auf blaue Lippen warten!“', 'Text lesen, Informationen suchen und in Stichworten eintragen', 'EA → Plenum', je('Blatt 3 S. 1–2', 'Blatt 3 S. 1–2, Handy'), 'Informationen aus einem Text entnehmen und ordnen (Reihenfolge anders als in der Tabelle, Ablenker); Merkmale leicht/schwer – Grundlage für 3.1 (Muster KA 4.1); Fehlvorstellung „erst bei blauen Lippen handeln“. AFB I–II'),
     z('105–112', 'Wissen anwenden (AA3)', 'Uhr 5 min, dann Musterlösung (2 min) – ohne Punkte zu nennen.', '3.1 allein schreiben, mit Musterlösung verbessern', 'EA → Plenum', 'Blatt 3', '3.1 = Muster KA 4.1. AFB II'),
     z('112–117', 'Abschluss', 'Leitfrage beantworten lassen (2 Zeilen). Bogen zum Einstieg: „Was tun Sie jetzt, wenn Herr Pfeiffer sagt: Helfen Sie mir hoch?“ Blitzlicht: Drei Notfälle, die man nicht sieht – woran erkennen Sie sie?', 'Leitfrage schriftlich beantworten, Blitzlicht', 'EA → Plenum', 'Blatt 3', 'Leitfall abschließen, Lernzuwachs sichtbar machen'),
@@ -443,6 +454,8 @@ function hinweise(B) {
   const kartenLV = DIGITAL() ? V.karten : T.B2.aa1.karten.map((nr) => V.karten.find((kk) => kk.nr === nr));
   push(B.tabelle(spK, kartenLV.map((kk) => [DIGITAL() ? `**${kk.nr}** · ${kk.zeit}` : `**${kk.zeit}**`, `${pers(kk.wer)}: Puls ${kk.puls}, RR ${kk.rr[0]}/${kk.rr[1]}, AF ${kk.af}${kk.vorwert ? ' (Vorwert ' + kk.vorwert + ')' : ''}. ${kk.beobachtung} ${kk.aussage}`, (kk.puls / kk.rr[0]).toFixed(2).replace('.', ','), { lsg: AMP[kk.richtig].kurz }, kk.begruendung]).concat([[`**08:00**`, `Auflösung: Puls ${V.aufloesung.puls}, RR ${V.aufloesung.rr[0]}/${V.aufloesung.rr[1]}, AF ${V.aufloesung.af}. ${V.aufloesung.beobachtung} ${V.aufloesung.aussage}`, (V.aufloesung.puls / V.aufloesung.rr[0]).toFixed(2).replace('.', ','), '–', V.aufloesung.text]]), { schrift: 17 }));
   push(p('Hinweis: Die Ampel ist ein didaktisches Hilfsmittel, kein validierter Frühwarnscore (z. B. NEWS2). In der Praxis gilt: im Zweifel melden. Deshalb zählt 🟡 (Pflegefachkraft informieren) nie als Fehlalarm.' + je(' Wer bei Finn um 06:00 Uhr 🟡 ankreuzt, liegt „zu vorsichtig“, nicht falsch.', ' Bei Jana würde NEWS2 den systolischen Wert 91–100 mmHg mit 2 Punkten werten – wer hier 🟡 wählt, liegt „zu vorsichtig“, nicht falsch; das ist ein guter Anlass zur Diskussion „Einzelwert oder Gesamtbild?“.')));
+  if (DIGITAL()) push(B.zwischen('Blatt 3, AA1: „Wo ist was?“ am Handy und Lückentext'));
+  if (DIGITAL()) push(p('w4/anatomie.html (QR-Code auf Blatt 3): sechs Fragen „Wo ist …?“ in zufälliger Reihenfolge – Kehldeckel, Kehlkopf, Luftröhre, rechter und linker Hauptbronchus, Lungenbläschen. Ein falscher Tipp → rot/grün markiert, dann beginnt die Übung von vorn (Falle: rechts und links gelten von der Person aus). Ein Tipp daneben zählt nicht als Fehler. Wer alles richtig hat, sieht das beschriftete Bild und die acht Lückenwörter in alphabetischer Reihenfolge (alle fett gedruckten Fachwörter des Informationstexts). Die Übung meldet nichts an die Lehreransicht.'));
   push(B.zwischen('Blatt 3, AA2: leicht oder schwer? (Lesetext)'));
   push(p('Die SuS entnehmen die Merkmale einem längeren Text (' + je('auf dem Arbeitsblatt', 'am Handy: w4/verlegung.html, mit drei Bildern') + '). Die Reihenfolge im Text ist bewusst anders als in der Tabelle (erst schwer, dann leicht; das Handeln steht einmal vorn, einmal hinten; die Zyanose erst im letzten Absatz), Absatz 1 gehört nicht in die Tabelle. Einen Merksatz gibt es hier bewusst nicht: Die gesicherte Tabelle ist die Zusammenfassung – mit einem kurzen Merksatz daneben würden die SuS nur abschreiben. **Für die Schnellen** (unten auf Blatt 3): 3.2, 3.3' + je(' und 3.4', '') + ' ohne Schreiblinien, Antworten auf ein Extrablatt' + je('.', '; dazu Atemweg-Check und Simulation am Handy.')));
   if (DIGITAL()) push(B.zwischen('Für die Schnellen am Handy: Notfall-Ampel im Speisesaal (Simulation)'));

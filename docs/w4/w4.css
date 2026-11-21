@@ -72,7 +72,7 @@ button { font: inherit; cursor: pointer; }
 .rueck.ok { background: var(--gruen-hell); border: 2px solid var(--gruen); }
 .rueck.nein { background: var(--rot-hell); border: 2px solid var(--rot); }
 .rueck.mittel { background: var(--gelb-hell); border: 2px solid var(--gelb); }
-.rueck strong:first-child { display: block; margin-bottom: 2px; }
+.rueck > strong:first-child { display: block; margin-bottom: 2px; }
 .hinweis { background: var(--lachs); border-radius: 10px; padding: 8px 12px; margin-top: 10px; font-size: 15px; }
 .liste { margin: 6px 0 0; padding-left: 20px; }
 .liste li { margin: 3px 0; }
@@ -110,3 +110,13 @@ table.tab th { background: var(--grund); }
 .bild { margin: 4px 0 16px; text-align: center; }
 .bild svg { max-width: 100%; height: auto; }
 .bild figcaption { font-size: 14px; color: var(--leise); margin-top: 2px; }
+/* „Wo ist was?“ – Atemwege antippen (Blatt 3, anatomie.html) */
+.anatomie svg { display: block; width: 100%; max-width: 440px; height: auto; margin: 8px auto 0; touch-action: manipulation; }
+.anatomie .teil { cursor: pointer; }
+.anatomie .teil.ok :not(.tippflaeche) { fill: #8fd19e; stroke: var(--gruen); }
+.anatomie .teil.falsch :not(.tippflaeche) { fill: #f3a6a0; stroke: var(--rot); }
+.anatomie .teil.zeigen :not(.tippflaeche) { fill: #8fd19e; stroke: var(--gruen); }
+.frage { font-size: 20px; font-weight: 700; margin: 0; }
+.versuch { font-size: 14px; color: var(--leise); margin: 2px 0 0; }
+.woerter { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 4px; padding: 0; list-style: none; }
+.woerter li { background: var(--grund); border: 2px solid var(--akzent); border-radius: 18px; padding: 5px 12px; font-weight: 700; }

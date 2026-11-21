@@ -86,6 +86,11 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
   const rang = stelle.map((x) => stelle.filter((y) => y < x).length);
   pruefe(stelle.every((x) => x >= 0) && rang.every((r, i) => r !== i), 'Blatt 1, AA1: Tabellenspalten nicht in der Reihenfolge des Falls', T4.B1.aa1.spalten.join(' | '));
   const LT = W4.verlegung.absaetze.join(' ');
+  const ATB = require('../docs/w4/atemwege_bild.js');
+  const lueckenWoerter = W4.atemwegeText.absaetze.flatMap((a) => (a.match(/\*\*[^*]+\*\*/g) || []).map((w) => w.slice(2, -2)));
+  const tippSvg = ATB.svg({ tippen: true });
+  pruefe(W4.anatomie.teile.map((t) => t.id).join() === ATB.TEILE.join() && ATB.TEILE.every((id) => tippSvg.includes(`data-teil="${id}"`)) && !ATB.svg({ nummern: true }).includes('data-teil'), 'Wo ist was?: sechs antippbare Teile im Bild (nur auf dem Handy)');
+  pruefe(lueckenWoerter.length === 8 && lueckenWoerter.slice().sort((a, b) => a.localeCompare(b, 'de')).join() !== lueckenWoerter.join(), 'Lückentext Blatt 3: acht Fachwörter; am Handy alphabetisch, nicht in Textreihenfolge');
   pruefe(W4.verlegung.absaetze.length === 4 && LT.indexOf('um Hilfe') < LT.indexOf('an den Hals') && LT.indexOf('an den Hals') < LT.indexOf('Husten wird schwach') && LT.indexOf('**schwere Verlegung**') < LT.indexOf('**leichten Verlegung**') && /Parkinson/.test(W4.verlegung.absaetze[0]), 'Blatt 3, Lesetext: nicht in Tabellenreihenfolge (schwer zuerst, Handeln vor den Zeichen), Absatz 1 als Ablenker');
   pruefe(T4.B3.aufgaben.length === 1 && T4.B3.aufgaben[0].nr === '3.1' && T4.B3.aufgaben[0].zeilen >= 8 && T4.B3.schnelle.aufgaben.map((a) => a.nr).join() === '3.2,3.3,3.4', 'Blatt 3: AA3 nur 3.1 (mind. 8 Zeilen), 3.2–3.4 „Für die Schnellen“');
   pruefe(speicher.length === 6 && speicher.every((w) => T4.B3.aa1.begriffe.includes(w)) && speicher.every((w, i) => w !== T4.B3.aa1.begriffe[i]), 'Blatt 3: Wortspeicher enthält alle Begriffe, aber keinen an der Stelle seiner Nummer');
@@ -93,7 +98,7 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
 
   console.log('\n== Verbotene Wörter in Texten für die SuS');
   const VERBOTEN = /Klausur|Klassenarbeit|Examen|Prüfung|Woche [5-9]/i;
-  for (const d of ['inhalte.js', 'w4.js', 'verlegung.js', 'verlegung.html', 'verlauf.js', 'speisesaal.js', 'rueckenmark.js', 'trend.js', 'atemweg.js', 'verlauf.html', 'speisesaal.html', 'rueckenmark.html', 'trend.html', 'atemweg.html']) {
+  for (const d of ['inhalte.js', 'w4.js', 'verlegung.js', 'verlegung.html', 'anatomie.js', 'anatomie.html', 'atemwege_bild.js', 'verlauf.js', 'speisesaal.js', 'rueckenmark.js', 'trend.js', 'atemweg.js', 'verlauf.html', 'speisesaal.html', 'rueckenmark.html', 'trend.html', 'atemweg.html']) {
     const m = fs.readFileSync(path.join(DOCS, 'w4', d), 'utf8').match(VERBOTEN);
     pruefe(!m, `docs/w4/${d}: kein „Klausur/Examen/Prüfung/spätere Woche“`, m && m[0]);
   }
@@ -132,10 +137,14 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
     const lvText = nurText(docxText(LV));
     pruefe(!/Anhang [AB]|Messkarten für den Live-Verlauf|Entscheidungsspiel nach/.test(lvText), 'analoge Lehrerversion: kein Anhang mehr (kein Messkarten-, kein Entscheidungsspiel-Anhang)');
     pruefe(/Kann die Person nicht mehr sprechen/.test(svText) && /3\.4 +Warum soll man einer Person, die kräftig hustet/.test(svText) && !/speisesaal/.test(svText), 'analoge Fassung: Lesetext auf dem Blatt; „Für die Schnellen“ mit 3.2–3.4, ohne Simulation');
+    pruefe(/Wortspeicher:/.test(svText) && /Text lesen, Bild beschriften/.test(svText) && /in den Rachen\./.test(svText) && !/_{18}/.test(svText.slice(svText.indexOf('Atemwege und Ventilation'), svText.indexOf('Wortspeicher'))), 'analoge Fassung, Blatt 3 AA1: Infotext vollständig, Bild mit Wortspeicher');
   } else {
     const x = svText.match(/sitzen bleiben|Hand heben|aufstehen\b|Ohne Handy|liest .{0,30}vor|Fingern|Ihre Lehrkraft zeigt/i);
     pruefe(!x, 'digitale Fassung: keine analogen Alternativen genannt', x && x[0]);
-    pruefe((svText.match(/Kein QR-Scanner\?/g) || []).length === 6 && /verlegung\.html/.test(svText) && !/Kann die Person nicht mehr sprechen/.test(svText), 'digitale Fassung: 6 QR-Kästen (Live-Verlauf, Lesetext, 2 × „Schon fertig?“, Atemweg-Check und Simulation „Für die Schnellen“); Lesetext nur am Handy');
+    pruefe((svText.match(/Kein QR-Scanner\?/g) || []).length === 7 && /verlegung\.html/.test(svText) && /anatomie\.html/.test(svText) && !/Kann die Person nicht mehr sprechen/.test(svText), 'digitale Fassung: 7 QR-Kästen (Live-Verlauf, Wo ist was?, Lesetext, 2 × „Schon fertig?“, Atemweg-Check, Simulation); Lesetext nur am Handy');
+    const info = svText.slice(svText.indexOf('Atemwege und Ventilation – Lückentext'), svText.indexOf('Merksatz', svText.indexOf('Atemwege und Ventilation – Lückentext')));
+    const lvTextD = nurText(docxText(LV));
+    pruefe(!/Wortspeicher/.test(svText) && (info.match(/_{18}/g) || []).length === 8 && !/in den Rachen|heißt Ventilation|In den Lungenbläschen|Hustenreflex/.test(info) && lueckenWoerter.every((w) => lvTextD.includes(w)), 'digitale Fassung, Blatt 3 AA1: Infotext als Lückentext (8 Lücken, Wörter nur in der Lehrerversion), kein Wortspeicher');
     pruefe(!/3\.4 /.test(svText), 'digitale Fassung: „Für die Schnellen“ ohne 3.4 (dafür Atemweg-Check)');
     pruefe(svText.lastIndexOf('Für die Schnellen') > svText.lastIndexOf('Schon fertig?') && /speisesaal\.html/.test(svText.slice(svText.lastIndexOf('Für die Schnellen'))), 'digitale Fassung: Simulation ganz unten auf Blatt 3 („Für die Schnellen“)');
   }
@@ -158,7 +167,7 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
   }
   }
   console.log('\n== QR-Codes');
-  for (const n of ['verlauf', 'speisesaal', 'rueckenmark', 'trend', 'atemweg', 'verlegung']) {
+  for (const n of ['verlauf', 'speisesaal', 'rueckenmark', 'trend', 'atemweg', 'verlegung', 'anatomie']) {
     const datei = path.join(WURZEL, 'qr', `qr_w4_${n}.png`);
     let text = null;
     try { text = execSync(`python3 -c "import zxingcpp,sys;from PIL import Image;print(zxingcpp.read_barcodes(Image.open(sys.argv[1]))[0].text)" "${datei}"`, { stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim(); } catch (e) { text = null; }
@@ -264,6 +273,26 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
   const lese = await s.evaluate(() => ({ p: document.querySelectorAll('.lesetext p').length, bilder: document.querySelectorAll('.bild svg[role="img"]').length, breit: document.documentElement.scrollWidth <= document.documentElement.clientWidth, text: document.querySelector('main').innerText }));
   pruefe(lese.p === 4 && lese.bilder === 3 && lese.breit && lese.text.includes('Kann die Person nicht mehr sprechen') && /Tabelle auf dem Arbeitsblatt/.test(lese.text), 'Lesetext: 4 Absätze, 3 Bilder, passt in Handybreite, Auftrag am Ende');
   await s.screenshot({ path: path.join(ERG, 'w4_verlegung.png'), fullPage: true });
+  await s.context().close();
+
+  console.log('\n== Wo ist was? am Handy (anatomie.html)');
+  s = await neueSeite('anatomie');
+  await s.goto(basis + 'w4/anatomie.html');
+  await start(s);
+  const gesucht = async () => { const f = await s.locator('.frage').innerText(); return W4.anatomie.teile.find((t) => f.includes(t.frage.replace(/\*\*/g, ''))).id; };
+  // sichtbare Form des Teils antippen (die Tipp-Fläche liegt im selben <g>)
+  const tippe = (id) => s.locator(`[data-teil="${id}"] :not(.tippflaeche)`).first().click({ force: true });
+  let ziel = await gesucht();
+  await tippe(W4.anatomie.teile.find((t) => t.id !== ziel).id);
+  pruefe(/Leider falsch/.test(await s.locator('main').innerText()) && (await s.locator('.teil.falsch').count()) === 1 && (await s.locator('.teil.zeigen').count()) === 1, 'Wo ist was?: falscher Tipp → rot/grün markiert');
+  await s.locator('button.knopf', { hasText: 'Von vorn' }).click();
+  pruefe(/^1 \/ 6/.test(await s.locator('.fortschritt').innerText()) && /Versuch 2/.test(await s.locator('.versuch').innerText()), 'Wo ist was?: nach einem Fehler von vorn (Frage 1 / 6, Versuch 2)');
+  for (let k = 0; k < 6; k++) { ziel = await gesucht(); await tippe(ziel); await s.waitForTimeout(800); }
+  const anaText = await s.locator('main').innerText();
+  const chips = await s.locator('.woerter li').allInnerTexts();
+  pruefe(/Geschafft/.test(anaText) && chips.join() === lueckenWoerter.slice().sort((a, b) => a.localeCompare(b, 'de')).join() && /Lücken im „Informationstext/.test(anaText), 'Wo ist was?: alles richtig → acht Lückenwörter und Auftrag');
+  pruefe(await s.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth), 'Wo ist was?: passt in Handybreite');
+  await s.screenshot({ path: path.join(ERG, 'w4_anatomie_ende.png'), fullPage: true });
   await s.context().close();
 
   console.log('\n== Schon fertig? (rueckenmark, trend, atemweg)');
