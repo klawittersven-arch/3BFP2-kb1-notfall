@@ -154,6 +154,15 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
   } else {
     const x = svText.match(/sitzen bleiben|Hand heben|aufstehen\b|Ohne Handy|liest .{0,30}vor|Fingern|Ihre Lehrkraft zeigt/i);
     pruefe(!x, 'digitale Fassung: keine analogen Alternativen genannt', x && x[0]);
+    // Lehrerversion: nur noch die digitale Fassung – keine überholten Hinweise; der Verlaufsplan nennt die drei Präsentationen
+    const lvDig = nurText(docxText(LV));
+    const alt = lvDig.match(/Live-Verlauf|Methodenwechsel 2|digitale Fassung|analoge Fassung|Raumcode|ohne Beamer|Ergebnis übertragen|Höhe eintragen/);
+    pruefe(!alt, 'Lehrerversion: keine überholten Hinweise (Live-Verlauf, Fassungen, Raumcode, Beamer)', alt && alt[0]);
+    pruefe(['Präsentation 1 (Folie 1–5)', 'Präsentation 1 (Folie 6)', 'Präsentation 2, Blatt 2', 'Präsentation 3 (Folie 1–4)', 'Präsentation 3 (Folie 5–6)'].every((t) => lvDig.includes(t)), 'Lehrerversion: Verlaufsplan nennt die drei Präsentationen');
+    // Lösungsteil: Aufgabe und Musterlösung stehen in einer Klammer (Tabellenzeile, die nicht über einen Seitenumbruch geteilt wird)
+    const lvXml = docxText(LV), loesTeil = lvXml.slice(lvXml.indexOf('Lösungen und Zeitangaben'));
+    const klammern = (loesTeil.match(/<w:tblCellMar><w:top w:type="dxa" w:w="0"\/>/g) || []).length;
+    pruefe(klammern >= 12, 'Lehrerversion: Aufgaben und Musterlösungen zusammengehalten (kein Seitenumbruch dazwischen)', klammern);
     pruefe((svText.match(/Kein QR-Scanner\?/g) || []).length === 7 && /verlegung\.html/.test(svText) && /anatomie\.html/.test(svText) && !/Kann die Person nicht mehr sprechen/.test(svText), 'digitale Fassung: 7 QR-Kästen (Live-Verlauf, Wo ist was?, Lesetext, 2 × „Schon fertig?“, Atemweg-Check, Simulation); Lesetext nur am Handy');
     const info = svText.slice(svText.indexOf('Atemwege und Ventilation – Lückentext'), svText.indexOf('Merksatz', svText.indexOf('Atemwege und Ventilation – Lückentext')));
     const lvTextD = nurText(docxText(LV));

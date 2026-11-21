@@ -21,7 +21,7 @@ const QR = (n) => path.join(WURZEL, 'qr', `qr_w4_${n}.png`);
 const BILD = (n) => path.join(__dirname, 'bilder', n);
 const IC = { lesen: 'icon_lesen.png', markieren: 'icon_markieren.png', schreiben: 'icon_schreiben.png', handy: 'icon_handy.png', stift: 'icon_stift.png', beurteilen: 'icon_beurteilen.png', checkout: 'icon_checkout.png' };
 const AMP_FARBE = { gruen: 'E2F0D9', gelb: 'FFF2CC', rot: 'F8D7D3' };
-// Fassung: 'analog' (ganz ohne Smartphone) oder 'digital' (Live-Verlauf, Simulation und „Schon fertig?“ am Smartphone).
+// Fassung: 'digital' (eingesetzt: Handy-Übungen über QR-Codes) oder 'analog' (ganz ohne Smartphone; wird nicht eingesetzt, nicht korrekturgelesen).
 // Wird in main() je Dokument gesetzt; die Aufgaben im KA-Format sind in beiden Fassungen gleich.
 let MODUS = 'analog';
 const DIGITAL = () => MODUS === 'digital';
@@ -54,6 +54,22 @@ const seitenumbruch = () => new Paragraph({ pageBreakBefore: true, spacing: { be
 // wie B.runs, zusätzlich ++Wort++ = fett und unterstrichen (nur Woche 4; ab_bausteine.js bleibt unverändert)
 const runsU = (B, text, o = {}) => String(text).split(/(\+\+[^+]+\+\+)/g).filter(Boolean).flatMap((t) => (t.startsWith('++') ? [B.t(t.slice(2, -2), { bold: true, underline: {}, ...o })] : B.runs(t, o)));
 const klein = (B, text, o = {}) => new Paragraph({ spacing: { before: 40, after: 60, line: 240 }, children: B.runs(text, { size: 17, color: F.GRAU_T, italics: true }), ...o });
+// Lehrerversion: Arbeitsauftrag, Aufgabe und Musterlösung zusammenhalten – der Block steht in einer unsichtbaren
+// Tabellenzeile, die nicht über einen Seitenumbruch geteilt werden darf (passt er nicht mehr, beginnt er auf der nächsten Seite).
+// In der Schülerversion bleibt alles wie es ist.
+function zusammen(B, kinder) {
+  const liste = kinder.filter(Boolean);
+  if (!B.lsg || !liste.length) return liste;
+  const inhalt = trenne(liste);
+  if (inhalt[inhalt.length - 1] instanceof Table) inhalt.push(leer(20));   // eine Zelle muss mit einem Absatz enden
+  const nb = { top: keinRand, bottom: keinRand, left: keinRand, right: keinRand };
+  const ohne = { top: 0, bottom: 0, left: 0, right: 0 };
+  return [new Table({
+    width: { size: B.breite, type: WidthType.DXA }, columnWidths: [B.breite], layout: TableLayoutType.FIXED, margins: ohne,
+    borders: { ...nb, insideHorizontal: keinRand, insideVertical: keinRand },
+    rows: [new TableRow({ cantSplit: true, children: [new TableCell({ width: { size: B.breite, type: WidthType.DXA }, borders: nb, margins: ohne, children: inhalt })] })]
+  })];
+}
 
 // Text in Zeilen fester Länge umbrechen (gleiche Umbrüche in Word und LibreOffice → Zeilennummern stimmen)
 function umbrechen(absaetze, zeichen) {
@@ -137,7 +153,7 @@ function schnelleKasten(B, f, ersetze = (s) => s) {
 }
 // Aufgaben im KA-Format: Kopfzeile nur einmal je Block, darunter die Schreiblinien.
 // Punkte nur in der Lehrerversion – auf dem AB sollen die SuS nicht erkennen, welche Aufgaben KA-Muster sind.
-function aufgabenListe(B, liste, ersetze = (s) => s, { ohneNr = false } = {}) {
+function aufgabenListe(B, liste, ersetze = (s) => s, { ohneNr = false, vorweg = [] } = {}) {
   const w1 = ohneNr ? 0 : 600, w3 = B.lsg ? 1000 : 0, w2 = B.breite - w1 - w3;
   const r = rahmen('000000', 4);
   const z = (kinder, w, fill) => B.zelle(kinder, w, { borders: r, shading: fill ? { type: ShadingType.CLEAR, color: 'auto', fill } : undefined });
@@ -152,8 +168,9 @@ function aufgabenListe(B, liste, ersetze = (s) => s, { ohneNr = false } = {}) {
         a.hinweis ? pa(B.runs(a.hinweis, { size: 17, italics: true, color: F.GRAU_T }), { spacing: { before: 30, after: 0, line: 240 } }) : null].filter(Boolean), w2),
       B.lsg ? z([pa([B.t(`${a.punkte} P.`, { size: 19 })])], w3) : null
     ].filter(Boolean) }));
-    out.push(new Table({ width: { size: B.breite, type: WidthType.DXA }, columnWidths: [w1, w2, w3].filter((w) => w > 0), layout: TableLayoutType.FIXED, rows }));
-    out.push(linien(B, a.zeilen, B.lsg ? a.loesung.map(ersetze) : []));
+    out.push(...zusammen(B, [...(i === 0 ? vorweg : []),
+      new Table({ width: { size: B.breite, type: WidthType.DXA }, columnWidths: [w1, w2, w3].filter((w) => w > 0), layout: TableLayoutType.FIXED, rows }),
+      linien(B, a.zeilen, B.lsg ? a.loesung.map(ersetze) : [])]));
   });
   return out;
 }
@@ -180,35 +197,41 @@ function blatt1(B) {
     blattKopf(B, t.kopf),
     legende(B),
     lernziel(B, t.lernziel),
-    fall.tabelle,
-    aa(B, [IC.lesen, IC.markieren], 'AA1: Identifizieren – Hinweise finden:', t.aa1.text, 'b1aa1'),
-    B.meta('8 min · Einzelarbeit → Plenum · AFB I · IKL W4 Nr. 1 · KA-Bezug KB 1, Aufg. 5.3 (Hinweise im Fall erkennen = Begründungsteil) · ' + t.aa1.hinweis)
+    fall.tabelle
   );
   const w3 = Math.floor(B.breite / 3);
   const lsgZelle = (liste) => ({ lsg: liste.map(([text, wort]) => `${text} (Z. ${fall.zeile(wort)})`).join('; ') });
-  push(B.tabelle(t.aa1.spalten.map((s) => ({ text: s, w: /^Ausfälle/.test(s) ? B.breite - 2 * w3 : w3 })), [t.aa1.loesung.map(lsgZelle)], { hoehe: 820, schrift: 19 }));
+  push(...zusammen(B, [
+    aa(B, [IC.lesen, IC.markieren], 'AA1: Identifizieren – Hinweise finden:', t.aa1.text, 'b1aa1'),
+    B.meta('8 min · Einzelarbeit → Plenum · AFB I · IKL W4 Nr. 1 · KA-Bezug KB 1, Aufg. 5.3 (Hinweise im Fall erkennen = Begründungsteil) · ' + t.aa1.hinweis),
+    B.tabelle(t.aa1.spalten.map((s) => ({ text: s, w: /^Ausfälle/.test(s) ? B.breite - 2 * w3 : w3 })), [t.aa1.loesung.map(lsgZelle)], { hoehe: 820, schrift: 19 })
+  ]));
   push(
     leer(80),
     B.kasten([...t.info.absaetze.map((a) => new Paragraph({ spacing: { after: 50, line: 250 }, children: runsU(B, a.replace(/\*\*([^*]*)\+\+([^+]+)\+\+([^*]*)\+\+([^+]+)\+\+([^*]*)\*\*/, '**$1**++$2++**$3**++$4++**$5**'), { size: 20 }) }))], { kopf: t.info.kopf }),
-    klein(B, t.info.woerter),
+    klein(B, t.info.woerter)
+  );
+  // AA2 (in der LV ein Block mit der Höhen-Tabelle und der mündlichen Frage)
+  const aa2 = [
     aa(B, je([IC.lesen, IC.schreiben], [IC.handy, IC.schreiben]), 'AA2: Erklären – Höhe und Ausfälle:', je(t.aa2.text.analog, t.aa2.text.digital), 'b1aa2'),
     B.meta(je('9 min (mit Infotext und Merksatz) · Partnerarbeit (lesen) → Einzelarbeit → Plenum', '9 min (mit Infotext und Merksatz) · Partnerarbeit (lesen) → Rückenmark-Check am Handy (EA, ca. 4 min) → Plenum') + ' · AFB I–II · IKL W4 Nr. 2 · Brücke zu Woche 2 (neurogener Schock) und KA KB 1, Aufg. 5.5')
-  );
+  ];
   // analog: Fälle A–C auf dem Blatt und Spalte „Fall“; digital: die Fälle kommen am Handy (Rückenmark-Check) – Tabelle und Bild bleiben als Hilfe
-  if (DIGITAL()) push(qrKasten(B, 'rueckenmark', [kl(B, t.aa2.handy)], 1.25), leer(40));
-  else push(...t.aa2.faelle.map(([b, text]) => new Paragraph({ spacing: { after: 20, line: 240 }, indent: { left: 260, hanging: 260 }, children: [B.b(b + '  ', { size: 19 }), ...B.runs(text, { size: 19 })] })), leer(40));
+  if (DIGITAL()) aa2.push(qrKasten(B, 'rueckenmark', [kl(B, t.aa2.handy)], 1.25), leer(40));
+  else aa2.push(...t.aa2.faelle.map(([b, text]) => new Paragraph({ spacing: { after: 20, line: 240 }, indent: { left: 260, hanging: 260 }, children: [B.b(b + '  ', { size: 19 }), ...B.runs(text, { size: 19 })] })), leer(40));
   const wBild = 1700, wTab = B.breite - wBild;
   const sp = [{ text: 'Höhe der Verletzung', w: 1500 }, { text: 'Was fällt aus?', w: 3100 }, { text: 'Fachwort', w: 0 }].concat(DIGITAL() ? [] : [{ text: 'Fall', w: 600 }]);
   sp[2].w = wTab - 1500 - 3100 - (DIGITAL() ? 0 : 600) - 80;
   const FARBE_HOEHE = ['F8D7D3', 'FCE4C8', 'DDEBF7'];   // wie im Bild: rot = HWS sehr hoch, orange = HWS, blau = BWS/LWS
   const hoehenTab = B.tabelle(sp, t.aa2.hoehen.map((h, i) => [{ text: `**${h[0]}**`, fill: FARBE_HOEHE[i] }, h[1], h[2]].concat(DIGITAL() ? [] : [{ lsg: h[3] }])), { hoehe: 420, schrift: 18 });
-  push(B.zweiSpaltig(
+  aa2.push(B.zweiSpaltig(
     [new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 0 }, children: [bild(BILD('w4_wirbelsaeule.png'), 1.84, 2.7)] })],
     [hoehenTab,
       // Fassung der Lehrkraft: keine Schreibzeile zu Herrn Pfeiffer – in der LV als mündliche Frage
       B.lsg ? new Paragraph({ spacing: { before: 60, after: 0 }, children: [B.loes('Mündlich fragen: Welche Höhe hat die Verletzung bei Herrn Pfeiffer? → ' + t.aa2.pfeifferLoesung, { size: 18 })] }) : null],
     wBild
   ));
+  push(...zusammen(B, aa2));
   push(leer(60), merksatz(B, t.merksatz, 'b1merk'));
   // AA3 Praxisübung
   push(
@@ -225,12 +248,11 @@ function blatt1(B) {
   push(rollen, leer(40), check,
     new Paragraph({ spacing: { before: 50, after: 40 }, children: [B.emoji('⚠️ '), ...B.runs(t.aa3.sicherheit, { size: 17 })] }));
   // AA4 im KA-Format
-  push(
+  push(...aufgabenListe(B, t.aufgaben, undefined, { ohneNr: true, vorweg: [   // Fassung der Lehrkraft: ohne Nummer
     aa(B, [IC.schreiben], 'AA4: Wissen anwenden:', 'Allein, 6 Minuten.'),
     B.meta('10 min (6 min schreiben, 4 min Musterlösung und Partnercheck) · EA → PA · AFB II–III · AA4 fast wortgleich mit KA KB 1, Aufg. 5.3 (anderer Fall) · Examensvorbild: Mai 2024 Tag 3, Aufg. 8.2 (EH: „… sich nicht unnötig bewegt“); Mai 2024 Tag 2, Aufg. 3.2 (LWS-Fraktur: „keine Drehbewegungen“)'),
     new Paragraph({ spacing: { after: 60 }, keepNext: true, children: [B.i(t.rahmen, { size: 19 })] })
-  );
-  push(...aufgabenListe(B, t.aufgaben, undefined, { ohneNr: true }));   // Fassung der Lehrkraft: ohne Nummer
+  ] }));
   push(leer(80), fertigKasten(B, 'rueckenmark', t.fertig));
   return k;
 }
@@ -245,10 +267,14 @@ function blatt2(B) {
     lernziel(B, t.lernziel),
     fall.tabelle,
     DIGITAL() ? null : klein(B, t.woerter.replace(/ · Fehlalarm = [^·]*$/, '')),
-    new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 60, after: 0 }, children: [B.b(t.vielleicht, { size: 21 })] }),
+    new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 60, after: 0 }, children: [B.b(t.vielleicht, { size: 21 })] })
+  );
+  // AA1 (in der LV ein Block: Auftrag, Ampel, Kurve mit Lösung, Auflösung)
+  const aa1 = []; const push1 = (...x) => aa1.push(...x.filter(Boolean));
+  push1(
     aa(B, je([IC.stift], [IC.handy, IC.stift]), 'AA1: Entscheiden – Frühdienst mit Ampel:', je(t.aa1.text.analog, t.aa1.text.digital), 'b2aa1'),
     B.meta(je('15 min (8 min ankreuzen und Kurve zeichnen, 7 min Besprechung) · EA → Plenum · AFB II–III · IKL W4 Nr. 3',
-      '15 min · verlauf.html allein oder zu zweit (ca. 8 min), dann Besprechung im Plenum · EA/PA (Handy) → Plenum · AFB II–III · Methodenwechsel (Smartphone) · IKL W4 Nr. 3')),
+      '13 min · Frühdienst mit Ampel am Handy (w4/verlauf.html), allein oder zu zweit (ca. 8 min), dann Besprechung im Plenum (ca. 5 min) · EA/PA → Plenum · AFB II–III · IKL W4 Nr. 3')),
     DIGITAL() ? qrKasten(B, 'verlauf', [kl(B, t.aa1.handy)]) : null,
     DIGITAL() ? leer(60) : null
   );
@@ -257,9 +283,9 @@ function blatt2(B) {
     new Paragraph({ spacing: { after: 20 }, children: [B.emoji(AMP[s].zeichen + ' ', { size: 22 }), B.b(AMP[s].lang.split(' – ')[0], { size: 19 })] }),
     new Paragraph({ spacing: { after: 0, line: 240 }, children: B.runs((AMP[s].lang.split(' – ')[1] || '').replace('Pflegefachkraft', 'PFK'), { size: 18 }) })
   ], w, AMP_FARBE[s]);
-  if (DIGITAL()) push(new Table({ width: { size: B.breite, type: WidthType.DXA }, columnWidths: [w3, w3, B.breite - 2 * w3], layout: TableLayoutType.FIXED,
+  if (DIGITAL()) push1(new Table({ width: { size: B.breite, type: WidthType.DXA }, columnWidths: [w3, w3, B.breite - 2 * w3], layout: TableLayoutType.FIXED,
     rows: [new TableRow({ cantSplit: true, children: [ampelZelle('gruen', w3), ampelZelle('gelb', w3), ampelZelle('rot', B.breite - 2 * w3)] })] }));
-  else push(new Paragraph({ spacing: { before: 40, after: 60, line: 245 }, children: B.runs(['gelb', 'rot'].map((s) => `${AMP[s].zeichen} **${AMP[s].kurz}** = ${AMP[s].lang.split(' – ')[1].replace(', nicht allein lassen', '')}`).join('  ·  '), { size: 18 }) }));
+  else push1(new Paragraph({ spacing: { before: 40, after: 60, line: 245 }, children: B.runs(['gelb', 'rot'].map((s) => `${AMP[s].zeichen} **${AMP[s].kurz}** = ${AMP[s].lang.split(' – ')[1].replace(', nicht allein lassen', '')}`).join('  ·  '), { size: 18 }) }));
   const wer = (id) => ({ finn: 'Finn', jana: 'Jana', kurz: 'Herr Kurz' }[id]);
   // 08:00-Werte (W4.verlauf.aufloesung) auf dem Blatt, damit die Kurve vollständig ausgefüllt werden kann
   const AU = V.aufloesung;
@@ -281,23 +307,23 @@ function blatt2(B) {
       const frueher = karten.slice(0, i).some((x) => x.wer === kk.wer);
       return `Puls **${kk.puls}**/min · Blutdruck **${kk.rr[0]}/${kk.rr[1]}** mmHg · Atemzüge ${kk.af}/min` + (kk.vorwert && !frueher ? ` (Vorwert ${kk.vorwert})` : '') + `. ${kk.beobachtung} ${kk.aussage}`;
     };
-    push(B.tabelle(sp, karten.map((kk, i) => [{ absaetze: [new Paragraph({ spacing: { after: 0 }, children: [B.b(kk.zeit + ' Uhr', { size: 18 })] }), new Paragraph({ spacing: { after: 0 }, children: [B.t(wer(kk.wer), { size: 18 })] })] }, messung(kk, i), kreuz(kk, 'gruen'), kreuz(kk, 'gelb'), kreuz(kk, 'rot')]), { schrift: 18 }));
-    if (B.lsg) push(...t.aa1.loesungAnalog.map((z, i) => B.lp(z, { spacing: { before: i ? 0 : 40, after: 20 } })));
-    push(leer(60), B.zweiSpaltig(kurve(false), [achtUhr(bausteine({ lsg: B.lsg, breite: B.breite - 5150 - 60 }), false), leer(20)], 5150));
+    push1(B.tabelle(sp, karten.map((kk, i) => [{ absaetze: [new Paragraph({ spacing: { after: 0 }, children: [B.b(kk.zeit + ' Uhr', { size: 18 })] }), new Paragraph({ spacing: { after: 0 }, children: [B.t(wer(kk.wer), { size: 18 })] })] }, messung(kk, i), kreuz(kk, 'gruen'), kreuz(kk, 'gelb'), kreuz(kk, 'rot')]), { schrift: 18 }));
+    if (B.lsg) push1(...t.aa1.loesungAnalog.map((z, i) => B.lp(z, { spacing: { before: i ? 0 : 40, after: 20 } })));
+    push1(leer(60), B.zweiSpaltig(kurve(false), [achtUhr(bausteine({ lsg: B.lsg, breite: B.breite - 5150 - 60 }), false), leer(20)], 5150));
   } else {
-    push(leer(60));   // Fassung der Lehrkraft: ohne „Gewonnen“-Zeile (das Handy zeigt die Regel)
+    push1(leer(60));   // Fassung der Lehrkraft: ohne „Gewonnen“-Zeile (das Handy zeigt die Regel)
     // große Kurve links (keine Ergebnistabelle – das Ergebnis zeigt das Handy), 08:00-Kasten rechts daneben
     const wK = 6050;
-    push(B.zweiSpaltig(kurve(false), [achtUhr(bausteine({ lsg: B.lsg, breite: B.breite - wK - 60 }), false), leer(20)], wK));
-    if (B.lsg) push(B.lp('Auflösung: Karte 1 🟢 (zu früh, wer 🔴 wählt) · 2 🟢 (Falle: niedriger, aber stabiler Blutdruck – Schockindex 0,7) · 3 🟡 (nach Belastung nachmessen; 🔴 = Fehlalarm) · 4 🟢 · 5 🟡 (Puls +12, Abstand kleiner – nachmessen, Pflegefachkraft informieren; 🔴 = zu früh) · 6 🔴 (Trend, Blässe, Durst, Schulterschmerz links – Schockindex erst 0,9!). Gewonnen: Karte 6 = 🔴 und höchstens 1 Fehlalarm.', { spacing: { before: 40, after: 40 } }));
+    push1(B.zweiSpaltig(kurve(false), [achtUhr(bausteine({ lsg: B.lsg, breite: B.breite - wK - 60 }), false), leer(20)], wK));
+    if (B.lsg) push1(B.lp('Auflösung: Karte 1 🟢 (zu früh, wer 🔴 wählt) · 2 🟢 (Falle: niedriger, aber stabiler Blutdruck – Schockindex 0,7) · 3 🟡 (nach Belastung nachmessen; 🔴 = Fehlalarm) · 4 🟢 · 5 🟡 (Puls +12, Abstand kleiner – nachmessen, Pflegefachkraft informieren; 🔴 = zu früh) · 6 🔴 (Trend, Blässe, Durst, Schulterschmerz links – Schockindex erst 0,9!). Gewonnen: Karte 6 = 🔴 und höchstens 1 Fehlalarm.', { spacing: { before: 40, after: 40 } }));
   }
+  push(...zusammen(B, aa1));
   push(leer(80), merksatz(B, t.merksatz), DIGITAL() ? klein(B, t.woerter) : null);
-  push(
+  push(...aufgabenListe(B, t.aufgaben, undefined, { vorweg: [
     aa(B, [IC.schreiben], 'AA2: Wissen anwenden:', 'Allein (10 Minuten). Hilfe: Merksatz und Ihre Kurve.'),
     B.meta('13 min (10 min schreiben, 3 min Musterlösung) · EA → Plenum · AFB I–III · 2.1 Befunde mit Vorwerten (Muster KA KB 1, Aufg. 5.4 und W1 4.1) · 2.3 Beurteilen (AFB III) · 2.4 = KA KB 1, Aufg. 5.5 · Examensvorbild: Mai 2026 Tag 1, Aufg. 1.3–1.5 (Nachblutung, „hämorrhagischer Schock“, Vitalzeichen); Jan 2026 Tag 2, Aufg. 1.4 („Blutdruckabfall oder Pulserhöhung rechtzeitig erkannt“)'),
     new Paragraph({ spacing: { after: 60 }, keepNext: true, children: [B.i(t.rahmen, { size: 19 })] })
-  );
-  push(...aufgabenListe(B, t.aufgaben));
+  ] }));
   push(leer(80), fertigKasten(B, 'trend', t.fertig));
   return k;
 }
@@ -315,12 +341,14 @@ function blatt3(B) {
       new Paragraph({ spacing: { before: 30, after: 0 }, children: [B.b('Antwort am Ende der Stunde:', { size: 18 })] }),
       ...(B.lsg ? [new Paragraph({ spacing: { after: 0, line: 245 }, children: B.runs(t.leitfrageLoesung, { size: 19, highlight: 'yellow' }) })]
         : [linien(B, 2, [], B.breite - 240)])
-    ], { kopf: 'Fallbezug: „Reanimation – und nicht nur ich war hilflos“ (Auszug)', fill: 'FFFFFF', kopfFill: 'FFFFFF', rand: '000000' }),
+    ], { kopf: 'Fallbezug: „Reanimation – und nicht nur ich war hilflos“ (Auszug)', fill: 'FFFFFF', kopfFill: 'FFFFFF', rand: '000000' })
+  );
+  const aa1 = [
     aa(B, je([IC.lesen, IC.schreiben], [IC.handy, IC.schreiben]), 'AA1: Beschreiben – Der Weg der Luft:', je(t.aa1.text.analog, t.aa1.text.digital), 'b3aa1'),
     B.meta(je('9 min · Selbstversuch (30 s) → EA/PA → Plenum · AFB I–II · IKL Fremdkörperaspiration Nr. 1 (Atemwegsanatomie, Ventilation, Folgen der Hypoxie)',
       '9 min · Selbstversuch (30 s) → Handy: anatomie.html (sechs Teile antippen, bei einem Fehler von vorn) → Lückentext → Plenum · AFB I–II · IKL Fremdkörperaspiration Nr. 1 (Atemwegsanatomie, Ventilation, Folgen der Hypoxie)')),
     B.lp(t.aa1.selbstversuch)
-  );
+  ];
   // Informationstext (eine Quelle: W4.atemwegeText): analog mit fetten Fachwörtern, digital als Lückentext (Wörter gibt es am Handy)
   const AT = W4.atemwegeText;
   const lueckentext = (a) => a.split(/(\*\*[^*]+\*\*)/g).filter(Boolean).map((x) => (x.startsWith('**')
@@ -328,43 +356,45 @@ function blatt3(B) {
     : B.t(x, { size: 20 })));
   const infoKasten = B.kasten(AT.absaetze.map((a) => new Paragraph({ spacing: { after: 40, line: DIGITAL() ? 300 : 250 }, children: DIGITAL() ? lueckentext(a) : B.runs(a, { size: 20 }) })), { kopf: AT.kopf + (DIGITAL() ? ' – Lückentext' : '') });
   if (DIGITAL()) {
-    push(qrKasten(B, 'anatomie', [kl(B, t.aa1.handy)]), leer(60), infoKasten);
+    aa1.push(qrKasten(B, 'anatomie', [kl(B, t.aa1.handy)]), leer(60), infoKasten);
   } else {
-    push(infoKasten);
+    aa1.push(infoKasten);
     const wBild = 4300;
     const zeile = (n) => new Paragraph({ spacing: { before: 20, after: 20 }, children: [B.b(n + '  ', { size: 20 }), B.lsg ? B.loes(t.aa1.begriffe[n - 1], { size: 20 }) : B.t('_'.repeat(30), { size: 20 })] });
-    push(B.zweiSpaltig(
+    aa1.push(B.zweiSpaltig(
       [new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 0 }, children: [bild(BILD('w4_atemwege.png'), 5.4, 5.4)] })],
       [kl(B, t.aa1.wortspeicher, { italics: true }), ...[1, 2, 3, 4, 5, 6].map(zeile)],
       wBild
     ));
   }
+  push(...zusammen(B, aa1));
   push(leer(60), merksatz(B, t.merksatz1, 'b3merk1'));
   // AA2: Informationen aus einem längeren Lesetext in die Tabelle (Text nicht in Tabellenreihenfolge, mit Ablenkern).
   // Analog steht der Text auf dem Blatt, digital führt ein QR-Code zur Leseseite mit Bildern. Kein Merksatz danach (sonst wird abgeschrieben).
   const L = W4.verlegung;
-  push(
-    DIGITAL() || B.lsg ? null : seitenumbruch(),
+  push(DIGITAL() || B.lsg ? null : seitenumbruch());
+  const aa2 = [
     aa(B, je([IC.lesen, IC.stift], [IC.handy, IC.stift]), 'AA2: Unterscheiden – leicht oder schwer?', je(t.aa2.text.analog, t.aa2.text.digital), 'b3aa2'),
     B.meta('12 min (8 min lesen und eintragen, 4 min sichern) · EA → Plenum · AFB I–II · IKL Fremdkörperaspiration Nr. 2 · KA KB 1, Aufg. 4.1 (Merkmale leicht/schwer) · ' + je('Lesetext aus docs/w4/inhalte.js', 'Lesetext am Handy: w4/verlegung.html (mit Bildern)')),
     DIGITAL() ? qrKasten(B, 'verlegung', [kl(B, t.aa2.handy)]) : B.kasten(L.absaetze.map((a) => new Paragraph({ spacing: { after: 60, line: 255 }, children: B.runs(a, { size: 20 }) })), { kopf: 'Informationstext: ' + L.titel }),
     leer(60)
-  );
+  ];
   const w1 = 1800, w2 = Math.floor((B.breite - w1) / 2);
-  push(B.tabelle([{ text: '', w: w1 }, { text: 'leichte Verlegung', w: w2 }, { text: 'schwere Verlegung', w: B.breite - w1 - w2 }],
+  aa2.push(B.tabelle([{ text: '', w: w1 }, { text: 'leichte Verlegung', w: w2 }, { text: 'schwere Verlegung', w: B.breite - w1 - w2 }],
     t.aa2.zeilen.map((z) => [{ text: `**${z[0]}**`, fill: F.LACHS, o: mitHl('b3tab') }, { lsg: z[1] }, { lsg: z[2] }]), { hoehe: je(1250, 800), schrift: 18 }));
-  if (B.lsg) push(B.lp(t.aa2.ergaenzung, { spacing: { before: 40, after: 20 } }));
+  if (B.lsg) aa2.push(B.lp(t.aa2.ergaenzung, { spacing: { before: 40, after: 20 } }));
+  // analog (SV) steht der lange Lesetext auf dem Blatt – dort keine Klammer (in der LV gibt es nur die digitale Leseseite oder den Text)
+  push(...(DIGITAL() ? zusammen(B, aa2) : aa2));
   // AA3 im KA-Format: 3.1 (mit viel Schreibraum) und 3.2 (Hypoxie erklären, IKL Fremdkörperaspiration Nr. 1)
   const fall = fallKasten(B, 'Fallsituation', t.fall);
   const ersetze = (s) => s.replace(/\{([^}]+)\}/g, (_, w) => String(fall.zeile(w)));
-  push(
-    DIGITAL() || B.lsg ? leer(80) : seitenumbruch(),
+  push(DIGITAL() || B.lsg ? leer(80) : seitenumbruch());
+  push(...aufgabenListe(B, t.aufgaben, ersetze, { vorweg: [
     aa(B, [IC.schreiben], 'AA3: Wissen anwenden:', 'Allein (8 Minuten). Hilfe: Ihre Tabelle und der Merksatz.'),
     B.meta('10 min (8 min schreiben, 2 min Musterlösung) · EA → Plenum · AFB II · 3.1 = Muster KA KB 1, Aufg. 4.1 (gleicher Operator, beide Phasen im Fall) · 3.2 = IKL Fremdkörperaspiration Nr. 1 (erklären, warum eine Verlegung lebensbedrohlich ist; Hilfe: Merksatz) · Examensvorbild: Mai 2023 Tag 3, Aufg. 4.2 („Nennen Sie vier in der Fallsituation beschriebene Symptome, die auf eine akute Atemstörung hinweisen“, 0,5 P. je Symptom)'),
     fall.tabelle,
     new Paragraph({ spacing: { before: 60, after: 60 }, keepNext: true, children: [B.i(t.rahmen, { size: 19 })] })
-  );
-  push(...aufgabenListe(B, t.aufgaben, ersetze));
+  ] }));
   push(leer(je(80, 40)), ...schnelleKasten(B, t.schnelle, ersetze));
   return k;
 }
@@ -375,11 +405,11 @@ function blatt3(B) {
 function verlaufsplan(B) {
   const k = []; const push = (...x) => k.push(...x.filter(Boolean));
   push(
-    B.titel('Was man nicht sieht: Wirbelsäulenverletzung, innere Blutung, Atemwege – ' + je('analoge Fassung', 'digitale Fassung')),
+    B.titel('Was man nicht sieht: Wirbelsäulenverletzung, innere Blutung, Atemwege' + je(' – analoge Fassung', '')),
     new Paragraph({ spacing: { after: 80 }, children: [B.emoji('🎯 '), B.b('Lernziel (Planung): '), ...B.runs('Die Lernenden erkennen Hinweise auf eine Wirbelsäulenverletzung und begründen die Bewegungsminimierung. Sie überwachen Vitalzeichen im Verlauf und erkennen eine verzögerte innere Blutung. Sie unterscheiden eine leichte von einer schweren Atemwegsverlegung.')] }),
-    B.p('**Rahmen:** KB I · Woche 4 (SW 9) · 3 UStd. (135 min): 2 UStd. Wirbelsäulenverletzung und innere Blutung, 1 UStd. Fremdkörperaspiration Teil 1 · Leitfall „Frau Maler“ (verschluckt sich am Kaffee) · Fall „17-Jähriger nach Fahrradsturz“ (Finn) · Vorwissen: Woche 1 (Kompensation, Schockindex), Woche 2 (Schockformen, neurogener Schock, Lagerung „nicht bewegen“), Woche 3 laut Planung (sichtbare Blutung, Abgrenzung Erste Hilfe – pflegerische Sofortmaßnahme – ärztliche Maßnahme) · Ich-kann-Liste KB I: Woche 4 Nr. 1–3, Fremdkörperaspiration Nr. 1–2 · KA-Bezug: KB 1, Aufg. 5.3 und 4.1 (dazu 5.5, 5.4 als Wiederholung) · ' + je('AB: 3 Blätter, 7 Seiten (Blatt 3 mit Lesetext: S. 5–7), nacheinander austeilen', 'AB: 3 Blätter je 2 Seiten (6 Seiten), nacheinander austeilen') + ' · ' + je('**Analoge Fassung:** ganz ohne Smartphone (Ankreuz- und Zuordnungsaufgaben, „Schon fertig?“ als Zusatzaufgabe – Antwort auf ein Extrablatt).', '**Digitale Fassung:** Live-Verlauf am Smartphone; „Schon fertig?“ und die Simulation „Notfall-Ampel im Speisesaal“ als Zusatz für Schnelle (ein Handy pro Paar reicht, ohne Anmeldung, ohne Beamer).')),
-    B.p('**Kompetenzbezug:** Anlage 1 PflAPrV I.4.a, I.4.c (wie Woche 2) · Landeslehrplan CE 06 „In Akutsituationen sicher handeln“ · Methodenwechsel: szenischer Einstieg, Einzelarbeit, Partnerarbeit, Gruppenübung auf dem Boden oder auf Isomatten, ' + je('Ankreuz- und Zuordnungsaufgaben', 'Live-Verlauf am Smartphone') + ', Peer-Korrektur'),
-    B.p('**Methodenwechsel** („erst erleben, dann begründen und aufschreiben“): ① Praxisübung „Kopf halten und achsengerecht drehen“ → AA4 (Muster KA 5.3) · ' + je('Blatt 2 und 3 sind bewusst ruhige Einzelarbeit (ankreuzen, Kurve zeichnen, zuordnen).', '② Live-Verlauf „Frühdienst – drei Patienten, eine Ampel“ (am Smartphone) → AA2. Blatt 3 ist ruhige Einzelarbeit (zuordnen); die Simulation „Notfall-Ampel im Speisesaal“ steht unten auf Blatt 3 als Zusatz „Für die Schnellen“.'))
+    B.p('**Rahmen:** KB I · Woche 4 (SW 9) · 3 UStd. (135 min): 2 UStd. Wirbelsäulenverletzung und innere Blutung, 1 UStd. Fremdkörperaspiration Teil 1 · Leitfall „Frau Maler“ (verschluckt sich am Kaffee) · Fall „17-Jähriger nach Fahrradsturz“ (Finn) · Vorwissen: Woche 1 (Kompensation, Schockindex), Woche 2 (Schockformen, neurogener Schock, Lagerung „nicht bewegen“), Woche 3 laut Planung (sichtbare Blutung, Abgrenzung Erste Hilfe – pflegerische Sofortmaßnahme – ärztliche Maßnahme) · Ich-kann-Liste KB I: Woche 4 Nr. 1–3, Fremdkörperaspiration Nr. 1–2 · KA-Bezug: KB 1, Aufg. 5.3 und 4.1 (dazu 5.5, 5.4 als Wiederholung) · ' + je('AB: 3 Blätter, 7 Seiten (Blatt 3 mit Lesetext: S. 5–7), nacheinander austeilen', 'AB: 3 Blätter je 2 Seiten (6 Seiten), nacheinander austeilen') + ' · ' + je('**Analoge Fassung:** ganz ohne Smartphone (Ankreuz- und Zuordnungsaufgaben, „Schon fertig?“ als Zusatzaufgabe – Antwort auf ein Extrablatt).', '**Medien:** drei kurze Präsentationen (Beamer) für den Einstieg und die zwei Gelenkstellen; Handy-Übungen über die QR-Codes auf den Blättern (ein Handy pro Paar reicht, ohne Anmeldung); „Schon fertig?“, Atemweg-Check und Simulation „Notfall-Ampel im Speisesaal“ als Zusatz für Schnelle.')),
+    B.p('**Kompetenzbezug:** Anlage 1 PflAPrV I.4.a, I.4.c (wie Woche 2) · Landeslehrplan CE 06 „In Akutsituationen sicher handeln“ · Methoden: szenischer Einstieg, ' + je('', 'Präsentation an Einstieg und Gelenkstellen, ') + 'Einzelarbeit, Partnerarbeit, Gruppenübung auf dem Boden oder auf Isomatten, ' + je('Ankreuz- und Zuordnungsaufgaben', 'kurze Übungen am Handy') + ', Peer-Korrektur'),
+    B.p('**Methodenwechsel** („erst erleben, dann begründen und aufschreiben“): ' + je('① ', '') + 'Praxisübung „Kopf halten und achsengerecht drehen“ (Blatt 1, AA3) → AA4 (Muster KA 5.3) · ' + je('Blatt 2 und 3 sind bewusst ruhige Einzelarbeit (ankreuzen, Kurve zeichnen, zuordnen).', 'Die Handy-Übungen (Rückenmark-Check, Frühdienst mit Ampel, Wo ist was?, Lesetext) sind Einzel- oder Partnerarbeit und führen jeweils zu einer Aufgabe auf Papier; die Simulation „Notfall-Ampel im Speisesaal“ steht unten auf Blatt 3 als Zusatz „Für die Schnellen“.'))
   );
   const sp = [
     { text: 'Zeit', w: 850 }, { text: 'Phase', w: 1650 }, { text: 'Lehrerhandeln', w: 3600 }, { text: 'Schülerhandeln', w: 2700 },
@@ -389,21 +419,21 @@ function verlaufsplan(B) {
   const z = (zeit, phase, l, s, soz, mat, fkt) => [zeit, `**${phase}**`, l, s, soz, mat, fkt];
   const ueber = (text) => [{ colSpan: 7, text, fill: F.GRAU_HELL, o: { italics: true } }];
   const zeilen = [
-    z('vor der Stunde', 'Vorbereitung', 'Blatt 1–3 **einzeln** (je beidseitig) kopieren, getrennt bereitlegen. **Platz auf dem Boden** (Tische an die Seite), wenn vorhanden **6 Isomatten** – sonst Jacken oder Decken unterlegen. ' + je('Extrablätter für „Schon fertig?“ bereitlegen.', 'Prüfen, ob die SuS ins WLAN kommen (ein Handy pro Paar reicht). Optional: w4/lehrer.html offen lassen – zeigt ohne Raumcode und ohne Namen, wie weit die Handys sind (letzte 45 Minuten).'), '–', '–', je('Blatt 1–3, ggf. Isomatten', 'Blatt 1–3, ggf. Isomatten, Handys'), 'Ablauf ohne Umbaupausen'),
-    z('0–4', 'Szenischer Einstieg', 'Sie liegen auf dem Boden: „Ich bin Herr Pfeiffer, 79. Ich bin die Treppe runtergefallen. Helfen Sie mir hoch, ich muss zum Mittagessen!“ Wer kommt? Reaktionen sammeln, **nicht auflösen**. Dann **Blatt 1 austeilen**, Lernziel und Fahrplan: drei Notfälle, die man nicht sieht.', 'reagieren spontan (helfen hoch? halten fest?), äußern Vermutungen', 'Plenum', 'Blatt 1', 'Betroffenheit, kognitiver Konflikt („helfen = hochhelfen?“); Vorwissen aus Woche 2 (Lagerung „nicht bewegen“) aktivieren. AFB I'),
+    z('vor der Stunde', 'Vorbereitung', 'Blatt 1–3 **einzeln** (je beidseitig) kopieren, getrennt bereitlegen. **Platz auf dem Boden** (Tische an die Seite), wenn vorhanden **6 Isomatten** – sonst Jacken oder Decken unterlegen. ' + je('Extrablätter für „Schon fertig?“ bereitlegen.', '**Beamer** und die drei Präsentationen bereitstellen. Prüfen, ob die SuS ins WLAN kommen (ein Handy pro Paar reicht). Optional: w4/lehrer.html offen lassen – zeigt anonym, wie weit die Handys sind (letzte 45 Minuten).'), '–', '–', je('Blatt 1–3, ggf. Isomatten', 'Blatt 1–3, Präsentationen 1–3, Beamer, ggf. Isomatten, Handys'), 'Ablauf ohne Umbaupausen'),
+    z('0–4', 'Szenischer Einstieg', je('Sie liegen auf dem Boden: „Ich bin Herr Pfeiffer, 79. Ich bin die Treppe runtergefallen. Helfen Sie mir hoch, ich muss zum Mittagessen!“ Wer kommt? Reaktionen sammeln, **nicht auflösen**. Dann **Blatt 1 austeilen**, Lernziel und Fahrplan: drei Notfälle, die man nicht sieht.', '**Präsentation 1.** Folie 1: Fahrplan „Was man nicht sieht“ (drei Notfälle). Folie 2: Sie liegen auf dem Boden: „Ich bin Herr Pfeiffer, 79. Ich bin die Treppe runtergefallen. Helfen Sie mir hoch, ich muss zum Mittagessen!“ Wer kommt? Reaktionen sammeln, **nicht auflösen**. Folie 3: Leitfrage stehen lassen. Folie 4: Lernziel. Folie 5: Ablauf von Blatt 1 – **Blatt 1 austeilen**.'), 'reagieren spontan (helfen hoch? halten fest?), äußern Vermutungen', 'Plenum', je('Blatt 1', 'Präsentation 1 (Folie 1–5), Blatt 1'), 'Betroffenheit, kognitiver Konflikt („helfen = hochhelfen?“); Vorwissen aus Woche 2 (Lagerung „nicht bewegen“) aktivieren. AFB I'),
     ueber('„Herr Pfeiffer will aufstehen. Darf er das? Woran erkennen Sie, dass es gefährlich sein könnte?“'),
-    z('4–12', 'Erarbeitung I: Hinweise finden (AA1)', 'Fall vorlesen lassen; Uhr 4 min; Tabelle im Plenum sichern (Zeilennummern nennen lassen); Ablenker ansprechen: Diabetes, Brille, Schürfwunde; „Er kann die Beine bewegen“ schließt nichts aus.', 'lesen, unterstreichen, Hinweise mit Zeilennummer eintragen', 'EA → Plenum', 'Blatt 1 S. 1', 'Befunde im Fließtext identifizieren – Begründungsteil von KA 5.3. AFB I'),
-    z('12–21', 'Erarbeitung II: Rückenmark und Höhe (AA2, Merksatz)', je('Infotext zu zweit lesen lassen (4 min); Zuordnung A/B/C und Herrn Pfeiffers Höhe sichern; neurogenen Schock kurz an Woche 2 anbinden; Merksatz vorlesen lassen.', 'Infotext zu zweit lesen lassen (4 min); Rückenmark-Check am Handy (ca. 4 min, die Höhen-Tabelle hilft); mündlich fragen: Welche Höhe bei Herrn Pfeiffer? (HWS – Hände betroffen); neurogenen Schock kurz an Woche 2 anbinden; Merksatz vorlesen lassen.'), je('lesen, Fachwörter mit Wörterhilfe klären, zuordnen', 'lesen, Fachwörter mit Wörterhilfe klären, acht Fälle am Handy lösen, Herrn Pfeiffers Höhe eintragen'), je('PA → EA → Plenum', 'PA → EA (Handy) → Plenum'), je('Blatt 1 S. 1–2', 'Blatt 1 S. 1–2, Handy'), 'Läsionshöhe → Ausfälle (IKL W4 Nr. 2); Brücke zu KA 5.5. AFB I–II'),
+    z('4–12', 'Erarbeitung I: Hinweise finden (AA1)', je('', 'Folie 6: Start AA1. ') + 'Fall vorlesen lassen; Uhr 4 min; Tabelle im Plenum sichern (Zeilennummern nennen lassen); Ablenker ansprechen: Diabetes, Brille, Schürfwunde; „Er kann die Beine bewegen“ schließt nichts aus.', 'lesen, unterstreichen, Hinweise mit Zeilennummer eintragen', 'EA → Plenum', je('Blatt 1 S. 1', 'Präsentation 1 (Folie 6), Blatt 1 S. 1'), 'Befunde im Fließtext identifizieren – Begründungsteil von KA 5.3. AFB I'),
+    z('12–21', 'Erarbeitung II: Rückenmark und Höhe (AA2, Merksatz)', je('Infotext zu zweit lesen lassen (4 min); Zuordnung A/B/C und Herrn Pfeiffers Höhe sichern; neurogenen Schock kurz an Woche 2 anbinden; Merksatz vorlesen lassen.', 'Infotext zu zweit lesen lassen (4 min); Rückenmark-Check am Handy (ca. 4 min, die Höhen-Tabelle hilft); mündlich fragen: Welche Höhe bei Herrn Pfeiffer? (HWS – Hände betroffen); neurogenen Schock kurz an Woche 2 anbinden; Merksatz vorlesen lassen.'), je('lesen, Fachwörter mit Wörterhilfe klären, zuordnen', 'lesen, Fachwörter mit Wörterhilfe klären, acht Fälle am Handy lösen, Herrn Pfeiffers Höhe mündlich nennen'), je('PA → EA → Plenum', 'PA → EA (Handy) → Plenum'), je('Blatt 1 S. 1–2', 'Blatt 1 S. 1–2, Handy'), 'Läsionshöhe → Ausfälle (IKL W4 Nr. 2); Brücke zu KA 5.5. AFB I–II'),
     z('21–35', 'Übung: Kopf halten und achsengerecht drehen (AA3)', 'Vierergruppen abzählen, Platz auf dem Boden schaffen (Isomatten, falls vorhanden). Mit zwei SuS einmal vormachen (3 min): Kopf seitlich mit beiden Händen halten, Kommando „auf drei“, drehen wie ein Baumstamm. **4 Runden à ca. 2 min**, Rollen wechseln (Uhr). Herumgehen, korrigieren (Nacken nicht beugen!). Abschluss: „Was war schwierig?“', 'üben in Rollen (Patient/in, Kopf, Helfer/in, Beobachter/in); Checkliste ausfüllen, Rückmeldung geben', 'GA (4)', 'Boden bzw. Isomatten, Blatt 1 S. 2', 'erleben, dann begründen: Kommando, Achse, Sicherheit beim unvermeidbaren Lagewechsel; Grundlage für AA4 (Maßnahme beschreiben). AFB II'),
     ueber('„Sie haben gespürt, wie schwer es ist, den Kopf ruhig zu halten. Schreiben Sie jetzt auf, warum das so wichtig ist.“'),
     z('35–45', 'Sicherung: Wissen anwenden (AA4)', 'Uhr 6 min; dann Musterlösung (Lösungsteil Blatt 1) vorlesen oder zeigen – **ohne Punkte zu nennen**; Partnercheck: Was fehlt?', 'AA4 allein schreiben; Lösung der Partnerin/des Partners mit der Musterlösung vergleichen und ergänzen', 'EA → PA', 'Blatt 1 S. 2', 'Transfer im KA-Format: AA4 fast wortgleich mit KA 5.3 (anderer Fall). AFB II–III'),
-    z('45–48', 'Überleitung (Blatt 2)', '**Blatt 2 austeilen.** „Letzte Woche: Blutungen, die man sieht. Heute: eine Blutung, die man nicht sieht.“ Ausgangssituation vorlesen; drei Patienten benennen.', 'lesen, zuhören', 'Plenum', 'Blatt 2', 'Anknüpfung an Woche 3 (laut Planung), Neugier'),
-    z('48–63', je('Frühdienst mit Ampel: ankreuzen und Kurve (AA1)', 'Live-Verlauf „Frühdienst – drei Patienten, eine Ampel“ (AA1)'), je('Uhr 8 min: allein ankreuzen, danach Finns Puls und Blutdruck in die Kurve eintragen. Besprechung Zeile für Zeile (ca. 7 min, Lösung im Lösungsteil): Handzeichen „Wer hat grün, gelb, rot angekreuzt?“, 1–2 begründen lassen. Zwei Fehler benennen: 🔴 bei Herrn Kurz = **Fehlalarm** (Ursache: Anstrengung → nachmessen), 🔴 erst später bei Finn = **zu spät**. Zum Schluss den 08:00-Kasten besprechen („Was wäre, wenn …“) und die Folgen ergänzen (Hinweise).', 'QR-Code scannen lassen, allein oder zu zweit (ca. 8 min); die Karten kommen am Handy von selbst (40 s je Karte). Danach dieselben Karten kurz im Plenum besprechen (Lösung, Auflösungskarte 08:00, „Wer hat gewonnen?“); w4/lehrer.html → „Messkarten groß“ hilft dabei.'), je('Messungen lesen und mit dem Vorwert vergleichen, ankreuzen, Finns Kurve zeichnen, Entscheidung begründen', 'Werte mit Vorwert vergleichen, Finns Kurve zeichnen, Ampel festlegen, Ergebnis übertragen, begründen'), je('EA → Plenum', 'EA/PA (Handy) → Plenum'), je('Blatt 2 S. 1', 'Blatt 2 S. 1, Handy'), je('Trendüberwachung; Fehlalarm **und** „zu spät“ sind beide Fehler; Fehlvorstellung „erst ab Schockindex 1 melden“ wird sichtbar. AFB II–III', 'Trendüberwachung; Fehlalarm **und** „zu spät“ sind Fehler (Gewinnbedingung); Fehlvorstellungen „unter 100 mmHg = Schock“ und „erst ab Schockindex 1 melden“ werden sichtbar. AFB II–III')),
+    z(je('45–48', '45–50'), 'Überleitung (Blatt 2)', je('**Blatt 2 austeilen.** „Letzte Woche: Blutungen, die man sieht. Heute: eine Blutung, die man nicht sieht.“ Ausgangssituation vorlesen; drei Patienten benennen.', '**Präsentation 2.** Folie 1–2: Rückblick – Leitfrage von Blatt 1 beantworten lassen (Darf Herr Pfeiffer aufstehen?). Folie 3: „Letzte Woche: Blutungen, die man sieht. Heute: eine Blutung, die man nicht sieht.“ Folie 4: **Blatt 2 austeilen**, Ausgangssituation vorlesen, drei Patienten benennen. Folie 5: Lernziel und Ampel. Folie 6: Ablauf von Blatt 2.'), je('lesen, zuhören', 'Leitfrage von Blatt 1 beantworten, lesen, zuhören'), 'Plenum', je('Blatt 2', 'Präsentation 2, Blatt 2'), 'Anknüpfung an Woche 3 (laut Planung), Neugier'),
+    z(je('48–63', '50–63'), je('Frühdienst mit Ampel: ankreuzen und Kurve (AA1)', 'Frühdienst mit Ampel am Handy (AA1)'), je('Uhr 8 min: allein ankreuzen, danach Finns Puls und Blutdruck in die Kurve eintragen. Besprechung Zeile für Zeile (ca. 7 min, Lösung im Lösungsteil): Handzeichen „Wer hat grün, gelb, rot angekreuzt?“, 1–2 begründen lassen. Zwei Fehler benennen: 🔴 bei Herrn Kurz = **Fehlalarm** (Ursache: Anstrengung → nachmessen), 🔴 erst später bei Finn = **zu spät**. Zum Schluss den 08:00-Kasten besprechen („Was wäre, wenn …“) und die Folgen ergänzen (Hinweise).', 'QR-Code scannen lassen, allein oder zu zweit (ca. 8 min); am Handy kommen die Messkarten nacheinander (' + W4.verlauf.sekunden + ' s je Karte). Danach im Plenum besprechen (ca. 5 min): Lösung, 08:00-Kasten auf dem Blatt, „Wer hat gewonnen?“; w4/lehrer.html → „Messkarten groß“ hilft dabei.'), je('Messungen lesen und mit dem Vorwert vergleichen, ankreuzen, Finns Kurve zeichnen, Entscheidung begründen', 'Werte mit Vorwert vergleichen, Ampel festlegen, Finns Kurve zeichnen (auch 08:00), begründen'), je('EA → Plenum', 'EA/PA (Handy) → Plenum'), je('Blatt 2 S. 1', 'Blatt 2 S. 1, Handy'), je('Trendüberwachung; Fehlalarm **und** „zu spät“ sind beide Fehler; Fehlvorstellung „erst ab Schockindex 1 melden“ wird sichtbar. AFB II–III', 'Trendüberwachung; Fehlalarm **und** „zu spät“ sind Fehler (Gewinnbedingung); Fehlvorstellungen „unter 100 mmHg = Schock“ und „erst ab Schockindex 1 melden“ werden sichtbar. AFB II–III')),
     z('63–68', 'Sicherung: Kurve und Merksatz', 'Finns Kurve: Puls und systolischer Wert laufen wie eine **Schere** aufeinander zu; Abstand der Blutdruckwerte wird kleiner. Merksatz vorlesen lassen.', 'Kurve deuten, Merksatz lesen', 'Plenum', 'Blatt 2 S. 1–2', 'Zeichen der inneren Blutung, warum verzögert (IKL W4 Nr. 3)'),
     z('68–81', 'Wissen anwenden (AA2)', 'Uhr 10 min; Musterlösung (3 min), bei 2.3 Diskussion zulassen (Einzelwert vs. Gesamtbild).', '2.1–2.4 allein schreiben, mit Musterlösung verbessern', 'EA → Plenum', 'Blatt 2 S. 2', 'Befunde mit Vorwerten (KA 5.4), Beurteilen (AFB III), KA 5.5'),
     ueber('Pause, falls im Stundenraster vorgesehen. – „Frau Maler hat sich beim Frühstück am Kaffee verschluckt. Christin hat sie einfach husten lassen. War das richtig?“'),
-    z('81–84', 'Blatt 3: Leitfall', '**Blatt 3 austeilen.** Leitfall vorlesen; Leitfrage: Daumen hoch (richtig) / runter (falsch) – Vermutung, nicht auflösen.', 'vermuten, begründen', 'Plenum', 'Blatt 3', 'Anknüpfung Leitfall; kognitiver Konflikt'),
-    z('84–93', 'Erarbeitung: Weg der Luft (AA1)', je('Selbstversuch anleiten (30 s: Finger auf den Kehlkopf, schlucken; schlucken und einatmen gleichzeitig?). Infotext lesen lassen, Beschriftung sichern, Merksatz.', 'Selbstversuch anleiten (30 s: Finger auf den Kehlkopf, schlucken; schlucken und einatmen gleichzeitig?). QR-Code „Wo ist was?“: sechs Teile im Bild antippen, je Frage ' + W4.anatomie.sekunden + ' Sekunden – bei einem Fehler oder abgelaufener Zeit beginnt die Übung von vorn; wer alles richtig hat, bekommt die acht Wörter für den Lückentext (ca. 5 min). Lückentext sichern, Merksatz.'), je('Selbstversuch, lesen, beschriften, Merksatz mitlesen', 'Selbstversuch, Teile am Handy antippen, Lückentext ausfüllen, Merksatz mitlesen'), je('EA/PA → Plenum', 'EA (Handy) → Plenum'), je('Blatt 3 S. 1', 'Blatt 3 S. 1, Handy'), 'Atemwegsanatomie, Ventilation, Folgen der Hypoxie (IKL Fremdkörperaspiration Nr. 1). AFB I–II'),
+    z('81–84', 'Blatt 3: Leitfall', je('**Blatt 3 austeilen.** Leitfall vorlesen; Leitfrage: Daumen hoch (richtig) / runter (falsch) – Vermutung, nicht auflösen.', '**Präsentation 3.** Folie 1–2: Rückblick auf Blatt 2 (Finns Kurve). **Blatt 3 austeilen.** Folie 3: Leitfall vorlesen. Folie 4: Leitfrage – Daumen hoch (richtig) / runter (falsch), Vermutung, nicht auflösen.'), 'vermuten, begründen', 'Plenum', je('Blatt 3', 'Präsentation 3 (Folie 1–4), Blatt 3'), je('Anknüpfung Leitfall; kognitiver Konflikt', 'Rückblick Blatt 2; Anknüpfung Leitfall; kognitiver Konflikt')),
+    z('84–93', 'Erarbeitung: Weg der Luft (AA1)', je('Selbstversuch anleiten (30 s: Finger auf den Kehlkopf, schlucken; schlucken und einatmen gleichzeitig?). Infotext lesen lassen, Beschriftung sichern, Merksatz.', 'Folie 5: Selbstversuch anleiten (30 s: Finger auf den Kehlkopf, schlucken; schlucken und einatmen gleichzeitig?). Folie 6: Ablauf von Blatt 3. QR-Code „Wo ist was?“: sechs Teile im Bild antippen, je Frage ' + W4.anatomie.sekunden + ' Sekunden – bei einem Fehler oder abgelaufener Zeit beginnt die Übung von vorn; wer alles richtig hat, bekommt die acht Wörter für den Lückentext (ca. 5 min). Lückentext sichern, Merksatz.'), je('Selbstversuch, lesen, beschriften, Merksatz mitlesen', 'Selbstversuch, Teile am Handy antippen, Lückentext ausfüllen, Merksatz mitlesen'), je('EA/PA → Plenum', 'EA (Handy) → Plenum'), je('Blatt 3 S. 1', 'Präsentation 3 (Folie 5–6), Blatt 3 S. 1, Handy'), 'Atemwegsanatomie, Ventilation, Folgen der Hypoxie (IKL Fremdkörperaspiration Nr. 1). AFB I–II'),
     z('93–105', 'Leicht oder schwer? Lesetext (AA2)', je('Uhr 8 min: Text lesen, Tabelle in Stichworten ausfüllen.', 'QR-Code scannen lassen (ein Handy für zwei reicht), Text mit Bildern am Handy lesen; Uhr 8 min, Tabelle in Stichworten ausfüllen.') + ' Sichern Zeile für Zeile; fragen: „Was steht im Text, gehört aber nicht in die Tabelle?“ (Absatz 1: wer sich öfter verschluckt). Kernsatz an die Tafel: „Wer laut rufen kann, bekommt Luft. Nicht auf blaue Lippen warten!“', 'Text lesen, Informationen suchen und in Stichworten eintragen', 'EA → Plenum', je('Blatt 3 S. 1–2', 'Blatt 3 S. 1–2, Handy'), 'Informationen aus einem Text entnehmen und ordnen (Reihenfolge anders als in der Tabelle, Ablenker); Merkmale leicht/schwer – Grundlage für 3.1 (Muster KA 4.1); Fehlvorstellung „erst bei blauen Lippen handeln“. AFB I–II'),
     z('105–115', 'Wissen anwenden (AA3)', 'Uhr 8 min, dann Musterlösung (2 min) – ohne Punkte zu nennen.', '3.1 und 3.2 allein schreiben, mit Musterlösung verbessern', 'EA → Plenum', 'Blatt 3', '3.1 = Muster KA 4.1; 3.2 = Folgen der Hypoxie erklären (IKL Fremdkörperaspiration Nr. 1). AFB II'),
     z('115–120', 'Abschluss', 'Leitfrage beantworten lassen (2 Zeilen). Bogen zum Einstieg: „Was tun Sie jetzt, wenn Herr Pfeiffer sagt: Helfen Sie mir hoch?“ Blitzlicht: Drei Notfälle, die man nicht sieht – woran erkennen Sie sie?', 'Leitfrage schriftlich beantworten, Blitzlicht', 'EA → Plenum', 'Blatt 3', 'Leitfall abschließen, Lernzuwachs sichtbar machen'),
@@ -439,22 +469,22 @@ function hinweise(B) {
   const p = (t) => B.p(t, { spacing: { after: 70, line: 252 } });
   push(B.abschnitt('Vorbereitung und Hinweise', { pageBreakBefore: true }));
   push(B.zwischen('Material und Gruppen'));
-  push(p('**Kopien:** Blatt 1 (S. 1–2), Blatt 2 (S. 3–4), ' + je('Blatt 3 (S. 5–7: S. 5/6 beidseitig, S. 7 einzeln)', 'Blatt 3 (S. 5–6)') + ' je beidseitig, getrennt austeilen. **Isomatten:** 6 Stück, falls vorhanden – sonst auf dem sauberen Boden üben, Jacken oder Decken unter Kopf und Rücken. **Praxisübung:** 3BFP2.1 (23 SuS) = 5 Vierergruppen + 1 Dreiergruppe (dort beobachten Sie selbst oder die Rolle Beobachter/in entfällt); 3BFP2.2 (20 SuS) = 5 Vierergruppen. ' + je('**Kein Smartphone nötig.**', '**Handys:** ein Handy pro Paar reicht; WLAN vorher prüfen. Fällt es aus: die analoge Fassung kopieren (KB1_W4_Wirbelsaeule_Blutung_analog_SV) – sie enthält dieselben Aufgaben.')));
+  push(p('**Kopien:** Blatt 1 (S. 1–2), Blatt 2 (S. 3–4), ' + je('Blatt 3 (S. 5–7: S. 5/6 beidseitig, S. 7 einzeln)', 'Blatt 3 (S. 5–6)') + ' je beidseitig, getrennt austeilen. **Isomatten:** 6 Stück, falls vorhanden – sonst auf dem sauberen Boden üben, Jacken oder Decken unter Kopf und Rücken. **Praxisübung:** 3BFP2.1 (23 SuS) = 5 Vierergruppen + 1 Dreiergruppe (dort beobachten Sie selbst oder die Rolle Beobachter/in entfällt); 3BFP2.2 (20 SuS) = 5 Vierergruppen. ' + je('**Kein Smartphone nötig.**', '**Handys:** ein Handy pro Paar reicht; WLAN vorher prüfen (unter jedem QR-Code steht auch der Link). **Beamer:** für die drei Präsentationen (Einstieg vor Blatt 1, Gelenkstellen vor Blatt 2 und 3); Ablauf und Lehrerhandeln stehen auch in den Notizen der Folien.')));
   push(B.zwischen(je('Vorbereitung auf die Klassenarbeit – alles auf Papier', 'Vorbereitung auf die Klassenarbeit – hängt an keiner Handy-Übung')));
-  push(p('Alle Inhalte und Aufgaben, die die KA verlangt, stehen auf Papier: Infotexte, fertige Merksätze und Aufgaben im KA-Format mit Musterlösung. ' + je('', 'Die Smartphone-Übungen sind nur der Weg dorthin (Rückenmark-Check, Live-Verlauf, Wo ist was?) oder Zusatz für Schnelle („Schon fertig?“, Simulation). Die analoge Fassung hat dieselben Aufgaben. ') + '**Punkte stehen nur in der Lehrerversion:** Auf dem Arbeitsblatt sollen die SuS nicht erkennen, welche Aufgaben KA-Muster sind (KA-Aufgaben und andere Aufgaben stehen gemischt in derselben Tabelle). Deshalb bei der Musterlösung keine Punkte nennen.'));
+  push(p('Alle Inhalte und Aufgaben, die die KA verlangt, stehen auf Papier: Infotexte, fertige Merksätze, die gesicherten Tabellen und Aufgaben im KA-Format mit Musterlösung. ' + je('', 'Die Handy-Übungen sind nur der Weg dorthin (Rückenmark-Check, Frühdienst mit Ampel, Wo ist was?, Lesetext) oder Zusatz für Schnelle („Schon fertig?“, Atemweg-Check, Simulation). ') + '**Punkte stehen nur in der Lehrerversion:** Auf dem Arbeitsblatt sollen die SuS nicht erkennen, welche Aufgaben KA-Muster sind (KA-Aufgaben und andere Aufgaben stehen gemischt in derselben Tabelle). Deshalb bei der Musterlösung keine Punkte nennen.'));
   const spKA = [{ text: 'KA KB 1', w: 2300 }, { text: 'Erwartung laut Erwartungshorizont', w: 4200 }, { text: 'Vermittelt auf Papier', w: 4000 }, { text: 'Schriftlich geübt (KA-Format)', w: 0 }];
   spKA[3].w = B.breite - spKA.slice(0, 3).reduce((x, y) => x + y.w, 0);
   push(B.tabelle(spKA, [
     ['**5.3** (2 P.) Begründen, warum nicht bewegen + eine Maßnahme', 'Hinweise (Sturz aus der Höhe, Nackenschmerz, Kribbeln) → HWS/Rückenmark; Bewegung kann das Rückenmark weiter schädigen → Querschnittlähmung, bei hoher Läsion Atemstörung · Kopf mit beiden Händen in der vorgefundenen Lage halten, bitten, sich nicht zu bewegen, nicht aufsetzen; Lagewechsel nur wenn unvermeidbar, dann achsengerecht mit mehreren', 'Blatt 1: AA1 (Hinweise im Fall), Infotext (instabil, Querschnittlähmung), Höhen-Tabelle (HWS sehr hoch → Atmung), **Merksatz** (alle Elemente), AA3 Übung auf dem Boden oder auf Isomatten (ohne Handy)', 'Blatt 1, **AA4** (fast wortgleich, anderer Fall)'],
     ['**4.1** (2 P.) leichte und schwere Atemwegsverlegung anhand der Situation unterscheiden', 'leicht: kräftig und wirksam husten, sprechen und atmen (Beginn) · schwer: Husten schwach und unwirksam, kann nicht sprechen, kaum atmen, Griff an den Hals, Zyanose (jetzt) – je Form mit Fallbezug', 'Blatt 3: Leitfall Frau Maler, AA2 (**Lesetext** mit allen Merkmalen → Tabelle leicht/schwer)' + je('', '; Simulation als Zusatz für Schnelle'), 'Blatt 3, **3.1** (gleicher Operator, Fall mit beiden Phasen wie in der KA), Leitfrage; 3.3 für Schnelle'],
     ['**5.5** (1 P.) Befund beim neurogenen Schock', 'Bradykardie bzw. fehlende Tachykardie; warme, trockene Haut unterhalb der Verletzung', 'Blatt 1: Infotext (neurogener Schock); Woche 2 (Vergleichstabelle)', 'Blatt 2, **2.4**'],
-    ['**5.4** (3 P., Wiederholung aus Woche 1) Kompensation, fast normaler Blutdruck', 'Barorezeptoren, Sympathikus, Zentralisation, RAAS/ADH; Blutdruck fällt spät; Schockindex', je('Blatt 2: AA1 (ankreuzen, Kurve), ', 'Blatt 2: Live-Verlauf, Kurve, ') + '**Merksatz** (Puls steigt, Abstand kleiner, gleichen lange aus, Blutdruck fällt spät)', 'Blatt 2, **2.1** (Befunde mit Vorwerten), **2.2**, 2.3']
+    ['**5.4** (3 P., Wiederholung aus Woche 1) Kompensation, fast normaler Blutdruck', 'Barorezeptoren, Sympathikus, Zentralisation, RAAS/ADH; Blutdruck fällt spät; Schockindex', je('Blatt 2: AA1 (ankreuzen, Kurve), ', 'Blatt 2: Frühdienst mit Ampel (Handy), Kurve, ') + '**Merksatz** (Puls steigt, Abstand kleiner, gleichen lange aus, Blutdruck fällt spät)', 'Blatt 2, **2.1** (Befunde mit Vorwerten), **2.2**, 2.3']
   ], { schrift: 17 }));
   push(p('Nicht in Woche 4 (laut Planung Woche 5): **KA 4.2** (Vorgehen nach ERC/GRC 2025: Rückenschläge, Oberbauchkompressionen, Bewusstlosigkeit, ärztliche Kontrolle) und **4.3** (Aspirationsprophylaxe). Diese 6 Punkte müssen in Woche 5 sicher vorkommen – bitte mit K. Lohner abstimmen.'));
-  push(B.zwischen('Methodenwechsel 1: Praxisübung'));
+  push(B.zwischen(je('Methodenwechsel 1: Praxisübung', 'Praxisübung (Blatt 1, AA3)')));
   push(p('Sicherheit: langsam, ohne Kraft, nicht ruckartig. Wer Nacken- oder Rückenbeschwerden hat, liegt nicht. Die liegende Person bleibt locker. Der Kopf wird seitlich mit beiden Händen gehalten (nicht am Hals ziehen, nicht anheben). Es gibt keine Rolle „HWS-Orthese anlegen“ – das ist nach den Erste-Hilfe-Leitlinien nicht Aufgabe von Ersthelfenden und wird in der KA nicht erwartet.'));
-  push(B.zwischen(je('Blatt 2, AA1: Frühdienst mit Ampel (ankreuzen)', 'Methodenwechsel 2: Live-Verlauf am Smartphone')));
-  push(p(je('Einzelarbeit ohne Spiel: Die SuS lesen fünf Messungen (Herr Kurz um 05:50 Uhr direkt nach dem Gehen und um 07:10 Uhr in Ruhe, Finn um 06:00, 07:00 und 07:20 Uhr), kreuzen je eine Ampel an und tragen Finns Werte in die Kurve ein. Die Reihenfolge ist bewusst keine Treppe (🟡 – 🟢 – 🟡 – 🟢 – 🔴): Herr Kurz steht am Anfang, und direkt vor Finns Notfall ist noch einmal „weiter wie geplant“ richtig. Jana fehlt bewusst – sie kommt in Aufgabe 2.3. Der Schockindex muss nicht gerechnet werden (Vorwissen Woche 1); er kommt nur in der Besprechung vor („Finn ist bei 0,9 schon ein Notfall“). **08:00-Kasten (auf dem Blatt):** Die Werte ohne Alarm vervollständigen die Kurve. Im Gespräch ergänzen: „' + V.aufloesung.text + '“', 'w4/verlauf.html (QR-Code auf Blatt 2): 40 Sekunden je Karte, Zeit abgelaufen = 🟢; sofortige Rückmeldung, am Ende Gewonnen/Nicht gewonnen und Finns Kurve. Danach die Karten kurz im Plenum besprechen (w4/lehrer.html → „Messkarten groß“, Taste L = Lösung).')));
+  push(B.zwischen(je('Blatt 2, AA1: Frühdienst mit Ampel (ankreuzen)', 'Blatt 2, AA1: Frühdienst mit Ampel am Handy')));
+  push(p(je('Einzelarbeit ohne Spiel: Die SuS lesen fünf Messungen (Herr Kurz um 05:50 Uhr direkt nach dem Gehen und um 07:10 Uhr in Ruhe, Finn um 06:00, 07:00 und 07:20 Uhr), kreuzen je eine Ampel an und tragen Finns Werte in die Kurve ein. Die Reihenfolge ist bewusst keine Treppe (🟡 – 🟢 – 🟡 – 🟢 – 🔴): Herr Kurz steht am Anfang, und direkt vor Finns Notfall ist noch einmal „weiter wie geplant“ richtig. Jana fehlt bewusst – sie kommt in Aufgabe 2.3. Der Schockindex muss nicht gerechnet werden (Vorwissen Woche 1); er kommt nur in der Besprechung vor („Finn ist bei 0,9 schon ein Notfall“). **08:00-Kasten (auf dem Blatt):** Die Werte ohne Alarm vervollständigen die Kurve. Im Gespräch ergänzen: „' + V.aufloesung.text + '“', 'w4/verlauf.html (QR-Code auf Blatt 2), allein oder zu zweit: sechs Messkarten nacheinander, ' + V.sekunden + ' Sekunden je Karte, Zeit abgelaufen = 🟢; sofortige Rückmeldung, am Ende Gewonnen/Nicht gewonnen und Finns Kurve. Auf dem Blatt tragen die SuS Finns Werte und die 08:00-Werte in die Kurve ein. Danach die Karten kurz im Plenum besprechen (w4/lehrer.html → „Messkarten groß“, Taste L = Lösung).')));
   if (DIGITAL()) push(p('**Wertung:** genau richtig = 1 Punkt. 🔴 ohne Notfall = **Fehlalarm**. Eine Stufe zu vorsichtig (🟡 statt 🟢) = kein Punkt, aber kein Fehlalarm. **Gewonnen:** Karte 6 = 🔴 **und** höchstens 1 Fehlalarm. Wer immer 🔴 wählt, hat 5 Fehlalarme; wer nie 🔴 wählt, übersieht Finn – beide verlieren.'));
   const spK = [{ text: je('Zeit', 'Karte'), w: 700 }, { text: 'Person, Werte', w: 4000 }, { text: 'SI', w: 650 }, { text: 'richtig', w: 1300 }, { text: 'Begründung und typischer Fehler', w: 0 }];
   spK[4].w = B.breite - spK.slice(0, 4).reduce((s, x) => s + x.w, 0);
@@ -469,17 +499,17 @@ function hinweise(B) {
   if (DIGITAL()) push(B.zwischen('Für die Schnellen am Handy: Notfall-Ampel im Speisesaal (Simulation)'));
   if (DIGITAL()) push(p('Zusatz ganz unten auf Blatt 3, nur für Schnelle – nicht nötig für die KA. w4/speisesaal.html: 6 Szenen, die ersten drei fest (Frau Maler wie im Leitfall, Herr Roth leicht, Herr Roth schwer), die letzten drei gemischt (Frau Brückner: leicht, ruft „Ich ersticke!“ – Falle für Fehlalarm; Herr Vogt: stille, schwere Verlegung mit noch rosigen Lippen – Falle „abwarten“; Frau Lenz: schwacher Husten, Pfeifen – Falle „sie hustet doch“). **Schwere Verlegung:** Nach 6 s Lesezeit sinkt die SpO₂ um 1,5 % pro Sekunde, jede falsche Wahl kostet 10 %; unter 60 % wird die Person bewusstlos (Szene verloren). **Leichte Verlegung:** kein Abfall; Notruf = Fehlalarm. 2 Punkte beim ersten, 1 Punkt beim zweiten Versuch. **Bestanden:** niemand bewusstlos und höchstens 1 Fehlalarm.'));
   push(p('Leitlinien: Nach ERC/GRC 2025 bei leichter Verlegung zum Husten auffordern und beobachten. Den Ablauf bei schwerer Verlegung (Rückenschläge, Oberbauchkompressionen, Bewusstlosigkeit → Reanimation, ärztliche Kontrolle) behandelt laut Planung **Woche 5** (Phantomtraining). Deshalb heißt es bei schwerer Verlegung in Woche 4 (Tabelle in AA2, 3.1) nur „sofort laut Hilfe rufen, Notruf veranlassen, nicht allein lassen“.' + je('', ' In der Simulation erscheint „auf den Rücken klopfen“ nur in leichten Szenen als falsche Wahl (stört den wirksamen Husten) – nie in schweren, damit nichts den Leitlinien widerspricht.')));
-  if (DIGITAL()) push(B.zwischen('Freiwillige Lehreransicht: Fortschritt ohne Raumcode (eigener Worker, ohne Woche 2)'));
-  if (DIGITAL()) push(p('w4/lehrer.html → „Fortschritt (letzte 45 Minuten)“: **ohne Raumcode und ohne Namen.** Für jede Handy-Übung zeigt die Seite einen Balken pro Handy, das die Übung in den letzten 45 Minuten geöffnet hat (gelb = Schritt x von n, grün = fertig), dazu „✓ x fertig · y in Arbeit“. Sie aktualisiert sich alle 10 Sekunden; „Messkarten groß“ hilft bei der Besprechung von Blatt 2. **Datenschutz:** Die Handys senden nur eine zufällige Geräte-ID, die Übung, den Schritt und „fertig“ – keine Namen, keine Antworten. Die Geräte-ID wird nie angezeigt; 60 Minuten nach der letzten Meldung löscht der Worker den Eintrag. Ohne Internet oder ohne eingerichteten Worker laufen die Übungen ganz normal. **Hinweis:** Gezählt werden alle Handys, die die Adresse in dieser Zeit genutzt haben – arbeitet gleichzeitig eine andere Klasse damit, erscheint sie mit. Probeansicht: lehrer.html?demo=1.'));
+  if (DIGITAL()) push(B.zwischen('Freiwillige Lehreransicht: Wer ist wie weit?'));
+  if (DIGITAL()) push(p('w4/lehrer.html → „Fortschritt (letzte 45 Minuten)“: **anonym, ohne Namen.** Für jede Handy-Übung zeigt die Seite einen Balken pro Handy, das die Übung in den letzten 45 Minuten geöffnet hat (gelb = Schritt x von n, grün = fertig), dazu „✓ x fertig · y in Arbeit“. Sie aktualisiert sich alle 10 Sekunden; „Messkarten groß“ hilft bei der Besprechung von Blatt 2. **Datenschutz:** Die Handys senden nur eine zufällige Geräte-ID, die Übung, den Schritt und „fertig“ – keine Namen, keine Antworten. Die Geräte-ID wird nie angezeigt; 60 Minuten nach der letzten Meldung löscht der Worker den Eintrag. Ohne Internet oder ohne eingerichteten Worker laufen die Übungen ganz normal. **Hinweis:** Gezählt werden alle Handys, die die Adresse in dieser Zeit genutzt haben – arbeitet gleichzeitig eine andere Klasse damit, erscheint sie mit. Probeansicht: lehrer.html?demo=1.'));
   push(B.zwischen('Fachliche Hinweise'));
   push(p('**Wirbelsäule:** Ersthelfende minimieren Bewegung und halten den Kopf manuell in der vorgefundenen Lage; keine Zervikalstütze durch Laien (ERC-Leitlinien Erste Hilfe). Lagewechsel nur, wenn unvermeidbar (Erbrechen, Atemwege, Gefahr am Ort), dann achsengerecht. Bei älteren Menschen reicht oft ein Sturz aus geringer Höhe; inkomplette Halsmarkverletzungen betreffen häufig die Arme stärker als die Beine – das passt zu Herrn Pfeiffer (Hände betroffen, Beine beweglich). Läsionshöhe vereinfacht: C3–C5 Zwerchfell, C5–Th1 Arme und Hände; Tetraplegie bei HWS, Paraplegie bei BWS/LWS; neurogener Schock vor allem bei Verletzungen oberhalb von etwa Th6.'));
   push(p('**Innere Blutung:** zweizeitige Milzruptur (Stunden bis Tage nach dem Trauma); Schmerz in der linken Schulter (Kehr-Zeichen) durch Zwerchfellreizung; junge Menschen kompensieren bis etwa 30 % Blutverlust ohne deutlichen Blutdruckabfall (vgl. EH KA 5.4); kleiner werdende Blutdruckamplitude; Schockindex normal ca. 0,5, über 1 spricht für Schock – Finn ist bei 0,9 schon ein Notfall. Polytrauma und Notaufnahme nur als Querverweis.'));
   push(p('**Atemwege:** Der rechte Hauptbronchus ist kürzer, weiter und steiler. Hypoxie: Bewusstlosigkeit und Kreislaufstillstand innerhalb weniger Minuten; Gehirnzellen können nach etwa 3–5 Minuten ohne Sauerstoff bleibend geschädigt werden.' + je('', ' Die SpO₂ in der Simulation ist bewusst als „nur in der Simulation“ gekennzeichnet.')));
   push(B.zwischen('Bezug zur Klassenarbeit und zum Examen (nur für Lehrkräfte)'));
-  push(p('**KA KB 1, Aufg. 5.3** („Begründen Sie, warum Herr Brenner möglichst nicht bewegt werden soll, und beschreiben Sie eine Maßnahme dazu.“) → Blatt 1, AA1 (Hinweise im Fall), AA3 (Maßnahme erlebt), **AA4** (fast wortgleich, anderer Fall: Herr Pfeiffer). **KA 4.1** („Unterscheiden Sie anhand der Situation eine leichte von einer schweren Atemwegsverlegung.“) → Blatt 3, AA2 (Lesetext, Tabelle leicht/schwer), **AA3 3.1** (gleicher Operator, Fall mit beiden Phasen). **KA 5.5** → Blatt 2, 2.4 und Infotext Blatt 1. **KA 5.4** (Kompensation, fast normaler Blutdruck) → Blatt 2 (' + je('AA1', 'Live-Verlauf') + ', 2.1, 2.2) als Wiederholung. KA 4.2/4.3 (Vorgehen nach ERC, Prophylaxe) sind laut Planung Woche 5. Der KA-Fall (Herr Brenner, Frau Sommer) wird nicht vorweggenommen.'));
+  push(p('**KA KB 1, Aufg. 5.3** („Begründen Sie, warum Herr Brenner möglichst nicht bewegt werden soll, und beschreiben Sie eine Maßnahme dazu.“) → Blatt 1, AA1 (Hinweise im Fall), AA3 (Maßnahme erlebt), **AA4** (fast wortgleich, anderer Fall: Herr Pfeiffer). **KA 4.1** („Unterscheiden Sie anhand der Situation eine leichte von einer schweren Atemwegsverlegung.“) → Blatt 3, AA2 (Lesetext, Tabelle leicht/schwer), **AA3 3.1** (gleicher Operator, Fall mit beiden Phasen). **KA 5.5** → Blatt 2, 2.4 und Infotext Blatt 1. **KA 5.4** (Kompensation, fast normaler Blutdruck) → Blatt 2 (' + je('AA1', 'Frühdienst mit Ampel, Kurve') + ', 2.1, 2.2) als Wiederholung. KA 4.2/4.3 (Vorgehen nach ERC, Prophylaxe) sind laut Planung Woche 5. Der KA-Fall (Herr Brenner, Frau Sommer) wird nicht vorweggenommen.'));
   push(p('**Examensvorbilder** (BW, Ordner „Pflegeexamen KBS“; ein direktes Original zu den drei Themen gibt es nicht – genutzt wurden Format und Operatoren): Mai 2024 Tag 3, Aufg. 8.1/8.2 (Notfall erläutern 4 P. + sechs Sofortmaßnahmen stichwortartig 6 P.; EH: „… sich nicht unnötig bewegt“) · Mai 2024 Tag 2, Aufg. 1.1 und 3.2 (Marlene Hofer, LWK-Fraktur; „keine Drehbewegungen“, Bedarf 3 P. + Begründung 3 P.) · Juli 2024 Tag 1, Aufg. 2.2 (Th10-Läsion, Kontext Querschnitt) · Mai 2026 Tag 1, Aufg. 1.3–1.5 (Nachblutung, „hämorrhagischer Schock“, Vitalzeichen) · Jan 2026 Tag 2, Aufg. 1.4/1.5 („Blutdruckabfall oder Pulserhöhung rechtzeitig erkannt“) · Mai 2023 Tag 3, Aufg. 4.2 („Nennen Sie vier in der Fallsituation beschriebene Symptome, die auf eine akute Atemstörung hinweisen“, 0,5 P. je Symptom). Fallsituationen mit Zeilennummern und Rahmensätze wie im Formmuster.'));
   push(B.zwischen('Ich-kann-Liste (wird nicht ausgeteilt)'));
-  push(p('**Woche 4 Nr. 1** (Hinweise, Bewegungsminimierung, Maßnahmen) → Blatt 1 AA1, AA3, AA4 · **Nr. 2** (Läsionshöhe, neurogener Schock) → Blatt 1 Infotext, AA2 (mit Herrn Pfeiffers Höhe); Blatt 2, 2.4 · **Nr. 3** (innere Blutung, verzögert, Verlauf; Beispiel 17-Jähriger) → Blatt 2 (Merksatz mit allen Zeichen der Ich-kann-Liste, u. a. Abwehrspannung und zunehmender Bauchumfang) · **Fremdkörperaspiration Nr. 1** (Hypoxie, rechter Hauptbronchus) → Blatt 3 AA1 (Lückentext), Merksatz, **3.2** · **Nr. 2** (leicht/schwer, Frau Maler) → Blatt 3 AA2 (Lesetext, Tabelle), 3.1, Leitfrage; 3.3 für Schnelle. Nr. 3–5 (Vorgehen ERC, Prophylaxe, Ingestion) → Woche 5.'));
+  push(p('**Woche 4 Nr. 1** (Hinweise, Bewegungsminimierung, Maßnahmen) → Blatt 1 AA1, AA3, AA4 · **Nr. 2** (Läsionshöhe, neurogener Schock) → Blatt 1 Infotext, AA2 (' + je('mit Herrn Pfeiffers Höhe', 'Rückenmark-Check, Höhen-Tabelle; Herrn Pfeiffers Höhe mündlich') + '); Blatt 2, 2.4 · **Nr. 3** (innere Blutung, verzögert, Verlauf; Beispiel 17-Jähriger) → Blatt 2 (Merksatz mit allen Zeichen der Ich-kann-Liste, u. a. Abwehrspannung und zunehmender Bauchumfang) · **Fremdkörperaspiration Nr. 1** (Hypoxie, rechter Hauptbronchus) → Blatt 3 AA1 (Lückentext), Merksatz, **3.2** · **Nr. 2** (leicht/schwer, Frau Maler) → Blatt 3 AA2 (Lesetext, Tabelle), 3.1, Leitfrage; 3.3 für Schnelle. Nr. 3–5 (Vorgehen ERC, Prophylaxe, Ingestion) → Woche 5.'));
   push(B.zwischen('Nicht enthalten'));
   push(p('Vorgehen bei schwerer Atemwegsverlegung (Rückenschläge, Oberbauchkompressionen), Kinder und Säuglinge, Phantomtraining, Dysphagie-Prävention, Ingestion → Woche 5 · Reanimation, ABCDE, Notaufnahme/Polytrauma → KB III bzw. nur Querverweis · psychologische Erste Hilfe → KB II · Notruf absetzen, SBAR → Deutsch.'));
   push(B.zwischen('Quellen'));
@@ -516,23 +546,23 @@ async function main() {
   for (const modus of ['analog', 'digital']) {
     MODUS = modus;
     const name = `${NAME}_${modus}`;
-    const fassung = modus === 'analog' ? 'analoge Fassung' : 'digitale Fassung';
+    const fassung = modus === 'analog' ? ' (analoge Fassung)' : '';
     const SV = bausteine({ lsg: false, breite: BREITE_HOCH });
-    await speichern(new Document({ creator: 'KB I · 3BFP2', title: `KB1 W4 Wirbelsäule, innere Blutung, Atemwege – Schülerversion (${fassung})`, styles: STILE, sections: [sektionHoch(alleBlaetter(SV))] }), name + '_SV.docx');
+    await speichern(new Document({ creator: 'KB I · 3BFP2', title: `KB1 W4 Wirbelsäule, innere Blutung, Atemwege – Schülerversion${fassung}`, styles: STILE, sections: [sektionHoch(alleBlaetter(SV))] }), name + '_SV.docx');
     MARKIERT = true;
     const SVM = bausteine({ lsg: false, breite: BREITE_HOCH });
-    await speichern(new Document({ creator: 'KB I · 3BFP2', title: `KB1 W4 – Schülerversion (${fassung}), Ansichtsexemplar mit Markierungen`, styles: STILE, sections: [sektionHoch(alleBlaetter(SVM), T.FUSS + ' · Ansichtsexemplar mit Markierungen')] }), name + '_SV_markiert.docx');
+    await speichern(new Document({ creator: 'KB I · 3BFP2', title: `KB1 W4 – Schülerversion${fassung}, Ansichtsexemplar mit Markierungen`, styles: STILE, sections: [sektionHoch(alleBlaetter(SVM), T.FUSS + ' · Ansichtsexemplar mit Markierungen')] }), name + '_SV_markiert.docx');
     MARKIERT = false;
     const LQ = bausteine({ lsg: true, breite: BREITE_QUER });
     const LH = bausteine({ lsg: true, breite: BREITE_HOCH });
     const sektionen = [
-      { properties: { page: SEITE_QUER }, headers: { default: kopf(BREITE_QUER, { thema: T.THEMA }) }, footers: { default: fuss(T.FUSS + ' · Lehrerversion (' + fassung + ')') }, children: trenne([...verlaufsplan(LQ), ...hinweise(LQ)]) },
-      sektionHoch([B_LSG_TITEL(LH), ...alleBlaetter(LH)], T.FUSS + ' · Lehrerversion (' + fassung + ')')
+      { properties: { page: SEITE_QUER }, headers: { default: kopf(BREITE_QUER, { thema: T.THEMA }) }, footers: { default: fuss(T.FUSS + ' · Lehrerversion' + je(' (analoge Fassung)', '')) }, children: trenne([...verlaufsplan(LQ), ...hinweise(LQ)]) },
+      sektionHoch([B_LSG_TITEL(LH), ...alleBlaetter(LH)], T.FUSS + ' · Lehrerversion' + je(' (analoge Fassung)', ''))
     ];
-    await speichern(new Document({ creator: 'KB I · 3BFP2', title: `KB1 W4 Wirbelsäule, innere Blutung, Atemwege – Lehrerversion mit Lösungen (${fassung})`, styles: STILE, sections: sektionen }), name + '_LV_LSG.docx');
+    await speichern(new Document({ creator: 'KB I · 3BFP2', title: `KB1 W4 Wirbelsäule, innere Blutung, Atemwege – Lehrerversion mit Lösungen${fassung}`, styles: STILE, sections: sektionen }), name + '_LV_LSG.docx');
   }
 }
-const B_LSG_TITEL = (B) => new Paragraph({ spacing: { after: 120 }, children: [B.b('Lösungen und Zeitangaben zu den drei Arbeitsblättern (' + je('analoge', 'digitale') + ' Fassung) ', { size: 24 }), B.loes('[LSG]', { bold: true, size: 24 })] });
+const B_LSG_TITEL = (B) => new Paragraph({ spacing: { after: 120 }, children: [B.b('Lösungen und Zeitangaben zu den drei Arbeitsblättern' + je(' (analoge Fassung)', '') + ' ', { size: 24 }), B.loes('[LSG]', { bold: true, size: 24 })] });
 
 if (require.main === module) main().catch((e) => { console.error(e); process.exit(1); });
 module.exports = { umbrechen };

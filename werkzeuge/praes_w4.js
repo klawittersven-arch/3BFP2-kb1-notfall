@@ -231,7 +231,7 @@ async function praes2() {
     s.addText(T.B2.kopf, { placeholder: 'title' });
     s.addText('Was wir aus Blatt 1 mitnehmen – und was jetzt kommt', { placeholder: 'unter' });
     await fahrplan(s, 2);
-    s.addNotes('Gelenkstelle (45–48 min). Notfall 1 ist geschafft (grüner Haken). Kurz zurückblicken, dann zu Notfall 2 überleiten.');
+    s.addNotes('Gelenkstelle (45–50 min). Notfall 1 ist geschafft (grüner Haken). Kurz zurückblicken, dann zu Notfall 2 überleiten.');
 
     s = pres.addSlide({ masterName: 'W4 Inhalt', sectionTitle: 'Rückblick' });
     s.addText('Das nehmen wir aus Blatt 1 mit', { placeholder: 'title' });
@@ -270,7 +270,7 @@ async function praes2() {
       const [k, farbe, ic] = amp[i], teile = A[k].lang.split(' – ');
       await karte(s, { x: 0.6 + i * (w3 + 0.3), y: 2.85, w: w3, hh: 3.65, iconName: ic, kreis: farbe, kopf: teile[0], text: (teile[1] || '').replace('Pflegefachkraft', 'Pflegefachkraft (PFK)'), name: 'Ampel ' + k });
     }
-    s.addNotes('Die Ampel erklären – sie ist die Entscheidung bei jeder Messkarte im Live-Verlauf. Wichtig: Zu früh melden (Fehlalarm) und zu spät melden sind beide Fehler.');
+    s.addNotes('Die Ampel erklären – sie ist die Entscheidung bei jeder Messkarte am Handy (Frühdienst mit Ampel). Wichtig: Zu früh melden (Fehlalarm) und zu spät melden sind beide Fehler.');
 
     s = pres.addSlide({ masterName: 'W4 Inhalt', sectionTitle: 'Fahrplan Blatt 2' });
     s.addText('So geht es auf Blatt 2', { placeholder: 'title' });
@@ -282,7 +282,7 @@ async function praes2() {
     s.addImage({ path: BILD('w4_kurve_leer.png'), x: 9.1, y: 2.3, w: 3.65, h: 2.48, altText: 'Leere Kurve für Finn', objectName: 'Bild Kurve' });
     s.addText('Finns Kurve auf dem Blatt', { x: 9.1, y: 4.9, w: 3.65, h: 0.5, fontSize: 15, align: 'center', color: HEX.grau, margin: 0, isTextBox: true, objectName: 'Bildunterschrift' });
     s.addText('Schnell fertig? „Schon fertig?“ unten auf Blatt 2: Trend-Detektiv am Handy.', { x: 9.1, y: 5.45, w: 3.65, h: 1.0, fontSize: 15, align: 'center', color: HEX.grau, margin: 0, isTextBox: true, objectName: 'Schon fertig' });
-    s.addNotes('Live-Verlauf am Handy (ca. 8 min, 40 s je Karte), danach dieselben Karten im Plenum besprechen (w4/lehrer.html → „Messkarten groß“). Sicherung: Finns Kurve – Puls und oberer Blutdruckwert laufen wie eine Schere aufeinander zu. Dann AA2 (10 min).');
+    s.addNotes('Frühdienst mit Ampel am Handy, allein oder zu zweit (ca. 8 min, 40 s je Karte), danach im Plenum besprechen (ca. 5 min; w4/lehrer.html → „Messkarten groß“). Sicherung: Finns Kurve – Puls und oberer Blutdruckwert laufen wie eine Schere aufeinander zu. Dann AA2 (10 min).');
   });
 }
 

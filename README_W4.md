@@ -3,8 +3,9 @@
 Eigene Dateien für Woche 4 – **Woche 1 und 2 bleiben unverändert** (keine Änderung an `docs/*.html`, `docs/sw.js`,
 `docs/gemeinsam.js`, `worker/`, `wrangler.jsonc`, `werkzeuge/ab_w2*.js`, `werkzeuge/ab_bausteine.js`, `analog/`).
 
-**Die Stunde funktioniert vollständig auf Papier.** Die Handy-Übungen starten die SuS selbst über die QR-Codes auf dem
-Arbeitsblatt – ohne Beamer, ohne Anmeldung. Eine Lehreransicht ist freiwillig.
+**Eingesetzt wird die digitale Fassung.** Die Handy-Übungen starten die SuS selbst über die QR-Codes auf dem
+Arbeitsblatt – ohne Anmeldung. Für den Einstieg und die zwei Gelenkstellen gibt es drei kurze Präsentationen (Beamer).
+Eine Lehreransicht ist freiwillig. Die analoge Fassung wird weiter erzeugt, aber nicht eingesetzt (nicht korrekturgelesen).
 
 ## Arbeitsblätter
 
@@ -14,12 +15,12 @@ Es gibt **zwei Fassungen** mit denselben Aufgaben im KA-Format – die Lehrkraft
 |---|---|
 | `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_analog_SV.docx/.pdf` | **Analog**, ganz ohne Smartphone: Blatt 2 als Ankreuz-Aufgabe (fünf Messungen, Finns Kurve), Blatt 3 mit Lesetext „Wenn etwas im Hals stecken bleibt“ auf dem Blatt; „Schon fertig?“ bzw. „Für die Schnellen“ als Zusatzaufgaben (Antworten auf ein Extrablatt). 3 Blätter, **7 Seiten** (Blatt 3: S. 5–7) |
 | `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_analog_LV_LSG.docx/.pdf` | Lehrerversion analog: Verlaufsplan (135 min), Hinweise, Klausur- und Examensbezug, Lösungen (gelb) (Punkte stehen nur hier, nicht auf dem Arbeitsblatt) |
-| `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_digital_SV.docx/.pdf` | **Digital**: Live-Verlauf am Smartphone; Blatt 3: „Wo ist was?“ am Handy (Teile antippen) liefert die Wörter für den Infotext als Lückentext, Lesetext per QR-Code (mit Bildern); „Schon fertig?“ mit QR-Code, unten auf Blatt 3 „Für die Schnellen“ (3.3, Atemweg-Check, Simulation); keine analogen Alternativen auf dem Blatt. 6 Seiten |
-| `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_digital_LV_LSG.docx/.pdf` | Lehrerversion digital: Verlaufsplan, Hinweise (u. a. freiwillige Lehreransicht ohne Raumcode), Lösungen |
+| `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_digital_SV.docx/.pdf` | **Digital** (eingesetzt): Blatt 2 „Frühdienst mit Ampel“ am Handy; Blatt 3: „Wo ist was?“ am Handy (Teile antippen) liefert die Wörter für den Infotext als Lückentext, Lesetext per QR-Code (mit Bildern); „Schon fertig?“ mit QR-Code, unten auf Blatt 3 „Für die Schnellen“ (3.3, Atemweg-Check, Simulation); keine analogen Alternativen auf dem Blatt. 6 Seiten |
+| `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_digital_LV_LSG.docx/.pdf` | Lehrerversion digital: Verlaufsplan (mit den drei Präsentationen), Hinweise (u. a. freiwillige Lehreransicht), Lösungen – Aufgabe und Musterlösung stehen immer auf derselben Seite |
 | `arbeitsblatt/KB1_W4_Wirbelsaeule_Blutung_{analog,digital}_SV_markiert.docx/.pdf` | **Ansichtsexemplar für die Lehrkraft (nicht austeilen):** Schülerversion mit Textmarker – **gelb** = direkt klausurrelevant, **pink** = könnte gestrichen werden, ohne Markierung = unterstützend. Zuordnung in `werkzeuge/ab_w4.js` (`MARKE`) |
 
 - **Blatt 1 – Wirbelsäulenverletzung: nicht bewegen – aber richtig** · Methodenwechsel: Übung „Kopf halten und achsengerecht drehen“ (Vierergruppen, auf dem Boden oder auf Isomatten) → AA4 (Muster KA 5.3) · AA2: analog Fälle A–C zuordnen, digital Rückenmark-Check am Handy (`w4/rueckenmark.html`) mit der Höhen-Tabelle als Hilfe auf dem Blatt
-- **Blatt 2 – Innere Blutung: den Verlauf im Blick** · AA1 „Frühdienst mit Ampel“ – analog als Ankreuz-Aufgabe in Einzelarbeit (fünf Messungen in gemischter Dringlichkeit, dann Finns Kurve), digital als Live-Verlauf am Handy (`w4/verlauf.html`) → AA2
+- **Blatt 2 – Innere Blutung: den Verlauf im Blick** · AA1 „Frühdienst mit Ampel“ – analog als Ankreuz-Aufgabe in Einzelarbeit (fünf Messungen in gemischter Dringlichkeit, dann Finns Kurve), digital am Handy, allein oder zu zweit (`w4/verlauf.html`) → AA2
 - **Blatt 3 – Atemwege: wenn etwas im Hals stecken bleibt** · AA1: analog Bild beschriften (Wortspeicher); digital „Wo ist was?“ am Handy (`w4/anatomie.html`) → die Lösungswörter kommen in den Infotext als Lückentext · AA2 „leicht oder schwer?“: Informationen aus einem längeren Lesetext (nicht in Tabellenreihenfolge, mit Ablenkern) in die Tabelle – analog auf dem Blatt, digital am Handy (`w4/verlegung.html`); kein Merksatz dazu (sonst würde nur abgeschrieben) → AA3: 3.1 (Muster KA 4.1) mit viel Schreibraum und 3.2 (Folgen der Hypoxie erklären, Ich-kann-Liste Fremdkörperaspiration Nr. 1) · „Für die Schnellen“: 3.3 (analog dazu 3.4) auf ein Extrablatt, digital zusätzlich Atemweg-Check und Simulation „Notfall-Ampel im Speisesaal“
 
 ## Präsentationen (vor jedem Blatt)
@@ -36,13 +37,13 @@ Wiederkehrendes Element ist der Fahrplan mit den drei Notfällen (erledigt = gr�
 
 | Adresse | wofür |
 |---|---|
-| …/3BFP2-kb1-notfall/w4/verlauf.html | Blatt 2: Live-Verlauf am Handy (Gewinnen: Finn rechtzeitig gemeldet, höchstens 1 Fehlalarm) |
+| …/3BFP2-kb1-notfall/w4/verlauf.html | Blatt 2: Frühdienst mit Ampel am Handy (Gewinnen: Finn rechtzeitig gemeldet, höchstens 1 Fehlalarm) |
 | …/w4/anatomie.html | Blatt 3, AA1 (digital): „Wo ist was?“ – Teile der Atemwege antippen, je Frage 3 Sekunden (`sekunden` in `docs/w4/inhalte.js`); Fehler oder Zeit abgelaufen → von vorn; alles richtig → Wörter für den Lückentext |
 | …/w4/verlegung.html | Blatt 3, AA2: Lesetext „Wenn etwas im Hals stecken bleibt“ mit drei Bildern (digitale Fassung) |
 | …/w4/speisesaal.html | Blatt 3, „Für die Schnellen“: Simulation (Bestanden: niemand bewusstlos, höchstens 1 Fehlalarm) |
 | …/w4/rueckenmark.html | Blatt 1, AA2 (digital): Rückenmark-Check – acht kurze Fälle |
 | …/w4/trend.html · atemweg.html | „Schon fertig?“ am Ende von Blatt 2, Atemweg-Check bei „Für die Schnellen“ auf Blatt 3 |
-| …/w4/lehrer.html | Lehreransicht (freiwillig): **Fortschritt der letzten 45 Minuten – ohne Raumcode, ohne Namen** (je Übung ein Balken pro Handy, grün = fertig); „Messkarten groß“ für die Besprechung (ohne Server) |
+| …/w4/lehrer.html | Lehreransicht (freiwillig): **Fortschritt der letzten 45 Minuten – anonym, ohne Namen** (je Übung ein Balken pro Handy, grün = fertig); „Messkarten groß“ für die Besprechung (ohne Server) |
 | …/w4/lehrer.html?demo=1 | Probeansicht mit erfundenen Gruppen (ohne Internet) |
 
 Alle Seiten der Woche 4 liegen im Unterordner `docs/w4/`. So bleibt `docs/sw.js` (Offline-Speicher der Woche 2)
