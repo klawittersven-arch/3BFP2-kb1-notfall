@@ -54,7 +54,7 @@ const B1 = {
   merksatz: [['Hinweise auf eine Wirbelsäulenverletzung: ', { l: 'Unfallhergang' }, ' (Sturz aus der Höhe, Kopfsprung, Verkehrsunfall), ', { l: 'Schmerzen in Nacken oder Rücken' }, ', ', { l: 'Kribbeln, Taubheit, Lähmung' }, '. Dann: ', { l: 'nicht bewegen' }, ', Person bitten, still zu liegen, ', { l: 'Kopf mit beiden Händen in der vorgefundenen Lage halten' }, ', nicht aufsetzen – sonst droht eine ', { l: 'Querschnittlähmung' }, ' (bei sehr hoher Verletzung auch Atemlähmung). Drehen nur, wenn es sein muss (z. B. Erbrechen): ', { l: 'achsengerecht mit mehreren Helfenden' }, '.']],
   aa3: {
     fortsetzung: 'Herr Pfeiffer sagt: „Mir ist so übel. Ich muss mich übergeben.“ Er muss auf die Seite gedreht werden – sonst kann er ersticken.',
-    text: 'Herr Pfeiffer muss sich übergeben und auf die Seite gedreht werden – sonst kann er ersticken. Üben Sie **vier Runden** auf der Isomatte, dann Rollen tauschen.',
+    text: 'Herr Pfeiffer muss sich übergeben und auf die Seite gedreht werden – sonst kann er ersticken. Üben Sie **vier Runden** auf dem Boden oder auf der Isomatte (falls vorhanden), dann Rollen tauschen.',
     rollen: [
       ['① Patient/in', 'liegt auf dem Rücken, bleibt locker, hilft nicht mit.'],
       ['② Kopf', 'hält den Kopf mit beiden Händen seitlich fest. Kommando: „Auf drei: eins – zwei – drei.“'],
