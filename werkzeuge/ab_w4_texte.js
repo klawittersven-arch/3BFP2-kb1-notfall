@@ -182,7 +182,8 @@ const B3 = {
       'Die Luft strömt durch Nase oder Mund in den **Rachen**. Hier kreuzen sich Luftweg und Speiseweg. Beim Schlucken hebt sich der **Kehlkopf**, der **Kehldeckel** verschließt die **Luftröhre** – die Nahrung rutscht in die Speiseröhre. Gerät doch etwas in den Kehlkopf, muss man kräftig husten (**Hustenreflex**).',
       'Die Luftröhre teilt sich in den **rechten** und den **linken Hauptbronchus**. Der rechte ist kürzer, weiter und verläuft steiler. In den **Lungenbläschen** geht Sauerstoff ins Blut. Das Ein- und Ausatmen heißt **Ventilation**.'
     ],
-    wortspeicher: 'Wortspeicher: Kehldeckel · Kehlkopf · Luftröhre · rechter Hauptbronchus · linker Hauptbronchus · Lungenbläschen',
+    // Reihenfolge bewusst gemischt: kein Begriff steht an der Stelle seiner Nummer im Bild
+    wortspeicher: 'Wortspeicher: Lungenbläschen · linker Hauptbronchus · Kehlkopf · Luftröhre · Kehldeckel · rechter Hauptbronchus',
     begriffe: ['Kehldeckel', 'Kehlkopf', 'Luftröhre', 'rechter Hauptbronchus', 'linker Hauptbronchus', 'Lungenbläschen'],
     frageC: '**c)** Bei Erwachsenen rutschen Fremdkörper häufiger in den rechten Hauptbronchus. Warum?',
     loesungC: 'Der rechte Hauptbronchus ist kürzer, weiter und verläuft steiler – fast in Verlängerung der Luftröhre.',

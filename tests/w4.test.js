@@ -79,6 +79,9 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
   pruefe(S.szenen.every((z) => z.wahl.length === 4 && z.wahl.includes(z.richtig) && z.wahl.every((o) => S.optionen[o] && z.rueckmeldung[o])), 'jede Szene: 4 Antworten mit Rückmeldung, richtige enthalten');
   pruefe(S.szenen.filter((z) => z.schwer).every((z) => !z.wahl.includes('ruecken') && z.richtig === 'hilfe'), 'schwere Verlegung: „auf den Rücken klopfen“ nie als (falsche) Wahl, richtig ist „Hilfe rufen“ (Leitlinien, Woche 5)');
   pruefe(S.szenen.filter((z) => !z.schwer).every((z) => z.richtig === 'husten' && z.wahl.includes('hilfe')), 'leichte Verlegung: „Hilfe rufen“ als Fehlalarm-Falle');
+  const T4 = require('../werkzeuge/ab_w4_texte.js');
+  const speicher = T4.B3.aa1.wortspeicher.replace(/^Wortspeicher: /, '').split(' · ');
+  pruefe(speicher.length === 6 && speicher.every((w) => T4.B3.aa1.begriffe.includes(w)) && speicher.every((w, i) => w !== T4.B3.aa1.begriffe[i]), 'Blatt 3: Wortspeicher enthält alle Begriffe, aber keinen an der Stelle seiner Nummer');
   pruefe(W4.rueckenmark.karten.length === 8 && W4.trend.reihen.length === 5 && W4.atemweg.karten.length === 6, 'Schon fertig?: 8 + 5 + 6 Karten');
 
   console.log('\n== Verbotene Wörter in Texten für die SuS');
