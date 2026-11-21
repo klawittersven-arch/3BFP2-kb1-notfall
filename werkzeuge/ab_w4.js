@@ -123,7 +123,7 @@ function schnelleKasten(B, f, ersetze = (s) => s) {
   if (DIGITAL()) {
     const halb = Math.floor((B.breite - 120) / 2);
     const H = bausteine({ lsg: B.lsg, breite: halb });
-    const box = (seite, text, key) => H.handy(`w4/${seite}.html`, [new Paragraph({ spacing: { after: 0, line: 240 }, children: H.runs(text, mitHl(key, { size: 18 })) })], { linkBasis: T.LINK_BASIS, qrDatei: QR(seite), qrCm: 1.3 });
+    const box = (seite, text, key) => H.handy(`w4/${seite}.html`, [new Paragraph({ spacing: { after: 0, line: 240 }, children: H.runs(text, mitHl(key, { size: 18 })) })], { linkBasis: T.LINK_BASIS, qrDatei: QR(seite), qrCm: 1.15 });
     // zwei Kästen nebeneinander, oben bündig; in Word muss jede Zelle mit einem Absatz enden
     const nb = { top: keinRand, bottom: keinRand, left: keinRand, right: keinRand };
     const zelleOben = (inhalt, w) => new TableCell({ width: { size: w, type: WidthType.DXA }, borders: nb, verticalAlign: VerticalAlign.TOP, children: [inhalt, leer(20)] });
@@ -354,7 +354,7 @@ function blatt3(B) {
   );
   const w1 = 1800, w2 = Math.floor((B.breite - w1) / 2);
   push(B.tabelle([{ text: '', w: w1 }, { text: 'leichte Verlegung', w: w2 }, { text: 'schwere Verlegung', w: B.breite - w1 - w2 }],
-    t.aa2.zeilen.map((z) => [{ text: `**${z[0]}**`, fill: F.LACHS, o: mitHl('b3tab') }, { lsg: z[1] }, { lsg: z[2] }]), { hoehe: je(1250, 980), schrift: 18 }));
+    t.aa2.zeilen.map((z) => [{ text: `**${z[0]}**`, fill: F.LACHS, o: mitHl('b3tab') }, { lsg: z[1] }, { lsg: z[2] }]), { hoehe: je(1250, 860), schrift: 18 }));
   if (B.lsg) push(B.lp(t.aa2.ergaenzung, { spacing: { before: 40, after: 20 } }));
   // AA3 im KA-Format: nur 3.1 (mit viel Schreibraum)
   const fall = fallKasten(B, 'Fallsituation', t.fall);

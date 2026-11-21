@@ -121,6 +121,7 @@ const nurText = (xml) => xml.replace(/<w:tab\/>/g, ' ').replace(/<\/w:p>/g, '\n'
   pruefe(!/Er kann doch die Beine bewegen/.test(svText) && !/\n4\.2\n/.test(svText), 'Blatt 1: Aufgabe 4.2 (Beurteilen) gestrichen – AA4 nur 4.1');
   pruefe((T4.B1.aufgaben.find((x) => x.nr === '4.1') || {}).zeilen >= 8, 'Blatt 1: viel Schreibraum für 4.1 (mind. 8 Zeilen)');
   pruefe(/Unterscheiden Sie anhand der Situation eine leichte von einer schweren Atemwegsverlegung\./.test(svText), 'Blatt 3: Aufgabe nach Muster KA 4.1');
+  pruefe(/\(Hinweis: In welchen Zeilen stehen die Zeichen für eine leichte Verlegung, in welchen die Zeichen für eine schwere\? Geben Sie die Zeilen an und nennen Sie die Zeichen\.\)/.test(svText), 'Blatt 3, 3.1: Bearbeitungshinweis (Zeilen angeben, Zeichen nennen) – Aufgabentext bleibt wie in der KA');
   pruefe(/Beim Frühstück verschluckte sie sich am Kaffee und hustete kräftig\. Ich ließ sie husten, und nach kurzer Zeit war alles wieder gut\./.test(svText), 'Leitfall wörtlich wie im Fallbeispiel');
   pruefe(!/Schockindex rechnen|Werte lesen und mit dem Vorwert vergleichen\. \*\*2/.test(svText) && !/Schockindex rechnen/.test(svText), 'Blatt 2, AA1: keine Schrittfolge mehr (kein „Schockindex rechnen“)');
   pruefe(!/Aufgaben mit Punkten/.test(svText) && !/\nPunkte\n/.test(svText) && !/(^|[^_])___ \/ \d/.test(svText), 'Schülerversion: keine Punkte bei den Aufgaben, kein „Aufgaben mit Punkten“');

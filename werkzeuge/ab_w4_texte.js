@@ -238,6 +238,7 @@ const B3 = {
     {
       nr: '3.1', punkte: 2, zeilen: 8,
       text: 'Unterscheiden Sie anhand der Situation eine leichte von einer schweren Atemwegsverlegung.',
+      hinweis: '(Hinweis: In welchen Zeilen stehen die Zeichen für eine leichte Verlegung, in welchen die Zeichen für eine schwere? Geben Sie die Zeilen an und nennen Sie die Zeichen.)',
       loesung: [
         'Leichte Verlegung: kräftiger, wirksamer Husten, er kann sprechen und atmen – das trifft auf Herrn Roth zu Beginn zu (hustet kräftig und laut, sagt „Geht schon …“, Z. {Geht schon}). (1 P.)',
         'Schwere Verlegung: Husten leise und kraftlos, kann nicht sprechen, greift sich an den Hals, Lippen bläulich – das trifft nach etwa 20 Sekunden zu (Z. {kraftlos}–{bläulich}). (1 P.)',
