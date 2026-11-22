@@ -321,6 +321,15 @@ pruefe(fs.existsSync(path.join(DOCS, AB.SEITEN.stunde)), `Ziel des QR-Codes exis
       await gross.waitForFunction((z) => document.querySelector('.folie') && document.querySelector('.folie').dataset.folie === z, ziel);
       pruefe((await folieJetzt()) === ziel, `Klick → Folie ${nr} (${ziel})`);
     }
+    // auf jeder Folie: Mini-QR anklicken (oder Taste Q) → QR-Code groß mit Aufforderung
+    pruefe((await gross.textContent('#mini-text')).startsWith('Noch nicht dabei? QR-Code scannen'), 'Mini-QR: „Noch nicht dabei? QR-Code scannen“');
+    await gross.click('#mini');
+    await gross.waitForSelector('.qr-ebene .qr-gross');
+    pruefe((await gross.textContent('.qr-ebene')).includes('Scannen Sie den QR-Code'), 'Mini-QR anklicken → QR-Code groß mit Aufforderung');
+    await gross.keyboard.press('Escape');
+    await gross.keyboard.press('q');
+    pruefe(!!(await gross.waitForSelector('.qr-ebene', { timeout: 3000 }).catch(() => null)), 'Taste Q → QR-Code groß');
+    await gross.keyboard.press('Escape');
     await gross.goto(basis + 'beamer-w1.html?demo=1&weiter=gibtsnicht');
     await gross.waitForSelector('.start-sprung');
     pruefe(!(await gross.$('.start-weiter')) && (await gross.textContent('.start-sprung button')).includes('zweiten Arbeitsblatt'), 'unbekannte Folie → normaler Willkommensknopf');
