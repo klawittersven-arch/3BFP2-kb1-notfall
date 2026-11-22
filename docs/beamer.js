@@ -24,12 +24,16 @@
   // Stunde fortsetzen (in der letzten Stunde nicht fertig geworden): beamer-w1.html?weiter=w1-info1
   // (Folienkennung) oder ?weiter=10 (Nummer wie im Menü ☰). Die Willkommensfolie zeigt dann einen Knopf,
   // der dorthin springt – die Handys springen mit.
-  var WEITER = (function () {
-    var w = String(K.urlParam('weiter') || '').trim();
+  // Nach dem Raumstart verschwindet ?weiter aus der Adresse (neu laden = zurück in den Raum); das Ziel
+  // steht dann im gespeicherten Raum (raum.weiter).
+  function weiterIndex(w) {
+    w = String(w || '').trim();
     if (!w) return -1;
     var i = /^\d+$/.test(w) ? Number(w) - 1 : FOLIEN.map(function (x) { return x.id; }).indexOf(w);
     return i > 0 && i < FOLIEN.length ? i : -1;
-  })();
+  }
+  var WEITER_LINK = weiterIndex(K.urlParam('weiter'));
+  var WEITER = WEITER_LINK;
   function weiterText(vorlage, standard) {
     return K.ersetzen(vorlage || standard, { n: WEITER + 1, kurz: FOLIEN[WEITER].kurz });
   }
@@ -232,8 +236,9 @@
     $('mini').hidden = f.typ === 'start';
     if (f.typ !== 'start') qrEinsetzen($('mini-qr'), 'mini');
     $('mini-text').textContent = '';
-    $('mini-text').appendChild(document.createTextNode('Später dazu? QR-Code scannen · '));
+    $('mini-text').appendChild(document.createTextNode((T.miniText || 'Noch nicht dabei? QR-Code scannen') + ' · '));
     $('mini-text').appendChild(el('b', null, raum.raum));
+    $('mini').title = T.qrGrossTipp || 'Klicken = QR-Code groß (Taste Q)';
     uhrenAktualisieren();
   }
 
@@ -1291,6 +1296,7 @@
       namenAus = !namenAus; K.Speicher.dauer.schreiben(SCHL_NAMEN, namenAus); ebeneZu(); zeichnen();
     }));
     r.appendChild(knopf(T.menueTeilnehmende, 'knopf-klein', function () { teilnehmende(); }));
+    r.appendChild(knopf(T.menueQr || 'QR-Code groß zeigen', 'knopf-klein', function () { qrGrossZeigen(); }));
     if (!demo) r.appendChild(knopf(T.menueNeuerRaum, 'knopf-klein', function () {
       frage(T.neuerRaumFrage, [[T.abbrechen, false], [T.ja, true]]).then(function (ja) { if (ja) raumStarten(false); });
     }));
@@ -1301,6 +1307,36 @@
     k.appendChild(el('p', 'tipp', T.tastenTipp));
     ebeneZeigen(k);
   }
+
+  // QR-Code groß mit der Aufforderung (für alle, die noch nicht dabei sind) – Mini-QR anklicken, Taste Q oder Menü
+  function qrGrossZeigen() {
+    if (!raum) return;
+    var k = el('div', 'ebene-karte qr-ebene');
+    var box = el('div', 'start');
+    var karte = el('div', 'qr-karte');
+    var qr = el('div', 'qr-gross');
+    qr.appendChild(qrBauen(440));
+    karte.appendChild(qr);
+    var r = el('div', 'qr-raum');
+    r.appendChild(document.createTextNode(T.raumcode + ' '));
+    r.appendChild(el('b', null, raum.raum));
+    karte.appendChild(r);
+    karte.appendChild(el('div', 'qr-adresse', handyAdresse().replace(/^https?:\/\//, '')));
+    box.appendChild(karte);
+    var rechts = el('div');
+    rechts.appendChild(fmt('h1', 'f-titel', T.qrGrossTitel || 'Noch nicht dabei?'));
+    var ol = el('ol', 'schritte');
+    (FOLIEN[0].schritte || []).forEach(function (x) { ol.appendChild(fmt('li', null, x)); });
+    rechts.appendChild(ol);
+    rechts.appendChild(el('p', 'dabei', K.ersetzen(T.schonDabei, { n: (stand && stand.geraete || []).length })));
+    var zu = el('p', 'ebene-knoepfe');
+    zu.appendChild(knopf(T.ok, 'knopf-gross', ebeneZu));
+    rechts.appendChild(zu);
+    box.appendChild(rechts);
+    k.appendChild(box);
+    ebeneZeigen(k);
+  }
+  $('mini').addEventListener('click', qrGrossZeigen);
 
   function teilnehmende() {
     var k = el('div', 'ebene-karte');
@@ -1353,6 +1389,7 @@
     if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); weiter(); }
     else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); zurueck(); }
     else if (e.key === 'f' || e.key === 'F') vollbild();
+    else if (e.key === 'q' || e.key === 'Q') qrGrossZeigen();
   });
 
   /* ---------- Raum ---------- */
@@ -1374,6 +1411,19 @@
     b.id = 'starten';
     b.disabled = !BASIS;
     k.appendChild(b);
+    // Fortsetzungslink, aber ein Raum läuft noch (z. B. Link noch einmal geöffnet): nicht aus Versehen alle hinauswerfen
+    var laeuft = laufenderRaum();
+    if (WEITER_LINK > 0 && laeuft) {
+      var zurueckRaum = knopf(K.ersetzen(T.raumZurueck || 'Zurück in den laufenden Raum {raum}', { raum: laeuft.raum }), 'knopf-klein', function () {
+        raum = laeuft;
+        WEITER = raum.weiter ? weiterIndex(raum.weiter) : WEITER_LINK;
+        adresseOhneWeiter();
+        if (raum.probe) Probe.starten(false);
+        verbinden();
+      });
+      zurueckRaum.id = 'raum-zurueck';
+      k.appendChild(zurueckRaum);
+    }
     var probe = el('div', 'probe-start');
     var pb = knopf(T.probeStarten, 'knopf-klein', function () { raumStarten(true); });
     pb.id = 'probe-starten';
@@ -1391,7 +1441,9 @@
     KB1Verbindung.senden(BASIS, '/api/raum', {}).then(function (x) {
       if (x.status !== 200 || !x.d.ok) { startBildschirm(T.startFehler); return; }
       raum = { raum: x.d.raum, schluessel: x.d.schluessel, laeuftAb: x.d.laeuftAb, probe: !!probe };
+      if (WEITER > 0) raum.weiter = FOLIEN[WEITER].id;
       K.Speicher.dauer.schreiben(SCHL_RAUM, raum);
+      adresseOhneWeiter();
       bekannt = {};
       if (probe) Probe.starten(true);
       verbinden();
@@ -1629,10 +1681,25 @@
   })();
 
   /* ---------- Start ---------- */
+  function laufenderRaum() {
+    var g = K.Speicher.dauer.lesen(SCHL_RAUM);
+    return BASIS && g && /^\d{4}$/.test(g.raum) && g.schluessel && (!g.laeuftAb || g.laeuftAb > Date.now()) ? g : null;
+  }
+  // ?weiter aus der Adresse nehmen: Neu laden führt dann zurück in den laufenden Raum
+  function adresseOhneWeiter() {
+    try {
+      var u = new URL(location.href);
+      if (!u.searchParams.has('weiter')) return;
+      u.searchParams.delete('weiter');
+      history.replaceState(null, '', u.pathname + u.search + u.hash);
+    } catch (e) { /* egal */ }
+  }
   if (demo) { Demo.start(); return; }
-  var gespeichert = K.Speicher.dauer.lesen(SCHL_RAUM);
-  if (BASIS && gespeichert && /^\d{4}$/.test(gespeichert.raum) && gespeichert.schluessel && (!gespeichert.laeuftAb || gespeichert.laeuftAb > Date.now())) {
+  var gespeichert = laufenderRaum();
+  // Fortsetzungslink = neue Stunde: immer erst „Neuen Raum starten“ (nicht mitten in einen alten Raum springen)
+  if (gespeichert && WEITER_LINK < 0) {
     raum = gespeichert;
+    if (raum.weiter) WEITER = weiterIndex(raum.weiter);
     if (raum.probe) Probe.starten(false);
     verbinden();
   } else startBildschirm();

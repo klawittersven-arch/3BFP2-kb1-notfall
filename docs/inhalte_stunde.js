@@ -534,6 +534,12 @@ var STUNDE = {
     weiterKnopf: 'Heute weiter bei Folie {n}: {kurz} →',
     weiterTipp: 'Erst klicken, wenn alle drin sind – die Handys springen mit.',
     weiterStart: '↪ Fortsetzung: Nach dem Start geht es weiter bei Folie {n}: {kurz}.',
+    raumZurueck: 'Zurück in den laufenden Raum {raum}',
+    // QR-Code groß (Mini-QR unten anklicken, Taste Q oder Menü) – für alle, die noch nicht dabei sind
+    miniText: 'Noch nicht dabei? QR-Code scannen',
+    qrGrossTipp: 'Klicken = QR-Code groß (Taste Q)',
+    qrGrossTitel: 'Noch nicht dabei?',
+    menueQr: 'QR-Code groß zeigen',
     menueTitel: 'Folien',
     menueVollbild: 'Vollbild',
     menueNamen: 'Namen verbergen',
@@ -556,7 +562,7 @@ var STUNDE = {
     ok: 'OK',
     person: 'Person {n}',
     abgelaufen: 'Der Raum ist abgelaufen. Bitte starten Sie einen neuen Raum.',
-    tastenTipp: 'Tasten: → / Bild↓ weiter · ← / Bild↑ zurück',
+    tastenTipp: 'Tasten: → / Bild↓ weiter · ← / Bild↑ zurück · Q QR-Code groß',
     demo: 'Probeansicht mit erfundenen Namen'
   },
 

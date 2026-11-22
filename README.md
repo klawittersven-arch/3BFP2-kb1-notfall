@@ -53,6 +53,11 @@ Texte: `docs/w1/inhalte.js` → `allgemein.schutz`. Woche 2 ist davon nicht betr
 den QR-Code, dann auf der Willkommensfolie „Heute weiter bei Folie 9 …“ klicken (oder „Weiter“/Presenter) – die Handys
 springen mit. Ohne Link geht es auch über ☰ → Folie wählen. Der Check-out zeigt dann nur die Entscheidungen „jetzt“.
 Funktioniert für Woche 1 und Woche 2 (`beamer.html?weiter=…`).
+Der Fortsetzungslink beginnt immer mit „Neuen Raum starten“ (läuft noch ein Raum, gibt es zusätzlich „Zurück in den
+laufenden Raum …“); danach verschwindet `?weiter` aus der Adresse, neu laden führt zurück in den Raum.
+
+**QR-Code groß auf jeder Folie:** Mini-QR unten anklicken, Taste **Q** oder ☰ → „QR-Code groß zeigen“ – für alle, die
+noch nicht dabei sind (mit Aufforderung und Raumcode).
 
 **Woche 1 geteilt (Blatt 1 heute, Blatt 2 nächste Woche):** Nächste Woche einen neuen Raum starten (der alte ist
 nach 6 Stunden gelöscht) und auf der Willkommensfolie „Heute mit dem zweiten Arbeitsblatt beginnen“ wählen. Die SuS scannen
