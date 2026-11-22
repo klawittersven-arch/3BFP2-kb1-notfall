@@ -386,6 +386,10 @@ var STUNDE = {
     jetztErklaert: 'Jetzt: {label}',
     fortschrittLeer: 'Noch keine Rückmeldungen.',
     personFertig: '{x} von {y} fertig',
+    // Stunde fortsetzen: beamer…html?weiter=<Folienkennung> oder ?weiter=<Nummer wie im Menü>
+    weiterKnopf: 'Heute weiter bei Folie {n}: {kurz} →',
+    weiterTipp: 'Erst klicken, wenn alle drin sind – die Handys springen mit.',
+    weiterStart: '↪ Fortsetzung: Nach dem Start geht es weiter bei Folie {n}: {kurz}.',
     menueTitel: 'Folien',
     menueVollbild: 'Vollbild',
     menueNamen: 'Namen verbergen',

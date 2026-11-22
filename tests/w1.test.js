@@ -305,6 +305,30 @@ pruefe(fs.existsSync(path.join(DOCS, AB.SEITEN.stunde)), `Ziel des QR-Codes exis
     await s.screenshot({ path: path.join(ORDNER, 'w1_raster.png'), fullPage: true });
     await s.close();
 
+    /* Stunde fortsetzen: beamer-w1.html?weiter=… */
+    console.log('Beamer: Stunde fortsetzen (?weiter=…)');
+    const gross = await browser.newPage({ viewport: { width: 1600, height: 900 } });
+    beobachten(gross, protokoll, 'weiter');
+    const folieJetzt = () => gross.$eval('.folie', (x) => x.dataset.folie);
+    for (const [wert, ziel] of [['w1-aa1-merksatz', 'w1-aa1-merksatz'], ['11', 'w1-aa2a']]) {
+      await gross.goto(basis + 'beamer-w1.html?demo=1&weiter=' + wert);
+      await gross.waitForSelector('.start-weiter button');
+      const nr = ids.indexOf(ziel) + 1;
+      const text = await gross.textContent('.start-weiter button');
+      pruefe(text.includes('Folie ' + nr) && text.includes(S.folien[nr - 1].kurz) && !(await gross.$('.start-sprung:not(.start-weiter)')), `?weiter=${wert}: Knopf „${text.trim()}“ statt „zweites Arbeitsblatt“`);
+      pruefe((await gross.textContent('#weiter')).includes(S.folien[nr - 1].kurz), 'auch „Weiter“ unten (und der Presenter) führt dorthin');
+      await gross.click(wert === '11' ? '#weiter' : '.start-weiter button');
+      await gross.waitForFunction((z) => document.querySelector('.folie') && document.querySelector('.folie').dataset.folie === z, ziel);
+      pruefe((await folieJetzt()) === ziel, `Klick → Folie ${nr} (${ziel})`);
+    }
+    await gross.goto(basis + 'beamer-w1.html?demo=1&weiter=gibtsnicht');
+    await gross.waitForSelector('.start-sprung');
+    pruefe(!(await gross.$('.start-weiter')) && (await gross.textContent('.start-sprung button')).includes('zweiten Arbeitsblatt'), 'unbekannte Folie → normaler Willkommensknopf');
+    await gross.goto(basis + 'beamer-w1.html?demo=1&weiter=w1-info1');
+    await gross.waitForSelector('.start-weiter button');
+    await gross.screenshot({ path: path.join(ORDNER, 'w1_weiter.png') });
+    await gross.close();
+
     pruefe(protokoll.konsole.length === 0, 'keine Fehler in der Konsole', protokoll.konsole);
     pruefe(protokoll.extern.length === 0, 'keine Anfragen an fremde Adressen', protokoll.extern);
     ok = ergebnis();

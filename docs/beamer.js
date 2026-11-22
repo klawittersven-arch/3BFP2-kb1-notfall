@@ -21,6 +21,18 @@
   var SCHL_RAUM = 'kb1nf_lehrer_raum' + (S.speicher ? '_' + S.speicher : '');
   var SCHL_NAMEN = 'kb1nf_lehrer_namen_aus';
   var demo = K.urlParam('demo') === '1';
+  // Stunde fortsetzen (in der letzten Stunde nicht fertig geworden): beamer-w1.html?weiter=w1-info1
+  // (Folienkennung) oder ?weiter=10 (Nummer wie im Menü ☰). Die Willkommensfolie zeigt dann einen Knopf,
+  // der dorthin springt – die Handys springen mit.
+  var WEITER = (function () {
+    var w = String(K.urlParam('weiter') || '').trim();
+    if (!w) return -1;
+    var i = /^\d+$/.test(w) ? Number(w) - 1 : FOLIEN.map(function (x) { return x.id; }).indexOf(w);
+    return i > 0 && i < FOLIEN.length ? i : -1;
+  })();
+  function weiterText(vorlage, standard) {
+    return K.ersetzen(vorlage || standard, { n: WEITER + 1, kurz: FOLIEN[WEITER].kurz });
+  }
 
   var $ = function (id) { return document.getElementById(id); };
   var raum = null;          // { raum, schluessel, laeuftAb }
@@ -134,7 +146,8 @@
       folieSetzen(f.id, s + 1).then(function () { if (f.typ === 'aufgabe' && f.uhr) uhrStarten(f); });
       return;
     }
-    gehe(index() + 1);
+    // Stunde fortsetzen: von der Willkommensfolie aus geht „Weiter“ (auch Presenter/Pfeiltaste) zur Fortsetzungsfolie
+    gehe(index() === 0 && WEITER > 0 ? WEITER : index() + 1);
   }
 
   function zurueck() {
@@ -209,7 +222,7 @@
       else if (f.typ === 'abstimmung') w.textContent = s === 0 ? T.ersterNotfall : (s % 2 === 1 ? (f.runde === 2 ? T.aufloesungZeigen : T.ergebnisseZeigen) : T.naechsterNotfall);
       else w.textContent = s === f.kette.length ? f.antwortTitel : f.aufdecken;
     } else if (i < FOLIEN.length - 1) {
-      w.textContent = K.ersetzen(T.weiter, { kurz: FOLIEN[i + 1].kurz });
+      w.textContent = K.ersetzen(T.weiter, { kurz: FOLIEN[i === 0 && WEITER > 0 ? WEITER : i + 1].kurz });
     } else {
       w.textContent = T.letzte;
       w.className = 'weiter letzte';
@@ -357,8 +370,15 @@
       namen.appendChild(c);
     });
     rechts.appendChild(namen);
+    // Stunde fortsetzen (?weiter=…): ein großer Knopf zur Folie, an der es heute weitergeht
+    if (WEITER > 0) {
+      var wp = el('p', 'start-sprung start-weiter');
+      wp.appendChild(knopf(weiterText(T.weiterKnopf, 'Heute weiter bei Folie {n}: {kurz} →'), 'knopf-gross', function () { gehe(WEITER); }));
+      wp.appendChild(el('span', 'tipp', weiterText(T.weiterTipp, 'Erst klicken, wenn alle drin sind – die Handys springen mit.')));
+      rechts.appendChild(wp);
+    }
     // z. B. „Heute mit Arbeitsblatt 2 beginnen“ (Stunde geteilt): springt direkt zu dieser Folie
-    if (f.sprung) {
+    else if (f.sprung) {
       var ziel = FOLIEN.map(function (x) { return x.id; }).indexOf(f.sprung.folie);
       if (ziel >= 0) {
         var sp = el('p', 'start-sprung');
@@ -1347,6 +1367,7 @@
     var k = el('div', 'karte');
     k.appendChild(el('h1', 'f-titel', S.titel));
     k.appendChild(el('p', 'f-text', T.startText));
+    if (WEITER > 0) k.appendChild(el('p', 'start-weiter-hinweis', weiterText(T.weiterStart, '↪ Fortsetzung: Nach dem Start geht es weiter bei Folie {n}: {kurz}.')));
     var fehler = el('p', 'fehler', meldung || (BASIS ? '' : T.nichtEingerichtet));
     k.appendChild(fehler);
     var b = knopf(T.starten, 'knopf-gross', function () { raumStarten(false); });
