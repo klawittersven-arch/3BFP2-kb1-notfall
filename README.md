@@ -8,6 +8,8 @@ Die Arbeitsblätter entstehen im Wechsel (Lohner / Klawitter); dieses Repository
 - **Woche 2 (SW 7): „Schock ist nicht gleich Schock – vergleichen und nach Leitsymptom handeln“**
   (3 UStd. am Stück) – Beamer `beamer.html`, Handy `w2.html`
 
+**Neu ab KW 49 (TB 2 neu, Klassenarbeit 12.01.2027):** Handy-Übungen „Für die Schnellen“ zu den neuen Arbeitsblättern – siehe [README_TB2.md](README_TB2.md) (Ordner `docs/tb2/`).
+
 ## So läuft die Stunde
 
 Der Laptop am Beamer führt wie eine Präsentation durch die Stunde: **eine Folie pro Unterrichtsabschnitt**,
