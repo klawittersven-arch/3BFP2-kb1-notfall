@@ -12,7 +12,7 @@ const path = require('path');
 const DOCS = path.join(__dirname, '..', 'docs', 'tb2');
 const TYPEN = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.png': 'image/png' };
 const SERVER = 'https://fortschritt.test';
-const IDS = ['kb1ab02', 'kb1ab03', 'kb1ab04', 'kb1ab05', 'kb1ab06', 'kb1ab07'];
+const IDS = ['kb1ab02', 'kb1ab03', 'kb1ab04', 'kb1ab05', 'kb1ab06', 'kb1ab07', 'kb1ab08', 'kb1ab09', 'kb1ab10'];
 
 function webserver() {
   return new Promise((ok) => {

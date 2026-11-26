@@ -4,9 +4,10 @@ Aufruf (im Hauptverzeichnis): python3 werkzeuge/tb2_seiten.py   (nur nötig, wen
 from pathlib import Path
 
 DOCS = Path(__file__).resolve().parent.parent / "docs" / "tb2"
-IDS = ["kb1ab02", "kb1ab03", "kb1ab04", "kb1ab05", "kb1ab06", "kb1ab07"]
+IDS = ["kb1ab02", "kb1ab03", "kb1ab04", "kb1ab05", "kb1ab06", "kb1ab07", "kb1ab08", "kb1ab09", "kb1ab10"]
 WOCHEN = {"kb1w1": "KB I · TB 2 neu · Woche 1 – Schock: Schockspirale · Schockformen und Lagerung · Anaphylaxie",
-          "kb1w2": "KB I · TB 2 neu · Woche 2 – Starke Blutung · Offene Fraktur und Amputat · Vom Auffinden bis zum Rettungsdienst"}
+          "kb1w2": "KB I · TB 2 neu · Woche 2 – Starke Blutung · Offene Fraktur und Amputat · Vom Auffinden bis zum Rettungsdienst",
+          "kb1w3": "KB I · TB 2 neu · Woche 3 – Fremdkörperaspiration · Frakturzeichen nach Sturz · DMS-Kontrolle"}
 KLASSEN = {"k1": ("3BFP2/1", "3bfp2-1"), "k2": ("3BFP2/2", "3bfp2-2")}
 
 VORLAGE = """<!DOCTYPE html>

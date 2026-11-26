@@ -4,6 +4,8 @@
    Leitsymptom“, „Anaphylaktischer Schock“ – je eine Übung „Für die Schnellen“ (freiwillig).
    Woche 2 (raum 'kb1w2'): „Starke Blutung stillen“, „Offene Fraktur und Amputationsverletzung“, „Vom Auffinden bis
    zum Eintreffen des Rettungsdienstes“.
+   Woche 3 (raum 'kb1w3'): „Fremdkörperaspiration“, „Frakturzeichen und Sofortmaßnahmen nach einem Sturz“, „DMS-Kontrolle
+   und Alarmzeichen“.
    ==========================================================================
 
    Gleicher Aufbau wie im Repository 3BFP2_KB2_Notfall (docs/inhalte.js) – dort steht die ausführliche
@@ -302,6 +304,135 @@ var INHALTE = {
         erklaerung: '**A – Atemwege mit Schutz der Halswirbelsäule:** Den Kopf nur so viel bewegen, wie es für freie Atemwege nötig ist.', tipp: 'Bei welchem Buchstaben bewegen Sie den Kopf?' }
     ],
     merksatz: 'Vorgehen im Notfall: **Situation einschätzen, Eigenschutz** · **ansprechen, anfassen** · **Hilfe rufen, Notruf 112** · **ABCDE** – Atemwege, Atmung, Kreislauf, Bewusstsein, ganzer Körper · **handeln nach Befund** (Reanimation, stabile Seitenlage, Lagerung nach Leitsymptom) · **überwachen und betreuen** · **SAMPLER** · **Übergabe vorbereiten** und dokumentieren.',
+    danach: 'Prüfen Sie jetzt noch einmal Aufgabe 1 auf dem Arbeitsblatt!'
+  },
+
+  /* ========================================================================
+     Woche 3 · Fremdkörperaspiration bei Erwachsenen, Kindern und Säuglingen
+     ======================================================================== */
+  kb1ab08: {
+    ab: 'Fremdkörperaspiration bei Erwachsenen, Kindern und Säuglingen',
+    raum: 'kb1w3',
+    titel: 'Übung: Was tun Sie jetzt?',
+    anweisung: 'Jemand hat sich beim Essen verschluckt. Was tun Sie **als Nächstes**?',
+    knoepfe: [
+      { kuerzel: 'HU', text: 'zum Husten ermutigen' },
+      { kuerzel: 'RS', text: '5 Rückenschläge' },
+      { kuerzel: 'HG', text: 'Heimlich-Handgriff' },
+      { kuerzel: 'TK', text: '5 Thoraxkompressionen' },
+      { kuerzel: 'REA', text: 'Notruf, Wiederbelebung' }
+    ],
+    hilfe: {
+      titel: 'Hilfe: Der Ablauf',
+      punkte: [
+        '**Hustet kräftig, kann sprechen** (leicht): zum Husten ermutigen, dabeibleiben',
+        '**Schwer, über 1 Jahr:** 5 Rückenschläge → 5 Oberbauchkompressionen (Heimlich) → im Wechsel',
+        '**Schwer, Säugling:** 5 Rückenschläge → 5 Thoraxkompressionen → im Wechsel (kein Heimlich!)',
+        '**Bewusstlos:** Notruf, Wiederbelebung'
+      ]
+    },
+    mindestens: 8,
+    karten: [
+      { nummer: 1, text: 'Frau Maler verschluckt sich am Kaffee und hustet kräftig.', richtig: 'HU',
+        erklaerung: '**Zum Husten ermutigen:** Kräftiges Husten ist die beste Hilfe. Dabeibleiben und beobachten.', tipp: 'Kann sie noch kräftig husten?' },
+      { nummer: 2, text: 'Herr Lange, 79, kann nicht mehr sprechen und greift sich an den Hals. Sie haben noch nichts getan.', richtig: 'RS',
+        erklaerung: '**Zuerst bis zu 5 Rückenschläge** zwischen die Schulterblätter – Oberkörper nach vorne gebeugt.', tipp: 'Was kommt bei schwerer Verlegung zuerst?' },
+      { nummer: 3, text: 'Herr Lange: 5 Rückenschläge haben nicht geholfen. Er ist noch wach.', richtig: 'HG',
+        erklaerung: '**Bis zu 5 Oberbauchkompressionen** (Heimlich-Handgriff): Faust auf den Oberbauch, ruckartig nach innen und oben.', tipp: 'Was folgt nach den Rückenschlägen bei Erwachsenen?' },
+      { nummer: 4, text: 'Herr Lange: Auch 5 Oberbauchkompressionen haben nicht geholfen. Er ist noch wach.', richtig: 'RS',
+        erklaerung: '**Im Wechsel:** wieder 5 Rückenschläge, dann wieder 5 Oberbauchkompressionen.', tipp: 'Wie geht der Wechsel weiter?' },
+      { nummer: 5, text: 'Paul, 8 Monate, hustet nicht mehr und läuft blau an. Er ist wach.', richtig: 'RS',
+        erklaerung: '**5 Rückenschläge:** bäuchlings auf den Unterarm, Kopf tiefer als der Körper.', tipp: 'Auch beim Säugling: Womit beginnt man?' },
+      { nummer: 6, text: 'Paul, 8 Monate: 5 Rückenschläge haben nicht geholfen.', richtig: 'TK',
+        erklaerung: '**5 Thoraxkompressionen:** auf den Rücken drehen, Kopf tiefer, Druck auf die untere Hälfte des Brustbeins. **Kein Heimlich-Handgriff beim Säugling!**', tipp: 'Darf man bei einem Säugling auf den Bauch drücken?' },
+      { nummer: 7, text: 'Mia, 4 Jahre: 5 Rückenschläge haben nicht geholfen. Sie ist wach.', richtig: 'HG',
+        erklaerung: '**Oberbauchkompressionen:** Bei Kindern über 1 Jahr wie bei Erwachsenen.', tipp: 'Ist Mia älter als 1 Jahr?' },
+      { nummer: 8, text: 'Herr Lange sackt zusammen und reagiert nicht mehr.', richtig: 'REA',
+        erklaerung: '**Bewusstlos:** hinlegen, Notruf, Wiederbelebung beginnen (Erwachsene 30 : 2).', tipp: 'Kann er noch mitarbeiten?' },
+      { nummer: 9, text: 'Eine Bewohnerin sagt hustend: „Ich hab mich verschluckt.“', richtig: 'HU',
+        erklaerung: '**Sie kann sprechen** – leichte Verlegung: zum Husten ermutigen, nicht klopfen.', tipp: 'Wer sprechen kann, bekommt Luft.' },
+      { nummer: 10, text: 'Ein Besucher hustet immer leiser, kann nicht sprechen, die Lippen werden bläulich.', richtig: 'RS',
+        erklaerung: '**Schwere Verlegung:** sofort handeln – zuerst bis zu 5 Rückenschläge.', tipp: 'Leise Husten, bläulich: leicht oder schwer?' }
+    ],
+    merksatz: '**Leicht** (hustet kräftig, kann sprechen): zum **Husten ermutigen**. **Schwer** (kann nicht sprechen, leiser Husten, blau): **5 Rückenschläge** → **5 Oberbauchkompressionen** (Heimlich) im Wechsel; **Säugling:** 5 Rückenschläge → **5 Thoraxkompressionen**, **kein Heimlich**. **Bewusstlos:** Notruf, **Wiederbelebung**. Danach immer **ärztlich untersuchen** lassen.',
+    danach: 'Prüfen Sie jetzt noch einmal Aufgabe 2 auf dem Arbeitsblatt!'
+  },
+
+  /* ========================================================================
+     Woche 3 · Frakturzeichen und Sofortmaßnahmen nach einem Sturz
+     ======================================================================== */
+  kb1ab09: {
+    ab: 'Frakturzeichen und Sofortmaßnahmen nach einem Sturz',
+    raum: 'kb1w3',
+    titel: 'Übung: Sicher oder unsicher?',
+    anweisung: 'Ist der Befund ein **sicheres** oder ein **unsicheres** Frakturzeichen?',
+    knoepfe: [
+      { kuerzel: 'S', text: 'sicheres Frakturzeichen' },
+      { kuerzel: 'U', text: 'unsicheres Frakturzeichen' }
+    ],
+    mindestens: 8,
+    karten: [
+      { nummer: 1, text: 'Das Bein ist verkürzt und nach außen gedreht.', richtig: 'S',
+        erklaerung: '**Sicher: Fehlstellung.** So lag Frau Maler nach ihrem Sturz.', tipp: 'Sieht man einen Bruch direkt an der Form?' },
+      { nummer: 2, text: 'Die Hüfte tut sehr weh.', richtig: 'U',
+        erklaerung: '**Unsicher: Schmerzen** – gibt es auch bei Prellungen.', tipp: 'Tut eine Prellung auch weh?' },
+      { nummer: 3, text: 'Aus einer Wunde am Unterschenkel ragt ein Knochenstück.', richtig: 'S',
+        erklaerung: '**Sicher: sichtbare Knochenfragmente** – eine offene Fraktur.', tipp: 'Sieht man den Knochen?' },
+      { nummer: 4, text: 'Am Handgelenk bildet sich ein Bluterguss.', richtig: 'U',
+        erklaerung: '**Unsicher: Hämatombildung** – auch bei Prellungen.', tipp: 'Gibt es einen Bluterguss nur beim Bruch?' },
+      { nummer: 5, text: 'Der Unterarm lässt sich an einer Stelle bewegen, wo kein Gelenk ist.', richtig: 'S',
+        erklaerung: '**Sicher: abnorme Beweglichkeit.** Nicht absichtlich prüfen!', tipp: 'Gibt es dort ein Gelenk?' },
+      { nummer: 6, text: 'Der Knöchel ist dick geworden.', richtig: 'U',
+        erklaerung: '**Unsicher: Schwellung** – auch bei Verstauchungen.', tipp: 'Schwillt eine Verstauchung auch an?' },
+      { nummer: 7, text: 'Sie hält den Arm an den Körper gedrückt, weil es so weniger wehtut.', richtig: 'U',
+        erklaerung: '**Unsicher: Schonhaltung.** Diese Haltung wird unterstützt (z. B. Dreiecktuch).', tipp: 'Warum hält sie den Arm so?' },
+      { nummer: 8, text: 'Beim Bewegen hört man ein Knirschen am Knochen.', richtig: 'S',
+        erklaerung: '**Sicher: Knochenreiben (Krepitation).** Wird **nicht** geprüft – sehr schmerzhaft!', tipp: 'Woher kommt das Knirschen?' },
+      { nummer: 9, text: 'Er kann das Bein nicht mehr belasten.', richtig: 'U',
+        erklaerung: '**Unsicher: eingeschränkte Belastbarkeit.**', tipp: 'Kann man auch mit einer Prellung schlecht auftreten?' },
+      { nummer: 10, text: 'Sie kann den Arm kaum bewegen.', richtig: 'U',
+        erklaerung: '**Unsicher: Bewegungseinschränkung.**', tipp: 'Ist das nur beim Bruch so?' }
+    ],
+    merksatz: '**Sichere Frakturzeichen:** sichtbare Knochenfragmente, **Fehlstellung**, abnorme Beweglichkeit, Knochenreiben (**nicht prüfen!**). **Unsichere:** Schmerzen, Schwellung, Bewegungseinschränkung, eingeschränkte Belastbarkeit, Schonhaltung, Hämatom. Nach einem Sturz: **nicht sofort aufhelfen**, erst prüfen; bei Verdacht ruhigstellen, Schonhaltung unterstützen, Notruf.',
+    danach: 'Prüfen Sie jetzt noch einmal Aufgabe 1 auf dem Arbeitsblatt!'
+  },
+
+  /* ========================================================================
+     Woche 3 · DMS-Kontrolle und Alarmzeichen
+     ======================================================================== */
+  kb1ab10: {
+    ab: 'DMS-Kontrolle und Alarmzeichen',
+    raum: 'kb1w3',
+    titel: 'Übung: Normal oder Alarmzeichen?',
+    anweisung: 'Sie kontrollieren **Durchblutung, Motorik und Sensibilität** bei einem Menschen mit Gips oder nach einer Operation. Ist der Befund **normal** oder ein **Alarmzeichen**?',
+    knoepfe: [
+      { kuerzel: 'N', text: 'normal' },
+      { kuerzel: 'A', text: 'Alarmzeichen – sofort melden' }
+    ],
+    mindestens: 8,
+    karten: [
+      { nummer: 1, text: 'Die Zehen sind rosig und warm – wie auf der gesunden Seite.', richtig: 'N',
+        erklaerung: '**Normal:** Die Durchblutung ist gut.', tipp: 'Wie sieht gut durchblutete Haut aus?' },
+      { nummer: 2, text: 'Die Finger sind blass und kälter als auf der anderen Seite.', richtig: 'A',
+        erklaerung: '**Alarmzeichen:** Störung der Durchblutung – vielleicht ist der Gips zu eng.', tipp: 'Seitenvergleich: gleich oder anders?' },
+      { nummer: 3, text: 'Nach Druck auf den Nagel ist er nach 2 Sekunden wieder rosa.', richtig: 'N',
+        erklaerung: '**Normal:** Nagelbettprobe in Ordnung.', tipp: 'Wie schnell soll der Nagel wieder rosa werden?' },
+      { nummer: 4, text: '„Meine Finger sind wie eingeschlafen.“', richtig: 'A',
+        erklaerung: '**Alarmzeichen:** Kribbeln und Taubheit zeigen eine Störung der Sensibilität (Nerv abgedrückt?).', tipp: 'Was bedeutet „eingeschlafen“?' },
+      { nummer: 5, text: 'Er kann die Zehen heben und senken.', richtig: 'N',
+        erklaerung: '**Normal:** Die Motorik ist erhalten.', tipp: 'Bewegen sich die Zehen?' },
+      { nummer: 6, text: 'Sie kann die Zehen am operierten Bein kaum bewegen.', richtig: 'A',
+        erklaerung: '**Alarmzeichen:** Bewegungsstörung – sofort melden.', tipp: 'Kann sie die Zehen bewegen wie auf der anderen Seite?' },
+      { nummer: 7, text: 'Die Schmerzen werden trotz Schmerzmittel immer stärker, der Gips drückt.', richtig: 'A',
+        erklaerung: '**Alarmzeichen:** zunehmende Schmerzen und Druck – Schwellung unter dem Gips?', tipp: 'Werden die Schmerzen besser oder schlimmer?' },
+      { nummer: 8, text: 'Er spürt die Berührung an allen Zehen.', richtig: 'N',
+        erklaerung: '**Normal:** Die Sensibilität ist erhalten.', tipp: 'Spürt er alles?' },
+      { nummer: 9, text: 'Die Finger sind bläulich verfärbt.', richtig: 'A',
+        erklaerung: '**Alarmzeichen:** Durchblutungsstörung.', tipp: 'Welche Farbe ist normal?' },
+      { nummer: 10, text: 'Die Wade am operierten Bein ist seit gestern dick und tut beim Auftreten weh.', richtig: 'A',
+        erklaerung: '**Alarmzeichen:** Veränderungen nach einer Operation werden immer gemeldet – hier Verdacht auf Thrombose (Woche 4).', tipp: 'Was hätte Christin tun müssen?' }
+    ],
+    merksatz: '**DMS:** **D**urchblutung (Farbe, Temperatur, Puls, Nagelbettprobe), **M**otorik (Finger/Zehen bewegen), **S**ensibilität (Berührung spüren, Kribbeln?) – immer **im Seitenvergleich** und **dokumentieren**. **Alarmzeichen** (blass, bläulich, kalt, Kribbeln, Taubheit, kaum Bewegung, zunehmende Schmerzen, Schwellung): **sofort melden** – nicht abwarten!',
     danach: 'Prüfen Sie jetzt noch einmal Aufgabe 1 auf dem Arbeitsblatt!'
   }
 };

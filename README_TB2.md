@@ -37,6 +37,18 @@ auf die Klassenarbeit vor – der Kasten darf also auch gelöscht werden.
 - 3BFP2/1: https://klawittersven-arch.github.io/3BFP2-kb1-notfall/tb2/lehrer-3bfp2-1-kb1w2.html
 - 3BFP2/2: https://klawittersven-arch.github.io/3BFP2-kb1-notfall/tb2/lehrer-3bfp2-2-kb1w2.html
 
+## Woche 3 (Mo 14.12.2026)
+
+| Arbeitsblatt | Übung | Adresse (QR-Code in `qr/`) |
+|---|---|---|
+| Fremdkörperaspiration bei Erwachsenen, Kindern und Säuglingen | Was tun Sie jetzt? | https://klawittersven-arch.github.io/3BFP2-kb1-notfall/tb2/kb1ab08.html |
+| Frakturzeichen und Sofortmaßnahmen nach einem Sturz | Sicher oder unsicher? | …/tb2/kb1ab09.html |
+| DMS-Kontrolle und Alarmzeichen | Normal oder Alarmzeichen? | …/tb2/kb1ab10.html |
+
+**Lehrerseiten Woche 3:**
+- 3BFP2/1: https://klawittersven-arch.github.io/3BFP2-kb1-notfall/tb2/lehrer-3bfp2-1-kb1w3.html
+- 3BFP2/2: https://klawittersven-arch.github.io/3BFP2-kb1-notfall/tb2/lehrer-3bfp2-2-kb1w3.html
+
 ## Neue Woche ergänzen
 
 1. Übungen in `docs/tb2/inhalte.js` mit `raum: 'kb1w2'` usw. eintragen (Aufbau wie in der Datei beschrieben).
