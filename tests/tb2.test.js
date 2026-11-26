@@ -14,6 +14,18 @@ const TYPEN = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/cs
 const SERVER = 'https://fortschritt.test';
 const IDS = ['kb1ab02', 'kb1ab03', 'kb1ab04', 'kb1ab05', 'kb1ab06', 'kb1ab07', 'kb1ab08', 'kb1ab09', 'kb1ab10', 'kb1ab11', 'kb1ab12', 'kb1ab13'];
 
+// Auffällige Antwortfolge (wie in docs/app.js): streng periodisch oder nach Antwortknöpfen sortiert
+function auffaellig(f, kz) {
+  const p = kz.length;
+  let periodisch = f.length > p, sortiert = true, verschieden = false;
+  for (let i = 1; i < f.length; i++) {
+    if (i >= p && f[i] !== f[i - p]) periodisch = false;
+    if (kz.indexOf(f[i]) < kz.indexOf(f[i - 1])) sortiert = false;
+    if (f[i] !== f[0]) verschieden = true;
+  }
+  return verschieden && (periodisch || sortiert);
+}
+
 function webserver() {
   return new Promise((ok) => {
     const s = http.createServer((req, res) => {
@@ -85,7 +97,7 @@ function webserver() {
     const karten = page.locator('.karte');
     pruefe(await karten.count() === U.karten.length, `${id}: ${U.karten.length} Karten`);
     for (let i = 0; i < U.karten.length; i++) {
-      await karten.nth(i).locator(`button[data-kuerzel="${[].concat(U.karten[i].richtig)[0]}"]`).click();
+      await page.locator(`.karte[data-index="${i}"]`).locator(`button[data-kuerzel="${[].concat(U.karten[i].richtig)[0]}"]`).click();
     }
     await page.waitForSelector('#merksatz-bereich:not([hidden])');
     pruefe((await page.locator('#merksatz-bereich').innerText()).includes('abgeschlossen'), `${id}: abgeschlossen + Merksatz`);
@@ -96,6 +108,32 @@ function webserver() {
     pruefe(letzte && letzte.raum === 'k2-' + U.raum && letzte.name === 'Lena K.' && letzte.geloest === U.karten.length, `${id}: an k2-${U.raum} gesendet: ` + JSON.stringify(letzte));
     await page.screenshot({ path: path.join(__dirname, `handy-tb2-${id}.png`) });
   }
+  // Zufällige Reihenfolge der Karten: je Aufruf anders, nie im Wechsel/sortiert, Nummern 1–n von oben nach unten
+  const lies = () => page.evaluate(() => [...document.querySelectorAll('.karte')].map((e) => ({ i: Number(e.dataset.index), nr: e.querySelector('.nummer').textContent })));
+  for (const id of IDS) {
+    const U = I[id], n = U.karten.length, kz = U.knoepfe.map((b) => b.kuerzel);
+    const folgen = new Set();
+    let gueltig = true, nummern = true, unauffaellig = true;
+    for (let v = 0; v < 8; v++) {
+      await page.goto(basis + id + '.html');
+      await page.evaluate(() => sessionStorage.clear());
+      await page.reload();
+      await page.waitForSelector('.karte');
+      const r = await lies(), idx = r.map((x) => x.i);
+      if ([...idx].sort((x, y) => x - y).join() !== [...Array(n).keys()].join()) gueltig = false;
+      if (r.some((x, pos) => x.nr !== String(pos + 1))) nummern = false;
+      if (auffaellig(idx.map((i) => [].concat(U.karten[i].richtig)[0]), kz)) unauffaellig = false;
+      folgen.add(idx.join());
+    }
+    pruefe(gueltig && nummern, `${id}: jede Karte genau einmal, Nummern 1–${n} von oben nach unten`);
+    pruefe(unauffaellig, `${id}: keine Antwortfolge im Wechsel oder sortiert`);
+    pruefe(folgen.size >= 2, `${id}: Reihenfolge zufällig (${folgen.size} verschiedene bei 8 Aufrufen)`);
+    const vorher = (await lies()).map((x) => x.i).join();
+    await page.reload();
+    await page.waitForSelector('.karte');
+    pruefe((await lies()).map((x) => x.i).join() === vorher, `${id}: Reihenfolge bleibt beim Neuladen gleich`);
+  }
+
   // Name und Klasse werden mit KB II geteilt (gleiche Adresse klawittersven-arch.github.io)
   const gemeinsam = await page.evaluate(() => [localStorage.getItem('kb2-notfall-name'), localStorage.getItem('kb2-notfall-klasse')]);
   pruefe(gemeinsam[0] && gemeinsam[0].indexOf('Lena') >= 0 && gemeinsam[1] === 'k2', 'Name und Klasse im gemeinsamen Speicher (kb2-notfall-…)');
