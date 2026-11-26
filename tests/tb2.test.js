@@ -1,7 +1,7 @@
 /* Test der Handy-Übungen „TB 2 neu ab KW 49“ (docs/tb2) in Handygröße – Playwright, Chromium, nachgebildeter Server.
  * Aufruf (im Repository-Ordner):  node tests/tb2.test.js
- * Prüft je Übung: Namenseingabe mit Klassenwahl, alle Karten lösen, Merksatz, Senden an den Raum k2-kb1w1,
- * kein waagerechtes Scrollen bei 360 px, keine fremden Anfragen; dazu die Lehrerseite 3BFP2/2 Woche 1
+ * Prüft je Übung: Namenseingabe mit Klassenwahl, alle Karten lösen, Merksatz, Senden an den Raum der Woche (k2-kb1w1, k2-kb1w2 …),
+ * kein waagerechtes Scrollen bei 360 px, keine fremden Anfragen; dazu die Lehrerseiten 3BFP2/2 je Woche
  * und dass Name/Klasse mit den KB-II-Übungen geteilt werden (gleicher Speicher-Schlüssel). */
 'use strict';
 const { chromium } = require('playwright');
@@ -12,7 +12,7 @@ const path = require('path');
 const DOCS = path.join(__dirname, '..', 'docs', 'tb2');
 const TYPEN = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.png': 'image/png' };
 const SERVER = 'https://fortschritt.test';
-const IDS = ['kb1ab02', 'kb1ab03', 'kb1ab04'];
+const IDS = ['kb1ab02', 'kb1ab03', 'kb1ab04', 'kb1ab05', 'kb1ab06', 'kb1ab07'];
 
 function webserver() {
   return new Promise((ok) => {
@@ -93,7 +93,7 @@ function webserver() {
     pruefe(breit, `${id}: kein waagerechtes Scrollen bei 360 px`);
     await page.waitForTimeout(300);
     const letzte = posts.filter((p) => p.uebung === id).pop();
-    pruefe(letzte && letzte.raum === 'k2-kb1w1' && letzte.name === 'Lena K.' && letzte.geloest === U.karten.length, `${id}: an k2-kb1w1 gesendet: ` + JSON.stringify(letzte));
+    pruefe(letzte && letzte.raum === 'k2-' + U.raum && letzte.name === 'Lena K.' && letzte.geloest === U.karten.length, `${id}: an k2-${U.raum} gesendet: ` + JSON.stringify(letzte));
     await page.screenshot({ path: path.join(__dirname, `handy-tb2-${id}.png`) });
   }
   // Name und Klasse werden mit KB II geteilt (gleiche Adresse klawittersven-arch.github.io)
@@ -101,12 +101,16 @@ function webserver() {
   pruefe(gemeinsam[0] && gemeinsam[0].indexOf('Lena') >= 0 && gemeinsam[1] === 'k2', 'Name und Klasse im gemeinsamen Speicher (kb2-notfall-…)');
 
   await page.setViewportSize({ width: 1280, height: 800 });
-  await page.goto(basis + 'lehrer-3bfp2-2-kb1w1.html');
-  await page.waitForSelector('.l-karte[data-uebung="kb1ab04"]');
-  const lehrer = await page.locator('#l-inhalt').innerText();
-  pruefe(IDS.every((id) => lehrer.includes(I[id].titel)), 'Lehrerseite: alle drei Übungen der Woche 1');
-  pruefe(lehrer.includes('Lena K.'), 'Lehrerseite: Name erscheint');
-  await page.screenshot({ path: path.join(__dirname, 'lehrer-tb2-kb1w1.png') });
+  for (const woche of [...new Set(IDS.map((id) => I[id].raum))]) {
+    const ids = IDS.filter((id) => I[id].raum === woche);
+    await page.goto(basis + `lehrer-3bfp2-2-${woche}.html`);
+    await page.waitForSelector(`.l-karte[data-uebung="${ids[ids.length - 1]}"]`);
+    const lehrer = await page.locator('#l-inhalt').innerText();
+    pruefe(ids.every((id) => lehrer.includes(I[id].titel)), `Lehrerseite ${woche}: alle Übungen der Woche`);
+    pruefe(IDS.filter((id) => I[id].raum !== woche).every((id) => !lehrer.includes(I[id].titel)), `Lehrerseite ${woche}: keine Übungen anderer Wochen`);
+    pruefe(lehrer.includes('Lena K.'), `Lehrerseite ${woche}: Name erscheint`);
+    await page.screenshot({ path: path.join(__dirname, `lehrer-tb2-${woche}.png`) });
+  }
   pruefe(fehler.length === 0, 'keine Konsolenfehler / fremden Anfragen: ' + fehler.join(' | '));
 
   await browser.close();

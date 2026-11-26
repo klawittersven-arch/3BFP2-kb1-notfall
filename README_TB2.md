@@ -25,6 +25,18 @@ auf die Klassenarbeit vor – der Kasten darf also auch gelöscht werden.
 - 3BFP2/1: https://klawittersven-arch.github.io/3BFP2-kb1-notfall/tb2/lehrer-3bfp2-1-kb1w1.html
 - 3BFP2/2: https://klawittersven-arch.github.io/3BFP2-kb1-notfall/tb2/lehrer-3bfp2-2-kb1w1.html
 
+## Woche 2 (Mo 07.12.2026)
+
+| Arbeitsblatt | Übung | Adresse (QR-Code in `qr/`) |
+|---|---|---|
+| Starke Blutung stillen | Blutung stoppen – was ist richtig? | https://klawittersven-arch.github.io/3BFP2-kb1-notfall/tb2/kb1ab05.html |
+| Offene Fraktur und Amputationsverletzung | Offene Fraktur und Amputat | …/tb2/kb1ab06.html |
+| Vom Auffinden bis zum Eintreffen des Rettungsdienstes | A, B, C, D oder E? | …/tb2/kb1ab07.html |
+
+**Lehrerseiten Woche 2:**
+- 3BFP2/1: https://klawittersven-arch.github.io/3BFP2-kb1-notfall/tb2/lehrer-3bfp2-1-kb1w2.html
+- 3BFP2/2: https://klawittersven-arch.github.io/3BFP2-kb1-notfall/tb2/lehrer-3bfp2-2-kb1w2.html
+
 ## Neue Woche ergänzen
 
 1. Übungen in `docs/tb2/inhalte.js` mit `raum: 'kb1w2'` usw. eintragen (Aufbau wie in der Datei beschrieben).

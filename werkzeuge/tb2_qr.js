@@ -9,6 +9,7 @@ const KB1 = 'https://klawittersven-arch.github.io/3BFP2-kb1-notfall/tb2/';
 const KB2 = 'https://klawittersven-arch.github.io/3BFP2_KB2_Notfall/';
 const SEITEN = {
   kb1ab02: KB1 + 'kb1ab02.html', kb1ab03: KB1 + 'kb1ab03.html', kb1ab04: KB1 + 'kb1ab04.html',
+  kb1ab05: KB1 + 'kb1ab05.html', kb1ab06: KB1 + 'kb1ab06.html', kb1ab07: KB1 + 'kb1ab07.html',
   kb2ab02: KB2 + 'kb2ab02.html', kb2ab03: KB2 + 'kb2ab03.html'
 };
 const AUS = process.argv[2] || path.join(__dirname, '..', 'qr');
