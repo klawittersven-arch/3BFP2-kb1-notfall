@@ -12,7 +12,7 @@
    Anleitung. Kurz: Nur Text ZWISCHEN den Hochkommas ' … ' ändern; **fett** ist erlaubt.
      raum        – Woche ('kb1w1', später 'kb1w2' …) → Lehrerseite lehrer-3bfp2-1-kb1w1.html usw.
      knoepfe     – Antwortknöpfe (kuerzel nur GROSSBUCHSTABEN, höchstens 6 Zeichen)
-     mindestens  – so viele Karten müssen beim ERSTEN Versuch richtig sein
+     mindestens  – nur ohne Herzen (einstellungen.js: herzen: 0): so viele Karten müssen beim ERSTEN Versuch richtig sein
      karten      – nummer, text, richtig, erklaerung, tipp
    Fachbegriffe nach Pflegias Band 2 (S. 793–794, 801–803, 811, 822, 825, 831).
    ========================================================================== */
@@ -29,15 +29,11 @@ var INHALTE = {
     richtigText: 'Richtig!',
     falschText: 'Noch nicht richtig – versuchen Sie es noch einmal.',
     tippVorwort: 'Tipp:',
+    // Nur wenn in einstellungen.js „herzen: 0“ steht (sonst schützen die Herzen):
     // {x} = beim ersten Versuch richtig, {y} = Anzahl Karten, {z} = nötige Mindestzahl
     durchklickenTitel: 'Hey, nicht einfach durchklicken!',
     durchklickenText: 'Beim ersten Versuch richtig: {x} von {y} – nötig sind mindestens {z}. Lesen Sie jede Karte genau und überlegen Sie, bevor Sie antworten.',
     durchklickenKnopf: 'Übung neu starten',
-    // Sperre nach einer falschen Antwort ({x} = Sekunden)
-    sperreText: 'Lesen Sie den Tipp – weiter in {x} s',
-    // Neustart, wenn in kurzer Zeit zu viele falsche Antworten kommen
-    zuSchnellTitel: 'Zu schnell geklickt!',
-    zuSchnellText: 'Sie haben in kurzer Zeit mehrere falsche Antworten gegeben. Lesen Sie jede Karte in Ruhe – die Übung beginnt von vorn.',
     // Überschrift nach dem Lösen ({x} = „Übung 1“ usw. – der Teil des Titels vor dem Doppelpunkt)
     fertigTitel: '{x} abgeschlossen!',
 
@@ -49,7 +45,7 @@ var INHALTE = {
     klasseFehler: 'Bitte wählen Sie Ihre Klasse.',
     nameKnopf: 'Los geht’s',
     nameFehler: 'Bitte so eingeben: Vorname, Leerzeichen, erster Buchstabe des Nachnamens – z. B. „Lena K.“',
-    nameDatenschutz: 'Gespeichert werden nur Ihr Name, Ihre Klasse, Ihr Fortschritt und bei welchen Karten der erste Versuch falsch war (die Lehrkraft sieht das nur zusammengefasst für die Klasse). Alles wird nach spätestens 12 Stunden automatisch gelöscht.',
+    nameDatenschutz: 'Gespeichert werden nur Ihr Name, Ihre Klasse, Ihr Fortschritt und bei welchen Karten der erste Versuch falsch war (die Lehrkraft sieht das nur zusammengefasst für die Klasse). Alles wird nach spätestens 12 Stunden automatisch gelöscht – nur Name und Punkte der Wochen-Challenge bleiben für die Siegerehrung bis zu 10 Tage.',
     nameAnzeige: 'Angemeldet als {x} · {y}',
     nameAendern: 'ändern'
   },
@@ -567,3 +563,125 @@ var INHALTE = {
     danach: 'Prüfen Sie jetzt noch einmal Ihre Antworten auf dem Arbeitsblatt: Passt jede Antwort zum Operator?'
   }
 };
+
+/* ==========================================================================================
+   ERWEITERUNGEN für den Kartenstapel (seit 26.11.2026) – alle neuen Texte stehen hier:
+   schritt2  = zweiter Schritt einer Karte (nach der richtigen ersten Antwort): Was ist stattdessen richtig?
+               optionen: Liste, richtig: Nummer der richtigen Option (ab 0; die Reihenfolge mischt das Handy).
+   aufwaermen = vor den Karten die Schritte in die richtige Reihenfolge tippen (ohne Herzen).
+   bonus     = freiwilliger Bonus-Fall nach der Zusammenfassung (ohne Herzen): je Schritt drei Möglichkeiten,
+               jede mit einer Reaktion.
+   Fachlich: Pflegias Bd. 2 S. 793–795 (ABCDE), 802–805 (Blutstillung, Amputat, Atemwegsverlegung), 825 (Frakturen),
+   831 (Anaphylaxie); ERC 2025 (Atemwegsverlegung: keine blinde Fingersuche).
+   ========================================================================================== */
+(function (I) {
+  function schritt2(uid, nummer, s) { I[uid].karten.filter(function (k) { return k.nummer === nummer; })[0].schritt2 = s; }
+  var STATT = 'Und was ist **stattdessen** richtig?';
+
+  // ---------- Blutung stoppen: nach „falsch“ das richtige Vorgehen wählen ----------
+  schritt2('kb1ab05', 3, { frage: STATT, richtig: 0,
+    optionen: ['Das Messer in der Wunde lassen, abpolstern und festmachen.',
+      'Das Messer vorsichtig drehen und dann ganz langsam herausziehen.',
+      'Das Messer herausziehen und danach sofort fest auf die Wunde drücken.'],
+    tipp: 'Der Fremdkörper verschließt die Wunde gerade teilweise.' });
+  schritt2('kb1ab05', 5, { frage: STATT, richtig: 0,
+    optionen: ['Den Verband lassen und ein zweites Druckpolster darüber legen.',
+      'Den Verband abnehmen und die Wunde zuerst mit Wasser ausspülen.',
+      'Den Verband etwas lockern, damit das Blut besser abfließen kann.'],
+    tipp: 'Jedes Abnehmen reißt die Wunde wieder auf.' });
+  schritt2('kb1ab05', 6, { frage: STATT, richtig: 0,
+    optionen: ['Zuerst fest auf die Wunde drücken, dann einen Druckverband anlegen.',
+      'Zuerst die Wunde gründlich reinigen und dann ein Pflaster aufkleben.',
+      'Zuerst die Ärztin holen und bis dahin die Wunde nicht berühren.'],
+    tipp: 'Was stoppt eine Blutung am schnellsten?' });
+  schritt2('kb1ab05', 9, { frage: STATT, richtig: 0,
+    optionen: ['Die Abbindung bleibt – lösen dürfen sie nur Ärztin oder Notarzt.',
+      'Die Abbindung alle 30 Minuten für eine Minute kurz lösen, damit der Arm Blut bekommt.',
+      'Die Abbindung lösen, sobald die Wunde nicht mehr blutet.'],
+    tipp: 'Wer darf eine Abbindung lösen?' });
+
+  // ---------- Offene Fraktur und Amputat ----------
+  schritt2('kb1ab06', 2, { frage: STATT, richtig: 0,
+    optionen: ['Nicht einrichten: die Wunde steril abdecken und das Bein ruhigstellen.',
+      'Den Knochen zurückschieben und die Wunde danach mit Wasser spülen.',
+      'Vorsichtig am Bein ziehen, bis es wieder ganz gerade liegt.'],
+    tipp: 'Einrichten macht die Klinik.' });
+  schritt2('kb1ab06', 4, { frage: STATT, richtig: 0,
+    optionen: ['Liegen lassen, ruhigstellen und bis zum Rettungsdienst bei ihm bleiben.',
+      'Ihn langsam aufstehen lassen, wenn er sagt, dass es nicht so wehtut.',
+      'Ihn zu zweit vorsichtig zur Bank tragen, damit er bequemer sitzen kann.'],
+    tipp: 'Jede Bewegung kann die Verletzung schlimmer machen.' });
+  schritt2('kb1ab06', 5, { frage: STATT, richtig: 0,
+    optionen: ['Nicht reinigen: trocken in sterile Kompressen und einen Beutel legen.',
+      'Mit Desinfektionsmittel abwischen und dann in ein Glas Wasser legen.',
+      'Kurz mit kaltem Wasser abspülen und danach direkt auf Eis legen.'],
+    tipp: 'Wasser und Reinigung schädigen das Gewebe.' });
+  schritt2('kb1ab06', 7, { frage: STATT, richtig: 0,
+    optionen: ['Den Beutel mit dem Amputat in einen zweiten Beutel mit Eiswasser legen.',
+      'Die Fingerspitze in ein Glas mit kaltem Leitungswasser legen und abdecken.',
+      'Die Fingerspitze bis zur Abfahrt in das Gefrierfach legen.'],
+    tipp: 'Kühlen ja – aber ohne direkten Kontakt mit Eis.' });
+
+  // ---------- ABCDE: Aufwärmen ----------
+  I.kb1ab07.aufwaermen = {
+    titel: 'Zum Aufwärmen: die Reihenfolge',
+    anweisung: 'In welcher **Reihenfolge** prüfen Sie im Notfall? Tippen Sie die Schritte nacheinander an.',
+    schritte: ['Atemwege: Ist der Weg für die Luft frei?',
+      'Atmung: Atmet die Person normal? Wie schnell?',
+      'Kreislauf: Puls, Blutdruck, Haut, starke Blutung',
+      'Bewusstsein: Wie wach ist die Person? Pupillen?',
+      'ganzer Körper: Verletzungen suchen, Wärme erhalten'],
+    tipp: 'Ohne freie Atemwege nützt keine Atmung – und ohne Atmung kein Kreislauf.',
+    fertig: 'Genau: **A**temwege – **B**reathing (Atmung) – **C**irculation (Kreislauf) – **D**isability (Bewusstsein) – **E**xposure (ganzer Körper).'
+  };
+
+  // ---------- Anaphylaxie: Bonus-Fall ----------
+  I.kb1ab04.bonus = {
+    titel: 'Der Wespenstich beim Sommerfest',
+    einleitung: 'Sommerfest im Pflegeheim. Eine Wespe sticht Frau Brandt (81) in den Unterarm. Wenige Minuten später juckt ihr ganzer Körper, am Hals sind Quaddeln, und sie sagt heiser: „Ich bekomme schlecht Luft.“',
+    schritte: [
+      { text: 'Sie sind als Erste bei Frau Brandt.', frage: 'Was tun Sie zuerst?', optionen: [
+        { richtig: true, text: 'Hilfe und Notruf rufen lassen und bei Frau Brandt bleiben.', reaktion: 'Richtig. Ihre Kollegin setzt den Notruf ab und bringt das Notfallset. Sie bleiben bei Frau Brandt.' },
+        { text: 'Erst einmal abwarten – vielleicht ist es nur eine starke Rötung.', reaktion: 'Frau Brandt bekommt immer schlechter Luft. Haut + Atemnot nach einem Stich = Anaphylaxie. Jede Minute zählt.' },
+        { text: 'Frau Brandt in ihr Zimmer begleiten, damit sie sich hinlegt.', reaktion: 'Auf dem Weg wird ihr schwindelig. Laufen belastet den Kreislauf – erst Hilfe holen und bei ihr bleiben.' }] },
+      { text: 'Frau Brandt sitzt im Rollstuhl. Sie atmet schnell und pfeifend, Puls 118/min.', frage: 'Wie lagern Sie Frau Brandt?', optionen: [
+        { richtig: true, text: 'Oberkörper hoch – sie bleibt aufrecht sitzen.', reaktion: 'Richtig: Atemnot ist das Leitsymptom → Oberkörper hoch.' },
+        { text: 'Flach auf den Boden legen und die Beine hoch.', reaktion: 'Im Liegen bekommt Frau Brandt noch schlechter Luft. Bei Atemnot: Oberkörper hoch.' },
+        { text: 'In die stabile Seitenlage bringen.', reaktion: 'Frau Brandt ist wach. Die stabile Seitenlage ist für Bewusstlose, die normal atmen.' }] },
+      { text: 'Im Notfallset liegt ein Adrenalin-Autoinjektor. Er gehört nicht Frau Brandt.', frage: 'Was machen Sie damit?', optionen: [
+        { richtig: true, text: 'Ich gebe kein Medikament ohne ärztliche Anordnung und überwache weiter.', reaktion: 'Richtig. Notfallmedikamente nur nach ärztlicher Anordnung (Notfallstandard der Einrichtung beachten).' },
+        { text: 'Ich spritze das Adrenalin sofort in ihren Oberschenkel.', reaktion: 'Nur nach ärztlicher Anordnung. Hätte Frau Brandt einen **eigenen** Autoinjektor mit Notfallplan, würden Sie ihr bei der Anwendung helfen.' },
+        { text: 'Ich gebe ihr eine Allergie-Tablette aus ihrem Medikamentenfach.', reaktion: 'Medikamente nur nach Anordnung – und eine Tablette wirkt viel zu langsam.' }] },
+      { text: 'Der Rettungsdienst ist in etwa 8 Minuten da.', frage: 'Was tun Sie bis dahin?', optionen: [
+        { richtig: true, text: 'Atmung, Puls, Blutdruck und Bewusstsein engmaschig kontrollieren und ruhig sprechen.', reaktion: 'Richtig. So merken Sie sofort, wenn es Frau Brandt schlechter geht.' },
+        { text: 'Kurz die anderen Bewohnerinnen beruhigen und dann wieder nach ihr sehen.', reaktion: 'Frau Brandt darf nicht allein bleiben – ihr Zustand kann sich jede Minute verschlechtern.' },
+        { text: 'Die Einstichstelle mit einer kühlenden Salbe gut einreiben.', reaktion: 'Das hilft nicht gegen die Reaktion im ganzen Körper. Jetzt zählt: überwachen.' }] }
+    ],
+    schluss: 'Der Rettungsdienst übernimmt. Sie übergeben: Wespenstich, Zeichen, Vitalzeichen, Lagerung. Danach dokumentieren Sie die Allergie gut sichtbar.'
+  };
+
+  // ---------- Fremdkörperaspiration: Bonus-Fall ----------
+  I.kb1ab08.bonus = {
+    titel: 'Herr Lang beim Mittagessen',
+    einleitung: 'Mittagessen im Pflegeheim. Herr Lang (76) isst Braten. Plötzlich hustet er und greift sich an den Hals.',
+    schritte: [
+      { text: 'Herr Lang hustet kräftig und sagt: „Geht schon …“', frage: 'Was tun Sie?', optionen: [
+        { richtig: true, text: 'Ihn zum Husten ermutigen und bei ihm bleiben.', reaktion: 'Richtig. Solange er kräftig hustet, löst sich der Fremdkörper oft von selbst.' },
+        { text: 'Sofort fest auf seinen Rücken schlagen.', reaktion: 'Noch nicht: Er hustet kräftig. Ermutigen Sie ihn zu husten und bleiben Sie bei ihm.' },
+        { text: 'Ihm schnell ein Glas Wasser geben.', reaktion: 'Trinken kann das Verschlucken schlimmer machen. Ermutigen Sie ihn zu husten.' }] },
+      { text: 'Der Husten wird schwach. Herr Lang kann nicht mehr sprechen, seine Lippen werden blau.', frage: 'Was tun Sie jetzt?', optionen: [
+        { richtig: true, text: 'Hilfe rufen und bis zu 5 Schläge zwischen die Schulterblätter geben.', reaktion: 'Richtig. Oberkörper nach vorne beugen und mit der flachen Hand kräftig zwischen die Schulterblätter schlagen.' },
+        { text: 'Mit den Fingern im Mund nach dem Stück Fleisch suchen.', reaktion: 'Keine blinde Fingersuche – Sie können das Stück tiefer schieben.' },
+        { text: 'Ihn auf den Boden legen und mit der Herzdruckmassage beginnen.', reaktion: 'Er ist noch wach. Mit der Wiederbelebung beginnen Sie erst, wenn er bewusstlos wird.' }] },
+      { text: 'Die 5 Rückenschläge haben nicht geholfen.', frage: 'Was kommt jetzt?', optionen: [
+        { richtig: true, text: 'Bis zu 5 Oberbauchkompressionen (Heimlich-Handgriff).', reaktion: 'Richtig. Danach im Wechsel: 5 Rückenschläge, 5 Oberbauchkompressionen.' },
+        { text: '5 Thoraxkompressionen wie bei einem Säugling.', reaktion: 'Thoraxkompressionen statt Heimlich gibt es beim Säugling. Bei Erwachsenen: Heimlich-Handgriff.' },
+        { text: 'Noch einmal 20 Rückenschläge hintereinander.', reaktion: 'Nach 5 Rückenschlägen kommen 5 Oberbauchkompressionen – im Wechsel.' }] },
+      { text: 'Herr Lang sackt zusammen. Er reagiert nicht und atmet nicht normal.', frage: 'Was tun Sie?', optionen: [
+        { richtig: true, text: 'Notruf 112 und sofort mit der Wiederbelebung beginnen (30 : 2).', reaktion: 'Richtig. Die Herzdruckmassage kann den Fremdkörper zusätzlich lösen.' },
+        { text: 'Herrn Lang vorsichtig in die stabile Seitenlage bringen und abwarten.', reaktion: 'Er atmet nicht normal – die stabile Seitenlage ist nur für Bewusstlose mit normaler Atmung.' },
+        { text: 'Im Liegen einfach weiter Oberbauchkompressionen geben.', reaktion: 'Bei Bewusstlosigkeit gilt: Notruf und Wiederbelebung.' }] }
+    ],
+    schluss: 'Gut gemacht. Auch wenn der Fremdkörper herauskommt: Danach muss Herr Lang immer ärztlich untersucht werden.'
+  };
+})(INHALTE);

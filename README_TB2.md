@@ -11,7 +11,16 @@ auf die Klassenarbeit vor – der Kasten darf also auch gelöscht werden.
   Fortschritt geht an **denselben Worker** wie KB II (`kb2-notfall-fortschritt`, Räume `k1-kb1w1` … `k2-kb1w4`).
   Dafür muss in `3BFP2_KB2_Notfall` der Branch `tb2-neu-kw49` (erweitertes Raummuster) in `main` gemergt sein.
   Bis dahin laufen die Übungen trotzdem – nur die Lehrerseite zeigt keine Namen.
-- Datenschutz wie bei KB II: Name, Klasse, Fortschritt, falsche Erstversuche; Löschung nach 12 Stunden oder „Liste leeren“.
+- **Ablauf wie bei KB II (seit 26.11.2026):** Kartenstapel (eine Karte nach der anderen, je Handy anders gemischt),
+  3 Herzen (Herzen weg → Lesepause, dann Neustart mit neu gemischten Karten, ↺ auf der Lehrerseite), 🔥-Serie
+  (5 in Folge richtig = Herz zurück), Lesezeit gegen Durchklicken, Sterne am Ende, Schritt 2 mit Begründung
+  (Richtig/Falsch-Übungen zu Herzdruckmassage und Notruf), Aufwärmen ABCDE, Bonus-Fälle (Wespenstich, Mittagessen).
+  Einstellungen in `docs/tb2/einstellungen.js`, Beschreibung im README von `3BFP2_KB2_Notfall`.
+- **Wochen-Challenge:** Wer alle Übungen einer Woche geschafft hat, kommt zur Challenge (`tb2/challenge-kb1w1.html` …);
+  die Lehrerseite der Woche zeigt die Bestenliste mit Siegerehrung und QR-Code. **TB2-Challenge** zur Wiederholung am
+  11.01.: `tb2/challenge-kb1w5.html`, Lehrerseiten `tb2/lehrer-3bfp2-1-kb1w5.html` und `tb2/lehrer-3bfp2-2-kb1w5.html`.
+- Datenschutz wie bei KB II: Name, Klasse, Fortschritt, Sterne, falsche Erstversuche; Löschung nach 12 Stunden oder
+  „Liste leeren“. Die Bestenliste der Challenge (Name, Punkte) bleibt bis zu 10 Tage oder bis „Bestenliste leeren“.
 
 ## Woche 1 (Mo 30.11.2026)
 

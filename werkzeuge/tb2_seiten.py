@@ -8,7 +8,16 @@ IDS = ["kb1ab02", "kb1ab03", "kb1ab04", "kb1ab05", "kb1ab06", "kb1ab07", "kb1ab0
 WOCHEN = {"kb1w1": "KB I · TB 2 neu · Woche 1 – Schock: Schockspirale · Schockformen und Lagerung · Anaphylaxie",
           "kb1w2": "KB I · TB 2 neu · Woche 2 – Starke Blutung · Offene Fraktur und Amputat · Vom Auffinden bis zum Rettungsdienst",
           "kb1w3": "KB I · TB 2 neu · Woche 3 – Fremdkörperaspiration · Frakturzeichen nach Sturz · DMS-Kontrolle",
-          "kb1w4": "KB I · TB 2 neu · Woche 4 – Komplikationen nach Hüft-TEP · Fast-Track · Übung im Examensstil"}
+          "kb1w4": "KB I · TB 2 neu · Woche 4 – Komplikationen nach Hüft-TEP · Fast-Track · Übung im Examensstil",
+          "kb1w5": "KB I · TB 2 neu · Wiederholung 11.01. – TB2-Challenge (alle Wochen)"}
+# Wochen-Challenge je Woche (freigeschaltet, wenn alle Übungen der Woche geschafft sind) und TB2-Challenge (kb1w5, offen)
+CHALLENGES = {
+    "kb1w1": ("Wochen-Challenge: Woche 1", "Woche 1 – Schock · Lagerung · Anaphylaxie", "kb1w1", 15),
+    "kb1w2": ("Wochen-Challenge: Woche 2", "Woche 2 – Blutung · Fraktur · ABCDE", "kb1w2", 15),
+    "kb1w3": ("Wochen-Challenge: Woche 3", "Woche 3 – Fremdkörper · Frakturzeichen · DMS", "kb1w3", 15),
+    "kb1w4": ("Wochen-Challenge: Woche 4", "Woche 4 – Hüft-TEP · Fast-Track · Operatoren", "kb1w4", 15),
+    "kb1w5": ("TB2-Challenge: alle Wochen", "Wiederholung vor der Klassenarbeit", "kb1w1 kb1w2 kb1w3 kb1w4", 20),
+}
 KLASSEN = {"k1": ("3BFP2/1", "3bfp2-1"), "k2": ("3BFP2/2", "3bfp2-2")}
 
 VORLAGE = """<!DOCTYPE html>
@@ -68,13 +77,21 @@ LEHRER = """<!DOCTYPE html>
 <footer class="l-fuss" id="l-fuss"></footer>
 <script src="einstellungen.js"></script>
 <script src="inhalte.js"></script>
+<script src="qr.js"></script>
 <script src="lehrer.js"></script>
 </body>
 </html>
 """
 
+# Challenge-Seite: dieselbe Übungstechnik (app.js) im Challenge-Modus
+CHALLENGE = VORLAGE.replace('<body data-uebung="{id}">',
+    '<body data-modus="challenge" data-raum="{raum}" data-quellen="{quellen}" data-anzahl="{anzahl}" data-titel="{titel}" data-untertitel="{untertitel}">')
+
 for i in IDS:
     (DOCS / f"{i}.html").write_text(VORLAGE.replace("{id}", i), encoding="utf-8")
+for raum, (titel, untertitel, quellen, anzahl) in CHALLENGES.items():
+    (DOCS / f"challenge-{raum}.html").write_text(CHALLENGE.replace("{raum}", raum).replace("{quellen}", quellen)
+        .replace("{anzahl}", str(anzahl)).replace("{titel}", titel).replace("{untertitel}", untertitel), encoding="utf-8")
 lehrerseiten = []
 for kk, (kname, kdatei) in KLASSEN.items():
     for woche, titel in WOCHEN.items():
