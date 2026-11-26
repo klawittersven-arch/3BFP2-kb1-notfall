@@ -11,6 +11,7 @@ const SEITEN = {
   kb1ab02: KB1 + 'kb1ab02.html', kb1ab03: KB1 + 'kb1ab03.html', kb1ab04: KB1 + 'kb1ab04.html',
   kb1ab05: KB1 + 'kb1ab05.html', kb1ab06: KB1 + 'kb1ab06.html', kb1ab07: KB1 + 'kb1ab07.html',
   kb1ab08: KB1 + 'kb1ab08.html', kb1ab09: KB1 + 'kb1ab09.html', kb1ab10: KB1 + 'kb1ab10.html',
+  kb1ab11: KB1 + 'kb1ab11.html', kb1ab12: KB1 + 'kb1ab12.html', kb1ab13: KB1 + 'kb1ab13.html',
   kb2ab02: KB2 + 'kb2ab02.html', kb2ab03: KB2 + 'kb2ab03.html'
 };
 const AUS = process.argv[2] || path.join(__dirname, '..', 'qr');

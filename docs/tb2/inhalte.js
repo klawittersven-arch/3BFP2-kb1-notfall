@@ -434,5 +434,136 @@ var INHALTE = {
     ],
     merksatz: '**DMS:** **D**urchblutung (Farbe, Temperatur, Puls, Nagelbettprobe), **M**otorik (Finger/Zehen bewegen), **S**ensibilität (Berührung spüren, Kribbeln?) – immer **im Seitenvergleich** und **dokumentieren**. **Alarmzeichen** (blass, bläulich, kalt, Kribbeln, Taubheit, kaum Bewegung, zunehmende Schmerzen, Schwellung): **sofort melden** – nicht abwarten!',
     danach: 'Prüfen Sie jetzt noch einmal Aufgabe 1 auf dem Arbeitsblatt!'
+  },
+  kb1ab11: {
+    ab: 'Schenkelhalsfraktur und Komplikationen nach Hüft-TEP',
+    raum: 'kb1w4',
+    titel: 'Übung: Welche Komplikation?',
+    anweisung: 'Alle Personen haben eine **Hüft-TEP**. Welche **Komplikation** zeigt die Beobachtung?',
+    knoepfe: [
+      { kuerzel: 'LUX', text: 'Luxation' },
+      { kuerzel: 'THR', text: 'Thrombose' },
+      { kuerzel: 'LE', text: 'Lungenembolie' },
+      { kuerzel: 'NB', text: 'Nachblutung' },
+      { kuerzel: 'INF', text: 'Wundinfektion' }
+    ],
+    hilfe: {
+      titel: 'Hilfe: Die wichtigsten Zeichen',
+      punkte: [
+        '**Luxation:** plötzlicher starker Schmerz, Bein verkürzt und verdreht, kann nicht bewegt werden',
+        '**Thrombose:** Wade/Bein dick, warm, rot-bläulich, ziehender Schmerz',
+        '**Lungenembolie:** plötzlich Atemnot, Brustschmerz, schneller Puls, blaue Lippen',
+        '**Nachblutung:** Verband durchgeblutet, Schockzeichen',
+        '**Wundinfektion:** Wunde rot, warm, geschwollen, Fieber'
+      ]
+    },
+    mindestens: 8,
+    karten: [
+      { nummer: 1, text: 'Herr Ott bückt sich weit nach vorne. Plötzlich schreit er auf, sein Bein ist verkürzt und verdreht.', richtig: 'LUX',
+        erklaerung: '**Luxation:** Die Hüfte wurde über 90° gebeugt – der künstliche Hüftkopf ist aus der Pfanne gesprungen. Nicht bewegen, sofort Ärztin.', tipp: 'Was passiert, wenn man sich mit einer neuen Hüfte zu weit bückt?' },
+      { nummer: 2, text: 'Die rechte Wade ist seit gestern dick und tut beim Auftreten weh.', richtig: 'THR',
+        erklaerung: '**Thrombose:** dicke, schmerzhafte Wade – genau wie bei Frau Maler. Sofort melden!', tipp: 'Erinnern Sie sich an Frau Malers Wade.' },
+      { nummer: 3, text: 'Frau Seidel ringt plötzlich nach Luft, hat Schmerzen in der Brust, Puls 124/min.', richtig: 'LE',
+        erklaerung: '**Lungenembolie:** Notruf 112, Oberkörper hoch, nicht allein lassen.', tipp: 'Wo ist das Problem – im Bein oder in der Lunge?' },
+      { nummer: 4, text: 'Am Abend des OP-Tages ist der Verband durchgeblutet. Er ist blass, Puls 112/min.', richtig: 'NB',
+        erklaerung: '**Nachblutung:** Blut im Verband und Schockzeichen – sofort melden, Vitalzeichen überwachen.', tipp: 'Was sieht man am Verband?' },
+      { nummer: 5, text: 'Am 5. Tag ist die Wunde gerötet und warm. Temperatur 38,7 °C.', richtig: 'INF',
+        erklaerung: '**Wundinfektion:** Rötung, Wärme und Fieber – melden.', tipp: 'Rot, warm, Fieber – woran denken Sie?' },
+      { nummer: 6, text: 'Das Bein ist warm, geschwollen und rot-bläulich, es spannt.', richtig: 'THR',
+        erklaerung: '**Thrombose:** Schwellung, Überwärmung, Verfärbung, Spannungsgefühl.', tipp: 'Betrifft es das ganze Bein oder nur die Wunde?' },
+      { nummer: 7, text: 'Beim Umsetzen schlägt sie die Beine übereinander. Danach starker Schmerz in der Leiste, sie kann das Bein nicht bewegen.', richtig: 'LUX',
+        erklaerung: '**Luxation:** Überkreuzen der Beine ist nach Hüft-TEP verboten (Keilkissen!).', tipp: 'Welche Bewegung ist nach einer Hüft-TEP verboten?' },
+      { nummer: 8, text: 'Er ist unruhig, atmet sehr schnell und hat bläuliche Lippen. Vor zwei Tagen war seine Wade dick.', richtig: 'LE',
+        erklaerung: '**Lungenembolie:** Das Gerinnsel aus der Wade ist in die Lunge gewandert.', tipp: 'Was kann aus einer Thrombose werden?' },
+      { nummer: 9, text: 'In der Drainage ist in kurzer Zeit sehr viel Blut. Die Haut ist kalt und feucht.', richtig: 'NB',
+        erklaerung: '**Nachblutung** mit Schockzeichen – sofort melden.', tipp: 'Woher kommt das Blut?' },
+      { nummer: 10, text: 'Aus der Wunde tritt gelbliche Flüssigkeit aus, die Wundränder sind geschwollen.', richtig: 'INF',
+        erklaerung: '**Wundinfektion:** Eiter und Schwellung – melden, Verband nur keimfrei nach Anordnung wechseln.', tipp: 'Ist das Blut – oder etwas anderes?' }
+    ],
+    merksatz: '**Luxation** (Schmerz, Bein verkürzt/verdreht) · **Thrombose** (Wade dick, warm, Schmerz) · **Lungenembolie** (plötzlich Atemnot, Brustschmerz) · **Nachblutung** (Verband durchgeblutet, Schock) · **Wundinfektion** (rot, warm, Fieber). **Immer sofort melden.** Vorbeugen: Bewegungsregeln (nicht über 90° beugen, Beine nicht überkreuzen) – und **bewegen statt liegen**.',
+    danach: 'Prüfen Sie jetzt noch einmal Aufgabe 2 auf dem Arbeitsblatt!'
+  },
+  kb1ab12: {
+    ab: 'Fast-Track nach Hüft-TEP',
+    raum: 'kb1w4',
+    titel: 'Übung: Fast-Track oder nicht?',
+    anweisung: 'Passt die Situation zur **Fast-Track-Rehabilitation**?',
+    knoepfe: [
+      { kuerzel: 'J', text: 'passt zu Fast-Track' },
+      { kuerzel: 'N', text: 'passt nicht' }
+    ],
+    mindestens: 8,
+    karten: [
+      { nummer: 1, text: 'Herr Brandl steht schon am Abend des OP-Tages mit der Physiotherapeutin auf.', richtig: 'J',
+        erklaerung: '**Passt:** frühzeitige Mobilisation – schon am OP-Tag oder am 1. Tag.', tipp: 'Wie früh soll man aufstehen?' },
+      { nummer: 2, text: 'Frau Maler kommt wegen der Redon-Drainage zwei Tage nicht aus dem Bett.', richtig: 'N',
+        erklaerung: '**Passt nicht:** Fast-Track verzichtet möglichst auf Drainagen und mobilisiert früh.', tipp: 'Was sagt Fast-Track zu Schläuchen?' },
+      { nummer: 3, text: 'Vor der OP übt Frau Yilmaz das Gehen mit Unterarmgehstützen.', richtig: 'J',
+        erklaerung: '**Passt:** Aufklärung und Übung vor der OP – sie fühlt sich danach sicherer.', tipp: 'Hilft es, vorher zu üben?' },
+      { nummer: 4, text: 'Er bekommt erst ein Schmerzmittel, wenn er nach dem Gehen über starke Schmerzen klagt.', richtig: 'N',
+        erklaerung: '**Passt nicht:** Schmerzmittel nach Anordnung **vor** der Mobilisation geben.', tipp: 'Wann ist das Schmerzmittel am hilfreichsten?' },
+      { nummer: 5, text: 'Die Pflegende erfasst den Schmerz regelmäßig mit einer Skala von 0 bis 10.', richtig: 'J',
+        erklaerung: '**Passt:** effektives Schmerzmanagement beginnt mit der Schmerzerfassung.', tipp: 'Wie misst man Schmerz?' },
+      { nummer: 6, text: 'Nach der OP darf er drei Tage nichts essen.', richtig: 'N',
+        erklaerung: '**Passt nicht:** schneller Kostaufbau – bald wieder trinken und essen.', tipp: 'Woher kommt die Kraft für die Mobilisation?' },
+      { nummer: 7, text: 'Ärztin, Pflege und Physiotherapie arbeiten nach einem gemeinsamen Plan.', richtig: 'J',
+        erklaerung: '**Passt:** Fast-Track ist Teamarbeit mit festen Abläufen.', tipp: 'Wer gehört zum Team?' },
+      { nummer: 8, text: 'Er bekommt einen Blasenkatheter für eine Woche, damit er nicht aufstehen muss.', richtig: 'N',
+        erklaerung: '**Passt nicht:** möglichst keine Sonden und Katheter – sie hindern am Aufstehen und erhöhen das Infektionsrisiko.', tipp: 'Soll er liegen bleiben?' },
+      { nummer: 9, text: 'Die Pflegende nimmt Herrn Brandls Angst ernst, erklärt ihm die Bewegungsregeln und begleitet ihn beim Aufstehen.', richtig: 'J',
+        erklaerung: '**Passt:** Aufklärung und Begleitung nehmen die Angst – so klappt die Mobilisation.', tipp: 'Was hilft gegen Angst?' },
+      { nummer: 10, text: 'Seit der Entlassung ins Pflegeheim bleibt sie meist im Bett – „sie soll sich schonen“.', richtig: 'N',
+        erklaerung: '**Passt nicht:** Die Mobilisation muss nach der Entlassung weitergehen – sonst droht eine Thrombose.', tipp: 'Endet Fast-Track an der Kliniktür?' }
+    ],
+    merksatz: '**Fast-Track-Rehabilitation:** angemessene **Aufklärung**, effektives **Schmerzmanagement**, **frühzeitige Mobilisation**, **schneller Kostaufbau**, möglichst **keine Sonden und Drainagen**. Nutzen: weniger Thrombose, Pneumonie, Dekubitus und Muskelabbau – schneller wieder selbstständig.',
+    danach: 'Prüfen Sie jetzt noch einmal Aufgabe 1 auf dem Arbeitsblatt!'
+  },
+  kb1ab13: {
+    ab: 'Übung im Examensstil',
+    raum: 'kb1w4',
+    titel: 'Übung: Welcher Operator?',
+    anweisung: 'Lesen Sie die Antwort einer Auszubildenden. **Welchen Operator** erfüllt sie am besten?',
+    knoepfe: [
+      { kuerzel: 'NE', text: 'nennen' },
+      { kuerzel: 'BS', text: 'beschreiben' },
+      { kuerzel: 'ER', text: 'erläutern' },
+      { kuerzel: 'BG', text: 'begründen' },
+      { kuerzel: 'BU', text: 'beurteilen' }
+    ],
+    hilfe: {
+      titel: 'Hilfe: Die Operatoren',
+      punkte: [
+        '**nennen:** aufzählen, ohne Erklärung',
+        '**beschreiben:** geordnet in Fachsprache darstellen (z. B. Schritte)',
+        '**erläutern:** erklären und mit einem Beispiel aus dem Fall zeigen',
+        '**begründen:** mit Argumenten stützen („…, weil …“)',
+        '**beurteilen:** prüfen, ob etwas richtig ist, und Stellung nehmen'
+      ]
+    },
+    mindestens: 8,
+    karten: [
+      { nummer: 1, text: '„Luxation, Thrombose, Wundinfektion.“', richtig: 'NE',
+        erklaerung: '**Nennen:** nur aufzählen – keine Erklärung nötig.', tipp: 'Gibt es eine Erklärung?' },
+      { nummer: 2, text: '„Zuerst rufe ich Hilfe. Dann lagere ich den Oberkörper hoch. Danach kontrolliere ich Puls und Atmung.“', richtig: 'BS',
+        erklaerung: '**Beschreiben:** geordnet, Schritt für Schritt, in Fachsprache.', tipp: 'Es ist eine Reihenfolge.' },
+      { nummer: 3, text: '„Ein Gerinnsel kann sich aus der Beinvene lösen und in die Lunge wandern. So war es wohl bei Frau Maler: erst die dicke Wade, dann um 11 Uhr die Atemnot.“', richtig: 'ER',
+        erklaerung: '**Erläutern:** Zusammenhang erklären **und** am Fall zeigen.', tipp: 'Gibt es eine Erklärung und ein Beispiel aus dem Fall?' },
+      { nummer: 4, text: '„Ich lagere den Oberkörper hoch, weil Atemnot das Leitsymptom ist.“', richtig: 'BG',
+        erklaerung: '**Begründen:** Maßnahme + „weil“ + Argument.', tipp: 'Achten Sie auf das Wort „weil“.' },
+      { nummer: 5, text: '„Die Aussage der Kollegin ist falsch. Eine dicke Wade nach einer OP ist nicht normal, sondern ein Alarmzeichen. Ich melde es sofort.“', richtig: 'BU',
+        erklaerung: '**Beurteilen:** Stellung nehmen (falsch), begründen und eine Folgerung ziehen.', tipp: 'Wird hier eine Aussage bewertet?' },
+      { nummer: 6, text: '„Aufklärung, Schmerzmanagement, frühe Mobilisation.“', richtig: 'NE',
+        erklaerung: '**Nennen:** drei Fast-Track-Maßnahmen, ohne Erklärung.', tipp: 'Ganze Sätze oder nur Stichworte?' },
+      { nummer: 7, text: '„Ich spreche Frau Maler an, prüfe Bewusstsein und Atmung, setze den Notruf ab und beginne mit der Reanimation.“', richtig: 'BS',
+        erklaerung: '**Beschreiben:** das Vorgehen geordnet darstellen.', tipp: 'Wird erklärt – oder nur der Ablauf dargestellt?' },
+      { nummer: 8, text: '„Frühe Mobilisation beugt einer Thrombose vor: Die Muskelpumpe bringt das Blut zurück zum Herzen. Bei Herrn Brandl heißt das: schon heute an die Bettkante.“', richtig: 'ER',
+        erklaerung: '**Erläutern:** Wirkung erklären und auf den Fall übertragen.', tipp: 'Erklärung plus Fallbeispiel?' },
+      { nummer: 9, text: '„Herr Keller ist im Schock, weil sein Puls 124/min beträgt und seine Haut blass und kaltschweißig ist.“', richtig: 'BG',
+        erklaerung: '**Begründen:** Behauptung (Schock) mit Befunden stützen.', tipp: 'Wird eine Behauptung mit Befunden gestützt?' },
+      { nummer: 10, text: '„Herrn Hartmanns Satz stimmt nicht. Liegen schützt nicht vor einer Luxation – die Bewegungsregeln tun das. Liegen erhöht das Thromboserisiko.“', richtig: 'BU',
+        erklaerung: '**Beurteilen:** prüfen, ob die Aussage stimmt, und begründet Stellung nehmen.', tipp: 'Wird eine Aussage geprüft?' }
+    ],
+    merksatz: '**Nennen** = aufzählen · **Beschreiben** = geordnet darstellen · **Erläutern** = erklären + Beispiel aus dem Fall · **Begründen** = „…, weil …“ · **Beurteilen** = prüfen und begründet Stellung nehmen. Mengenangaben beachten und immer mit **Fallbezug** antworten.',
+    danach: 'Prüfen Sie jetzt noch einmal Ihre Antworten auf dem Arbeitsblatt: Passt jede Antwort zum Operator?'
   }
 };
