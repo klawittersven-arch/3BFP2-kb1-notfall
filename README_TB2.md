@@ -29,7 +29,7 @@ auf die Klassenarbeit vor – der Kasten darf also auch gelöscht werden.
 
 | Arbeitsblatt | Übung | Adresse (QR-Code in `qr/`) |
 |---|---|---|
-| Starke Blutung stillen | Blutung stoppen – was ist richtig? | https://klawittersven-arch.github.io/3BFP2-kb1-notfall/tb2/kb1ab05.html |
+| Starke Blutung stillen | **Notfall-Szene** „Notfall in der Werkstatt“ (siehe unten) | https://klawittersven-arch.github.io/3BFP2-kb1-notfall/tb2/kb1ab05.html |
 | Offene Fraktur und Amputationsverletzung | Offene Fraktur und Amputat | …/tb2/kb1ab06.html |
 | Vom Auffinden bis zum Eintreffen des Rettungsdienstes | A, B, C, D oder E? | …/tb2/kb1ab07.html |
 
@@ -60,6 +60,24 @@ auf die Klassenarbeit vor – der Kasten darf also auch gelöscht werden.
 **Lehrerseiten Woche 4:**
 - 3BFP2/1: https://klawittersven-arch.github.io/3BFP2-kb1-notfall/tb2/lehrer-3bfp2-1-kb1w4.html
 - 3BFP2/2: https://klawittersven-arch.github.io/3BFP2-kb1-notfall/tb2/lehrer-3bfp2-2-kb1w4.html
+
+## Notfall-Szene „Notfall in der Werkstatt“ (kb1ab05)
+
+Ersetzt seit dem 28.11.2026 die Richtig-falsch-Karten zur Blutstillung (gleiche Adresse, gleicher QR-Code, gleicher Raum `kb1w2`).
+Eingesetzt mit dem AB „Starke Blutung stillen“ der **alten Planung** (KB I Woche 3) – Vorbereitung auf KA 2, Aufgabe 5.1.
+
+- **Ablauf:** 3 Fälle nacheinander – Herr Weber, Kreissäge, Unterarm (9 Entscheidungen in der Reihenfolge NA DANN) ·
+  Frau Novak, Oberschenkel (2) · Herr Petrović, Glassplitter (1). Je Entscheidung 3 Antworten in zufälliger Reihenfolge;
+  jede falsche Antwort ist eine typische Fehlvorstellung mit Erklärung. Am Ende leuchtet das Merkwort **NA DANN** auf.
+- **Herzen:** 2 je Fall. Zwei Fehler → „Zusammenbruch“, der Fall beginnt von vorn (Lehrerseite: ↺).
+- **Blutverlust-Balken:** wächst nur, solange eine Entscheidung offen ist (nicht beim Lesen des Falls und der Erklärungen),
+  Geschwindigkeit je Entscheidung (`blutung` in `inhalte.js`). Ist er voll → Zusammenbruch; danach kann man den Fall
+  **ohne Zeitdruck** wiederholen (für langsame Leserinnen und Leser).
+- **Lehrerseite** `lehrer-3bfp2-…-kb1w2.html`: Zahlen = Entscheidungen (12), „Oft falsch“ zeigt die Entscheidung mit ihren drei Antworten.
+- **Dateien:** `docs/tb2/kb1ab05.html` (eigene Seite, wird von `werkzeuge/tb2_seiten.py` nicht überschrieben), `szene.js`, `szene.css`,
+  Bilder `docs/tb2/bilder/blutung/*.webp` (480 × 480 px, zusammen ca. 300 KB), Texte in `inhalte.js` → `kb1ab05`.
+- **Bewusst weggelassen:** „Arm hochhalten“ (steht nicht auf dem AB, ERC 2025 empfiehlt es nicht mehr, KA fragt es nicht ab).
+- **Test:** `node tests/szene.test.js`
 
 ## Neue Woche ergänzen
 

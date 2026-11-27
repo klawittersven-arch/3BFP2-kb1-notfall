@@ -10,7 +10,7 @@ const fs = require('fs');
 const path = require('path');
 
 const DOCS = path.join(__dirname, '..', 'docs', 'tb2');
-const TYPEN = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.png': 'image/png' };
+const TYPEN = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.png': 'image/png', '.webp': 'image/webp' };
 const SERVER = 'https://fortschritt.test';
 const IDS = ['kb1ab02', 'kb1ab03', 'kb1ab04', 'kb1ab05', 'kb1ab06', 'kb1ab07', 'kb1ab08', 'kb1ab09', 'kb1ab10', 'kb1ab11', 'kb1ab12', 'kb1ab13'];
 
@@ -80,6 +80,22 @@ function webserver() {
       await page.check('input[name=klasse][value=k2]');
       await page.click('#name-form button[type=submit]');
     }
+    if (U.art === 'szene') {
+      // Notfall-Szene (szene.js): alle Fälle mit den richtigen Antworten durchspielen (ausführlicher Test: tests/szene.test.js)
+      await page.waitForSelector('#sz-start');
+      pruefe((await page.locator('#kopfzeile').innerText()).startsWith('KB I – Notfallsituationen'), `${id}: Kopfzeile KB I`);
+      await page.click('#sz-start');
+      for (let f = 0; f < U.faelle.length; f++) {
+        await page.click('#sz-los');
+        for (const k of U.karten.filter((x) => x.fall === f + 1)) {
+          await page.click(`.sz-antwort[data-kuerzel="${k.richtig}"]`);
+          await page.click('#sz-naechste');
+        }
+        await page.click('#sz-weiter');
+      }
+      await page.waitForSelector('.sz-nadann');
+      pruefe((await page.locator('.sz-buehne').innerText()).includes('NA DANN'), `${id}: Szene abgeschlossen + Merkwort`);
+    } else {
     await page.waitForSelector('.karte');
     pruefe((await page.locator('#kopfzeile').innerText()).startsWith('KB I – Notfallsituationen'), `${id}: Kopfzeile KB I`);
     const karten = page.locator('.karte');
@@ -89,6 +105,7 @@ function webserver() {
     }
     await page.waitForSelector('#merksatz-bereich:not([hidden])');
     pruefe((await page.locator('#merksatz-bereich').innerText()).includes('abgeschlossen'), `${id}: abgeschlossen + Merksatz`);
+    }
     const breit = await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1);
     pruefe(breit, `${id}: kein waagerechtes Scrollen bei 360 px`);
     await page.waitForTimeout(300);

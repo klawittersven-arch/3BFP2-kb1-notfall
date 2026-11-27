@@ -73,7 +73,11 @@ LEHRER = """<!DOCTYPE html>
 </html>
 """
 
+# Notfall-Szenen (art: 'szene' in inhalte.js) haben eine eigene, von Hand gepflegte Seite mit szene.js – nicht überschreiben.
+SZENEN = {"kb1ab05"}
 for i in IDS:
+    if i in SZENEN:
+        continue
     (DOCS / f"{i}.html").write_text(VORLAGE.replace("{id}", i), encoding="utf-8")
 lehrerseiten = []
 for kk, (kname, kdatei) in KLASSEN.items():
