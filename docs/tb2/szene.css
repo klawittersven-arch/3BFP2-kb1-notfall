@@ -1,0 +1,76 @@
+/* Notfall-Szene (szene.js) – ergänzt style.css */
+:root { --blut: #B3261E; --blut-hell: #FBE9E7; }
+
+/* ---------- Leiste: Herzen, Stand, Blutverlust ---------- */
+.sz-leiste {
+  position: sticky; top: 0; z-index: 5;
+  padding: 8px 16px 10px; background: #fff; border-bottom: 1px solid var(--rand);
+}
+.sz-leiste[hidden] { display: none; }
+.sz-zeile { display: flex; align-items: center; justify-content: space-between; gap: 10px; max-width: 688px; margin: 0 auto; }
+.sz-herzen { font-size: 24px; letter-spacing: 2px; white-space: nowrap; }
+.sz-herz-weg { opacity: .55; }
+.sz-wackeln { display: inline-block; animation: sz-wackeln .5s ease-in-out 2; }
+@keyframes sz-wackeln { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+.sz-stand { font-size: 15px; font-weight: 600; color: #3D5257; text-align: right; }
+.sz-blut { display: flex; align-items: center; gap: 10px; max-width: 688px; margin: 6px auto 0; }
+.sz-blut-text { font-size: 15px; font-weight: 700; color: var(--blut); white-space: nowrap; min-width: 92px; }
+.sz-blut-spur { flex: 1; height: 14px; border-radius: 7px; background: var(--blut-hell); border: 1px solid #E3B9B4; overflow: hidden; }
+.sz-blut-balken { display: block; height: 100%; width: 0; background: var(--blut); transition: width .2s linear; }
+.sz-blut-balken.sz-kritisch { animation: sz-puls 1s ease-in-out infinite; }
+@keyframes sz-puls { 50% { opacity: .55; } }
+.sz-gestoppt .sz-blut-text { color: var(--gruen); }
+.sz-gestoppt .sz-blut-balken { background: #8A9599; }
+.sz-ohne-zeit .sz-blut-balken { background: #C98B86; }
+
+/* ---------- Bühne ---------- */
+.sz-buehne { margin-top: 4px; }
+.sz-bild {
+  display: block; width: 100%; max-width: min(100%, 40vh); height: auto; aspect-ratio: 1 / 1;
+  margin: 0 auto 10px; border-radius: 12px; border: 2px solid var(--rand); background: var(--hellblau);
+}
+.sz-bild-klein { max-width: min(100%, 30vh); }
+.sz-falltitel { margin: 4px 0 10px; font-size: 21px; color: var(--dunkelpetrol); }
+.sz-text { margin: 0 0 12px; }
+.sz-frage { font-size: 18px; }
+.sz-antworten { display: grid; gap: 8px; grid-template-columns: 1fr; margin: 0 0 6px; }
+.sz-antwort { justify-content: flex-start; text-align: left; padding: 10px 12px; min-height: 54px; }
+.sz-antwort .symbol { min-width: 20px; }
+.sz-antworten .sz-antwort.ist-richtig ~ .sz-antwort:not(.ist-falsch),
+.sz-antworten .sz-antwort:disabled:not(.ist-richtig):not(.ist-falsch) { opacity: .75; }
+.sz-knopf { display: flex; width: 100%; margin: 12px 0 4px; font-size: 19px; }
+.sz-knopf.knopf-zweit { margin-top: 6px; }
+#sz-rm .rueckmeldung { margin-top: 10px; }
+
+.sz-regeln { margin: 0 0 14px; padding: 12px 14px; border-radius: 12px; background: var(--hellblau); border: 2px solid var(--petrol); }
+.sz-regeln h2 { margin: 0 0 6px; font-size: 20px; color: var(--dunkelpetrol); }
+.sz-regeln ul { margin: 0; padding-left: 20px; }
+.sz-regeln li { margin: 6px 0; }
+
+.sz-geschafft { margin: 0 0 10px; padding: 10px 14px; border-radius: 12px; background: var(--gruen-hell); border: 3px solid var(--gruen); }
+.sz-geschafft-titel { margin: 0; font-size: 21px; font-weight: 800; color: var(--gruen); }
+
+.sz-kollaps { margin: 0 0 12px; padding: 12px 14px; border-radius: 12px; background: var(--blut-hell); border: 3px solid var(--blut); }
+.sz-kollaps h2 { margin: 0 0 6px; font-size: 22px; color: var(--blut); }
+.sz-kollaps p { margin: 0 0 6px; }
+.sz-kollaps-warum { font-size: 17px; }
+.sz-durch { text-decoration: line-through; color: var(--bernstein); font-weight: 700; }
+
+/* ---------- Ergebnis: Merkwort NA DANN ---------- */
+.sz-merkwort { margin-top: 16px; }
+.sz-nadann { list-style: none; margin: 0 0 12px; padding: 0; }
+.sz-nadann li {
+  display: flex; align-items: flex-start; gap: 12px; margin: 0 0 8px;
+  opacity: 0; transform: translateX(-12px); animation: sz-rein .45s ease-out forwards; animation-delay: calc(var(--i) * .45s + .2s);
+}
+@keyframes sz-rein { to { opacity: 1; transform: none; } }
+.sz-b {
+  flex: 0 0 44px; height: 44px; line-height: 44px; text-align: center; border-radius: 10px;
+  background: var(--dunkelpetrol); color: #fff; font-size: 26px; font-weight: 800;
+}
+.sz-m { font-size: 16px; line-height: 1.35; }
+.sz-m strong { font-size: 18px; color: var(--dunkelpetrol); }
+@media (prefers-reduced-motion: reduce) {
+  .sz-nadann li { animation: none; opacity: 1; transform: none; }
+  .sz-wackeln, .sz-blut-balken.sz-kritisch { animation: none; }
+}

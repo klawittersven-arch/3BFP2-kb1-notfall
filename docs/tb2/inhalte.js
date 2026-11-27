@@ -14,6 +14,7 @@
      knoepfe     – Antwortknöpfe (kuerzel nur GROSSBUCHSTABEN, höchstens 6 Zeichen)
      mindestens  – so viele Karten müssen beim ERSTEN Versuch richtig sein
      karten      – nummer, text, richtig, erklaerung, tipp
+   Ausnahme kb1ab05: Notfall-Szene (art: 'szene', Programm szene.js) – Aufbau direkt beim Eintrag beschrieben.
    Fachbegriffe nach Pflegias Band 2 (S. 793–794, 801–803, 811, 822, 825, 831).
    ========================================================================== */
 
@@ -182,42 +183,240 @@ var INHALTE = {
   },
 
   /* ========================================================================
-     Woche 2 · Starke Blutung stillen
+     Woche 2 · Starke Blutung stillen – Notfall-Szene „Notfall in der Werkstatt“ (art: 'szene', siehe szene.js)
      ======================================================================== */
   kb1ab05: {
+    // Notfall-Szene statt Richtig-falsch-Karten (Programm: szene.js, Gestaltung: szene.css).
+    // Jede „Karte“ ist eine Entscheidung mit eigenen Antworten (kuerzel: GROSSBUCHSTABEN, höchstens 6 Zeichen).
+    // warum = Erklärung, wenn diese falsche Antwort gewählt wird · erklaerung = Erklärung nach der richtigen Antwort
+    // blutung = so viele Prozent Blutverlust pro Sekunde, solange die Entscheidung offen ist · stopp = danach steht die Blutung
+    art: 'szene',
     ab: 'Starke Blutung stillen',
     raum: 'kb1w2',
-    titel: 'Übung: Blutung stoppen – was ist richtig?',
-    anweisung: 'Ein Mitarbeiter hat sich tief in den Unterarm geschnitten, hellrotes Blut spritzt. Ist die Maßnahme **richtig** oder **falsch**?',
-    knoepfe: [
-      { kuerzel: 'R', text: 'richtig' },
-      { kuerzel: 'F', text: 'falsch' }
+    titel: 'Notfall in der Werkstatt',
+    anweisung: 'Sie kommen als Erste oder Erster zu einem Unfall. Entscheiden Sie richtig – **jede Sekunde zählt**.',
+    regeln: [
+      '**❤️❤️ Zwei Herzen:** Bei einem Fehler verlieren Sie ein Herz. Sind beide weg, bricht der Patient zusammen – der Fall beginnt von vorn.',
+      '**🩸 Blutverlust:** Der rote Balken wächst, solange Sie überlegen. Richtige Maßnahmen bremsen ihn. Ist er voll, bricht der Patient zusammen.',
+      'Die Zeit läuft erst, wenn Sie den Fall gelesen haben und auf **„Los“** tippen. Beim Lesen der Erklärungen steht sie still.'
     ],
-    mindestens: 8,
+    bilder: 'bilder/blutung/',
+    herzen: 2,
+    fehlerBlut: 10, // so viele Prozent Blutverlust kostet eine falsche Antwort
+    faelle: [
+      {
+        titel: 'Fall 1 · In der Werkstatt',
+        patient: 'Herr Weber',
+        bild: '01-start',
+        start: 5,
+        text: 'Sie hören einen Schrei aus der Werkstatt. **Die Kreissäge läuft noch.** Der Haustechniker Herr Weber sitzt am Boden und hält seinen linken Unterarm. **Hellrotes Blut spritzt** im Takt des Herzschlags. Sein Kollege Herr Aydin steht daneben und zittert.',
+        zusammenbruch: 'Herr Weber hat zu viel Blut verloren. Er wird bewusstlos. Der Rettungsdienst übernimmt.',
+        zusammenbruchBild: '11-schock',
+        ende: 'Der Rettungsdienst ist da. Sie übergeben: was passiert ist, was Sie getan haben und **seit wann das Tourniquet liegt**. Herr Weber kommt stabil in die Klinik.',
+        endeBild: '08-uebergabe'
+      },
+      {
+        titel: 'Fall 2 · Im Flur',
+        patient: 'Frau Novak',
+        bild: '13-flur',
+        start: 30,
+        text: 'Ein paar Tage später: Die Reinigungskraft Frau Novak ist in eine Glastür gestürzt. Aus ihrem **rechten Oberschenkel spritzt hellrotes Blut**. Eine Kollegin hat den Notruf abgesetzt und drückt auf die Wunde – **der Druck reicht nicht**. Sie haben das Tourniquet in der Hand.',
+        zusammenbruch: 'Frau Novak hat zu viel Blut verloren. Sie wird bewusstlos. Der Rettungsdienst übernimmt.',
+        zusammenbruchBild: '13-flur',
+        ende: 'Die Blutung steht. Sie notieren die Uhrzeit und bleiben bei Frau Novak, bis der Rettungsdienst kommt.',
+        endeBild: '14-oberschenkel'
+      },
+      {
+        titel: 'Fall 3 · In der Küche',
+        patient: 'Herr Petrović',
+        bild: '15-kueche',
+        start: 5,
+        text: 'In der Küche ist eine Glasschüssel zerbrochen. Bei der Küchenhilfe Herrn Petrović **steckt ein großer Glassplitter im Unterarm**. Es blutet. Er will den Splitter herausziehen.',
+        zusammenbruch: 'Jetzt blutet es stark aus der Wunde. Herr Petrović wird blass und schwindelig. Der Rettungsdienst übernimmt.',
+        zusammenbruchBild: '15-kueche',
+        ende: 'Herr Petrović ist versorgt. Der Splitter wird erst in der Klinik entfernt.',
+        endeBild: '16-splitter'
+      }
+    ],
     karten: [
-      { nummer: 1, text: 'Einmalhandschuhe anziehen und fest direkt auf die Wunde drücken.', richtig: 'R',
-        erklaerung: '**Richtig:** Eigenschutz – und Druck auf die Wunde ist die wichtigste Maßnahme.', tipp: 'Was stoppt eine Blutung am schnellsten?' },
-      { nummer: 2, text: 'Den verletzten Arm hochhalten.', richtig: 'R',
-        erklaerung: '**Richtig:** Hochhalten (Hochlagern) unterstützt die Blutstillung. Der Verletzte kann mithelfen.', tipp: 'Fließt Blut leichter nach oben oder nach unten?' },
-      { nummer: 3, text: 'Ein Messer, das in der Wunde steckt, schnell herausziehen.', richtig: 'F',
-        erklaerung: '**Falsch:** Fremdkörper **bleiben in der Wunde**. Abpolstern und festmachen – sonst kann es stärker bluten.', tipp: 'Was verschließt die Wunde gerade teilweise?' },
-      { nummer: 4, text: 'Druckverband: sterile Wundauflage, darauf ein Druckpolster, rundherum befestigen.', richtig: 'R',
-        erklaerung: '**Richtig:** So bleibt der Druck auf der Wunde, auch wenn die Hände frei werden.', tipp: 'Woraus besteht ein Druckverband?' },
-      { nummer: 5, text: 'Der Verband ist durchgeblutet: Verband abnehmen und neu wickeln.', richtig: 'F',
-        erklaerung: '**Falsch:** Den Verband **nicht abnehmen** – ein **zweites Druckpolster** darüber legen.', tipp: 'Was passiert mit der Wunde, wenn man den Verband abreißt?' },
-      { nummer: 6, text: 'Bei jeder starken Blutung sofort abbinden.', richtig: 'F',
-        erklaerung: '**Falsch:** Zuerst Druck und Druckverband. Abbinden nur, wenn das bei lebensbedrohlicher Blutung an Arm oder Bein nicht hilft.', tipp: 'Ist Abbinden die erste oder die letzte Möglichkeit?' },
-      { nummer: 7, text: 'Abbinden: 5–7 cm oberhalb der Wunde, nicht über einem Gelenk.', richtig: 'R',
-        erklaerung: '**Richtig:** Über einem Gelenk drückt die Abbindung die Schlagader nicht sicher ab.', tipp: 'Wo liegt die Schlagader gut zwischen Knochen und Haut?' },
-      { nummer: 8, text: 'Die Uhrzeit des Abbindens notieren.', richtig: 'R',
-        erklaerung: '**Richtig:** Die Klinik muss wissen, wie lange der Arm nicht durchblutet war.', tipp: 'Was muss die Ärztin später wissen?' },
-      { nummer: 9, text: 'Nach 10 Minuten die Abbindung kurz lösen, damit der Arm Blut bekommt.', richtig: 'F',
-        erklaerung: '**Falsch:** Eine Abbindung wird **nicht gelöst** – das macht nur die Ärztin oder der Notarzt.', tipp: 'Wer darf die Abbindung lösen?' },
-      { nummer: 10, text: 'Nach dem Druckverband die Nagelbettprobe an den Fingern machen.', richtig: 'R',
-        erklaerung: '**Richtig:** So prüfen Sie, ob der Verband zu fest ist. Der Nagel muss schnell wieder rosa werden.', tipp: 'Wie prüfen Sie die Durchblutung der Hand?' }
+      { nummer: 1, fall: 1, bild: '01-start', blutung: 1.0,
+        text: 'Die Säge läuft, Blut spritzt. **Was tun Sie zuerst?**',
+        antworten: [
+          { kuerzel: 'SICHER', text: 'Säge ausschalten, Handschuhe an, laut um Hilfe rufen' },
+          { kuerzel: 'DRUCK', text: 'Sofort mit bloßen Händen auf die Wunde drücken',
+            warum: 'Die Säge läuft noch, und Sie tragen keine Handschuhe. Wer sich selbst verletzt, kann nicht mehr helfen.' },
+          { kuerzel: 'MESSEN', text: 'Zuerst Puls und Blutdruck messen',
+            warum: 'Das kostet wertvolle Zeit – Herr Weber verliert weiter Blut. Erst die Gefahr beseitigen, dann die Blutung stoppen.' }
+        ],
+        richtig: 'SICHER',
+        erklaerung: '**Nicht selbst verletzen:** Säge aus, Stecker raus, Einmalhandschuhe an. Sie rufen laut: „Herr Aydin, rufen Sie die 112!“',
+        bildDanach: '02-not-aus' },
+      { nummer: 2, fall: 1, bild: '09-schmerz', blutung: 1.0,
+        text: 'Die Säge ist aus. Blut spritzt weiter aus dem Unterarm. **Was tun Sie jetzt?**',
+        antworten: [
+          { kuerzel: 'DRUCK', text: 'Sofort fest auf die Wunde drücken' },
+          { kuerzel: 'HOLEN', text: 'Erst den Verbandkasten holen gehen',
+            warum: 'Dann blutet Herr Weber weiter – und er ist allein. Drücken Sie sofort, notfalls mit einem sauberen Tuch. Den Verbandkasten kann Herr Aydin holen.' },
+          { kuerzel: 'SPUELE', text: 'Die Wunde erst mit Wasser ausspülen',
+            warum: 'Das kostet Zeit und Blut. Bei einer starken Blutung zählt nur eins: sofort fest auf die Wunde drücken.' }
+        ],
+        richtig: 'DRUCK',
+        erklaerung: '**Auf die Wunde drücken:** Druck stoppt die Blutung am schnellsten – notfalls mit einem sauberen Tuch. Herr Weber bleibt sitzen, so kann er nicht stürzen. Herr Aydin bringt den Verbandkasten.',
+        bildDanach: '03-druck' },
+      { nummer: 3, fall: 1, bild: '03-druck', blutung: 0.3,
+        text: 'Sie drücken eine Kompresse auf die Wunde. Ihre Hände sollen wieder frei werden. **Wie legen Sie den Druckverband an?**',
+        antworten: [
+          { kuerzel: 'VERB', text: 'Wundauflage, Druckpolster darauf, fest rundherum wickeln' },
+          { kuerzel: 'PFLAST', text: 'Ein großes Pflaster aufkleben',
+            warum: 'Ein Pflaster drückt nicht auf die Blutung. Druckverband: sterile Wundauflage – darauf ein Druckpolster – fest rundherum (zirkulär) wickeln.' },
+          { kuerzel: 'LOCKER', text: 'Eine Binde ohne Polster locker wickeln',
+            warum: 'Ohne Druckpolster und locker gewickelt drückt der Verband nicht. Das Druckpolster liegt genau über der Wunde.' }
+        ],
+        richtig: 'VERB',
+        erklaerung: '**Druckverband:** Der Druck bleibt auf der Wunde, auch wenn Ihre Hände frei sind.',
+        bildDanach: '04-druckverband' },
+      { nummer: 4, fall: 1, bild: '04-druckverband', blutung: 0.3,
+        text: 'Der Druckverband sitzt. **Was prüfen Sie jetzt?**',
+        antworten: [
+          { kuerzel: 'NAGEL', text: 'Nagelbettprobe: Wird der Fingernagel wieder rosa?' },
+          { kuerzel: 'RR', text: 'Den Blutdruck am verletzten Arm messen',
+            warum: 'Die Manschette würde den verletzten Arm zusätzlich abdrücken. Prüfen Sie mit der Nagelbettprobe, ob der Verband zu fest ist.' },
+          { kuerzel: 'OFFEN', text: 'Den Verband kurz öffnen und nachsehen',
+            warum: 'Nicht öffnen – dann blutet es sofort wieder. Prüfen Sie mit der Nagelbettprobe, ob der Verband zu fest ist.' }
+        ],
+        richtig: 'NAGEL',
+        erklaerung: '**Nagelbettprobe:** Sie drücken kurz auf einen Fingernagel. Wird er in unter 2 Sekunden wieder rosa (Rekapillarisierungszeit), ist der Verband nicht zu fest.' },
+      { nummer: 5, fall: 1, bild: '10-blass', blutung: 0.5,
+        text: 'Kurz darauf ist der Verband **rot durchgeblutet**. Herr Weber wird blass. **Was tun Sie?**',
+        antworten: [
+          { kuerzel: 'ZWEIT', text: 'Zweites Druckpolster darüber, ersten Verband lassen' },
+          { kuerzel: 'NEU', text: 'Den Verband abnehmen und neu wickeln',
+            warum: 'Beim Abnehmen reißt die Wunde wieder auf – es blutet noch stärker. Den ersten Verband nie abnehmen, ein zweites Druckpolster kommt darüber.' },
+          { kuerzel: 'WARTEN', text: 'Abwarten, bis der Rettungsdienst kommt',
+            warum: 'Herr Weber verliert weiter Blut. Handeln Sie jetzt: ein zweites Druckpolster fest darüber.' }
+        ],
+        richtig: 'ZWEIT',
+        erklaerung: 'Der erste Verband bleibt drauf. Ein **zweites Druckpolster** kommt fest darüber.' },
+      { nummer: 6, fall: 1, bild: '10-blass', blutung: 0.6,
+        text: 'Auch das zweite Polster wird sofort rot. Blut läuft am Arm herunter. **Was jetzt?**',
+        antworten: [
+          { kuerzel: 'TQ', text: 'Abbinden: ein Tourniquet anlegen' },
+          { kuerzel: 'POLST', text: 'Ein drittes und viertes Polster wickeln',
+            warum: 'Druck reicht hier nicht. Bei einer lebensbedrohlichen Blutung an Arm oder Bein binden Sie ab – so früh wie möglich.' },
+          { kuerzel: 'KUEHL', text: 'Den Arm mit Eis kühlen',
+            warum: 'Kühlen stoppt keine spritzende Blutung. Wenn Druck nicht reicht: ein Tourniquet anlegen.' }
+        ],
+        richtig: 'TQ',
+        erklaerung: '**Abbinden** nicht bei jeder Blutung – aber wenn Druck nicht reicht und die Blutung an Arm oder Bein lebensbedrohlich ist: **so früh wie möglich**.' },
+      { nummer: 7, fall: 1, bild: '04-druckverband', blutung: 0.6, stopp: true,
+        text: 'Sie holen das Tourniquet aus dem Notfallkoffer. **Wo legen Sie es an?**',
+        antworten: [
+          { kuerzel: 'OBEN', text: '5–7 cm oberhalb der Wunde, nicht auf einem Gelenk' },
+          { kuerzel: 'GELENK', text: 'Direkt auf den Ellenbogen',
+            warum: 'Auf einem Gelenk drückt das Tourniquet die Schlagader nicht zu. Es kommt 5–7 cm oberhalb der Wunde, nicht auf ein Gelenk.' },
+          { kuerzel: 'WUNDE', text: 'Direkt auf die Wunde',
+            warum: 'Das Tourniquet muss zwischen Wunde und Herz liegen: 5–7 cm oberhalb der Wunde, nicht auf einem Gelenk.' }
+        ],
+        richtig: 'OBEN',
+        erklaerung: 'Sie ziehen es fest, **bis die Blutung steht**. Am Handgelenk ist dann kein Puls mehr zu tasten – so soll es sein.',
+        bildDanach: '05-tourniquet' },
+      { nummer: 8, fall: 1, bild: '05-tourniquet', blutung: 0, zusammenbruchBild: '12-bewusstlos',
+        text: 'Die Blutung steht. Herr Weber stöhnt: „Das tut so weh! Machen Sie es lockerer!“ **Was tun Sie?**',
+        antworten: [
+          { kuerzel: 'FEST', text: 'Fest lassen, Uhrzeit notieren, ihn beruhigen' },
+          { kuerzel: 'LOCKER', text: 'Das Tourniquet ein bisschen lockern',
+            warum: 'Dann blutet es sofort weiter. Ein Tourniquet tut sehr weh – das heißt nicht, dass es falsch sitzt. Es wird nicht gelockert.' },
+          { kuerzel: 'ZEHN', text: 'Nach 10 Minuten kurz lockern',
+            warum: 'Ein Tourniquet wird nicht gelockert – das macht erst die Klinik. Notieren Sie die Uhrzeit.' }
+        ],
+        richtig: 'FEST',
+        erklaerung: 'Ein Tourniquet tut sehr weh – das heißt nicht, dass es falsch sitzt. **Notieren:** Die Uhrzeit kommt aufs Etikett. Die Klinik muss wissen, wie lange der Arm ohne Blut war.',
+        bildDanach: '06-uhrzeit' },
+      { nummer: 9, fall: 1, bild: '11-schock', blutung: 0, zusammenbruchBild: '12-bewusstlos',
+        text: 'Herr Weber ist **sehr blass, kalt und schweißig**. Er hat große Angst. **Was tun Sie?**',
+        antworten: [
+          { kuerzel: 'BLEIB', text: 'Bei ihm bleiben, zudecken, beruhigen, beobachten' },
+          { kuerzel: 'TRINK', text: 'Ihm schnell ein Glas Wasser holen',
+            warum: 'Sie lassen ihn allein – und im Schock soll er nichts trinken. Bleiben Sie bei ihm, decken Sie ihn zu, beruhigen und beobachten Sie ihn.' },
+          { kuerzel: 'TUER', text: 'Zum Eingang laufen, den Rettungsdienst holen',
+            warum: 'Lassen Sie ihn nicht allein – es droht ein Schock. Den Rettungsdienst kann Herr Aydin am Eingang abholen.' }
+        ],
+        richtig: 'BLEIB',
+        erklaerung: '**Nicht allein lassen:** Das sind Schockzeichen. Sie bleiben bei ihm, decken ihn mit der Rettungsdecke zu, sprechen ruhig mit ihm und beobachten ihn.',
+        bildDanach: '07-rettungsdecke' },
+      { nummer: 10, fall: 2, bild: '13-flur', blutung: 1.0,
+        text: 'Frau Novak blutet stark aus dem rechten Oberschenkel. **Wo legen Sie das Tourniquet an?**',
+        antworten: [
+          { kuerzel: 'OBEN', text: 'Am Oberschenkel, 5–7 cm oberhalb der Wunde' },
+          { kuerzel: 'KNIE', text: 'Direkt auf das Knie',
+            warum: 'Auf einem Gelenk wirkt das Tourniquet nicht. Die Wunde ist am Oberschenkel – das Tourniquet kommt 5–7 cm oberhalb der Wunde.' },
+          { kuerzel: 'UNTEN', text: 'Am Unterschenkel, unterhalb der Wunde',
+            warum: 'Unterhalb der Wunde stoppt es kein Blut. Das Tourniquet liegt immer zwischen Wunde und Herz, also oberhalb der Wunde.' }
+        ],
+        richtig: 'OBEN',
+        erklaerung: '5–7 cm oberhalb der Wunde, nicht auf einem Gelenk – das gilt am Arm und am Bein.',
+        bildDanach: '14-oberschenkel' },
+      { nummer: 11, fall: 2, bild: '14-oberschenkel', blutung: 1.0, stopp: true,
+        text: 'Das Tourniquet liegt an der richtigen Stelle. **Wie fest ziehen Sie es zu?**',
+        antworten: [
+          { kuerzel: 'STEHT', text: 'So fest, bis die Blutung steht' },
+          { kuerzel: 'PULS', text: 'Nur so fest, dass der Puls am Fuß bleibt',
+            warum: 'Dann fließt noch Blut ins Bein – und aus der Wunde. Ziehen Sie fest, bis die Blutung steht. Kein Puls am Fuß ist dann richtig.' },
+          { kuerzel: 'SANFT', text: 'Nur leicht, damit es nicht wehtut',
+            warum: 'Ein lockeres Tourniquet stoppt die Blutung nicht. Es tut weh, wenn es richtig sitzt – trotzdem fest zuziehen.' }
+        ],
+        richtig: 'STEHT',
+        erklaerung: 'Fest zuziehen, **bis die Blutung steht**. Dann die Uhrzeit notieren und das Tourniquet nicht mehr lockern.' },
+      { nummer: 12, fall: 3, bild: '15-kueche', blutung: 0.3, stopp: true,
+        text: 'Ein Glassplitter steckt im Unterarm. **Was machen Sie mit dem Splitter?**',
+        antworten: [
+          { kuerzel: 'DRIN', text: 'Drinlassen, rundherum abpolstern, festmachen' },
+          { kuerzel: 'RAUS', text: 'Den Splitter vorsichtig herausziehen',
+            warum: 'Der Splitter verschließt die Wunde gerade zum Teil. Ziehen Sie ihn heraus, kann es stark bluten. Er bleibt drin.' },
+          { kuerzel: 'DRUCK', text: 'Fest direkt auf den Splitter drücken',
+            warum: 'Dann drücken Sie den Splitter tiefer hinein. Polstern Sie rund um den Splitter ab – nicht auf ihn drücken.' }
+        ],
+        richtig: 'DRIN',
+        erklaerung: 'Ein **Fremdkörper bleibt in der Wunde**. Sie legen Polster (z. B. Mullbinden) rund um den Splitter und befestigen sie mit einer Binde.',
+        bildDanach: '16-splitter' }
     ],
-    merksatz: 'Starke Blutung: **Eigenschutz**, **Hilfe rufen** · **hinlegen/hinsetzen**, Arm **hoch**, **fest auf die Wunde drücken** · **Druckverband** (Wundauflage, Druckpolster, zirkulär) – blutet es durch: **zweites Polster darüber** · nur wenn nötig **abbinden**: 5–7 cm oberhalb, **Uhrzeit notieren**, **nicht lösen** · **Nagelbettprobe**, Schockzeichen beobachten. Fremdkörper **drin lassen**.',
-    danach: 'Prüfen Sie jetzt noch einmal Aufgabe 1 auf dem Arbeitsblatt!'
+    merkwort: [
+      { b: 'N', wort: 'Nicht selbst verletzen', text: 'Gefahr beseitigen, Handschuhe an, laut um Hilfe rufen – 112' },
+      { b: 'A', wort: 'Auf die Wunde drücken', text: 'hinsetzen oder hinlegen, sofort fest drücken' },
+      { b: 'D', wort: 'Druckverband', text: 'Wundauflage, Druckpolster, zirkulär · durchgeblutet: zweites Polster darüber · Nagelbettprobe' },
+      { b: 'A', wort: 'Abbinden', text: 'wenn Druck nicht reicht: so früh wie möglich, 5–7 cm oberhalb der Wunde, nicht auf einem Gelenk, fest bis die Blutung steht' },
+      { b: 'N', wort: 'Notieren', text: 'Uhrzeit aufschreiben, Tourniquet nicht lockern, an den Rettungsdienst übergeben' },
+      { b: 'N', wort: 'Nicht allein lassen', text: 'Schockzeichen beobachten, zudecken, beruhigen' }
+    ],
+    merksatz: 'Starke Blutung: **NA DANN** – **N**icht selbst verletzen · **A**uf die Wunde drücken · **D**ruckverband · **A**bbinden, wenn Druck nicht reicht · **N**otieren · **N**icht allein lassen. Ein **Fremdkörper bleibt in der Wunde**.',
+    danach: 'Weiter auf dem Arbeitsblatt mit **Aufgabe 2: Das Tourniquet**.',
+    // Beschriftungen der Szene ({x}, {y}, {a}, {b} werden automatisch ersetzt)
+    texte: {
+      regelnTitel: 'So geht’s',
+      startKnopf: 'Fall 1 starten',
+      losKnopf: 'Los – ich helfe!',
+      weiterKnopf: 'Weiter',
+      naechsterFall: 'Weiter zu Fall {x}',
+      ergebnisKnopf: 'Zum Ergebnis',
+      fortschritt: 'Fall {x} von {y} · Entscheidung {a} von {b}',
+      blutLabel: 'Blutverlust',
+      gestopptLabel: 'Blutung steht',
+      ohneZeitLabel: 'ohne Zeitdruck',
+      richtigText: 'Richtig!',
+      falschText: 'Falsch – ein Herz weniger.',
+      sperreText: 'Lesen Sie die Erklärung – weiter in {x} s',
+      fallGeschafft: 'Geschafft!',
+      zusammenbruchTitel: 'Zusammenbruch!',
+      ursacheFehler: 'Zwei Fehler – keine Herzen mehr.',
+      ursacheZeit: 'Das hat zu lange gedauert. {x} hat zu viel Blut verloren.',
+      nochmalFall: 'Fall {x} noch einmal',
+      ohneZeitKnopf: 'Noch einmal – ohne Zeitdruck',
+      ohneZeitHinweis: 'Ohne Zeitdruck können Sie in Ruhe lesen. Die Herzen zählen weiter.',
+      fertigTitel: 'Alle drei Notfälle gemeistert!',
+      merkwortTitel: 'Das Merkwort: NA DANN',
+      ersterVersuch: 'Beim ersten Versuch richtig: {x} von {y} Entscheidungen',
+      nochmalAlles: 'Noch einmal von vorn spielen'
+    }
   },
 
   /* ========================================================================

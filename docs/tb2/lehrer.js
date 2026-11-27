@@ -11,6 +11,10 @@
   var UEBUNGEN = Object.keys(INHALTE).filter(function (k) { return INHALTE[k].raum === ab; });
   // Gibt es auf diesem Arbeitsblatt eine Übung mit Belohnungsspiel? Dann steht die Bestleistung neben dem Namen.
   var MIT_SPIEL = UEBUNGEN.some(function (k) { return INHALTE[k].belohnungsspiel; });
+  // Notfall-Szene (art: 'szene'): Entscheidungen mit eigenen Antworten statt Karten mit gemeinsamen Knöpfen
+  var MIT_SZENE = UEBUNGEN.some(function (k) { return INHALTE[k].art === 'szene'; });
+  function einheit(U) { return U.art === 'szene' ? 'Entscheidung' : 'Karte'; }
+  function antwortenVon(U, k) { return k.antworten || U.knoepfe; }
 
   var inhalt = document.getElementById('l-inhalt');
   var status = document.getElementById('l-status');
@@ -91,7 +95,7 @@
         var punkte = MIT_SPIEL ? Number(z.p.spiel) || 0 : 0;
         var titel = (z.fertig ? 'fertig – beim ersten Versuch richtig: ' + erster + ' von ' + n :
           (z.g >= 0 ? 'dabei – gelöst: ' + z.g + ' von ' + n : 'noch nicht begonnen')) +
-          (neu ? ' · ' + neu + '× wegen zu schneller Fehler neu gestartet' : '') +
+          (neu ? ' · ' + neu + (U.art === 'szene' ? '× zusammengebrochen (Fall neu gestartet)' : '× wegen zu schneller Fehler neu gestartet') : '') +
           (punkte ? ' · Bestleistung im Spiel: ' + punkte + (punkte === spitze ? ' (höchste der Klasse)' : '') : '');
         // Bestleistung im Belohnungsspiel (🏆 = höchste der Klasse)
         var spielHtml = punkte ? '<span class="l-spiel' + (punkte === spitze ? ' l-spitze' : '') + '">' +
@@ -120,7 +124,7 @@
         liste.slice(0, 3).map(function (o, i) {
           var karte = U.karten.filter(function (k) { return k.nummer === o.nr; })[0];
           return '<li><button type="button" class="l-oft-knopf" data-uebung="' + uid + '" data-index="' + i + '">' +
-            '<strong>Karte ' + o.nr + ' · ' + o.anzahl + '×</strong> ' + esc(kurz(karte ? karte.text : '', 90)) + '</button></li>';
+            '<strong>' + einheit(U) + ' ' + o.nr + ' · ' + o.anzahl + '×</strong> ' + esc(kurz(karte ? karte.text : '', 90)) + '</button></li>';
         }).join('') + '</ol>' : '';
       var proz = function (x) { return gesamt ? (100 * x / gesamt) : 0; };
       return '<section class="l-karte" data-uebung="' + uid + '">' +
@@ -169,18 +173,19 @@
     }
     ansicht.setAttribute('data-uebung', uid);
     ansicht.setAttribute('data-index', index);
-    var knoepfe = U.knoepfe.map(function (b) {
+    var KN = antwortenVon(U, k);
+    var knoepfe = KN.map(function (b) {
       var n = o.wahl[b.kuerzel] || 0;
       var istRichtig = richtige.indexOf(b.kuerzel) >= 0;
       return '<div class="l-b-antwort' + (istRichtig ? ' l-b-loesung' : '') + (n ? ' l-b-gewaehlt' : '') + '">' +
         '<span class="l-b-text">' + esc(b.text) + '</span>' +
         '<span class="l-b-zahl">' + (n ? n + '× zuerst gewählt' : '') + '</span></div>';
     }).join('');
-    var gewaehlt = U.knoepfe.filter(function (b) { return o.wahl[b.kuerzel]; });
+    var gewaehlt = KN.filter(function (b) { return o.wahl[b.kuerzel]; });
     var frage = gewaehlt.length === 1 ? 'Was spricht für „' + gewaehlt[0].text + '“ – und was dagegen?' :
       'Was spricht für die gewählten Antworten – und was dagegen?';
     var erklaerung = typeof k.erklaerung === 'object' ? (k.erklaerung[richtige[0]] || '') : (k.erklaerung || '');
-    ansicht.innerHTML = '<div class="l-b-kopf"><span>' + esc(U.titel) + ' · Karte ' + o.nr + ' · beim ersten Versuch ' +
+    ansicht.innerHTML = '<div class="l-b-kopf"><span>' + esc(U.titel) + ' · ' + einheit(U) + ' ' + o.nr + ' · beim ersten Versuch ' +
       o.anzahl + '× falsch</span><button type="button" class="l-knopf l-zweit" id="l-b-zu">Schließen</button></div>' +
       '<p class="l-b-aussage">' + fmt(k.text) + '</p>' +
       '<div class="l-b-knoepfe">' + knoepfe + '</div>' +
@@ -189,8 +194,8 @@
       fmt(erklaerung) + '</div>' +
       '<div class="l-b-leiste">' +
       '<button type="button" class="l-knopf" id="l-b-auf">Auflösen</button>' +
-      (index > 0 ? '<button type="button" class="l-knopf l-zweit" id="l-b-zurueck">← Vorherige Karte</button>' : '') +
-      (index < liste.length - 1 ? '<button type="button" class="l-knopf l-zweit" id="l-b-weiter">Nächste Karte →</button>' : '') +
+      (index > 0 ? '<button type="button" class="l-knopf l-zweit" id="l-b-zurueck">← Vorherige ' + einheit(U) + '</button>' : '') +
+      (index < liste.length - 1 ? '<button type="button" class="l-knopf l-zweit" id="l-b-weiter">Nächste ' + einheit(U) + ' →</button>' : '') +
       '</div>';
     document.getElementById('l-b-zu').addEventListener('click', schliesse);
     document.getElementById('l-b-auf').addEventListener('click', aufloesen);
@@ -226,6 +231,7 @@
       '<p class="l-hinweis">✓ 9/12 = fertig, 9 von 12 Karten beim ersten Versuch richtig · ⚠ = fertig, aber zu wenige beim ' +
       'ersten Versuch richtig (durchgeklickt?) · 6/12 = dabei · ↺ = wegen zu schneller Fehler neu gestartet. ' +
       (MIT_SPIEL ? '🎮 = Bestleistung im Belohnungsspiel „Notfall-Run!“ (🏆 = höchste der Klasse). ' : '') +
+      (MIT_SZENE ? 'Notfall-Szene: Zahlen = Entscheidungen, ↺ = so oft ist der Patient zusammengebrochen (Fall neu gestartet). ' : '') +
       'Namen und Fortschritt werden nach spätestens 12 Stunden automatisch gelöscht.</p>';
     document.getElementById('l-leeren').addEventListener('click', function () {
       if (!window.confirm('Alle Namen und Fortschritte dieser Klasse für dieses Arbeitsblatt löschen?')) return;

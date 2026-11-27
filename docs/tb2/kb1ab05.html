@@ -7,30 +7,24 @@
 <meta name="referrer" content="no-referrer">
 <title>KB I – Notfallsituationen</title>
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="szene.css">
 </head>
 <body data-uebung="kb1ab05">
 <header class="kopf">
   <p class="kopfzeile" id="kopfzeile"></p>
   <h1 id="titel"></h1>
 </header>
-<div class="fortschritt" role="status">
-  <span id="fortschritt-text"></span>
-  <span class="fortschritt-spur" aria-hidden="true"><span class="fortschritt-balken" id="fortschritt-balken"></span></span>
-</div>
+<div class="sz-leiste" id="sz-leiste" role="status" hidden></div>
 <main class="inhalt">
   <div id="name-bereich" class="name-bereich" hidden></div>
   <div id="uebung-teil">
     <p class="name-zeile" id="name-zeile" hidden></p>
-    <p class="anweisung" id="anweisung"></p>
-    <div id="hilfe-platz"></div>
-    <div id="karten"></div>
-    <div id="merksatz-bereich" hidden></div>
-    <button type="button" class="knopf knopf-zweit" id="noch-einmal"></button>
+    <div id="sz-buehne" class="sz-buehne" aria-live="polite"></div>
   </div>
 </main>
 <noscript><p class="inhalt">Bitte aktivieren Sie JavaScript, um die Übung zu bearbeiten.</p></noscript>
 <script src="einstellungen.js"></script>
 <script src="inhalte.js"></script>
-<script src="app.js"></script>
+<script src="szene.js"></script>
 </body>
 </html>
