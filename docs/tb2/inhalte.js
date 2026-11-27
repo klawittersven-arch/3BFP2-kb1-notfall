@@ -12,6 +12,7 @@
    Anleitung. Kurz: Nur Text ZWISCHEN den Hochkommas ' … ' ändern; **fett** ist erlaubt.
      raum        – Woche ('kb1w1', später 'kb1w2' …) → Lehrerseite lehrer-3bfp2-1-kb1w1.html usw.
      knoepfe     – Antwortknöpfe (kuerzel nur GROSSBUCHSTABEN, höchstens 6 Zeichen)
+     minispiel   – (optional) Minispiel zur Belohnung: 'herzdruck', 'wespen' oder 'stoerung' (30 s, 3 Läufe; höchstens eins pro Woche)
      mindestens  – nur ohne Herzen (einstellungen.js: herzen: 0): so viele Karten müssen beim ERSTEN Versuch richtig sein
      karten      – nummer, text, richtig, erklaerung, tipp
    Fachbegriffe nach Pflegias Band 2 (S. 793–794, 801–803, 811, 822, 825, 831).
@@ -257,6 +258,7 @@ var INHALTE = {
   kb1ab07: {
     ab: 'Vom Auffinden bis zum Eintreffen des Rettungsdienstes',
     raum: 'kb1w2',
+    minispiel: 'herzdruck', // Belohnung: „Herzdruck-Takt“ (Reanimation)
     titel: 'Übung: A, B, C, D oder E?',
     anweisung: 'Zu welchem Buchstaben im **ABCDE-Schema** gehört die Prüfung oder Maßnahme?',
     knoepfe: [
@@ -309,6 +311,7 @@ var INHALTE = {
   kb1ab08: {
     ab: 'Fremdkörperaspiration bei Erwachsenen, Kindern und Säuglingen',
     raum: 'kb1w3',
+    minispiel: 'wespen', // Belohnung: „Wespen-Alarm“ (Anaphylaxie)
     titel: 'Übung: Was tun Sie jetzt?',
     anweisung: 'Jemand hat sich beim Essen verschluckt. Was tun Sie **als Nächstes**?',
     knoepfe: [

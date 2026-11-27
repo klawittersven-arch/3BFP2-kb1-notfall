@@ -19,6 +19,12 @@ auf die Klassenarbeit vor – der Kasten darf also auch gelöscht werden.
 - **Wochen-Challenge:** Wer alle Übungen einer Woche geschafft hat, kommt zur Challenge (`tb2/challenge-kb1w1.html` …);
   die Lehrerseite der Woche zeigt die Bestenliste mit Siegerehrung und QR-Code. **TB2-Challenge** zur Wiederholung am
   11.01.: `tb2/challenge-kb1w5.html`, Lehrerseiten `tb2/lehrer-3bfp2-1-kb1w5.html` und `tb2/lehrer-3bfp2-2-kb1w5.html`.
+- **Minispiele zur Belohnung** (seit 27.11.2026, ab Woche 2; 30 Sekunden pro Runde, 3 Läufe pro geschaffter Übung):
+  **❤️ Herzdruck-Takt** nach kb1ab07 (Woche 2: im Takt 100–120/min auf den Brustkorb tippen) und **🐝 Wespen-Alarm**
+  nach kb1ab08 (Woche 3: Wespen von der Limo verscheuchen, Adrenalin-Pen = Bonus, Schmetterlinge nicht antippen).
+  Seite `tb2/minispiel.html?ab=…`, Dateien `docs/tb2/minispiel.*` und `docs/tb2/ms-*.js` (Kopie aus KB II),
+  Zuordnung in `docs/tb2/inhalte.js` (`minispiel: 'herzdruck'`), Sekunden/Läufe in `docs/tb2/einstellungen.js`.
+  Die Lehrerseite der Woche zeigt die Bestleistung mit 🎮 neben dem Namen.
 - Datenschutz wie bei KB II: Name, Klasse, Fortschritt, Sterne, falsche Erstversuche; Löschung nach 12 Stunden oder
   „Liste leeren“. Die Bestenliste der Challenge (Name, Punkte) bleibt bis zu 10 Tage oder bis „Bestenliste leeren“.
 

@@ -7,6 +7,7 @@
  * Teil A3: Herzen weg → Lesepause → Neustart mit neuer Mischung, ↺ wird gesendet.
  * Teil B:  Name/Klasse gemeinsam mit KB II; Lehrerseiten je Woche mit Sternen und Bestenliste.
  * Teil F:  Wochen-Challenge (kb1w1) und TB2-Challenge (kb1w5) mit Bestenliste und Siegerehrung.
+ * Teil M:  Minispiele „Herzdruck-Takt“ (kb1ab07) und „Wespen-Alarm“ (kb1ab08): Spielen, Senden, 3 Läufe, Lehrerseite.
  * Die Lesezeit ist ausgeschaltet (sonst würden die schnellen Testklicks Warnungen auslösen). */
 'use strict';
 const { chromium } = require('playwright');
@@ -43,7 +44,8 @@ function auffaellig(f, kz) { // wie in docs/tb2/app.js
 function einstellungen(text, server, o = {}) {
   text = text.replace(/serverAdresse: '[^']*'/, `serverAdresse: '${server}'`)
     .replace(/lesezeit: (true|false)/, 'lesezeit: false')
-    .replace(/leerePauseSekunden: [\d.]+/, `leerePauseSekunden: ${o.leer || 1}`);
+    .replace(/leerePauseSekunden: [\d.]+/, `leerePauseSekunden: ${o.leer || 1}`)
+    .replace(/minispielSekunden: \d+/, `minispielSekunden: ${o.sekunden || 6}`);
   return text;
 }
 
@@ -62,13 +64,13 @@ function webserver() {
 
 // Nachgebildeter Server (gleiche Schnittstelle wie der KB-II-Worker)
 function fortschrittsServer() {
-  const raeume = {}, challenge = {}, posts = [], chPosts = [];
+  const raeume = {}, challenge = {}, posts = [], chPosts = [], spielPosts = [];
   let nr = 0;
   const kopf = { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' };
   const bestenliste = r => Object.values(challenge[r] || {}).map(p => Object.assign({}, p))
     .sort((a, b) => b.punkte - a.punkte || a.dauer - b.dauer || a.name.localeCompare(b.name, 'de'));
   return {
-    raeume, challenge, posts, chPosts,
+    raeume, challenge, posts, chPosts, spielPosts,
     async route(route) {
       const req = route.request();
       const url = new URL(req.url());
@@ -80,6 +82,13 @@ function fortschrittsServer() {
         p.name = d.name; p.t = Date.now();
         p.uebungen[d.uebung] = { geloest: d.geloest, gesamt: d.gesamt, erster: d.erster, neu: d.neu || 0, falsch: d.falsch, t: Date.now() };
         if (d.sterne) p.uebungen[d.uebung].sterne = d.sterne;
+        return route.fulfill({ status: 204, headers: kopf });
+      }
+      if (url.pathname === '/spiel') {
+        spielPosts.push(d);
+        const p = (raeume[d.raum] || {})[d.geraet];
+        if (!p) return route.fulfill({ status: 404, headers: kopf });
+        p.spiel = Math.max(p.spiel || 0, d.punkte);
         return route.fulfill({ status: 204, headers: kopf });
       }
       if (url.pathname === '/challenge') {
@@ -210,9 +219,10 @@ function fortschrittsServer() {
     pruefe((await text(page, '#merksatz-bereich')).includes('abgeschlossen') && (await text(page, '#merksatz-bereich')).includes(ohneSterne(U.merksatz).slice(0, 25)), `${id}: abgeschlossen + Merksatz`);
     pruefe((await text(page, '.sterne')) === '★★☆' && (await text(page, '.erster-versuch')).includes(`${N - fehlerZahl} von ${N}`), `${id}: ${fehlerZahl} Fehler → ★★☆`);
     geschafft.add(id);
-    const erwartet = /^kb1w[1-4]$/.test(U.raum) && IDS.filter(k => I[k].raum === U.raum).every(k => geschafft.has(k)) ? ['challenge-' + U.raum + '.html'] : [];
+    const erwartet = (U.minispiel ? ['minispiel.html?ab=' + id] : [])
+      .concat(/^kb1w[1-4]$/.test(U.raum) && IDS.filter(k => I[k].raum === U.raum).every(k => geschafft.has(k)) ? ['challenge-' + U.raum + '.html'] : []);
     const links = await page.locator('a[href]').evaluateAll(a => a.map(x => x.getAttribute('href')));
-    pruefe(links.join() === erwartet.join(), `${id}: Links nur zur Challenge, sobald die Woche geschafft ist (${links.join() || 'keine'})`);
+    pruefe(links.join() === erwartet.join(), `${id}: Links nur zu Minispiel/Challenge (${links.join() || 'keine'})`);
     pruefe(await breitOk(page), `${id}: kein waagerechtes Scrollen bei 360 px`);
     await page.screenshot({ path: path.join(__dirname, `handy-tb2-${id}.png`), fullPage: true });
     if (U.bonus) {
@@ -323,6 +333,67 @@ function fortschrittsServer() {
     pruefe(srv.chPosts[srv.chPosts.length - 1].raum === 'k2-kb1w5', 'F: TB2-Challenge an k2-kb1w5 gesendet');
     pruefe(fehler.length === 0, 'Teil F: keine Konsolenfehler / fremden Anfragen: ' + fehler.join(' | '));
   }
+
+  /* ---------------- Teil M: Minispiele (Belohnung) ---------------- */
+  {
+    pruefe(I.kb1ab07.minispiel === 'herzdruck' && I.kb1ab08.minispiel === 'wespen' && IDS.filter(k => I[k].raum === 'kb1w1' && I[k].minispiel).length === 0, 'M: Herzdruck-Takt (Woche 2), Wespen-Alarm (Woche 3), Woche 1 ohne Minispiel');
+    const wochen = {};
+    IDS.forEach(k => { if (I[k].minispiel) wochen[I[k].raum] = (wochen[I[k].raum] || 0) + 1; });
+    pruefe(Object.values(wochen).every(n => n === 1), 'M: höchstens ein Minispiel pro Woche');
+    const zustand = () => page.evaluate(() => window.MiniSpiel.zustand());
+    const laufBeginnen = async (knopf) => { await page.click(knopf); await page.waitForFunction(() => window.MiniSpiel.zustand().modus === 'lauf', null, { timeout: 5000 }); };
+    const laufEnde = () => page.waitForFunction(() => window.MiniSpiel.zustand().modus === 'ende', null, { timeout: 15000 });
+    // Herzdruck-Takt: kb1ab07 wurde in Teil A geschafft
+    await page.goto(basis + 'minispiel.html?ab=kb1ab07');
+    await page.waitForSelector('#knopf-los');
+    pruefe((await text(page, 'h1')) === 'Herzdruck-Takt' && (await text(page, '#ms-laeufe')).includes('Noch 3 von 3') && (await text(page, '#knopf-ton')).includes('aus'), 'M: Herzdruck-Takt freigeschaltet, 3 Läufe, Ton aus');
+    await laufBeginnen('#knopf-los');
+    pruefe(await page.locator('#hd-ring').isVisible(), 'M: gelber Ring zeigt den Takt');
+    const feld = await page.locator('#ms-feld').boundingBox();
+    const druck = () => page.mouse.click(feld.x + feld.width / 2, feld.y + feld.height * 0.75);
+    for (let i = 0; i < 8; i++) { await druck(); await page.waitForTimeout(535); }
+    const takt = Number((await text(page, '#hd-takt')).replace(/\D/g, ''));
+    let z = await zustand();
+    pruefe(z.punkte > 0 && takt >= 95 && takt <= 125, `M: im Takt gedrückt → Punkte ${z.punkte}, Anzeige ${takt}/min`);
+    await page.screenshot({ path: path.join(__dirname, 'handy-tb2-herzdruck.png') });
+    for (let i = 0; i < 3; i++) { await druck(); await page.waitForTimeout(260); }
+    pruefe((await text(page, '#ms-meldung')).includes('Zu schnell'), 'M: zu schnell gedrückt → „Zu schnell!“');
+    await laufEnde();
+    await page.waitForTimeout(400);
+    const hd = Number((await text(page, '#ergebnis-punkte')).replace(/\D/g, ''));
+    pruefe((await text(page, '#ms-panel')).includes('Ihr Takt im Schnitt') && (await text(page, '#ms-panel')).includes('Im Takt:'), 'M: Auswertung mit Takt im Schnitt');
+    const sp = srv.spielPosts[srv.spielPosts.length - 1];
+    pruefe(sp && sp.raum === 'k2-kb1w2' && sp.punkte === hd, 'M: Bestleistung an k2-kb1w2 gesendet: ' + JSON.stringify(sp));
+    await page.screenshot({ path: path.join(__dirname, 'handy-tb2-herzdruck-ende.png'), fullPage: true });
+    // Wespen-Alarm
+    await page.goto(basis + 'minispiel.html?ab=kb1ab08');
+    await page.waitForSelector('#knopf-los');
+    await laufBeginnen('#knopf-los');
+    const wf = await page.locator('#ms-feld').boundingBox();
+    const klick = (x, y) => page.mouse.click(wf.x + x, wf.y + y);
+    const w = await page.evaluate(() => window.MiniSpiel.erzeuge('wespe', { x: 100, y: 160, still: true }));
+    const vorher = (await zustand()).punkte;
+    await klick(w.x, w.y);
+    pruefe((await zustand()).punkte === vorher + 10, 'M: Wespe angetippt → +10');
+    const f = await page.evaluate(() => window.MiniSpiel.erzeuge('falter', { x: 260, y: 200, still: true }));
+    const vorF = (await zustand()).punkte;
+    await klick(f.x, f.y);
+    pruefe((await zustand()).punkte === vorF - 15 && (await text(page, '#ms-meldung')).includes('stechen nicht'), 'M: Schmetterling angetippt → −15, „Schmetterlinge stechen nicht!“');
+    const nahe = await page.evaluate(() => { const z = window.MiniSpiel.erzeuge('wespe', { x: 30, y: 30, still: true }); return z; });
+    const stich = await page.evaluate((z) => window.MiniSpiel.erzeuge('wespe', { x: z.zielX, y: z.zielY - 50 }), nahe);
+    await page.waitForTimeout(900);
+    pruefe((await zustand()).leben <= 2, 'M: Wespe erreicht das Glas → Stich, Herz weg');
+    const pen = await page.evaluate(() => window.MiniSpiel.erzeuge('pen', { x: 180, y: 300, still: true }));
+    const lebenVor = (await zustand()).leben, punkteVor = (await zustand()).punkte;
+    await klick(pen.x, pen.y);
+    z = await zustand();
+    pruefe(z.punkte === punkteVor + 30 && z.leben === Math.min(3, lebenVor + 1) && (await text(page, '#ms-meldung')).includes('Adrenalin'), 'M: Adrenalin-Pen → +30 und ein Herz zurück');
+    await page.screenshot({ path: path.join(__dirname, 'handy-tb2-wespen.png') });
+    await laufEnde();
+    pruefe((await text(page, '#ms-panel')).includes('Verscheuchte Wespen') && (await text(page, '#ms-panel')).includes('Gestochen'), 'M: Auswertung Wespen-Alarm');
+    pruefe(await breitOk(page), 'M: kein waagerechtes Scrollen');
+    pruefe(fehler.length === 0, 'Teil M: keine Konsolenfehler / fremden Anfragen: ' + fehler.join(' | '));
+  }
   await ctx.close();
 
   /* ---------------- Lehrerseiten je Woche ---------------- */
@@ -343,6 +414,9 @@ function fortschrittsServer() {
       pruefe(await p2.locator('.l-challenge').count() === 1 && (await text(p2, '.l-challenge')).includes('Wochen-Challenge'), `Lehrerseite ${woche}: Bereich Wochen-Challenge`);
       await p2.screenshot({ path: path.join(__dirname, `lehrer-tb2-${woche}.png`), fullPage: true });
     }
+    await p2.goto(basis + 'lehrer-3bfp2-2-kb1w2.html');
+    await p2.waitForSelector('.l-pille');
+    pruefe(/(🎮|🏆) \d/.test(await p2.locator('.l-pille', { hasText: 'Lena K.' }).first().locator('.l-spiel').innerText()) && (await text(p2, '#l-fuss')).includes('Herzdruck-Takt'), 'Lehrerseite kb1w2: Bestleistung im Herzdruck-Takt beim Namen');
     await p2.goto(basis + 'lehrer-3bfp2-2-kb1w1.html');
     await p2.waitForSelector('.l-ch-zeile');
     pruefe((await text(p2, '.l-ch-zeile')).includes('Lena K.'), 'Lehrerseite kb1w1: Lena K. in der Bestenliste');
