@@ -30,7 +30,7 @@ auf die Klassenarbeit vor – der Kasten darf also auch gelöscht werden.
 | Arbeitsblatt | Übung | Adresse (QR-Code in `qr/`) |
 |---|---|---|
 | Starke Blutung stillen | **Notfall-Szene** „Notfall in der Werkstatt“ (siehe unten) | https://klawittersven-arch.github.io/3BFP2-kb1-notfall/tb2/kb1ab05.html |
-| Offene Fraktur und Amputationsverletzung | Offene Fraktur und Amputat | …/tb2/kb1ab06.html |
+| Offene Fraktur und Amputationsverletzung | **Szene** „Die Fingerspitze retten“ (siehe unten) | …/tb2/kb1ab06.html |
 | Vom Auffinden bis zum Eintreffen des Rettungsdienstes | A, B, C, D oder E? | …/tb2/kb1ab07.html |
 
 **Lehrerseiten Woche 2:**
@@ -78,6 +78,18 @@ Eingesetzt mit dem AB „Starke Blutung stillen“ der **alten Planung** (KB I W
   Bilder `docs/tb2/bilder/blutung/*.webp` (480 × 480 px, zusammen ca. 300 KB), Texte in `inhalte.js` → `kb1ab05`.
 - **Bewusst weggelassen:** „Arm hochhalten“ (steht nicht auf dem AB, ERC 2025 empfiehlt es nicht mehr, KA fragt es nicht ab).
 - **Test:** `node tests/szene.test.js`
+
+## Szene „Die Fingerspitze retten“ (kb1ab06)
+
+Ersetzt seit dem 28.11.2026 die Richtig-falsch-Karten „Offene Fraktur und Amputat“ (gleiche Adresse, gleicher QR-Code, Raum `kb1w2`).
+Gehört zum AB „Offene Fraktur und Amputationsverletzung“ der alten Planung (KB I Woche 3). Die offene Fraktur übt das AB selbst
+(Verbindeaufgabe, Fehler im Bericht); die Handy-Übung übt deshalb das **Amputat**, das auf dem AB keine eigene Aufgabe mehr hat.
+
+- 6 Schritte: zuerst den Stumpf versorgen, dann den Replantatbeutel packen (Kacheln mit Bildern: sterile Kompressen, Beutel,
+  Beutel mit Eiswasser, Etikett – dazwischen Fallen wie Wasserhahn, Desinfektion, Eiswürfel, Gefrierfach, Taschentuch), zuletzt „Wohin kommt der Beutel?“.
+- **Ohne Zeitdruck** (`zeitdruck: false`), 2 Herzen. Etwas nur **zu früh** gewählt (`ohneHerz: true`) → Hinweis „Noch nicht“, kein Herz weg.
+- Bilder: eigene SVG-Zeichnungen in `docs/tb2/bilder/amputat/` (zusammen ca. 14 KB).
+- **Test:** `node tests/amputat.test.js`
 
 ## Neue Woche ergänzen
 

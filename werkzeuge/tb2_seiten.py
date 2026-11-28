@@ -74,7 +74,7 @@ LEHRER = """<!DOCTYPE html>
 """
 
 # Notfall-Szenen (art: 'szene' in inhalte.js) haben eine eigene, von Hand gepflegte Seite mit szene.js – nicht überschreiben.
-SZENEN = {"kb1ab05"}
+SZENEN = {"kb1ab05", "kb1ab06"}
 for i in IDS:
     if i in SZENEN:
         continue

@@ -74,3 +74,16 @@
   .sz-nadann li { animation: none; opacity: 1; transform: none; }
   .sz-wackeln, .sz-blut-balken.sz-kritisch { animation: none; }
 }
+
+/* ---------- Kacheln mit Bild (z. B. Replantatbeutel packen) ---------- */
+.sz-kacheln { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.sz-kachel { flex-direction: column; justify-content: flex-start; text-align: center; gap: 4px; padding: 8px 3px 10px; min-height: 108px; font-size: 13.5px; line-height: 1.2; position: relative; overflow-wrap: normal; word-break: normal; hyphens: manual; }
+.sz-kachel .sz-icon { width: 56px; height: 56px; }
+.sz-kachel .symbol { position: absolute; top: 4px; right: 6px; min-width: 0; font-size: 18px; }
+.sz-kachel.ist-falsch { text-decoration: none; }
+.sz-kachel.ist-falsch .sz-icon { opacity: .45; }
+.sz-kachel.ist-falsch .beschriftung { text-decoration: line-through; }
+.sz-kachel.sz-noch-nicht { border-color: #8A9599; background: #F1F3F4; color: #3D5257; }
+.sz-kachel.sz-noch-nicht .beschriftung { text-decoration: none; }
+.sz-kacheln ~ #sz-rm .rueckmeldung { margin-top: 10px; }
+.sz-buehne:has(.sz-kacheln) .sz-bild-klein { max-width: min(100%, 20vh); }
