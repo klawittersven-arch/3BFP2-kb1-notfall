@@ -94,7 +94,7 @@ function webserver() {
         await page.click('#sz-weiter');
       }
       await page.waitForSelector('.sz-nadann');
-      pruefe((await page.locator('.sz-buehne').innerText()).includes('NA DANN'), `${id}: Szene abgeschlossen + Merkwort`);
+      pruefe((await page.locator('.sz-buehne').innerText()).includes(U.texte.merkwortTitel), `${id}: Szene abgeschlossen + Merkwort`);
     } else {
     await page.waitForSelector('.karte');
     pruefe((await page.locator('#kopfzeile').innerText()).startsWith('KB I – Notfallsituationen'), `${id}: Kopfzeile KB I`);

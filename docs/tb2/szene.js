@@ -1,6 +1,7 @@
 /* KB I · TB 2 – Notfall-Szene (z. B. kb1ab05 „Notfall in der Werkstatt“).
  * Ablauf: Regeln → je Fall: Einstieg → Entscheidungen (je 3 Antworten, gemischt) → Fallende → Ergebnis mit Merkwort.
- * Zwei Herzen je Fall, Blutverlust-Balken (läuft nur, solange eine Entscheidung offen ist).
+ * Zwei Herzen je Fall, Blutverlust-Balken (läuft nur, solange eine Entscheidung offen ist; zeitdruck: false = ohne Balken).
+ * kacheln: true = Antworten als Kacheln mit Bild (antwort.icon) · antwort.ohneHerz = nur ein Hinweis („noch nicht“), kein Herz weg.
  * Alle Texte stehen in inhalte.js. Name, Klasse und Fortschrittsanzeige wie in app.js (gleicher Server, gleiche Schlüssel). */
 (function () {
   'use strict';
@@ -14,6 +15,7 @@
   var FAELLE = U.faelle;
   var HERZEN = U.herzen || 2;
   var FEHLER_BLUT = typeof U.fehlerBlut === 'number' ? U.fehlerBlut : 10;
+  var ZEITDRUCK = U.zeitdruck !== false;
 
   var PRAEFIX = 'kb1-tb2-';
   var GEMEINSAM = 'kb2-notfall-';
@@ -50,7 +52,7 @@
     for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
     return a;
   }
-  function bildUrl(name) { return U.bilder + name + '.webp'; }
+  function bildUrl(name) { return U.bilder + name + (/\.[a-z]+$/.test(name) ? '' : '.webp'); }
   function vorladen(namen) {
     namen.forEach(function (n) { if (n) { var b = new Image(); b.src = bildUrl(n); } });
   }
@@ -143,10 +145,10 @@
     leiste.innerHTML =
       '<div class="sz-zeile"><span class="sz-herzen" aria-label="' + z.herzen + ' von ' + HERZEN + ' Herzen">' + herzen + '</span>' +
       '<span class="sz-stand">' + esc(ersetze(T.fortschritt, { x: z.fall + 1, y: FAELLE.length, a: nr || '–', b: ids.length })) + '</span></div>' +
-      '<div class="sz-blut' + (z.gestoppt ? ' sz-gestoppt' : '') + (z.ohneZeit ? ' sz-ohne-zeit' : '') + '">' +
+      (!ZEITDRUCK ? '' : '<div class="sz-blut' + (z.gestoppt ? ' sz-gestoppt' : '') + (z.ohneZeit ? ' sz-ohne-zeit' : '') + '">' +
       '<span class="sz-blut-text">' + esc(blutText) + '</span>' +
       '<span class="sz-blut-spur" role="progressbar" aria-label="' + esc(T.blutLabel) + '" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + Math.round(z.blut) + '">' +
-      '<span class="sz-blut-balken" id="sz-blut-balken" style="width:' + Math.min(100, z.blut) + '%"></span></span></div>';
+      '<span class="sz-blut-balken" id="sz-blut-balken" style="width:' + Math.min(100, z.blut) + '%"></span></span></div>');
   }
   function aktualisiereBalken() {
     var b = document.getElementById('sz-blut-balken');
@@ -245,10 +247,11 @@
       var a = antwortVon(karte, ku);
       var istFalsch = z.falschJetzt.indexOf(ku) >= 0;
       var istRichtig = z.beantwortet && ku === karte.richtig;
-      var cls = 'antwort sz-antwort' + (istFalsch ? ' ist-falsch' : '') + (istRichtig ? ' ist-richtig' : '');
+      var cls = 'antwort sz-antwort' + (karte.kacheln ? ' sz-kachel' : '') + (istFalsch ? (a.ohneHerz ? ' ist-falsch sz-noch-nicht' : ' ist-falsch') : '') + (istRichtig ? ' ist-richtig' : '');
       var aus = istFalsch || z.beantwortet || gesperrt;
       return '<button type="button" class="' + cls + '" data-kuerzel="' + esc(ku) + '"' + (aus ? ' disabled' : '') + '>' +
-        '<span class="symbol" aria-hidden="true">' + (istFalsch ? '✗' : (istRichtig ? '✓' : '')) + '</span>' +
+        (karte.kacheln && a.icon ? '<img class="sz-icon" src="' + esc(bildUrl(a.icon)) + '" width="56" height="56" alt="">' : '') +
+        '<span class="symbol" aria-hidden="true">' + (istFalsch ? (a.ohneHerz ? '⏳' : '✗') : (istRichtig ? '✓' : '')) + '</span>' +
         '<span class="beschriftung">' + esc(a.text) + '</span></button>';
     }).join('');
     var rm = '';
@@ -257,13 +260,14 @@
         '<p>' + fmt(karte.erklaerung) + '</p></div>' + knopf(T.weiterKnopf, 'sz-naechste');
     } else if (z.letzteFalsch) {
       var a = antwortVon(karte, z.letzteFalsch);
-      rm = '<div class="rueckmeldung falsch" role="status"><p class="rm-kopf"><span aria-hidden="true">✗</span> ' + esc(T.falschText) + '</p>' +
+      rm = '<div class="rueckmeldung falsch" role="status"><p class="rm-kopf"><span aria-hidden="true">' + (a.ohneHerz ? '⏳' : '✗') + '</span> ' +
+        esc(a.ohneHerz ? (T.nochNichtText || T.falschText) : T.falschText) + '</p>' +
         '<p>' + fmt(a.warum || '') + '</p>' +
         (gesperrt ? '<p class="sperre" id="sz-sperre">' + esc(ersetze(T.sperreText, { x: Math.ceil((z.sperreBis - Date.now()) / 1000) })) + '</p>' : '') + '</div>';
     }
     buehne.innerHTML = bild(zeigeBild, true) +
       '<p class="sz-text sz-frage">' + fmt(karte.text) + '</p>' +
-      '<div class="sz-antworten" role="group">' + knoepfe + '</div>' +
+      '<div class="sz-antworten' + (karte.kacheln ? ' sz-kacheln' : '') + '" role="group">' + knoepfe + '</div>' +
       '<div id="sz-rm">' + rm + '</div>';
     Array.prototype.forEach.call(buehne.querySelectorAll('.sz-antwort'), function (b) {
       b.addEventListener('click', function () { antworte(b.getAttribute('data-kuerzel')); });
@@ -296,7 +300,8 @@
     zurFrage();
     var ids = kartenDesFalls(z.fall), p = ids.indexOf(i), naechste = KARTEN[ids[p + 1]];
     vorladen([KARTEN[i].bildDanach, naechste && naechste.bild, naechste && naechste.bildDanach,
-      KARTEN[i].zusammenbruchBild || FAELLE[z.fall].zusammenbruchBild]);
+      KARTEN[i].zusammenbruchBild || FAELLE[z.fall].zusammenbruchBild].concat(
+      naechste && naechste.kacheln ? naechste.antworten.map(function (a) { return a.icon; }) : []));
   }
   function antworte(ku) {
     if (z.phase !== 'frage' || z.beantwortet || z.falschJetzt.indexOf(ku) >= 0) return;
@@ -313,18 +318,21 @@
       zeigeUnten(document.getElementById('sz-naechste'));
       return;
     }
+    var gewaehlt = antwortVon(karte, ku);
     z.falschJetzt.push(ku);
     z.letzteFalsch = ku;
     if (!z.ersteFalsch[karte.nummer]) z.ersteFalsch[karte.nummer] = ku;
-    z.herzen = Math.max(0, z.herzen - 1);
-    if (!z.ohneZeit && !z.gestoppt) z.blut = Math.min(100, z.blut + FEHLER_BLUT);
-    if (z.herzen <= 0) return zusammenbruch('fehler');
-    if (!z.ohneZeit && !z.gestoppt && z.blut >= 100) return zusammenbruch('zeit');
+    if (!gewaehlt.ohneHerz) { // „noch nicht“ (falsche Reihenfolge): nur ein Hinweis, kein Herz weg
+      z.herzen = Math.max(0, z.herzen - 1);
+      if (ZEITDRUCK && !z.ohneZeit && !z.gestoppt) z.blut = Math.min(100, z.blut + FEHLER_BLUT);
+      if (z.herzen <= 0) return zusammenbruch('fehler');
+      if (ZEITDRUCK && !z.ohneZeit && !z.gestoppt && z.blut >= 100) return zusammenbruch('zeit');
+    }
     if (SPERRE_MS) z.sperreBis = Date.now() + SPERRE_MS;
     sichern();
     zeichne();
     var herzEl = leiste.querySelector('.sz-herzen');
-    if (herzEl) herzEl.classList.add('sz-wackeln');
+    if (herzEl && !gewaehlt.ohneHerz) herzEl.classList.add('sz-wackeln');
     sende();
     zeigeUnten(document.getElementById('sz-rm'));
   }
@@ -373,7 +381,7 @@
       var s = document.getElementById('sz-sperre');
       if (s) s.textContent = ersetze(T.sperreText, { x: Math.ceil((z.sperreBis - jetzt) / 1000) });
     }
-    if (z.beantwortet || gesperrt || z.ohneZeit || z.gestoppt || document.hidden) return;
+    if (!ZEITDRUCK || z.beantwortet || gesperrt || z.ohneZeit || z.gestoppt || document.hidden) return;
     z.blut = Math.min(100, z.blut + (KARTEN[z.k].blutung || 0) * dt);
     aktualisiereBalken();
     if (z.blut >= 100) { zusammenbruch('zeit'); return; }

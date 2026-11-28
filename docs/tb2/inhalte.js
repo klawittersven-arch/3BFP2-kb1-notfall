@@ -14,7 +14,7 @@
      knoepfe     – Antwortknöpfe (kuerzel nur GROSSBUCHSTABEN, höchstens 6 Zeichen)
      mindestens  – so viele Karten müssen beim ERSTEN Versuch richtig sein
      karten      – nummer, text, richtig, erklaerung, tipp
-   Ausnahme kb1ab05: Notfall-Szene (art: 'szene', Programm szene.js) – Aufbau direkt beim Eintrag beschrieben.
+   Ausnahmen kb1ab05 und kb1ab06: Notfall-Szenen (art: 'szene', Programm szene.js) – Aufbau direkt beim Eintrag beschrieben.
    Fachbegriffe nach Pflegias Band 2 (S. 793–794, 801–803, 811, 822, 825, 831).
    ========================================================================== */
 
@@ -420,38 +420,160 @@ var INHALTE = {
   },
 
   /* ========================================================================
-     Woche 2 · Offene Fraktur und Amputationsverletzung
+     Woche 2 · Offene Fraktur und Amputationsverletzung – Szene „Die Fingerspitze retten“ (art: 'szene', ohne Zeitdruck)
      ======================================================================== */
   kb1ab06: {
+    // Notfall-Szene ohne Zeitdruck (szene.js): erst den Stumpf versorgen, dann den Replantatbeutel packen.
+    // kacheln: true = Antworten als Kacheln mit Bild (icon = Datei in bilder/amputat/)
+    // ohneHerz: true = nur zu früh gewählt (falsche Reihenfolge) → Hinweis, kein Herz weg
+    art: 'szene',
+    zeitdruck: false,
     ab: 'Offene Fraktur und Amputationsverletzung',
     raum: 'kb1w2',
-    titel: 'Übung: Offene Fraktur und Amputat',
-    anweisung: 'Herr Wolf hat eine **offene Unterschenkelfraktur**, der Gärtner hat sich eine **Fingerspitze abgetrennt**. Ist das Vorgehen **richtig** oder **falsch**?',
-    knoepfe: [
-      { kuerzel: 'R', text: 'richtig' },
-      { kuerzel: 'F', text: 'falsch' }
+    titel: 'Die Fingerspitze retten',
+    anweisung: 'Der Gärtner hat sich mit der Astschere die **Spitze des Zeigefingers abgetrennt**. Versorgen Sie ihn – und packen Sie die Fingerspitze so, dass sie in der Klinik wieder angenäht werden kann.',
+    regeln: [
+      '**❤️❤️ Zwei Herzen:** Ein Fehler kostet ein Herz. Sind beide weg, ist die Fingerspitze nicht mehr zu retten – Sie beginnen von vorn.',
+      '**⏳ Reihenfolge:** Tippen Sie die Dinge in der richtigen Reihenfolge an. Wählen Sie etwas nur **zu früh**, bekommen Sie einen Hinweis – ohne Herzverlust.',
+      'Hier gibt es **keinen Zeitdruck**. Lesen Sie in Ruhe.'
     ],
-    mindestens: 6,
+    bilder: 'bilder/amputat/',
+    herzen: 2,
+    faelle: [
+      {
+        titel: 'Unfall im Garten',
+        patient: 'der Gärtner',
+        bild: 'garten.svg',
+        text: 'Kurz nach Herrn Wolfs Sturz ruft der Gärtner um Hilfe: Er hat sich mit der Astschere die **Spitze des Zeigefingers abgetrennt**. Aus dem Finger blutet es stark. Die Fingerspitze liegt im Gras. Eine Kollegin setzt den Notruf ab.',
+        zusammenbruch: 'So kann die Fingerspitze nicht mehr angenäht werden. Versuchen Sie es noch einmal von vorn.',
+        zusammenbruchBild: 'garten.svg',
+        ende: 'Der Rettungsdienst nimmt den Gärtner **und** den Beutel mit. In der Klinik kann die Fingerspitze wieder angenäht werden.',
+        endeBild: 'krankenwagen.svg'
+      }
+    ],
     karten: [
-      { nummer: 1, text: 'Die Wunde über dem Bruch mit einer sterilen Kompresse abdecken.', richtig: 'R',
-        erklaerung: '**Richtig:** Bei einer offenen Fraktur können Keime in die Wunde kommen – steril abdecken.', tipp: 'Was kann durch eine offene Wunde in den Knochen gelangen?' },
-      { nummer: 2, text: 'Den Knochen vorsichtig zurückschieben.', richtig: 'F',
-        erklaerung: '**Falsch:** Nicht einrichten! Das macht die Klinik. Sonst mehr Verletzung und Infektionsgefahr.', tipp: 'Wer richtet einen Bruch ein?' },
-      { nummer: 3, text: 'Das Bein in der vorgefundenen Lage mit zusammengerollten Decken polstern.', richtig: 'R',
-        erklaerung: '**Richtig:** Ruhigstellen und die Schonhaltung unterstützen.', tipp: 'Soll das Bein bewegt werden?' },
-      { nummer: 4, text: 'Herrn Wolf aufhelfen, damit er auf einer Bank sitzen kann.', richtig: 'F',
-        erklaerung: '**Falsch:** Nicht bewegen, nicht aufstehen lassen – bis der Rettungsdienst da ist.', tipp: 'Kann er mit dem Bruch stehen?' },
-      { nummer: 5, text: 'Die abgetrennte Fingerspitze unter fließendem Wasser sauber spülen.', richtig: 'F',
-        erklaerung: '**Falsch:** Das Amputat **nicht reinigen** und nicht in Wasser legen – das Gewebe wird geschädigt.', tipp: 'Was macht Wasser mit dem Gewebe?' },
-      { nummer: 6, text: 'Fingerspitze in sterile Kompressen und einen Beutel – diesen in einen zweiten Beutel mit Eiswasser.', richtig: 'R',
-        erklaerung: '**Richtig:** So bleibt das Amputat keimarm und kühl (ca. 4 °C).', tipp: 'Wozu sind zwei Beutel gut?' },
-      { nummer: 7, text: 'Die Fingerspitze direkt auf Eiswürfel legen.', richtig: 'F',
-        erklaerung: '**Falsch:** Direkter Kontakt mit Eis führt zu **Erfrierung** – das Gewebe kann dann nicht mehr angenäht werden.', tipp: 'Kühlen ja – aber wie?' },
-      { nummer: 8, text: 'Den Beutel beschriften und mit dem Verletzten in die Klinik geben.', richtig: 'R',
-        erklaerung: '**Richtig:** Das Amputat wird dort gebraucht, wo der Verletzte operiert wird.', tipp: 'Wo wird der Finger wieder angenäht?' }
+      { nummer: 1, fall: 1, bild: 'garten.svg',
+        text: 'Der Finger blutet stark, die Fingerspitze liegt im Gras. **Was tun Sie zuerst?**',
+        antworten: [
+          { kuerzel: 'STUMPF', text: 'Die Hand versorgen: fest drücken, Druckverband' },
+          { kuerzel: 'SUCHEN', text: 'Zuerst die Fingerspitze holen und kühlen',
+            warum: 'Die Blutung am Finger (Stumpf) ist wichtiger. Zuerst wird der Mensch versorgt, dann die Fingerspitze.' },
+          { kuerzel: 'SPUELE', text: 'Den Finger unter Wasser ausspülen',
+            warum: 'Das kostet Zeit, und es blutet weiter. Fest drücken und einen Stumpfverband mit Druckpolster anlegen.' }
+        ],
+        richtig: 'STUMPF',
+        erklaerung: '**Zuerst der Stumpf:** fest drücken, Stumpfverband mit Druckpolster. Bei lebensbedrohlicher Blutung: Tourniquet.',
+        bildDanach: 'hand-verband.svg' },
+      { nummer: 2, fall: 1, bild: 'hand-verband.svg', kacheln: true,
+        text: 'Die Hand ist versorgt. Jetzt packen Sie die Fingerspitze für die Klinik. **Was nehmen Sie zuerst?**',
+        antworten: [
+          { kuerzel: 'KOMPR', icon: 'kompresse.svg', text: 'Sterile Kompressen' },
+          { kuerzel: 'BEUTEL', icon: 'beutel.svg', text: 'Wasser­dichter Beutel', ohneHerz: true,
+            warum: 'Noch nicht – zuerst wird die Fingerspitze in sterile Kompressen eingewickelt.' },
+          { kuerzel: 'EISW', icon: 'eiswasser.svg', text: 'Beutel mit Eiswasser', ohneHerz: true,
+            warum: 'Noch nicht – die Fingerspitze darf nicht direkt ins Wasser. Zuerst sterile Kompressen.' },
+          { kuerzel: 'WASSER', icon: 'wasserhahn.svg', text: 'Wasserhahn',
+            warum: 'Nicht reinigen! Wasser weicht das Gewebe auf – dann lässt es sich schlechter annähen.' },
+          { kuerzel: 'DESI', icon: 'desinfektion.svg', text: 'Desinfektion',
+            warum: 'Kein Desinfektionsmittel – es schädigt das Gewebe. Das Amputat wird nicht gereinigt.' },
+          { kuerzel: 'TUCH', icon: 'taschentuch.svg', text: 'Papier­taschentuch',
+            warum: 'Ein Taschentuch ist nicht steril und klebt an der Wunde fest. Nehmen Sie sterile Kompressen.' }
+        ],
+        richtig: 'KOMPR',
+        erklaerung: 'Die Fingerspitze wird **nicht gereinigt** und in **sterile Kompressen** eingewickelt – so bleibt sie keimarm.',
+        bildDanach: 'paket-1.svg' },
+      { nummer: 3, fall: 1, bild: 'paket-1.svg', kacheln: true,
+        text: 'Die Fingerspitze ist in sterile Kompressen gewickelt. **Was kommt jetzt?**',
+        antworten: [
+          { kuerzel: 'BEUTEL', icon: 'beutel.svg', text: 'Wasser­dichter Beutel' },
+          { kuerzel: 'EISW', icon: 'eiswasser.svg', text: 'Beutel mit Eiswasser', ohneHerz: true,
+            warum: 'Noch nicht – erst kommt die Fingerspitze in einen eigenen, wasserdichten Beutel. Sonst wird sie nass.' },
+          { kuerzel: 'ETIK', icon: 'etikett.svg', text: 'Etikett und Stift', ohneHerz: true,
+            warum: 'Noch nicht – erst wird alles fertig verpackt, dann beschriftet.' },
+          { kuerzel: 'EIS', icon: 'eiswuerfel.svg', text: 'Eiswürfel',
+            warum: 'Nie direkt auf Eis – das Gewebe erfriert und kann nicht mehr angenäht werden.' },
+          { kuerzel: 'FROST', icon: 'gefrierfach.svg', text: 'Gefrierfach',
+            warum: 'Einfrieren zerstört das Gewebe. Die Fingerspitze wird nur gekühlt (ca. 4 °C), nicht gefroren.' },
+          { kuerzel: 'WASSER', icon: 'wasserhahn.svg', text: 'Wasserhahn',
+            warum: 'Nicht abspülen! Wasser weicht das Gewebe auf.' }
+        ],
+        richtig: 'BEUTEL',
+        erklaerung: 'Ein **wasserdichter Beutel** schützt die Fingerspitze vor Nässe. Den Beutel gut verschließen.',
+        bildDanach: 'paket-2.svg' },
+      { nummer: 4, fall: 1, bild: 'paket-2.svg', kacheln: true,
+        text: 'Der Beutel ist zu. **Wie kühlen Sie die Fingerspitze?**',
+        antworten: [
+          { kuerzel: 'EISW', icon: 'eiswasser.svg', text: 'Zweiter Beutel mit Eiswasser' },
+          { kuerzel: 'EIS', icon: 'eiswuerfel.svg', text: 'Auf Eiswürfel legen',
+            warum: 'Direkt auf Eis kann das Gewebe erfrieren. Eiswasser kühlt gleichmäßig auf etwa 4 °C.' },
+          { kuerzel: 'FROST', icon: 'gefrierfach.svg', text: 'Ins Gefrierfach legen',
+            warum: 'Einfrieren zerstört das Gewebe – dann kann die Fingerspitze nicht mehr angenäht werden.' }
+        ],
+        richtig: 'EISW',
+        erklaerung: 'Den Beutel in einen **zweiten Beutel mit Eiswasser** (ca. 4 °C) legen – kühl, aber nicht gefroren.',
+        bildDanach: 'paket-3.svg' },
+      { nummer: 5, fall: 1, bild: 'paket-3.svg', kacheln: true,
+        text: 'Fast fertig! **Was fehlt noch?**',
+        antworten: [
+          { kuerzel: 'ETIK', icon: 'etikett.svg', text: 'Etikett: Name und Uhrzeit' },
+          { kuerzel: 'DESI', icon: 'desinfektion.svg', text: 'Desinfektion',
+            warum: 'Nein – das Amputat wird nicht gereinigt oder desinfiziert. Es fehlt nur noch die Beschriftung.' },
+          { kuerzel: 'TUCH', icon: 'taschentuch.svg', text: 'Papier­taschentuch',
+            warum: 'Nein – das Taschentuch ist nicht steril und wird nicht gebraucht. Es fehlt nur noch die Beschriftung.' }
+        ],
+        richtig: 'ETIK',
+        erklaerung: 'Den Beutel mit **Name und Uhrzeit** beschriften. So weiß die Klinik, wem die Fingerspitze gehört und wie alt die Verletzung ist.',
+        bildDanach: 'paket-4.svg' },
+      { nummer: 6, fall: 1, bild: 'paket-4.svg',
+        text: 'Der Rettungsdienst ist da. **Wohin kommt der Beutel?**',
+        antworten: [
+          { kuerzel: 'MIT', text: 'Mit dem Verletzten in dieselbe Klinik' },
+          { kuerzel: 'KUEHL', text: 'In den Kühlschrank, bis die Klinik anruft',
+            warum: 'Die Fingerspitze wird dort gebraucht, wo der Gärtner operiert wird. Jede Stunde zählt.' },
+          { kuerzel: 'SPAET', text: 'Die Familie bringt ihn später in die Klinik',
+            warum: 'Das dauert zu lange. Der Beutel fährt sofort mit dem Verletzten mit.' }
+        ],
+        richtig: 'MIT',
+        erklaerung: 'Das Amputat kommt **mit dem Verletzten** in dieselbe Klinik – dort wird es wieder angenäht.',
+        bildDanach: 'krankenwagen.svg' }
     ],
-    merksatz: '**Offene Fraktur:** Blutung stillen, Wunde **steril abdecken**, **nicht einrichten**, in der vorgefundenen Lage **ruhigstellen**, nicht bewegen, Schockzeichen beobachten. **Amputat:** nicht reinigen, in **sterile Kompressen** und einen Beutel, dann in einen **zweiten Beutel mit Eiswasser** – **nie direkt auf Eis**; beschriften, **mit dem Verletzten** in die Klinik.',
-    danach: 'Prüfen Sie jetzt noch einmal Aufgabe 2 auf dem Arbeitsblatt!'
+    merkwort: [
+      { b: '1', wort: 'Zuerst der Stumpf', text: 'fest drücken, Stumpfverband mit Druckpolster' },
+      { b: '2', wort: 'Nicht reinigen', text: 'kein Wasser, kein Desinfektionsmittel' },
+      { b: '3', wort: 'Sterile Kompressen', text: 'die Fingerspitze darin einwickeln' },
+      { b: '4', wort: 'Wasserdichter Beutel', text: 'gut verschließen' },
+      { b: '5', wort: 'Zweiter Beutel mit Eiswasser', text: 'ca. 4 °C – nie direkt auf Eis, nicht einfrieren' },
+      { b: '6', wort: 'Beschriften und mitgeben', text: 'Name und Uhrzeit – mit dem Verletzten in die Klinik' }
+    ],
+    merksatz: '**Amputat:** zuerst den **Stumpf** versorgen · Amputat **nicht reinigen** · in **sterile Kompressen** · **wasserdichter Beutel** · in einen **zweiten Beutel mit Eiswasser** (ca. 4 °C) – **nie direkt auf Eis** · **beschriften** · **mit dem Verletzten** in die Klinik.',
+    danach: 'Weiter auf dem Arbeitsblatt mit **Aufgabe 2: Drei Fehler im Bericht**.',
+    texte: {
+      regelnTitel: 'So geht’s',
+      startKnopf: 'Los geht’s',
+      losKnopf: 'Ich helfe!',
+      weiterKnopf: 'Weiter',
+      naechsterFall: 'Weiter',
+      ergebnisKnopf: 'Zum Ergebnis',
+      fortschritt: 'Schritt {a} von {b}',
+      blutLabel: '',
+      gestopptLabel: '',
+      ohneZeitLabel: '',
+      richtigText: 'Richtig!',
+      falschText: 'Falsch – ein Herz weniger.',
+      nochNichtText: 'Noch nicht – kein Herz weg.',
+      sperreText: 'Lesen Sie den Hinweis – weiter in {x} s',
+      fallGeschafft: 'Geschafft!',
+      zusammenbruchTitel: 'Nicht mehr zu retten!',
+      ursacheFehler: 'Zwei Fehler – keine Herzen mehr.',
+      ursacheZeit: '',
+      nochmalFall: 'Noch einmal von vorn',
+      ohneZeitKnopf: '',
+      ohneZeitHinweis: '',
+      fertigTitel: 'Die Fingerspitze ist auf dem Weg in die Klinik!',
+      merkwortTitel: 'So kommt ein Amputat in die Klinik',
+      ersterVersuch: 'Beim ersten Versuch richtig: {x} von {y} Schritten',
+      nochmalAlles: 'Noch einmal von vorn spielen'
+    }
   },
 
   /* ========================================================================

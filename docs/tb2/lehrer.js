@@ -95,7 +95,7 @@
         var punkte = MIT_SPIEL ? Number(z.p.spiel) || 0 : 0;
         var titel = (z.fertig ? 'fertig – beim ersten Versuch richtig: ' + erster + ' von ' + n :
           (z.g >= 0 ? 'dabei – gelöst: ' + z.g + ' von ' + n : 'noch nicht begonnen')) +
-          (neu ? ' · ' + neu + (U.art === 'szene' ? '× zusammengebrochen (Fall neu gestartet)' : '× wegen zu schneller Fehler neu gestartet') : '') +
+          (neu ? ' · ' + neu + (U.art === 'szene' ? '× neu gestartet (zwei Fehler oder Zeit abgelaufen)' : '× wegen zu schneller Fehler neu gestartet') : '') +
           (punkte ? ' · Bestleistung im Spiel: ' + punkte + (punkte === spitze ? ' (höchste der Klasse)' : '') : '');
         // Bestleistung im Belohnungsspiel (🏆 = höchste der Klasse)
         var spielHtml = punkte ? '<span class="l-spiel' + (punkte === spitze ? ' l-spitze' : '') + '">' +
@@ -231,7 +231,7 @@
       '<p class="l-hinweis">✓ 9/12 = fertig, 9 von 12 Karten beim ersten Versuch richtig · ⚠ = fertig, aber zu wenige beim ' +
       'ersten Versuch richtig (durchgeklickt?) · 6/12 = dabei · ↺ = wegen zu schneller Fehler neu gestartet. ' +
       (MIT_SPIEL ? '🎮 = Bestleistung im Belohnungsspiel „Notfall-Run!“ (🏆 = höchste der Klasse). ' : '') +
-      (MIT_SZENE ? 'Notfall-Szene: Zahlen = Entscheidungen, ↺ = so oft ist der Patient zusammengebrochen (Fall neu gestartet). ' : '') +
+      (MIT_SZENE ? 'Notfall-Szene: Zahlen = Entscheidungen, ↺ = so oft musste der Fall neu beginnen (zwei Fehler oder Zeit abgelaufen). ' : '') +
       'Namen und Fortschritt werden nach spätestens 12 Stunden automatisch gelöscht.</p>';
     document.getElementById('l-leeren').addEventListener('click', function () {
       if (!window.confirm('Alle Namen und Fortschritte dieser Klasse für dieses Arbeitsblatt löschen?')) return;
